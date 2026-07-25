@@ -1,0 +1,37 @@
+# Secret-scan config for this PUBLIC repo (used by the pre-commit hook and CI).
+# Extends gitleaks' built-in ruleset (AWS keys, private keys, GitHub/Slack/Stripe
+# tokens, generic high-entropy strings, etc.) with SmartlyQ-specific rules.
+title = "SmartlyQ public-repo secret scan"
+
+[extend]
+useDefault = true
+
+# --- SmartlyQ API keys -------------------------------------------------------
+[[rules]]
+id = "smartlyq-api-key"
+description = "SmartlyQ API key (sqk_live_ / sqk_test_)"
+regex = '''sqk_(live|test)_[A-Za-z0-9]{12,}'''
+keywords = ["sqk_live_", "sqk_test_"]
+  [rules.allowlist]
+  description = "Documentation placeholders (e.g. sqk_live_xxxxxxxxxxxx)"
+  regexes = ['''sqk_(live|test)_[xX]+''']
+
+# --- Internal-only hostnames -------------------------------------------------
+# Catch internal/staging hosts. Public docs should only reference the public
+# *.smartlyq.com surface. Tune the allowlist if a new public host is added.
+[[rules]]
+id = "internal-host"
+description = "Possible internal/staging host or raw IP in a public file"
+regex = '''(?i)\b((staging|internal|admin|dev|db|sql|redis|mariadb)[-.][a-z0-9.-]*smartlyq\.com|(\d{1,3}\.){3}\d{1,3}:\d{2,5})\b'''
+keywords = ["staging", "internal", "admin", "mariadb"]
+
+# --- Global allowlist for obvious doc placeholders ---------------------------
+[allowlist]
+description = "Placeholders that are never real secrets"
+regexTarget = "line"
+regexes = [
+  '''(?i)YOUR_(API_KEY|TOKEN|SECRET)''',
+  '''(?i)\b(example|placeholder|changeme|redacted)\b''',
+  '''x{8,}''',
+  '''whsec_a1b2c3d4e5f6''',
+]

@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# Pre-commit secret scan for this PUBLIC repo.
+#
+# Enable once per clone:
+#   git config core.hooksPath .githooks
+#
+# Uses gitleaks when installed (full ruleset); otherwise falls back to a
+# lightweight grep so the gate still works without extra tooling.
+set -euo pipefail
+
+if command -v gitleaks >/dev/null 2>&1; then
+  if ! gitleaks protect --staged --redact --no-banner --config .gitleaks.toml; then
+    echo ""
+    echo "✖ gitleaks flagged a potential secret in your staged changes. Commit blocked."
+    echo "  Remove the value (use a placeholder like YOUR_API_KEY) and re-commit."
+    exit 1
+  fi
+  exit 0
+fi
+
+# --- Fallback: grep staged additions for high-signal secret patterns ---------
+staged="$(git diff --cached --name-only --diff-filter=ACM)"
+[ -z "$staged" ] && exit 0
+
+patterns='sqk_(live|test)_[A-Za-z0-9]{12,}|AKIA[0-9A-Z]{16}|-----BEGIN [A-Z ]*PRIVATE KEY-----|xox[baprs]-[0-9A-Za-z-]{10,}|gh[pousr]_[0-9A-Za-z]{30,}|AIza[0-9A-Za-z_-]{30,}'
+allow='x{8,}|YOUR_|example|placeholder|redacted|changeme'
+
+hits="$(git diff --cached -U0 -- $staged | grep '^+' | grep -vE '^\+\+\+' | grep -EI "$patterns" | grep -viE "$allow" || true)"
+if [ -n "$hits" ]; then
+  echo "✖ Potential secret detected in staged changes (install gitleaks for a full scan):"
+  echo "$hits"
+  echo "Commit blocked. Replace the value with a placeholder and re-commit."
+  exit 1
+fi
+exit 0
