@@ -1481,6 +1481,90 @@ func TestSocialXMentions(t *testing.T) {
 	})
 }
 
+func TestSocialSendTypingIndicator(t *testing.T) {
+	assertEndpoint(t, "POST", "/social/conversations/test-conversationId/typing", func(c *Client) error {
+		_, err := c.Social.SendTypingIndicator(context.Background(), "test-conversationId", nil)
+		return err
+	})
+}
+
+func TestSocialCommentPrivateReply(t *testing.T) {
+	assertEndpoint(t, "POST", "/social/comments/test-commentId/private-reply", func(c *Client) error {
+		_, err := c.Social.CommentPrivateReply(context.Background(), "test-commentId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialGetMessengerMenu(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/messenger/menu", func(c *Client) error {
+		_, err := c.Social.GetMessengerMenu(context.Background(), "test-accountId", nil)
+		return err
+	})
+}
+
+func TestSocialSetMessengerMenu(t *testing.T) {
+	assertEndpoint(t, "PUT", "/social/accounts/test-accountId/messenger/menu", func(c *Client) error {
+		_, err := c.Social.SetMessengerMenu(context.Background(), "test-accountId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialDeleteMessengerMenu(t *testing.T) {
+	assertEndpoint(t, "DELETE", "/social/accounts/test-accountId/messenger/menu", func(c *Client) error {
+		_, err := c.Social.DeleteMessengerMenu(context.Background(), "test-accountId", nil)
+		return err
+	})
+}
+
+func TestSocialGetIceBreakers(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/instagram/ice-breakers", func(c *Client) error {
+		_, err := c.Social.GetIceBreakers(context.Background(), "test-accountId", nil)
+		return err
+	})
+}
+
+func TestSocialSetIceBreakers(t *testing.T) {
+	assertEndpoint(t, "PUT", "/social/accounts/test-accountId/instagram/ice-breakers", func(c *Client) error {
+		_, err := c.Social.SetIceBreakers(context.Background(), "test-accountId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialDeleteIceBreakers(t *testing.T) {
+	assertEndpoint(t, "DELETE", "/social/accounts/test-accountId/instagram/ice-breakers", func(c *Client) error {
+		_, err := c.Social.DeleteIceBreakers(context.Background(), "test-accountId", nil)
+		return err
+	})
+}
+
+func TestSocialFacebookPageInsights(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/facebook/page-insights", func(c *Client) error {
+		_, err := c.Social.FacebookPageInsights(context.Background(), "test-accountId", nil, nil)
+		return err
+	})
+}
+
+func TestSocialInstagramAudience(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/instagram/audience", func(c *Client) error {
+		_, err := c.Social.InstagramAudience(context.Background(), "test-accountId", nil, nil)
+		return err
+	})
+}
+
+func TestSocialConnectOptions(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/connect-options", func(c *Client) error {
+		_, err := c.Social.ConnectOptions(context.Background(), "test-accountId", nil)
+		return err
+	})
+}
+
+func TestSocialConnectSelect(t *testing.T) {
+	assertEndpoint(t, "POST", "/social/accounts/test-accountId/connect-select", func(c *Client) error {
+		_, err := c.Social.ConnectSelect(context.Background(), "test-accountId", map[string]any{}, nil)
+		return err
+	})
+}
+
 func TestURLsShorten(t *testing.T) {
 	assertEndpoint(t, "POST", "/urls/shorten", func(c *Client) error {
 		_, err := c.URLs.Shorten(context.Background(), map[string]any{}, nil)

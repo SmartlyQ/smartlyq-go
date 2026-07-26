@@ -474,6 +474,18 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Social.GmbVerificationOptions(ctx, accountId, body)` | `POST /social/accounts/{account_id}/gmb/verifications/options` | Verification options |
 | `client.Social.RedditSubredditInfo(ctx, accountId, subreddit)` | `GET /social/accounts/{account_id}/reddit/subreddits/{subreddit}` | Subreddit info + eligibility |
 | `client.Social.XMentions(ctx, accountId, query)` | `GET /social/accounts/{account_id}/x/mentions` | X mentions |
+| `client.Social.SendTypingIndicator(ctx, conversationId)` | `POST /social/conversations/{conversation_id}/typing` | Typing indicator |
+| `client.Social.CommentPrivateReply(ctx, commentId, body)` | `POST /social/comments/{comment_id}/private-reply` | Private reply (comment-to-DM) |
+| `client.Social.GetMessengerMenu(ctx, accountId)` | `GET /social/accounts/{account_id}/messenger/menu` | Get Messenger menu |
+| `client.Social.SetMessengerMenu(ctx, accountId, body)` | `PUT /social/accounts/{account_id}/messenger/menu` | Set Messenger menu |
+| `client.Social.DeleteMessengerMenu(ctx, accountId)` | `DELETE /social/accounts/{account_id}/messenger/menu` | Delete Messenger menu |
+| `client.Social.GetIceBreakers(ctx, accountId)` | `GET /social/accounts/{account_id}/instagram/ice-breakers` | Get ice breakers |
+| `client.Social.SetIceBreakers(ctx, accountId, body)` | `PUT /social/accounts/{account_id}/instagram/ice-breakers` | Set ice breakers |
+| `client.Social.DeleteIceBreakers(ctx, accountId)` | `DELETE /social/accounts/{account_id}/instagram/ice-breakers` | Delete ice breakers |
+| `client.Social.FacebookPageInsights(ctx, accountId, query)` | `GET /social/accounts/{account_id}/facebook/page-insights` | Facebook page insights |
+| `client.Social.InstagramAudience(ctx, accountId, query)` | `GET /social/accounts/{account_id}/instagram/audience` | Instagram audience demographics |
+| `client.Social.ConnectOptions(ctx, accountId)` | `GET /social/accounts/{account_id}/connect-options` | Connection target options |
+| `client.Social.ConnectSelect(ctx, accountId, body)` | `POST /social/accounts/{account_id}/connect-select` | Select connection target |
 
 ### URLs
 

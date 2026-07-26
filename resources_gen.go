@@ -1586,6 +1586,90 @@ func (r *SocialResource) XMentions(ctx context.Context, accountId string, query 
 	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/x/mentions", query, nil, opts)
 }
 
+// SendTypingIndicator - Typing indicator.
+//
+// POST /social/conversations/{conversation_id}/typing
+func (r *SocialResource) SendTypingIndicator(ctx context.Context, conversationId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/social/conversations/"+url.PathEscape(conversationId)+"/typing", nil, nil, opts)
+}
+
+// CommentPrivateReply - Private reply (comment-to-DM).
+//
+// POST /social/comments/{comment_id}/private-reply
+func (r *SocialResource) CommentPrivateReply(ctx context.Context, commentId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/social/comments/"+url.PathEscape(commentId)+"/private-reply", nil, body, opts)
+}
+
+// GetMessengerMenu - Get Messenger menu.
+//
+// GET /social/accounts/{account_id}/messenger/menu
+func (r *SocialResource) GetMessengerMenu(ctx context.Context, accountId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/messenger/menu", nil, nil, opts)
+}
+
+// SetMessengerMenu - Set Messenger menu.
+//
+// PUT /social/accounts/{account_id}/messenger/menu
+func (r *SocialResource) SetMessengerMenu(ctx context.Context, accountId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "PUT", "/social/accounts/"+url.PathEscape(accountId)+"/messenger/menu", nil, body, opts)
+}
+
+// DeleteMessengerMenu - Delete Messenger menu.
+//
+// DELETE /social/accounts/{account_id}/messenger/menu
+func (r *SocialResource) DeleteMessengerMenu(ctx context.Context, accountId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "DELETE", "/social/accounts/"+url.PathEscape(accountId)+"/messenger/menu", nil, nil, opts)
+}
+
+// GetIceBreakers - Get ice breakers.
+//
+// GET /social/accounts/{account_id}/instagram/ice-breakers
+func (r *SocialResource) GetIceBreakers(ctx context.Context, accountId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/instagram/ice-breakers", nil, nil, opts)
+}
+
+// SetIceBreakers - Set ice breakers.
+//
+// PUT /social/accounts/{account_id}/instagram/ice-breakers
+func (r *SocialResource) SetIceBreakers(ctx context.Context, accountId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "PUT", "/social/accounts/"+url.PathEscape(accountId)+"/instagram/ice-breakers", nil, body, opts)
+}
+
+// DeleteIceBreakers - Delete ice breakers.
+//
+// DELETE /social/accounts/{account_id}/instagram/ice-breakers
+func (r *SocialResource) DeleteIceBreakers(ctx context.Context, accountId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "DELETE", "/social/accounts/"+url.PathEscape(accountId)+"/instagram/ice-breakers", nil, nil, opts)
+}
+
+// FacebookPageInsights - Facebook page insights.
+//
+// GET /social/accounts/{account_id}/facebook/page-insights
+func (r *SocialResource) FacebookPageInsights(ctx context.Context, accountId string, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/facebook/page-insights", query, nil, opts)
+}
+
+// InstagramAudience - Instagram audience demographics.
+//
+// GET /social/accounts/{account_id}/instagram/audience
+func (r *SocialResource) InstagramAudience(ctx context.Context, accountId string, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/instagram/audience", query, nil, opts)
+}
+
+// ConnectOptions - Connection target options.
+//
+// GET /social/accounts/{account_id}/connect-options
+func (r *SocialResource) ConnectOptions(ctx context.Context, accountId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/connect-options", nil, nil, opts)
+}
+
+// ConnectSelect - Select connection target.
+//
+// POST /social/accounts/{account_id}/connect-select
+func (r *SocialResource) ConnectSelect(ctx context.Context, accountId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/social/accounts/"+url.PathEscape(accountId)+"/connect-select", nil, body, opts)
+}
+
 // URLsResource groups the URLs endpoints.
 type URLsResource struct{ client *Client }
 
