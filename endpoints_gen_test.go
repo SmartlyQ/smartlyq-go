@@ -767,6 +767,13 @@ func TestReviewsReplyTo(t *testing.T) {
 	})
 }
 
+func TestReviewsDeleteReply(t *testing.T) {
+	assertEndpoint(t, "DELETE", "/reviews/test-reviewId/reply", func(c *Client) error {
+		_, err := c.Reviews.DeleteReply(context.Background(), "test-reviewId", nil)
+		return err
+	})
+}
+
 func TestReviewsSync(t *testing.T) {
 	assertEndpoint(t, "POST", "/reviews/sync", func(c *Client) error {
 		_, err := c.Reviews.Sync(context.Background(), map[string]any{}, nil)
@@ -1274,6 +1281,27 @@ func TestSocialInstagramStories(t *testing.T) {
 func TestSocialFacebookPostReactions(t *testing.T) {
 	assertEndpoint(t, "GET", "/social/accounts/test-accountId/facebook/post-reactions", func(c *Client) error {
 		_, err := c.Social.FacebookPostReactions(context.Background(), "test-accountId", nil, nil)
+		return err
+	})
+}
+
+func TestSocialInstagramStoryInsights(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/instagram/stories/test-storyId/insights", func(c *Client) error {
+		_, err := c.Social.InstagramStoryInsights(context.Background(), "test-accountId", "test-storyId", nil, nil)
+		return err
+	})
+}
+
+func TestSocialXRetweet(t *testing.T) {
+	assertEndpoint(t, "POST", "/social/accounts/test-accountId/x/retweets", func(c *Client) error {
+		_, err := c.Social.XRetweet(context.Background(), "test-accountId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialXUnretweet(t *testing.T) {
+	assertEndpoint(t, "DELETE", "/social/accounts/test-accountId/x/retweets/test-tweetId", func(c *Client) error {
+		_, err := c.Social.XUnretweet(context.Background(), "test-accountId", "test-tweetId", nil)
 		return err
 	})
 }

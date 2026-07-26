@@ -863,6 +863,13 @@ func (r *ReviewsResource) ReplyTo(ctx context.Context, reviewId string, body map
 	return r.client.do(ctx, "POST", "/reviews/"+url.PathEscape(reviewId)+"/reply", nil, body, opts)
 }
 
+// DeleteReply - Delete review reply.
+//
+// DELETE /reviews/{review_id}/reply
+func (r *ReviewsResource) DeleteReply(ctx context.Context, reviewId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "DELETE", "/reviews/"+url.PathEscape(reviewId)+"/reply", nil, nil, opts)
+}
+
 // Sync - Sync reviews.
 //
 // POST /reviews/sync
@@ -1381,6 +1388,27 @@ func (r *SocialResource) InstagramStories(ctx context.Context, accountId string,
 // GET /social/accounts/{account_id}/facebook/post-reactions
 func (r *SocialResource) FacebookPostReactions(ctx context.Context, accountId string, query map[string]string, opts *RequestOptions) (*Envelope, error) {
 	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/facebook/post-reactions", query, nil, opts)
+}
+
+// InstagramStoryInsights - Instagram story insights.
+//
+// GET /social/accounts/{account_id}/instagram/stories/{story_id}/insights
+func (r *SocialResource) InstagramStoryInsights(ctx context.Context, accountId string, storyId string, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/instagram/stories/"+url.PathEscape(storyId)+"/insights", query, nil, opts)
+}
+
+// XRetweet - Retweet on X.
+//
+// POST /social/accounts/{account_id}/x/retweets
+func (r *SocialResource) XRetweet(ctx context.Context, accountId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/social/accounts/"+url.PathEscape(accountId)+"/x/retweets", nil, body, opts)
+}
+
+// XUnretweet - Undo retweet.
+//
+// DELETE /social/accounts/{account_id}/x/retweets/{tweet_id}
+func (r *SocialResource) XUnretweet(ctx context.Context, accountId string, tweetId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "DELETE", "/social/accounts/"+url.PathEscape(accountId)+"/x/retweets/"+url.PathEscape(tweetId), nil, nil, opts)
 }
 
 // URLsResource groups the URLs endpoints.

@@ -357,6 +357,7 @@ All methods below are available on the client. Every method also accepts a trail
 | --- | --- | --- |
 | `client.Reviews.List(ctx, query)` | `GET /reviews` | List reviews |
 | `client.Reviews.ReplyTo(ctx, reviewId, body)` | `POST /reviews/{review_id}/reply` | Reply to review |
+| `client.Reviews.DeleteReply(ctx, reviewId)` | `DELETE /reviews/{review_id}/reply` | Delete review reply |
 | `client.Reviews.Sync(ctx, body)` | `POST /reviews/sync` | Sync reviews |
 
 ### SEO
@@ -445,6 +446,9 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Social.RedditSubredditRules(ctx, accountId, subreddit)` | `GET /social/accounts/{account_id}/reddit/subreddits/{subreddit}/rules` | Subreddit rules |
 | `client.Social.InstagramStories(ctx, accountId)` | `GET /social/accounts/{account_id}/instagram/stories` | Instagram stories |
 | `client.Social.FacebookPostReactions(ctx, accountId, query)` | `GET /social/accounts/{account_id}/facebook/post-reactions` | Facebook post reactions |
+| `client.Social.InstagramStoryInsights(ctx, accountId, storyId, query)` | `GET /social/accounts/{account_id}/instagram/stories/{story_id}/insights` | Instagram story insights |
+| `client.Social.XRetweet(ctx, accountId, body)` | `POST /social/accounts/{account_id}/x/retweets` | Retweet on X |
+| `client.Social.XUnretweet(ctx, accountId, tweetId)` | `DELETE /social/accounts/{account_id}/x/retweets/{tweet_id}` | Undo retweet |
 
 ### URLs
 
