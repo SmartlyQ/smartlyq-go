@@ -13134,6 +13134,122 @@
             "$ref": "#/components/responses/NotFound"
           }
         }
+      },
+      "patch": {
+        "summary": "Update custom field",
+        "operationId": "updateCustomField",
+        "tags": [
+          "CRM"
+        ],
+        "description": "Updates the definition (label, type, options, default, group, sort order). attr_key is immutable - it names the values already stored on contacts. Requires scope `contacts:write`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string",
+                    "maxLength": 120
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "options": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "default_value": {
+                    "type": "string"
+                  },
+                  "group_name": {
+                    "type": "string"
+                  },
+                  "sort_order": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "example": {
+                "label": "Lead source",
+                "options": [
+                  "Webinar",
+                  "Ad",
+                  "Referral"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated field",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "id": 44,
+                    "attr_key": "lead_source",
+                    "label": "Lead source",
+                    "type": "dropdown",
+                    "options": [
+                      "Webinar",
+                      "Ad",
+                      "Referral"
+                    ],
+                    "default_value": "",
+                    "group_name": "Marketing",
+                    "sort_order": 1
+                  },
+                  "meta": {
+                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                    "timestamp": "2026-07-26T09:41:22Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
       }
     },
     "/presentations": {
@@ -24586,6 +24702,145 @@
             }
           }
         }
+      },
+      "patch": {
+        "summary": "Update place-action link",
+        "operationId": "gmbUpdatePlaceAction",
+        "tags": [
+          "Social"
+        ],
+        "description": "Updates an action link's URI in place. name must belong to this location. Requires scope `social:write`.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "uri"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "uri": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                }
+              },
+              "example": {
+                "name": "locations/2/placeActionLinks/5",
+                "uri": "https://acme.coffee/order-v2"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "The updated PlaceActionLink."
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "name": "locations/2/placeActionLinks/5",
+                    "uri": "https://acme.coffee/order-v2",
+                    "placeActionType": "ORDER"
+                  },
+                  "meta": {
+                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                    "timestamp": "2026-07-26T09:41:22Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "description": "Platform rejected the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "PLATFORM_ERROR"
+                          ]
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                },
+                "example": {
+                  "success": false,
+                  "error": {
+                    "code": "PLATFORM_ERROR",
+                    "message": "The platform rejected the request."
+                  },
+                  "meta": {
+                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                    "timestamp": "2026-07-26T09:41:22Z"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/social/accounts/{account_id}/gmb/verifications": {
@@ -24875,6 +25130,415 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/social/accounts/{account_id}/reddit/subreddits/{subreddit}": {
+      "get": {
+        "summary": "Subreddit info + eligibility",
+        "operationId": "redditSubredditInfo",
+        "tags": [
+          "Social"
+        ],
+        "description": "Subreddit details plus a posting-eligibility check for THIS connected account: does it exist, what submission kinds it accepts, is the account banned, and a computed can_post verdict. Check before submitting. Requires scope `social:read`.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "subreddit",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Subreddit info",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "example": "marketing"
+                        },
+                        "title": {
+                          "type": "string",
+                          "example": "Marketing"
+                        },
+                        "subscribers": {
+                          "type": "integer",
+                          "example": 512034
+                        },
+                        "over_18": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "subreddit_type": {
+                          "type": "string",
+                          "example": "public"
+                        },
+                        "submission_type": {
+                          "type": "string",
+                          "example": "any"
+                        },
+                        "user_is_banned": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "user_is_subscriber": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "can_post": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "url": {
+                          "type": "string",
+                          "example": "https://www.reddit.com/r/marketing/"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "name": "marketing",
+                    "title": "Marketing",
+                    "subscribers": 512034,
+                    "over_18": false,
+                    "subreddit_type": "public",
+                    "submission_type": "any",
+                    "user_is_banned": false,
+                    "user_is_subscriber": true,
+                    "can_post": true,
+                    "url": "https://www.reddit.com/r/marketing/"
+                  },
+                  "meta": {
+                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                    "timestamp": "2026-07-26T09:41:22Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "description": "Platform rejected the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "PLATFORM_ERROR"
+                          ]
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                },
+                "example": {
+                  "success": false,
+                  "error": {
+                    "code": "PLATFORM_ERROR",
+                    "message": "The platform rejected the request."
+                  },
+                  "meta": {
+                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                    "timestamp": "2026-07-26T09:41:22Z"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/social/accounts/{account_id}/x/mentions": {
+      "get": {
+        "summary": "X mentions",
+        "operationId": "xMentions",
+        "tags": [
+          "Social"
+        ],
+        "description": "Recent posts mentioning the connected X account, with engagement metrics. Requires scope `social:read`.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "minimum": 5,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Mentions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "mentions": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "mentions": [
+                      {
+                        "tweet_id": "1815349823401570000",
+                        "text": "@acme your scheduler is great!",
+                        "author_id": "44196397",
+                        "conversation_id": "1815349823401570000",
+                        "created_at": "2026-07-26T08:12:00.000Z",
+                        "likes": 12,
+                        "replies": 2,
+                        "retweets": 1,
+                        "url": "https://x.com/i/status/1815349823401570000"
+                      }
+                    ]
+                  },
+                  "meta": {
+                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                    "timestamp": "2026-07-26T09:41:22Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "description": "Platform rejected the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "PLATFORM_ERROR"
+                          ]
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                },
+                "example": {
+                  "success": false,
+                  "error": {
+                    "code": "PLATFORM_ERROR",
+                    "message": "The platform rejected the request."
+                  },
+                  "meta": {
+                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                    "timestamp": "2026-07-26T09:41:22Z"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contacts/{id}/channels": {
+      "get": {
+        "summary": "Contact channels",
+        "operationId": "contactChannels",
+        "tags": [
+          "CRM"
+        ],
+        "description": "The channels this contact has actually communicated on (from the conversation timeline), with per-channel volume and last activity - pick the right channel before reaching out. Requires scope `contacts:read`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Channels",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "channels": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "channel": {
+                                "type": "string"
+                              },
+                              "incoming": {
+                                "type": "integer"
+                              },
+                              "outgoing": {
+                                "type": "integer"
+                              },
+                              "last_message_at": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "channels": [
+                      {
+                        "channel": "email",
+                        "incoming": 6,
+                        "outgoing": 9,
+                        "last_message_at": "2026-07-25T16:03:00Z"
+                      },
+                      {
+                        "channel": "instagram",
+                        "incoming": 2,
+                        "outgoing": 2,
+                        "last_message_at": "2026-07-20T11:40:00Z"
+                      }
+                    ]
+                  },
+                  "meta": {
+                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                    "timestamp": "2026-07-26T09:41:22Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
           }
         }
       }

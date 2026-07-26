@@ -254,7 +254,9 @@ All methods below are available on the client. Every method also accepts a trail
 | Method | Endpoint | Description |
 | --- | --- | --- |
 | `client.CRM.DeleteContact(ctx, id)` | `DELETE /contacts/{id}` | Delete contact |
+| `client.CRM.UpdateCustomField(ctx, id, body)` | `PATCH /custom-fields/{id}` | Update custom field |
 | `client.CRM.BulkImportContacts(ctx, body)` | `POST /contacts/bulk` | Bulk import contacts |
+| `client.CRM.ContactChannels(ctx, id)` | `GET /contacts/{id}/channels` | Contact channels |
 
 ### CRM Contacts
 
@@ -466,9 +468,12 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Social.GmbUpdateFoodMenus(ctx, accountId, body)` | `PUT /social/accounts/{account_id}/gmb/food-menus` | Update food menus |
 | `client.Social.GmbPlaceActions(ctx, accountId)` | `GET /social/accounts/{account_id}/gmb/place-actions` | List place-action links |
 | `client.Social.GmbCreatePlaceAction(ctx, accountId, body)` | `POST /social/accounts/{account_id}/gmb/place-actions` | Create place-action link |
+| `client.Social.GmbUpdatePlaceAction(ctx, accountId, body)` | `PATCH /social/accounts/{account_id}/gmb/place-actions` | Update place-action link |
 | `client.Social.GmbDeletePlaceAction(ctx, accountId, body)` | `DELETE /social/accounts/{account_id}/gmb/place-actions` | Delete place-action link |
 | `client.Social.GmbVerifications(ctx, accountId)` | `GET /social/accounts/{account_id}/gmb/verifications` | List verifications |
 | `client.Social.GmbVerificationOptions(ctx, accountId, body)` | `POST /social/accounts/{account_id}/gmb/verifications/options` | Verification options |
+| `client.Social.RedditSubredditInfo(ctx, accountId, subreddit)` | `GET /social/accounts/{account_id}/reddit/subreddits/{subreddit}` | Subreddit info + eligibility |
+| `client.Social.XMentions(ctx, accountId, query)` | `GET /social/accounts/{account_id}/x/mentions` | X mentions |
 
 ### URLs
 

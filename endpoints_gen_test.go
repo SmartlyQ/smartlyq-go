@@ -396,9 +396,23 @@ func TestCRMDeleteContact(t *testing.T) {
 	})
 }
 
+func TestCRMUpdateCustomField(t *testing.T) {
+	assertEndpoint(t, "PATCH", "/custom-fields/test-id", func(c *Client) error {
+		_, err := c.CRM.UpdateCustomField(context.Background(), "test-id", map[string]any{}, nil)
+		return err
+	})
+}
+
 func TestCRMBulkImportContacts(t *testing.T) {
 	assertEndpoint(t, "POST", "/contacts/bulk", func(c *Client) error {
 		_, err := c.CRM.BulkImportContacts(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestCRMContactChannels(t *testing.T) {
+	assertEndpoint(t, "GET", "/contacts/test-id/channels", func(c *Client) error {
+		_, err := c.CRM.ContactChannels(context.Background(), "test-id", nil)
 		return err
 	})
 }
@@ -1425,6 +1439,13 @@ func TestSocialGmbCreatePlaceAction(t *testing.T) {
 	})
 }
 
+func TestSocialGmbUpdatePlaceAction(t *testing.T) {
+	assertEndpoint(t, "PATCH", "/social/accounts/test-accountId/gmb/place-actions", func(c *Client) error {
+		_, err := c.Social.GmbUpdatePlaceAction(context.Background(), "test-accountId", map[string]any{}, nil)
+		return err
+	})
+}
+
 func TestSocialGmbDeletePlaceAction(t *testing.T) {
 	assertEndpoint(t, "DELETE", "/social/accounts/test-accountId/gmb/place-actions", func(c *Client) error {
 		_, err := c.Social.GmbDeletePlaceAction(context.Background(), "test-accountId", map[string]any{}, nil)
@@ -1442,6 +1463,20 @@ func TestSocialGmbVerifications(t *testing.T) {
 func TestSocialGmbVerificationOptions(t *testing.T) {
 	assertEndpoint(t, "POST", "/social/accounts/test-accountId/gmb/verifications/options", func(c *Client) error {
 		_, err := c.Social.GmbVerificationOptions(context.Background(), "test-accountId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialRedditSubredditInfo(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/reddit/subreddits/test-subreddit", func(c *Client) error {
+		_, err := c.Social.RedditSubredditInfo(context.Background(), "test-accountId", "test-subreddit", nil)
+		return err
+	})
+}
+
+func TestSocialXMentions(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/x/mentions", func(c *Client) error {
+		_, err := c.Social.XMentions(context.Background(), "test-accountId", nil, nil)
 		return err
 	})
 }

@@ -462,11 +462,25 @@ func (r *CRMResource) DeleteContact(ctx context.Context, id string, opts *Reques
 	return r.client.do(ctx, "DELETE", "/contacts/"+url.PathEscape(id), nil, nil, opts)
 }
 
+// UpdateCustomField - Update custom field.
+//
+// PATCH /custom-fields/{id}
+func (r *CRMResource) UpdateCustomField(ctx context.Context, id string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "PATCH", "/custom-fields/"+url.PathEscape(id), nil, body, opts)
+}
+
 // BulkImportContacts - Bulk import contacts.
 //
 // POST /contacts/bulk
 func (r *CRMResource) BulkImportContacts(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
 	return r.client.do(ctx, "POST", "/contacts/bulk", nil, body, opts)
+}
+
+// ContactChannels - Contact channels.
+//
+// GET /contacts/{id}/channels
+func (r *CRMResource) ContactChannels(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/contacts/"+url.PathEscape(id)+"/channels", nil, nil, opts)
 }
 
 // ContactsResource groups the CRM Contacts endpoints.
@@ -1530,6 +1544,13 @@ func (r *SocialResource) GmbCreatePlaceAction(ctx context.Context, accountId str
 	return r.client.do(ctx, "POST", "/social/accounts/"+url.PathEscape(accountId)+"/gmb/place-actions", nil, body, opts)
 }
 
+// GmbUpdatePlaceAction - Update place-action link.
+//
+// PATCH /social/accounts/{account_id}/gmb/place-actions
+func (r *SocialResource) GmbUpdatePlaceAction(ctx context.Context, accountId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "PATCH", "/social/accounts/"+url.PathEscape(accountId)+"/gmb/place-actions", nil, body, opts)
+}
+
 // GmbDeletePlaceAction - Delete place-action link.
 //
 // DELETE /social/accounts/{account_id}/gmb/place-actions
@@ -1549,6 +1570,20 @@ func (r *SocialResource) GmbVerifications(ctx context.Context, accountId string,
 // POST /social/accounts/{account_id}/gmb/verifications/options
 func (r *SocialResource) GmbVerificationOptions(ctx context.Context, accountId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
 	return r.client.do(ctx, "POST", "/social/accounts/"+url.PathEscape(accountId)+"/gmb/verifications/options", nil, body, opts)
+}
+
+// RedditSubredditInfo - Subreddit info + eligibility.
+//
+// GET /social/accounts/{account_id}/reddit/subreddits/{subreddit}
+func (r *SocialResource) RedditSubredditInfo(ctx context.Context, accountId string, subreddit string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/reddit/subreddits/"+url.PathEscape(subreddit), nil, nil, opts)
+}
+
+// XMentions - X mentions.
+//
+// GET /social/accounts/{account_id}/x/mentions
+func (r *SocialResource) XMentions(ctx context.Context, accountId string, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/x/mentions", query, nil, opts)
 }
 
 // URLsResource groups the URLs endpoints.
