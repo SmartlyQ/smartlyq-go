@@ -95,6 +95,41 @@ func TestAnalyticsGetAccount(t *testing.T) {
 	})
 }
 
+func TestAnalyticsDailyMetrics(t *testing.T) {
+	assertEndpoint(t, "GET", "/analytics/daily-metrics", func(c *Client) error {
+		_, err := c.Analytics.DailyMetrics(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestAnalyticsBestTime(t *testing.T) {
+	assertEndpoint(t, "GET", "/analytics/best-time", func(c *Client) error {
+		_, err := c.Analytics.BestTime(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestAnalyticsContentDecay(t *testing.T) {
+	assertEndpoint(t, "GET", "/analytics/content-decay", func(c *Client) error {
+		_, err := c.Analytics.ContentDecay(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestAnalyticsPostingFrequency(t *testing.T) {
+	assertEndpoint(t, "GET", "/analytics/posting-frequency", func(c *Client) error {
+		_, err := c.Analytics.PostingFrequency(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestAnalyticsPostTimeline(t *testing.T) {
+	assertEndpoint(t, "GET", "/analytics/posts/test-postId/timeline", func(c *Client) error {
+		_, err := c.Analytics.PostTimeline(context.Background(), "test-postId", nil)
+		return err
+	})
+}
+
 func TestArticlesGenerate(t *testing.T) {
 	assertEndpoint(t, "POST", "/articles/generate", func(c *Client) error {
 		_, err := c.Articles.Generate(context.Background(), map[string]any{}, nil)

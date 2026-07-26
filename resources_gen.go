@@ -134,6 +134,41 @@ func (r *AnalyticsResource) GetAccount(ctx context.Context, accountId string, qu
 	return r.client.do(ctx, "GET", "/analytics/accounts/"+url.PathEscape(accountId), query, nil, opts)
 }
 
+// DailyMetrics - Daily metrics.
+//
+// GET /analytics/daily-metrics
+func (r *AnalyticsResource) DailyMetrics(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/analytics/daily-metrics", query, nil, opts)
+}
+
+// BestTime - Best time to post.
+//
+// GET /analytics/best-time
+func (r *AnalyticsResource) BestTime(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/analytics/best-time", query, nil, opts)
+}
+
+// ContentDecay - Content decay.
+//
+// GET /analytics/content-decay
+func (r *AnalyticsResource) ContentDecay(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/analytics/content-decay", query, nil, opts)
+}
+
+// PostingFrequency - Posting frequency vs engagement.
+//
+// GET /analytics/posting-frequency
+func (r *AnalyticsResource) PostingFrequency(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/analytics/posting-frequency", query, nil, opts)
+}
+
+// PostTimeline - Post metric timeline.
+//
+// GET /analytics/posts/{post_id}/timeline
+func (r *AnalyticsResource) PostTimeline(ctx context.Context, postId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/analytics/posts/"+url.PathEscape(postId)+"/timeline", nil, nil, opts)
+}
+
 // ArticlesResource groups the Articles endpoints.
 type ArticlesResource struct{ client *Client }
 

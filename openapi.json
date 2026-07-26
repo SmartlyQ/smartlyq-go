@@ -12223,6 +12223,439 @@
           }
         }
       }
+    },
+    "/analytics/daily-metrics": {
+      "get": {
+        "summary": "Daily metrics",
+        "operationId": "analyticsDailyMetrics",
+        "tags": [
+          "Analytics"
+        ],
+        "description": "Per-day aggregates across all accounts (impressions, reach, engagements, follower deltas, posts published) plus a per-platform breakdown. Computed from stored snapshots - fast and unbilled. Requires scope `analytics:read`.",
+        "parameters": [
+          {
+            "name": "days",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 30,
+              "minimum": 1,
+              "maximum": 365
+            },
+            "description": "Window in days."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Daily metrics",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "days": {
+                          "type": "integer"
+                        },
+                        "daily": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "date": {
+                                "type": "string"
+                              },
+                              "impressions": {
+                                "type": "integer"
+                              },
+                              "reach": {
+                                "type": "integer"
+                              },
+                              "engagements": {
+                                "type": "integer"
+                              },
+                              "new_followers": {
+                                "type": "integer"
+                              },
+                              "followers": {
+                                "type": "integer"
+                              },
+                              "posts": {
+                                "type": "integer"
+                              }
+                            }
+                          }
+                        },
+                        "platforms": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "platform": {
+                                "type": "string"
+                              },
+                              "impressions": {
+                                "type": "integer"
+                              },
+                              "reach": {
+                                "type": "integer"
+                              },
+                              "engagements": {
+                                "type": "integer"
+                              },
+                              "new_followers": {
+                                "type": "integer"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/analytics/best-time": {
+      "get": {
+        "summary": "Best time to post",
+        "operationId": "analyticsBestTime",
+        "tags": [
+          "Analytics"
+        ],
+        "description": "When your audience actually engages: a 7x24 heatmap of average engagement per published post by weekday and hour (in your timezone), plus the top 5 slots. Requires scope `analytics:read`.",
+        "parameters": [
+          {
+            "name": "days",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 90,
+              "minimum": 7,
+              "maximum": 365
+            },
+            "description": "Window in days."
+          },
+          {
+            "name": "timezone",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "UTC"
+            },
+            "description": "IANA timezone for the buckets."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Best-time report",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "days": {
+                          "type": "integer"
+                        },
+                        "timezone": {
+                          "type": "string"
+                        },
+                        "sample": {
+                          "type": "integer",
+                          "description": "Posts in the sample."
+                        },
+                        "best_slots": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "weekday": {
+                                "type": "string"
+                              },
+                              "hour": {
+                                "type": "integer"
+                              },
+                              "avg_engagements": {
+                                "type": "number"
+                              },
+                              "posts": {
+                                "type": "integer"
+                              }
+                            }
+                          }
+                        },
+                        "heatmap": {
+                          "type": "object",
+                          "description": "weekday -> hour -> {avg_engagements, posts}"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/analytics/content-decay": {
+      "get": {
+        "summary": "Content decay",
+        "operationId": "analyticsContentDecay",
+        "tags": [
+          "Analytics"
+        ],
+        "description": "How long a post keeps working: the average share of a post's final engagement reached by each age-day (0-13), across posts published in the window. Requires scope `analytics:read`.",
+        "parameters": [
+          {
+            "name": "days",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 90,
+              "minimum": 14,
+              "maximum": 365
+            },
+            "description": "Window in days."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Decay curve",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "days": {
+                          "type": "integer"
+                        },
+                        "posts": {
+                          "type": "integer"
+                        },
+                        "curve": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "age_days": {
+                                "type": "integer"
+                              },
+                              "avg_share_of_final": {
+                                "type": "number",
+                                "nullable": true
+                              },
+                              "sample": {
+                                "type": "integer"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/analytics/posting-frequency": {
+      "get": {
+        "summary": "Posting frequency vs engagement",
+        "operationId": "analyticsPostingFrequency",
+        "tags": [
+          "Analytics"
+        ],
+        "description": "Per ISO week: how many posts you published and what they averaged in engagement - the data behind 'are we posting too much or too little'. Requires scope `analytics:read`.",
+        "parameters": [
+          {
+            "name": "days",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 90,
+              "minimum": 7,
+              "maximum": 365
+            },
+            "description": "Window in days."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Frequency report",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "days": {
+                          "type": "integer"
+                        },
+                        "weeks": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "week": {
+                                "type": "string",
+                                "example": "2026-W29"
+                              },
+                              "posts": {
+                                "type": "integer"
+                              },
+                              "total_engagements": {
+                                "type": "integer"
+                              },
+                              "avg_engagements_per_post": {
+                                "type": "number"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/analytics/posts/{post_id}/timeline": {
+      "get": {
+        "summary": "Post metric timeline",
+        "operationId": "analyticsPostTimeline",
+        "tags": [
+          "Analytics"
+        ],
+        "description": "Every metric snapshot collected for one post, per platform, oldest first - impressions, reach, engagements, likes, comments, shares, saves, clicks, video views over time. Requires scope `analytics:read`.",
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Timeline",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "post_id": {
+                          "type": "integer"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "published_at": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "platforms": {
+                          "type": "object",
+                          "description": "platform -> array of snapshots"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
     }
   },
   "components": {

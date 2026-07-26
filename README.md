@@ -176,6 +176,11 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Analytics.GetOverview(ctx, query)` | `GET /analytics/overview` | Get analytics overview |
 | `client.Analytics.GetPosts(ctx, query)` | `GET /analytics/posts` | Get post analytics |
 | `client.Analytics.GetAccount(ctx, accountId, query)` | `GET /analytics/accounts/{account_id}` | Get account analytics |
+| `client.Analytics.DailyMetrics(ctx, query)` | `GET /analytics/daily-metrics` | Daily metrics |
+| `client.Analytics.BestTime(ctx, query)` | `GET /analytics/best-time` | Best time to post |
+| `client.Analytics.ContentDecay(ctx, query)` | `GET /analytics/content-decay` | Content decay |
+| `client.Analytics.PostingFrequency(ctx, query)` | `GET /analytics/posting-frequency` | Posting frequency vs engagement |
+| `client.Analytics.PostTimeline(ctx, postId)` | `GET /analytics/posts/{post_id}/timeline` | Post metric timeline |
 
 ### Articles
 
