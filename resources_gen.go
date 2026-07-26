@@ -14,9 +14,11 @@ type resources struct {
 	Analytics     *AnalyticsResource
 	Articles      *ArticlesResource
 	Audio         *AudioResource
+	Automations   *AutomationsResource
 	Chatbots      *ChatbotsResource
 	Comments      *CommentsResource
 	Content       *ContentResource
+	CRM           *CRMResource
 	Contacts      *ContactsResource
 	CustomFields  *CustomFieldsResource
 	Opportunities *OpportunitiesResource
@@ -26,6 +28,7 @@ type resources struct {
 	Media         *MediaResource
 	Presentations *PresentationsResource
 	Profiles      *ProfilesResource
+	Reviews       *ReviewsResource
 	SEO           *SEOResource
 	Shorts        *ShortsResource
 	Social        *SocialResource
@@ -41,9 +44,11 @@ func (c *Client) initResources() {
 	c.Analytics = &AnalyticsResource{client: c}
 	c.Articles = &ArticlesResource{client: c}
 	c.Audio = &AudioResource{client: c}
+	c.Automations = &AutomationsResource{client: c}
 	c.Chatbots = &ChatbotsResource{client: c}
 	c.Comments = &CommentsResource{client: c}
 	c.Content = &ContentResource{client: c}
+	c.CRM = &CRMResource{client: c}
 	c.Contacts = &ContactsResource{client: c}
 	c.CustomFields = &CustomFieldsResource{client: c}
 	c.Opportunities = &OpportunitiesResource{client: c}
@@ -53,6 +58,7 @@ func (c *Client) initResources() {
 	c.Media = &MediaResource{client: c}
 	c.Presentations = &PresentationsResource{client: c}
 	c.Profiles = &ProfilesResource{client: c}
+	c.Reviews = &ReviewsResource{client: c}
 	c.SEO = &SEOResource{client: c}
 	c.Shorts = &ShortsResource{client: c}
 	c.Social = &SocialResource{client: c}
@@ -169,6 +175,55 @@ func (r *AnalyticsResource) PostTimeline(ctx context.Context, postId string, opt
 	return r.client.do(ctx, "GET", "/analytics/posts/"+url.PathEscape(postId)+"/timeline", nil, nil, opts)
 }
 
+// InboxVolume - Inbox volume.
+//
+// GET /analytics/inbox/volume
+func (r *AnalyticsResource) InboxVolume(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/analytics/inbox/volume", query, nil, opts)
+}
+
+// InboxHeatmap - Inbox heatmap.
+//
+// GET /analytics/inbox/heatmap
+func (r *AnalyticsResource) InboxHeatmap(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/analytics/inbox/heatmap", query, nil, opts)
+}
+
+// InboxSourceBreakdown - Inbox source breakdown.
+//
+// GET /analytics/inbox/source-breakdown
+func (r *AnalyticsResource) InboxSourceBreakdown(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/analytics/inbox/source-breakdown", query, nil, opts)
+}
+
+// InboxResponseTime - Inbox response time.
+//
+// GET /analytics/inbox/response-time
+func (r *AnalyticsResource) InboxResponseTime(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/analytics/inbox/response-time", query, nil, opts)
+}
+
+// InboxTopAccounts - Inbox top accounts.
+//
+// GET /analytics/inbox/top-accounts
+func (r *AnalyticsResource) InboxTopAccounts(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/analytics/inbox/top-accounts", query, nil, opts)
+}
+
+// InboxConversations - Inbox conversation stats.
+//
+// GET /analytics/inbox/conversations
+func (r *AnalyticsResource) InboxConversations(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/analytics/inbox/conversations", query, nil, opts)
+}
+
+// InboxConversationDetail - Conversation analytics.
+//
+// GET /analytics/inbox/conversations/{conversation_id}
+func (r *AnalyticsResource) InboxConversationDetail(ctx context.Context, conversationId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/analytics/inbox/conversations/"+url.PathEscape(conversationId), nil, nil, opts)
+}
+
 // ArticlesResource groups the Articles endpoints.
 type ArticlesResource struct{ client *Client }
 
@@ -222,6 +277,58 @@ func (r *AudioResource) SpeechToText(ctx context.Context, body map[string]any, o
 // GET /audio/{audio_id}
 func (r *AudioResource) Get(ctx context.Context, audioId string, opts *RequestOptions) (*Envelope, error) {
 	return r.client.do(ctx, "GET", "/audio/"+url.PathEscape(audioId), nil, nil, opts)
+}
+
+// AutomationsResource groups the Automations endpoints.
+type AutomationsResource struct{ client *Client }
+
+// List - List automations.
+//
+// GET /automations
+func (r *AutomationsResource) List(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/automations", query, nil, opts)
+}
+
+// Get - Get automation.
+//
+// GET /automations/{automation_id}
+func (r *AutomationsResource) Get(ctx context.Context, automationId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/automations/"+url.PathEscape(automationId), nil, nil, opts)
+}
+
+// Activate - Activate automation.
+//
+// POST /automations/{automation_id}/activate
+func (r *AutomationsResource) Activate(ctx context.Context, automationId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/automations/"+url.PathEscape(automationId)+"/activate", nil, nil, opts)
+}
+
+// Deactivate - Pause automation.
+//
+// POST /automations/{automation_id}/deactivate
+func (r *AutomationsResource) Deactivate(ctx context.Context, automationId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/automations/"+url.PathEscape(automationId)+"/deactivate", nil, nil, opts)
+}
+
+// Trigger - Trigger automation.
+//
+// POST /automations/{automation_id}/trigger
+func (r *AutomationsResource) Trigger(ctx context.Context, automationId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/automations/"+url.PathEscape(automationId)+"/trigger", nil, body, opts)
+}
+
+// ListRuns - List runs.
+//
+// GET /automations/{automation_id}/runs
+func (r *AutomationsResource) ListRuns(ctx context.Context, automationId string, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/automations/"+url.PathEscape(automationId)+"/runs", query, nil, opts)
+}
+
+// GetRun - Get run.
+//
+// GET /automations/{automation_id}/runs/{run_id}
+func (r *AutomationsResource) GetRun(ctx context.Context, automationId string, runId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/automations/"+url.PathEscape(automationId)+"/runs/"+url.PathEscape(runId), nil, nil, opts)
 }
 
 // ChatbotsResource groups the Chatbot endpoints.
@@ -343,6 +450,23 @@ func (r *ContentResource) Rewrite(ctx context.Context, body map[string]any, opts
 // POST /content/caption
 func (r *ContentResource) GenerateCaption(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
 	return r.client.do(ctx, "POST", "/content/caption", nil, body, opts)
+}
+
+// CRMResource groups the CRM endpoints.
+type CRMResource struct{ client *Client }
+
+// DeleteContact - Delete contact.
+//
+// DELETE /contacts/{id}
+func (r *CRMResource) DeleteContact(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "DELETE", "/contacts/"+url.PathEscape(id), nil, nil, opts)
+}
+
+// BulkImportContacts - Bulk import contacts.
+//
+// POST /contacts/bulk
+func (r *CRMResource) BulkImportContacts(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/contacts/bulk", nil, body, opts)
 }
 
 // ContactsResource groups the CRM Contacts endpoints.
@@ -722,6 +846,30 @@ func (r *ProfilesResource) GetAccountBilling(ctx context.Context, opts *RequestO
 	return r.client.do(ctx, "GET", "/me/account-billing", nil, nil, opts)
 }
 
+// ReviewsResource groups the Reviews endpoints.
+type ReviewsResource struct{ client *Client }
+
+// List - List reviews.
+//
+// GET /reviews
+func (r *ReviewsResource) List(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/reviews", query, nil, opts)
+}
+
+// ReplyTo - Reply to review.
+//
+// POST /reviews/{review_id}/reply
+func (r *ReviewsResource) ReplyTo(ctx context.Context, reviewId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/reviews/"+url.PathEscape(reviewId)+"/reply", nil, body, opts)
+}
+
+// Sync - Sync reviews.
+//
+// POST /reviews/sync
+func (r *ReviewsResource) Sync(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/reviews/sync", nil, body, opts)
+}
+
 // SEOResource groups the SEO endpoints.
 type SEOResource struct{ client *Client }
 
@@ -927,6 +1075,13 @@ func (r *SocialResource) UpdateAccount(ctx context.Context, accountId string, bo
 	return r.client.do(ctx, "PATCH", "/social/accounts/"+url.PathEscape(accountId), nil, body, opts)
 }
 
+// DisconnectAccount - Disconnect a social account.
+//
+// DELETE /social/accounts/{account_id}
+func (r *SocialResource) DisconnectAccount(ctx context.Context, accountId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "DELETE", "/social/accounts/"+url.PathEscape(accountId), nil, nil, opts)
+}
+
 // GetAccountHealth - Account health.
 //
 // GET /social/accounts/{account_id}/health
@@ -1128,6 +1283,27 @@ func (r *SocialResource) UpdateAccountGroup(ctx context.Context, groupId string,
 // DELETE /social/account-groups/{group_id}
 func (r *SocialResource) DeleteAccountGroup(ctx context.Context, groupId string, opts *RequestOptions) (*Envelope, error) {
 	return r.client.do(ctx, "DELETE", "/social/account-groups/"+url.PathEscape(groupId), nil, nil, opts)
+}
+
+// GetConversation - Get conversation.
+//
+// GET /social/conversations/{conversation_id}
+func (r *SocialResource) GetConversation(ctx context.Context, conversationId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/conversations/"+url.PathEscape(conversationId), nil, nil, opts)
+}
+
+// UpdateConversation - Archive / reopen conversation.
+//
+// PATCH /social/conversations/{conversation_id}
+func (r *SocialResource) UpdateConversation(ctx context.Context, conversationId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "PATCH", "/social/conversations/"+url.PathEscape(conversationId), nil, body, opts)
+}
+
+// SearchConversations - Search conversations.
+//
+// GET /social/conversations/search
+func (r *SocialResource) SearchConversations(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/conversations/search", query, nil, opts)
 }
 
 // URLsResource groups the URLs endpoints.

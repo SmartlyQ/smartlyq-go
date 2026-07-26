@@ -130,6 +130,55 @@ func TestAnalyticsPostTimeline(t *testing.T) {
 	})
 }
 
+func TestAnalyticsInboxVolume(t *testing.T) {
+	assertEndpoint(t, "GET", "/analytics/inbox/volume", func(c *Client) error {
+		_, err := c.Analytics.InboxVolume(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestAnalyticsInboxHeatmap(t *testing.T) {
+	assertEndpoint(t, "GET", "/analytics/inbox/heatmap", func(c *Client) error {
+		_, err := c.Analytics.InboxHeatmap(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestAnalyticsInboxSourceBreakdown(t *testing.T) {
+	assertEndpoint(t, "GET", "/analytics/inbox/source-breakdown", func(c *Client) error {
+		_, err := c.Analytics.InboxSourceBreakdown(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestAnalyticsInboxResponseTime(t *testing.T) {
+	assertEndpoint(t, "GET", "/analytics/inbox/response-time", func(c *Client) error {
+		_, err := c.Analytics.InboxResponseTime(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestAnalyticsInboxTopAccounts(t *testing.T) {
+	assertEndpoint(t, "GET", "/analytics/inbox/top-accounts", func(c *Client) error {
+		_, err := c.Analytics.InboxTopAccounts(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestAnalyticsInboxConversations(t *testing.T) {
+	assertEndpoint(t, "GET", "/analytics/inbox/conversations", func(c *Client) error {
+		_, err := c.Analytics.InboxConversations(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestAnalyticsInboxConversationDetail(t *testing.T) {
+	assertEndpoint(t, "GET", "/analytics/inbox/conversations/test-conversationId", func(c *Client) error {
+		_, err := c.Analytics.InboxConversationDetail(context.Background(), "test-conversationId", nil)
+		return err
+	})
+}
+
 func TestArticlesGenerate(t *testing.T) {
 	assertEndpoint(t, "POST", "/articles/generate", func(c *Client) error {
 		_, err := c.Articles.Generate(context.Background(), map[string]any{}, nil)
@@ -175,6 +224,55 @@ func TestAudioSpeechToText(t *testing.T) {
 func TestAudioGet(t *testing.T) {
 	assertEndpoint(t, "GET", "/audio/test-audioId", func(c *Client) error {
 		_, err := c.Audio.Get(context.Background(), "test-audioId", nil)
+		return err
+	})
+}
+
+func TestAutomationsList(t *testing.T) {
+	assertEndpoint(t, "GET", "/automations", func(c *Client) error {
+		_, err := c.Automations.List(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestAutomationsGet(t *testing.T) {
+	assertEndpoint(t, "GET", "/automations/test-automationId", func(c *Client) error {
+		_, err := c.Automations.Get(context.Background(), "test-automationId", nil)
+		return err
+	})
+}
+
+func TestAutomationsActivate(t *testing.T) {
+	assertEndpoint(t, "POST", "/automations/test-automationId/activate", func(c *Client) error {
+		_, err := c.Automations.Activate(context.Background(), "test-automationId", nil)
+		return err
+	})
+}
+
+func TestAutomationsDeactivate(t *testing.T) {
+	assertEndpoint(t, "POST", "/automations/test-automationId/deactivate", func(c *Client) error {
+		_, err := c.Automations.Deactivate(context.Background(), "test-automationId", nil)
+		return err
+	})
+}
+
+func TestAutomationsTrigger(t *testing.T) {
+	assertEndpoint(t, "POST", "/automations/test-automationId/trigger", func(c *Client) error {
+		_, err := c.Automations.Trigger(context.Background(), "test-automationId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestAutomationsListRuns(t *testing.T) {
+	assertEndpoint(t, "GET", "/automations/test-automationId/runs", func(c *Client) error {
+		_, err := c.Automations.ListRuns(context.Background(), "test-automationId", nil, nil)
+		return err
+	})
+}
+
+func TestAutomationsGetRun(t *testing.T) {
+	assertEndpoint(t, "GET", "/automations/test-automationId/runs/test-runId", func(c *Client) error {
+		_, err := c.Automations.GetRun(context.Background(), "test-automationId", "test-runId", nil)
 		return err
 	})
 }
@@ -287,6 +385,20 @@ func TestContentRewrite(t *testing.T) {
 func TestContentGenerateCaption(t *testing.T) {
 	assertEndpoint(t, "POST", "/content/caption", func(c *Client) error {
 		_, err := c.Content.GenerateCaption(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestCRMDeleteContact(t *testing.T) {
+	assertEndpoint(t, "DELETE", "/contacts/test-id", func(c *Client) error {
+		_, err := c.CRM.DeleteContact(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
+func TestCRMBulkImportContacts(t *testing.T) {
+	assertEndpoint(t, "POST", "/contacts/bulk", func(c *Client) error {
+		_, err := c.CRM.BulkImportContacts(context.Background(), map[string]any{}, nil)
 		return err
 	})
 }
@@ -641,6 +753,27 @@ func TestProfilesGetAccountBilling(t *testing.T) {
 	})
 }
 
+func TestReviewsList(t *testing.T) {
+	assertEndpoint(t, "GET", "/reviews", func(c *Client) error {
+		_, err := c.Reviews.List(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestReviewsReplyTo(t *testing.T) {
+	assertEndpoint(t, "POST", "/reviews/test-reviewId/reply", func(c *Client) error {
+		_, err := c.Reviews.ReplyTo(context.Background(), "test-reviewId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestReviewsSync(t *testing.T) {
+	assertEndpoint(t, "POST", "/reviews/sync", func(c *Client) error {
+		_, err := c.Reviews.Sync(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
 func TestSEOKeywordResearch(t *testing.T) {
 	assertEndpoint(t, "POST", "/seo/keyword-research", func(c *Client) error {
 		_, err := c.SEO.KeywordResearch(context.Background(), map[string]any{}, nil)
@@ -833,6 +966,13 @@ func TestSocialDeletePost(t *testing.T) {
 func TestSocialUpdateAccount(t *testing.T) {
 	assertEndpoint(t, "PATCH", "/social/accounts/test-accountId", func(c *Client) error {
 		_, err := c.Social.UpdateAccount(context.Background(), "test-accountId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialDisconnectAccount(t *testing.T) {
+	assertEndpoint(t, "DELETE", "/social/accounts/test-accountId", func(c *Client) error {
+		_, err := c.Social.DisconnectAccount(context.Background(), "test-accountId", nil)
 		return err
 	})
 }
@@ -1036,6 +1176,27 @@ func TestSocialUpdateAccountGroup(t *testing.T) {
 func TestSocialDeleteAccountGroup(t *testing.T) {
 	assertEndpoint(t, "DELETE", "/social/account-groups/test-groupId", func(c *Client) error {
 		_, err := c.Social.DeleteAccountGroup(context.Background(), "test-groupId", nil)
+		return err
+	})
+}
+
+func TestSocialGetConversation(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/conversations/test-conversationId", func(c *Client) error {
+		_, err := c.Social.GetConversation(context.Background(), "test-conversationId", nil)
+		return err
+	})
+}
+
+func TestSocialUpdateConversation(t *testing.T) {
+	assertEndpoint(t, "PATCH", "/social/conversations/test-conversationId", func(c *Client) error {
+		_, err := c.Social.UpdateConversation(context.Background(), "test-conversationId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialSearchConversations(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/conversations/search", func(c *Client) error {
+		_, err := c.Social.SearchConversations(context.Background(), nil, nil)
 		return err
 	})
 }

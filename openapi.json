@@ -4868,6 +4868,74 @@
             "$ref": "#/components/responses/ValidationError"
           }
         }
+      },
+      "delete": {
+        "summary": "Disconnect a social account",
+        "operationId": "disconnectSocialAccount",
+        "tags": [
+          "Social"
+        ],
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Connected account id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "null",
+                      "description": "No payload on success."
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": null,
+                  "meta": {
+                    "request_id": "req_abc123",
+                    "timestamp": "2026-03-01T16:00:00Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
       }
     },
     "/social/accounts/{account_id}/health": {
@@ -7857,6 +7925,56 @@
           },
           "422": {
             "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete contact",
+        "operationId": "deleteContact",
+        "tags": [
+          "CRM"
+        ],
+        "description": "Soft-deletes the contact (recoverable from Deleted contacts in the app). Requires scope `contacts:write`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
           }
         }
       }
@@ -12653,6 +12771,2000 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/analytics/inbox/volume": {
+      "get": {
+        "summary": "Inbox volume",
+        "operationId": "inboxVolume",
+        "tags": [
+          "Analytics"
+        ],
+        "description": "Daily incoming/outgoing message counts plus new conversations started, across the social inbox. Requires scope `analytics:read`.",
+        "parameters": [
+          {
+            "name": "days",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 30,
+              "minimum": 1,
+              "maximum": 365
+            },
+            "description": "Window in days."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Volume",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "days": {
+                          "type": "integer"
+                        },
+                        "daily": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "date": {
+                                "type": "string"
+                              },
+                              "incoming": {
+                                "type": "integer"
+                              },
+                              "outgoing": {
+                                "type": "integer"
+                              },
+                              "new_conversations": {
+                                "type": "integer"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/analytics/inbox/heatmap": {
+      "get": {
+        "summary": "Inbox heatmap",
+        "operationId": "inboxHeatmap",
+        "tags": [
+          "Analytics"
+        ],
+        "description": "Incoming messages bucketed by weekday and hour (in your timezone) - when your audience actually writes to you. Requires scope `analytics:read`.",
+        "parameters": [
+          {
+            "name": "days",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 30,
+              "minimum": 1,
+              "maximum": 365
+            },
+            "description": "Window in days."
+          },
+          {
+            "name": "timezone",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "UTC"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Heatmap",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "days": {
+                          "type": "integer"
+                        },
+                        "timezone": {
+                          "type": "string"
+                        },
+                        "sample": {
+                          "type": "integer"
+                        },
+                        "heatmap": {
+                          "type": "object",
+                          "description": "weekday -> array of 24 hourly counts"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/analytics/inbox/source-breakdown": {
+      "get": {
+        "summary": "Inbox source breakdown",
+        "operationId": "inboxSourceBreakdown",
+        "tags": [
+          "Analytics"
+        ],
+        "description": "Active conversations and message volume per platform. Requires scope `analytics:read`.",
+        "parameters": [
+          {
+            "name": "days",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 30,
+              "minimum": 1,
+              "maximum": 365
+            },
+            "description": "Window in days."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Breakdown",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "days": {
+                          "type": "integer"
+                        },
+                        "platforms": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "platform": {
+                                "type": "string"
+                              },
+                              "conversations": {
+                                "type": "integer"
+                              },
+                              "incoming": {
+                                "type": "integer"
+                              },
+                              "outgoing": {
+                                "type": "integer"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/analytics/inbox/response-time": {
+      "get": {
+        "summary": "Inbox response time",
+        "operationId": "inboxResponseTime",
+        "tags": [
+          "Analytics"
+        ],
+        "description": "How fast you answer: for every incoming message answered by a later reply in the same conversation, the wait - average, median, and a histogram (under_15m, 15m_1h, 1h_4h, 4h_24h, over_24h). Requires scope `analytics:read`.",
+        "parameters": [
+          {
+            "name": "days",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 30,
+              "minimum": 1,
+              "maximum": 365
+            },
+            "description": "Window in days."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response times",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "days": {
+                          "type": "integer"
+                        },
+                        "answered": {
+                          "type": "integer"
+                        },
+                        "avg_response_seconds": {
+                          "type": "integer",
+                          "nullable": true
+                        },
+                        "median_response_seconds": {
+                          "type": "integer",
+                          "nullable": true
+                        },
+                        "histogram": {
+                          "type": "object",
+                          "properties": {
+                            "under_15m": {
+                              "type": "integer"
+                            },
+                            "15m_1h": {
+                              "type": "integer"
+                            },
+                            "1h_4h": {
+                              "type": "integer"
+                            },
+                            "4h_24h": {
+                              "type": "integer"
+                            },
+                            "over_24h": {
+                              "type": "integer"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/analytics/inbox/top-accounts": {
+      "get": {
+        "summary": "Inbox top accounts",
+        "operationId": "inboxTopAccounts",
+        "tags": [
+          "Analytics"
+        ],
+        "description": "Your busiest connected accounts by incoming messages. Requires scope `analytics:read`.",
+        "parameters": [
+          {
+            "name": "days",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 30,
+              "minimum": 1,
+              "maximum": 365
+            },
+            "description": "Window in days."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "minimum": 1,
+              "maximum": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Top accounts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "days": {
+                          "type": "integer"
+                        },
+                        "accounts": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "account_id": {
+                                "type": "integer"
+                              },
+                              "platform": {
+                                "type": "string"
+                              },
+                              "account_name": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "conversations": {
+                                "type": "integer"
+                              },
+                              "incoming": {
+                                "type": "integer"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/reviews": {
+      "get": {
+        "summary": "List reviews",
+        "operationId": "listReviews",
+        "tags": [
+          "Reviews"
+        ],
+        "description": "Google Business reviews synced into SmartlyQ's Reputation Management, newest first. Filter by rating, reply status, or account. Requires scope `social:read`.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Limit to one connected Google Business account."
+          },
+          {
+            "name": "rating",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "replied"
+              ]
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reviews",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "account_id": {
+                            "type": "integer"
+                          },
+                          "author_name": {
+                            "type": "string"
+                          },
+                          "author_photo": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "rating": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 5
+                          },
+                          "comment": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "reply_comment": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "reply_at": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "reply_source": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "pending",
+                              "replied"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/PaginationMeta"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/reviews/{review_id}/reply": {
+      "post": {
+        "summary": "Reply to review",
+        "operationId": "replyToReview",
+        "tags": [
+          "Reviews"
+        ],
+        "description": "Publishes a reply to the review on Google Business. Requires scope `social:write`.",
+        "parameters": [
+          {
+            "name": "review_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "comment"
+                ],
+                "properties": {
+                  "comment": {
+                    "type": "string",
+                    "maxLength": 4000
+                  }
+                }
+              },
+              "example": {
+                "comment": "Thank you for the kind words! We look forward to seeing you again."
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Replied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "replied": {
+                          "type": "boolean"
+                        },
+                        "review_id": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "description": "Google rejected the reply",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "PLATFORM_ERROR"
+                          ]
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reviews/sync": {
+      "post": {
+        "summary": "Sync reviews",
+        "operationId": "syncReviews",
+        "tags": [
+          "Reviews"
+        ],
+        "description": "Pulls fresh reviews from Google Business on demand - one account (account_id) or every connected GBP account in the workspace. Requires scope `social:write`.",
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "account_id": {
+                    "type": "integer",
+                    "description": "Optional: sync only this connected account."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Synced",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "synced": {
+                          "type": "integer",
+                          "description": "Reviews inserted or updated."
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/social/conversations/{conversation_id}": {
+      "get": {
+        "summary": "Get conversation",
+        "operationId": "getConversation",
+        "tags": [
+          "Social"
+        ],
+        "description": "Conversation detail plus incoming/outgoing message counts. Requires scope `social:read`.",
+        "parameters": [
+          {
+            "name": "conversation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Conversation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "platform": {
+                          "type": "string"
+                        },
+                        "account_id": {
+                          "type": "integer"
+                        },
+                        "participant_name": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "status": {
+                          "type": "string",
+                          "enum": [
+                            "open",
+                            "archived"
+                          ]
+                        },
+                        "unread_count": {
+                          "type": "integer"
+                        },
+                        "snippet": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "incoming": {
+                          "type": "integer"
+                        },
+                        "outgoing": {
+                          "type": "integer"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "last_message_at": {
+                          "type": "string",
+                          "nullable": true
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Archive / reopen conversation",
+        "operationId": "updateConversation",
+        "tags": [
+          "Social"
+        ],
+        "description": "Set the conversation status to archived or open. Requires scope `social:write`.",
+        "parameters": [
+          {
+            "name": "conversation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "status"
+                ],
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "open",
+                      "archived"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "status": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/social/conversations/search": {
+      "get": {
+        "summary": "Search conversations",
+        "operationId": "searchConversations",
+        "tags": [
+          "Social"
+        ],
+        "description": "Full-inbox search across participant names and message content; each hit includes the latest matching message. Requires scope `social:read`.",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 2
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Matches",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "platform": {
+                            "type": "string"
+                          },
+                          "account_id": {
+                            "type": "integer"
+                          },
+                          "participant_name": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "status": {
+                            "type": "string"
+                          },
+                          "snippet": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "matched_message": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "last_message_at": {
+                            "type": "string",
+                            "nullable": true
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/PaginationMeta"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/analytics/inbox/conversations": {
+      "get": {
+        "summary": "Inbox conversation stats",
+        "operationId": "inboxConversations",
+        "tags": [
+          "Analytics"
+        ],
+        "description": "Per-conversation message volume for the window, busiest first. Requires scope `analytics:read`.",
+        "parameters": [
+          {
+            "name": "days",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 30,
+              "minimum": 1,
+              "maximum": 365
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stats",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "days": {
+                          "type": "integer"
+                        },
+                        "page": {
+                          "type": "integer"
+                        },
+                        "per_page": {
+                          "type": "integer"
+                        },
+                        "conversations": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer"
+                              },
+                              "platform": {
+                                "type": "string"
+                              },
+                              "account_id": {
+                                "type": "integer"
+                              },
+                              "participant_name": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "status": {
+                                "type": "string"
+                              },
+                              "incoming": {
+                                "type": "integer"
+                              },
+                              "outgoing": {
+                                "type": "integer"
+                              },
+                              "created_at": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "last_message_at": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/analytics/inbox/conversations/{conversation_id}": {
+      "get": {
+        "summary": "Conversation analytics",
+        "operationId": "inboxConversationDetail",
+        "tags": [
+          "Analytics"
+        ],
+        "description": "One conversation's full stats: message counts and response times (average, median). Requires scope `analytics:read`.",
+        "parameters": [
+          {
+            "name": "conversation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Conversation analytics",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "platform": {
+                          "type": "string"
+                        },
+                        "account_id": {
+                          "type": "integer"
+                        },
+                        "participant_name": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "incoming": {
+                          "type": "integer"
+                        },
+                        "outgoing": {
+                          "type": "integer"
+                        },
+                        "answered": {
+                          "type": "integer"
+                        },
+                        "avg_response_seconds": {
+                          "type": "integer",
+                          "nullable": true
+                        },
+                        "median_response_seconds": {
+                          "type": "integer",
+                          "nullable": true
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "last_message_at": {
+                          "type": "string",
+                          "nullable": true
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/automations": {
+      "get": {
+        "summary": "List automations",
+        "operationId": "listAutomations",
+        "tags": [
+          "Automations"
+        ],
+        "description": "The workspace's automations (built in the visual builder), with run/error counts. Requires scope `contacts:read`.",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "draft",
+                "active",
+                "paused",
+                "archived"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Automations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "trigger_type": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "draft",
+                              "active",
+                              "paused",
+                              "archived"
+                            ]
+                          },
+                          "last_run_at": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "run_count": {
+                            "type": "integer"
+                          },
+                          "error_count": {
+                            "type": "integer"
+                          },
+                          "created": {
+                            "type": "string"
+                          },
+                          "updated": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/automations/{automation_id}": {
+      "get": {
+        "summary": "Get automation",
+        "operationId": "getAutomation",
+        "tags": [
+          "Automations"
+        ],
+        "description": "Full automation detail including the node graph. Requires scope `contacts:read`.",
+        "parameters": [
+          {
+            "name": "automation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Automation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "trigger_type": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string",
+                          "enum": [
+                            "draft",
+                            "active",
+                            "paused",
+                            "archived"
+                          ]
+                        },
+                        "last_run_at": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "run_count": {
+                          "type": "integer"
+                        },
+                        "error_count": {
+                          "type": "integer"
+                        },
+                        "created": {
+                          "type": "string"
+                        },
+                        "updated": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/automations/{automation_id}/activate": {
+      "post": {
+        "summary": "Activate automation",
+        "operationId": "activateAutomation",
+        "tags": [
+          "Automations"
+        ],
+        "description": "Turns the automation on (validates the graph has a trigger and at least one action; webhook triggers get their URL provisioned). Requires scope `contacts:write`.",
+        "parameters": [
+          {
+            "name": "automation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Activated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "trigger_type": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string",
+                          "enum": [
+                            "draft",
+                            "active",
+                            "paused",
+                            "archived"
+                          ]
+                        },
+                        "last_run_at": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "run_count": {
+                          "type": "integer"
+                        },
+                        "error_count": {
+                          "type": "integer"
+                        },
+                        "created": {
+                          "type": "string"
+                        },
+                        "updated": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/automations/{automation_id}/deactivate": {
+      "post": {
+        "summary": "Pause automation",
+        "operationId": "deactivateAutomation",
+        "tags": [
+          "Automations"
+        ],
+        "description": "Pauses the automation and its triggers. Requires scope `contacts:write`.",
+        "parameters": [
+          {
+            "name": "automation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paused",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "trigger_type": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string",
+                          "enum": [
+                            "draft",
+                            "active",
+                            "paused",
+                            "archived"
+                          ]
+                        },
+                        "last_run_at": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "run_count": {
+                          "type": "integer"
+                        },
+                        "error_count": {
+                          "type": "integer"
+                        },
+                        "created": {
+                          "type": "string"
+                        },
+                        "updated": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/automations/{automation_id}/trigger": {
+      "post": {
+        "summary": "Trigger automation",
+        "operationId": "triggerAutomation",
+        "tags": [
+          "Automations"
+        ],
+        "description": "Queues a manual run with an optional payload (available to the automation's steps as the trigger payload). The automation must be active. Requires scope `contacts:write`.",
+        "parameters": [
+          {
+            "name": "automation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "payload": {
+                    "type": "object",
+                    "description": "Arbitrary JSON passed to the run."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Run queued",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "queued": {
+                          "type": "boolean"
+                        },
+                        "automation_id": {
+                          "type": "integer"
+                        },
+                        "run_id": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          }
+        }
+      }
+    },
+    "/automations/{automation_id}/runs": {
+      "get": {
+        "summary": "List runs",
+        "operationId": "listAutomationRuns",
+        "tags": [
+          "Automations"
+        ],
+        "description": "Run history, newest first. Requires scope `contacts:read`.",
+        "parameters": [
+          {
+            "name": "automation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "maximum": 500
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Runs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "automation_id": {
+                            "type": "integer"
+                          },
+                          "trigger_kind": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "string"
+                          },
+                          "attempts": {
+                            "type": "integer"
+                          },
+                          "queued_at": {
+                            "type": "string"
+                          },
+                          "started_at": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "finished_at": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "error": {
+                            "type": "string",
+                            "nullable": true
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/automations/{automation_id}/runs/{run_id}": {
+      "get": {
+        "summary": "Get run",
+        "operationId": "getAutomationRun",
+        "tags": [
+          "Automations"
+        ],
+        "description": "One run with its trigger payload and per-step execution logs. Requires scope `contacts:read`.",
+        "parameters": [
+          {
+            "name": "automation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Run",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "automation_id": {
+                          "type": "integer"
+                        },
+                        "trigger_kind": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "attempts": {
+                          "type": "integer"
+                        },
+                        "queued_at": {
+                          "type": "string"
+                        },
+                        "started_at": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "finished_at": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "error": {
+                          "type": "string",
+                          "nullable": true
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/contacts/bulk": {
+      "post": {
+        "summary": "Bulk import contacts",
+        "operationId": "bulkImportContacts",
+        "tags": [
+          "CRM"
+        ],
+        "description": "Import up to 100 contacts in one call. Each row goes through the same email/phone upsert as POST /contacts, so re-importing the same file is idempotent. Per-row results report created / updated / failed. Requires scope `contacts:write`.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "contacts"
+                ],
+                "properties": {
+                  "contacts": {
+                    "type": "array",
+                    "maxItems": 100,
+                    "items": {
+                      "type": "object",
+                      "description": "Same fields as POST /contacts (name, email, phone, company, tags, attributes...)."
+                    }
+                  }
+                }
+              },
+              "example": {
+                "contacts": [
+                  {
+                    "name": "Ada Lovelace",
+                    "email": "ada@example.com",
+                    "tags": [
+                      "vip"
+                    ]
+                  },
+                  {
+                    "name": "Alan Turing",
+                    "email": "alan@example.com"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Import results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "created": {
+                          "type": "integer"
+                        },
+                        "updated": {
+                          "type": "integer"
+                        },
+                        "failed": {
+                          "type": "integer"
+                        },
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "row": {
+                                "type": "integer"
+                              },
+                              "id": {
+                                "type": "integer"
+                              },
+                              "created": {
+                                "type": "boolean"
+                              },
+                              "matched_by": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "error": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           }
         }
       }

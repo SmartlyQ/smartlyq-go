@@ -181,6 +181,13 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Analytics.ContentDecay(ctx, query)` | `GET /analytics/content-decay` | Content decay |
 | `client.Analytics.PostingFrequency(ctx, query)` | `GET /analytics/posting-frequency` | Posting frequency vs engagement |
 | `client.Analytics.PostTimeline(ctx, postId)` | `GET /analytics/posts/{post_id}/timeline` | Post metric timeline |
+| `client.Analytics.InboxVolume(ctx, query)` | `GET /analytics/inbox/volume` | Inbox volume |
+| `client.Analytics.InboxHeatmap(ctx, query)` | `GET /analytics/inbox/heatmap` | Inbox heatmap |
+| `client.Analytics.InboxSourceBreakdown(ctx, query)` | `GET /analytics/inbox/source-breakdown` | Inbox source breakdown |
+| `client.Analytics.InboxResponseTime(ctx, query)` | `GET /analytics/inbox/response-time` | Inbox response time |
+| `client.Analytics.InboxTopAccounts(ctx, query)` | `GET /analytics/inbox/top-accounts` | Inbox top accounts |
+| `client.Analytics.InboxConversations(ctx, query)` | `GET /analytics/inbox/conversations` | Inbox conversation stats |
+| `client.Analytics.InboxConversationDetail(ctx, conversationId)` | `GET /analytics/inbox/conversations/{conversation_id}` | Conversation analytics |
 
 ### Articles
 
@@ -198,6 +205,18 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Audio.TextToSpeech(ctx, body)` | `POST /audio/text-to-speech` | Text to speech |
 | `client.Audio.SpeechToText(ctx, body)` | `POST /audio/speech-to-text` | Speech to text |
 | `client.Audio.Get(ctx, audioId)` | `GET /audio/{audio_id}` | Get audio |
+
+### Automations
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `client.Automations.List(ctx, query)` | `GET /automations` | List automations |
+| `client.Automations.Get(ctx, automationId)` | `GET /automations/{automation_id}` | Get automation |
+| `client.Automations.Activate(ctx, automationId)` | `POST /automations/{automation_id}/activate` | Activate automation |
+| `client.Automations.Deactivate(ctx, automationId)` | `POST /automations/{automation_id}/deactivate` | Pause automation |
+| `client.Automations.Trigger(ctx, automationId, body)` | `POST /automations/{automation_id}/trigger` | Trigger automation |
+| `client.Automations.ListRuns(ctx, automationId, query)` | `GET /automations/{automation_id}/runs` | List runs |
+| `client.Automations.GetRun(ctx, automationId, runId)` | `GET /automations/{automation_id}/runs/{run_id}` | Get run |
 
 ### Chatbot
 
@@ -229,6 +248,13 @@ All methods below are available on the client. Every method also accepts a trail
 | --- | --- | --- |
 | `client.Content.Rewrite(ctx, body)` | `POST /content/rewrite` | Rewrite content |
 | `client.Content.GenerateCaption(ctx, body)` | `POST /content/caption` | Generate a social caption |
+
+### CRM
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `client.CRM.DeleteContact(ctx, id)` | `DELETE /contacts/{id}` | Delete contact |
+| `client.CRM.BulkImportContacts(ctx, body)` | `POST /contacts/bulk` | Bulk import contacts |
 
 ### CRM Contacts
 
@@ -325,6 +351,14 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Profiles.CreateConnectUrl(ctx, id, platform, body)` | `POST /profiles/{id}/connect/{platform}` | Get a raw connect URL for one platform |
 | `client.Profiles.GetAccountBilling(ctx)` | `GET /me/account-billing` | Account billing summary |
 
+### Reviews
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `client.Reviews.List(ctx, query)` | `GET /reviews` | List reviews |
+| `client.Reviews.ReplyTo(ctx, reviewId, body)` | `POST /reviews/{review_id}/reply` | Reply to review |
+| `client.Reviews.Sync(ctx, body)` | `POST /reviews/sync` | Sync reviews |
+
 ### SEO
 
 | Method | Endpoint | Description |
@@ -367,6 +401,7 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Social.UpdatePost(ctx, postId, body)` | `PATCH /social/posts/{post_id}` | Update social post |
 | `client.Social.DeletePost(ctx, postId)` | `DELETE /social/posts/{post_id}` | Delete social post |
 | `client.Social.UpdateAccount(ctx, accountId, body)` | `PATCH /social/accounts/{account_id}` | Rename account |
+| `client.Social.DisconnectAccount(ctx, accountId)` | `DELETE /social/accounts/{account_id}` | Disconnect a social account |
 | `client.Social.GetAccountHealth(ctx, accountId)` | `GET /social/accounts/{account_id}/health` | Account health |
 | `client.Social.GetAccountReconnectUrl(ctx, accountId)` | `GET /social/accounts/{account_id}/reconnect-url` | Account reconnect URL |
 | `client.Social.PauseAccount(ctx, accountId)` | `POST /social/accounts/{account_id}/pause` | Pause posting to an account |
@@ -396,6 +431,9 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Social.GetAccountGroup(ctx, groupId)` | `GET /social/account-groups/{group_id}` | Get account group |
 | `client.Social.UpdateAccountGroup(ctx, groupId, body)` | `PUT /social/account-groups/{group_id}` | Update account group |
 | `client.Social.DeleteAccountGroup(ctx, groupId)` | `DELETE /social/account-groups/{group_id}` | Delete account group |
+| `client.Social.GetConversation(ctx, conversationId)` | `GET /social/conversations/{conversation_id}` | Get conversation |
+| `client.Social.UpdateConversation(ctx, conversationId, body)` | `PATCH /social/conversations/{conversation_id}` | Archive / reopen conversation |
+| `client.Social.SearchConversations(ctx, query)` | `GET /social/conversations/search` | Search conversations |
 
 ### URLs
 
