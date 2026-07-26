@@ -434,6 +434,17 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Social.GetConversation(ctx, conversationId)` | `GET /social/conversations/{conversation_id}` | Get conversation |
 | `client.Social.UpdateConversation(ctx, conversationId, body)` | `PATCH /social/conversations/{conversation_id}` | Archive / reopen conversation |
 | `client.Social.SearchConversations(ctx, query)` | `GET /social/conversations/search` | Search conversations |
+| `client.Social.PinterestBoards(ctx, accountId)` | `GET /social/accounts/{account_id}/pinterest/boards` | Pinterest boards |
+| `client.Social.YoutubePlaylists(ctx, accountId)` | `GET /social/accounts/{account_id}/youtube/playlists` | YouTube playlists |
+| `client.Social.InstagramPublishingLimit(ctx, accountId)` | `GET /social/accounts/{account_id}/instagram/publishing-limit` | Instagram publishing limit |
+| `client.Social.GmbPerformance(ctx, accountId, query)` | `GET /social/accounts/{account_id}/gmb/performance` | Google Business performance |
+| `client.Social.GmbSearchKeywords(ctx, accountId, query)` | `GET /social/accounts/{account_id}/gmb/search-keywords` | Google Business search keywords |
+| `client.Social.RedditSearch(ctx, accountId, query)` | `GET /social/accounts/{account_id}/reddit/search` | Reddit search |
+| `client.Social.RedditFeed(ctx, accountId, query)` | `GET /social/accounts/{account_id}/reddit/feed` | Reddit feed |
+| `client.Social.RedditSubreddits(ctx, accountId)` | `GET /social/accounts/{account_id}/reddit/subreddits` | Subscribed subreddits |
+| `client.Social.RedditSubredditRules(ctx, accountId, subreddit)` | `GET /social/accounts/{account_id}/reddit/subreddits/{subreddit}/rules` | Subreddit rules |
+| `client.Social.InstagramStories(ctx, accountId)` | `GET /social/accounts/{account_id}/instagram/stories` | Instagram stories |
+| `client.Social.FacebookPostReactions(ctx, accountId, query)` | `GET /social/accounts/{account_id}/facebook/post-reactions` | Facebook post reactions |
 
 ### URLs
 

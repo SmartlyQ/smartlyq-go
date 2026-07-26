@@ -1201,6 +1201,83 @@ func TestSocialSearchConversations(t *testing.T) {
 	})
 }
 
+func TestSocialPinterestBoards(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/pinterest/boards", func(c *Client) error {
+		_, err := c.Social.PinterestBoards(context.Background(), "test-accountId", nil)
+		return err
+	})
+}
+
+func TestSocialYoutubePlaylists(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/youtube/playlists", func(c *Client) error {
+		_, err := c.Social.YoutubePlaylists(context.Background(), "test-accountId", nil)
+		return err
+	})
+}
+
+func TestSocialInstagramPublishingLimit(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/instagram/publishing-limit", func(c *Client) error {
+		_, err := c.Social.InstagramPublishingLimit(context.Background(), "test-accountId", nil)
+		return err
+	})
+}
+
+func TestSocialGmbPerformance(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/gmb/performance", func(c *Client) error {
+		_, err := c.Social.GmbPerformance(context.Background(), "test-accountId", nil, nil)
+		return err
+	})
+}
+
+func TestSocialGmbSearchKeywords(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/gmb/search-keywords", func(c *Client) error {
+		_, err := c.Social.GmbSearchKeywords(context.Background(), "test-accountId", nil, nil)
+		return err
+	})
+}
+
+func TestSocialRedditSearch(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/reddit/search", func(c *Client) error {
+		_, err := c.Social.RedditSearch(context.Background(), "test-accountId", nil, nil)
+		return err
+	})
+}
+
+func TestSocialRedditFeed(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/reddit/feed", func(c *Client) error {
+		_, err := c.Social.RedditFeed(context.Background(), "test-accountId", nil, nil)
+		return err
+	})
+}
+
+func TestSocialRedditSubreddits(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/reddit/subreddits", func(c *Client) error {
+		_, err := c.Social.RedditSubreddits(context.Background(), "test-accountId", nil)
+		return err
+	})
+}
+
+func TestSocialRedditSubredditRules(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/reddit/subreddits/test-subreddit/rules", func(c *Client) error {
+		_, err := c.Social.RedditSubredditRules(context.Background(), "test-accountId", "test-subreddit", nil)
+		return err
+	})
+}
+
+func TestSocialInstagramStories(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/instagram/stories", func(c *Client) error {
+		_, err := c.Social.InstagramStories(context.Background(), "test-accountId", nil)
+		return err
+	})
+}
+
+func TestSocialFacebookPostReactions(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/facebook/post-reactions", func(c *Client) error {
+		_, err := c.Social.FacebookPostReactions(context.Background(), "test-accountId", nil, nil)
+		return err
+	})
+}
+
 func TestURLsShorten(t *testing.T) {
 	assertEndpoint(t, "POST", "/urls/shorten", func(c *Client) error {
 		_, err := c.URLs.Shorten(context.Background(), map[string]any{}, nil)

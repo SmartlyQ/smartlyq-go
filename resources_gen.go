@@ -1306,6 +1306,83 @@ func (r *SocialResource) SearchConversations(ctx context.Context, query map[stri
 	return r.client.do(ctx, "GET", "/social/conversations/search", query, nil, opts)
 }
 
+// PinterestBoards - Pinterest boards.
+//
+// GET /social/accounts/{account_id}/pinterest/boards
+func (r *SocialResource) PinterestBoards(ctx context.Context, accountId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/pinterest/boards", nil, nil, opts)
+}
+
+// YoutubePlaylists - YouTube playlists.
+//
+// GET /social/accounts/{account_id}/youtube/playlists
+func (r *SocialResource) YoutubePlaylists(ctx context.Context, accountId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/youtube/playlists", nil, nil, opts)
+}
+
+// InstagramPublishingLimit - Instagram publishing limit.
+//
+// GET /social/accounts/{account_id}/instagram/publishing-limit
+func (r *SocialResource) InstagramPublishingLimit(ctx context.Context, accountId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/instagram/publishing-limit", nil, nil, opts)
+}
+
+// GmbPerformance - Google Business performance.
+//
+// GET /social/accounts/{account_id}/gmb/performance
+func (r *SocialResource) GmbPerformance(ctx context.Context, accountId string, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/gmb/performance", query, nil, opts)
+}
+
+// GmbSearchKeywords - Google Business search keywords.
+//
+// GET /social/accounts/{account_id}/gmb/search-keywords
+func (r *SocialResource) GmbSearchKeywords(ctx context.Context, accountId string, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/gmb/search-keywords", query, nil, opts)
+}
+
+// RedditSearch - Reddit search.
+//
+// GET /social/accounts/{account_id}/reddit/search
+func (r *SocialResource) RedditSearch(ctx context.Context, accountId string, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/reddit/search", query, nil, opts)
+}
+
+// RedditFeed - Reddit feed.
+//
+// GET /social/accounts/{account_id}/reddit/feed
+func (r *SocialResource) RedditFeed(ctx context.Context, accountId string, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/reddit/feed", query, nil, opts)
+}
+
+// RedditSubreddits - Subscribed subreddits.
+//
+// GET /social/accounts/{account_id}/reddit/subreddits
+func (r *SocialResource) RedditSubreddits(ctx context.Context, accountId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/reddit/subreddits", nil, nil, opts)
+}
+
+// RedditSubredditRules - Subreddit rules.
+//
+// GET /social/accounts/{account_id}/reddit/subreddits/{subreddit}/rules
+func (r *SocialResource) RedditSubredditRules(ctx context.Context, accountId string, subreddit string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/reddit/subreddits/"+url.PathEscape(subreddit)+"/rules", nil, nil, opts)
+}
+
+// InstagramStories - Instagram stories.
+//
+// GET /social/accounts/{account_id}/instagram/stories
+func (r *SocialResource) InstagramStories(ctx context.Context, accountId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/instagram/stories", nil, nil, opts)
+}
+
+// FacebookPostReactions - Facebook post reactions.
+//
+// GET /social/accounts/{account_id}/facebook/post-reactions
+func (r *SocialResource) FacebookPostReactions(ctx context.Context, accountId string, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/facebook/post-reactions", query, nil, opts)
+}
+
 // URLsResource groups the URLs endpoints.
 type URLsResource struct{ client *Client }
 

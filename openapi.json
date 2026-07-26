@@ -3,7 +3,7 @@
   "info": {
     "title": "SmartlyQ API",
     "version": "1.0.0",
-    "description": "# SmartlyQ API\n\nREST API for the SmartlyQ platform: generate content, manage social posts, chatbots, media, and more.\n\n## Quick Start\n\n1. Get an API key from [app.smartlyq.com/my/developer](https://app.smartlyq.com/my/developer).\n2. Send your first request:\n\n```bash\ncurl -H \"Authorization: Bearer YOUR_API_KEY\" https://api.smartlyq.com/v1/me\n```\n\n## Authentication\n\nAll requests (except health/docs) require a **Bearer token**. Use your API key as the token:\n\n- **Key types:** `sqk_live_*` (live) or `sqk_test_*` (test/sandbox).\n- **Header:** `Authorization: Bearer sqk_live_xxxx` or `Authorization: Bearer sqk_test_xxxx`.\n\n| Scope | Description |\n|-------|-------------|\n| `articles:read` | List and get articles |\n| `articles:write` | Generate, delete articles |\n| `images:read` | List and get images |\n| `images:write` | Generate, delete images |\n| `videos:read` | List and get videos |\n| `videos:write` | Generate, delete videos |\n| `presentations:read` | List and get presentations |\n| `presentations:write` | Generate presentations |\n| `social:read` | List accounts and posts |\n| `social:write` | Create, update, delete posts |\n| `audio:read` | Get audio resources |\n| `audio:write` | Text-to-speech, speech-to-text |\n| `urls:read` | List and get short URLs and stats |\n| `urls:write` | Shorten, delete URLs |\n| `captain:use` | AI Captain messages and conversations |\n| `chatbot:use` | Chatbots, train, messages, conversations |\n| `media:read` | List and get media |\n| `media:write` | Upload, delete media |\n| `analytics:read` | Overview, posts, account analytics |\n| `jobs:read` | List and get async jobs, cancel |\n| `seo:read` | Keyword research, SERP, rank tracking, competitors, backlinks, on-page audits |\n| `contacts:read` | List and get CRM contacts, tags and notes |\n| `contacts:write` | Create, update contacts; add/remove tags; add notes |\n| `opportunities:read` | List pipelines and deals/opportunities |\n| `opportunities:write` | Create/update deals, move stages, set status |\n| `workspaces:read` | List and get sub-account workspaces |\n| `workspaces:write` | Create, disable SaaS, and delete sub-account workspaces |\n| `workspaces:bulk` | Apply pause / resume / disable-SaaS to many sub-accounts at once (high-trust; requires an active SaaS plan) |\n\n## Billing & Credits\n\n- **Prepaid wallet:** API usage is deducted from your Developer API wallet (credits in SQC).\n- **Pricing:** See the [pricing table](https://smartlyq.com/pricing) and in-app Developer dashboard for per-operation costs.\n- **How it works:** Each billable request (e.g. generate, post, chatbot message) consumes credits; response may include `usage` with `cost` and `balance_remaining`.\n- **Top up:** Add credits via [app.smartlyq.com/my/developer](https://app.smartlyq.com/my/developer) (wallet / top-up).\n\n## Rate Limiting\n\nLimits apply per API key (and may be enforced per user or IP). Default is 60 requests per minute per key (overridable per key).\n\nResponse headers:\n\n| Header | Description |\n|--------|-------------|\n| `X-RateLimit-Limit` | Max requests per window |\n| `X-RateLimit-Remaining` | Remaining in current window |\n| `X-RateLimit-Reset` | Unix timestamp when the window resets |\n\nWhen exceeded: HTTP `429` with `Retry-After` header.\n\n## Errors\n\nErrors are JSON with a consistent shape:\n\n```json\n{\n  \"success\": false,\n  \"error\": {\n    \"code\": \"ERROR_CODE\",\n    \"message\": \"Human-readable message\",\n    \"details\": {}\n  },\n  \"meta\": { \"request_id\": \"...\", \"timestamp\": \"...\" }\n}\n```\n\n| HTTP | Code | Meaning |\n|-----|------|---------|\n| 400 | `BAD_REQUEST` | Malformed or invalid request |\n| 401 | `UNAUTHORIZED` | Missing or invalid API key |\n| 402 | `INSUFFICIENT_BALANCE` | Not enough credits |\n| 403 | `FORBIDDEN` | Valid key but insufficient scope or access |\n| 404 | `RESOURCE_NOT_FOUND` | Resource does not exist |\n| 409 | `CONFLICT` | Conflict (e.g. duplicate idempotency) |\n| 422 | `VALIDATION_ERROR` | Validation failed (fields in details) |\n| 429 | `RATE_LIMIT_EXCEEDED` | Too many requests |\n| 500 | `INTERNAL_ERROR` | Server error |\n\n## Async Jobs & Polling\n\nSome operations (e.g. article or video generation) return **HTTP 202 Accepted** with a `job_id`. Poll for status:\n\n- **Poll:** `GET /jobs/{job_id}` until `status` is `completed`, `failed`, or `cancelled`.\n- Response includes `result` or `error` when finished.\n\n## Webhooks\n\nConfigure webhook URLs in the Developer dashboard. We send HTTP POST to your URL with a signed payload.\n\n- **Verification:** Validate signature using your webhook secret (see dashboard).\n- **Events:** 25 events across posting, accounts, inbox, jobs, billing, and CRM - e.g. `post.published`, `comment.received`, `contact.created`. Full catalog with payload schemas: the `webhooks` object in this spec and the [Webhooks guide](https://docs.smartlyq.com/guides/webhooks).\n\n## Idempotency\n\nFor POST/PUT/PATCH, send **`X-Idempotency-Key`** (unique value per logical operation). Within 24 hours, the same key returns the same response without re-executing.\n\n## Pagination\n\n- **Offset:** `page` (1-based) and `per_page` (default 20, max 100).\n- Response includes `pagination` with `page`, `per_page`, `total`, `pages`.\n\n## Versioning\n\nCurrent version is **v1**. Base path: `https://api.smartlyq.com/v1`. Future versions will use new path prefixes (e.g. `/v2/`).\n",
+    "description": "# SmartlyQ API\n\nREST API for the SmartlyQ platform: generate content, manage social posts, chatbots, media, and more.\n\n## Quick Start\n\n1. Get an API key from [app.smartlyq.com/my/developer](https://app.smartlyq.com/my/developer).\n2. Send your first request:\n\n```bash\ncurl -H \"Authorization: Bearer YOUR_API_KEY\" https://api.smartlyq.com/v1/me\n```\n\n## Authentication\n\nAll requests (except health/docs) require a **Bearer token**. Use your API key as the token:\n\n- **Key types:** `sqk_live_*` (live) or `sqk_test_*` (test/sandbox).\n- **Header:** `Authorization: Bearer sqk_live_xxxx` or `Authorization: Bearer sqk_test_xxxx`.\n\n| Scope | Description |\n|-------|-------------|\n| `articles:read` | List and get articles |\n| `articles:write` | Generate, delete articles |\n| `images:read` | List and get images |\n| `images:write` | Generate, delete images |\n| `videos:read` | List and get videos |\n| `videos:write` | Generate, delete videos |\n| `presentations:read` | List and get presentations |\n| `presentations:write` | Generate presentations |\n| `social:read` | Accounts (health, follower stats, platform lookups), posts, queues, comments, DMs, reviews, pre-flight validation, Reddit research |\n| `social:write` | Create/schedule/bulk posts, recycling, unpublish, queues, reply to comments/DMs/reviews, account rename/move, account groups |\n| `audio:read` | Get audio resources |\n| `audio:write` | Text-to-speech, speech-to-text |\n| `urls:read` | List and get short URLs and stats |\n| `urls:write` | Shorten, delete URLs |\n| `captain:use` | AI Captain messages and conversations |\n| `chatbot:use` | Chatbots, train, messages, conversations |\n| `media:read` | List and get media |\n| `media:write` | Upload, delete media |\n| `analytics:read` | Overview, post and account analytics, derived insights (best-time, decay, frequency), inbox analytics |\n| `jobs:read` | List and get async jobs, cancel |\n| `seo:read` | Keyword research, SERP, rank tracking, competitors, backlinks, on-page audits |\n| `contacts:read` | List and get CRM contacts, tags, notes; list automations and their runs |\n| `contacts:write` | Create/update/delete contacts (single or bulk); tags and notes; enroll in, activate and trigger automations |\n| `opportunities:read` | List pipelines and deals/opportunities |\n| `opportunities:write` | Create/update deals, move stages, set status |\n| `workspaces:read` | List and get sub-account workspaces |\n| `workspaces:write` | Create, disable SaaS, and delete sub-account workspaces |\n| `workspaces:bulk` | Apply pause / resume / disable-SaaS to many sub-accounts at once (high-trust; requires an active SaaS plan) |\n\n## Billing & Credits\n\n- **Prepaid wallet:** API usage is deducted from your Developer API wallet (credits in SQC).\n- **Pricing:** See the [pricing table](https://smartlyq.com/pricing) and in-app Developer dashboard for per-operation costs.\n- **How it works:** Each billable request (e.g. generate, post, chatbot message) consumes credits; response may include `usage` with `cost` and `balance_remaining`.\n- **Top up:** Add credits via [app.smartlyq.com/my/developer](https://app.smartlyq.com/my/developer) (wallet / top-up).\n\n## Rate Limiting\n\nLimits apply per API key (and may be enforced per user or IP). Default is 60 requests per minute per key (overridable per key).\n\nResponse headers:\n\n| Header | Description |\n|--------|-------------|\n| `X-RateLimit-Limit` | Max requests per window |\n| `X-RateLimit-Remaining` | Remaining in current window |\n| `X-RateLimit-Reset` | Unix timestamp when the window resets |\n\nWhen exceeded: HTTP `429` with `Retry-After` header.\n\n## Errors\n\nErrors are JSON with a consistent shape:\n\n```json\n{\n  \"success\": false,\n  \"error\": {\n    \"code\": \"ERROR_CODE\",\n    \"message\": \"Human-readable message\",\n    \"details\": {}\n  },\n  \"meta\": { \"request_id\": \"...\", \"timestamp\": \"...\" }\n}\n```\n\n| HTTP | Code | Meaning |\n|-----|------|---------|\n| 400 | `BAD_REQUEST` | Malformed or invalid request |\n| 401 | `UNAUTHORIZED` | Missing or invalid API key |\n| 402 | `INSUFFICIENT_BALANCE` | Not enough credits |\n| 403 | `FORBIDDEN` | Valid key but insufficient scope or access |\n| 404 | `RESOURCE_NOT_FOUND` | Resource does not exist |\n| 409 | `CONFLICT` | Conflict (e.g. duplicate idempotency) |\n| 422 | `VALIDATION_ERROR` | Validation failed (fields in details) |\n| 429 | `RATE_LIMIT_EXCEEDED` | Too many requests |\n| 500 | `INTERNAL_ERROR` | Server error |\n\n## Async Jobs & Polling\n\nSome operations (e.g. article or video generation) return **HTTP 202 Accepted** with a `job_id`. Poll for status:\n\n- **Poll:** `GET /jobs/{job_id}` until `status` is `completed`, `failed`, or `cancelled`.\n- Response includes `result` or `error` when finished.\n\n## Webhooks\n\nConfigure webhook URLs in the Developer dashboard. We send HTTP POST to your URL with a signed payload.\n\n- **Verification:** Validate signature using your webhook secret (see dashboard).\n- **Events:** 25 events across posting, accounts, inbox, jobs, billing, and CRM - e.g. `post.published`, `comment.received`, `contact.created`. Full catalog with payload schemas: the `webhooks` object in this spec and the [Webhooks guide](https://docs.smartlyq.com/guides/webhooks).\n\n## Idempotency\n\nFor POST/PUT/PATCH, send **`X-Idempotency-Key`** (unique value per logical operation). Within 24 hours, the same key returns the same response without re-executing.\n\n## Pagination\n\n- **Offset:** `page` (1-based) and `per_page` (default 20, max 100).\n- Response includes `pagination` with `page`, `per_page`, `total`, `pages`.\n\n## Versioning\n\nCurrent version is **v1**. Base path: `https://api.smartlyq.com/v1`. Future versions will use new path prefixes (e.g. `/v2/`).\n",
     "contact": {
       "name": "SmartlyQ Support",
       "url": "https://smartlyq.com",
@@ -861,6 +861,15 @@
           "403": {
             "$ref": "#/components/responses/Forbidden"
           },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          },
           "409": {
             "description": "Duplicate content within 24h",
             "content": {
@@ -903,15 +912,6 @@
                 }
               }
             }
-          },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          },
-          "500": {
-            "$ref": "#/components/responses/ServerError"
           }
         },
         "parameters": [
@@ -1020,6 +1020,15 @@
           "403": {
             "$ref": "#/components/responses/Forbidden"
           },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          },
           "409": {
             "description": "Duplicate content within 24h",
             "content": {
@@ -1062,15 +1071,6 @@
                 }
               }
             }
-          },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          },
-          "500": {
-            "$ref": "#/components/responses/ServerError"
           }
         },
         "parameters": [
@@ -2882,16 +2882,6 @@
           }
         },
         "responses": {
-          "202": {
-            "description": "Accepted - job queued. Poll GET /jobs/{job_uid}; on completion result_data contains the same payload the old 200 body carried.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobCreatedResponse"
-                }
-              }
-            }
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -2909,6 +2899,16 @@
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
+          },
+          "202": {
+            "description": "Accepted - job queued. Poll GET /jobs/{job_uid}; on completion result_data contains the same payload the old 200 body carried.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobCreatedResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -2949,16 +2949,6 @@
           }
         },
         "responses": {
-          "202": {
-            "description": "Accepted - job queued. Poll GET /jobs/{job_uid}; on completion result_data contains the same payload the old 200 body carried.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobCreatedResponse"
-                }
-              }
-            }
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -2976,6 +2966,16 @@
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
+          },
+          "202": {
+            "description": "Accepted - job queued. Poll GET /jobs/{job_uid}; on completion result_data contains the same payload the old 200 body carried.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobCreatedResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -3027,16 +3027,6 @@
           }
         },
         "responses": {
-          "202": {
-            "description": "Accepted - job queued. Poll GET /jobs/{job_uid}; on completion result_data contains the same payload the old 200 body carried.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobCreatedResponse"
-                }
-              }
-            }
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -3054,6 +3044,16 @@
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
+          },
+          "202": {
+            "description": "Accepted - job queued. Poll GET /jobs/{job_uid}; on completion result_data contains the same payload the old 200 body carried.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobCreatedResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -3116,16 +3116,6 @@
           }
         },
         "responses": {
-          "202": {
-            "description": "Accepted - job queued. Poll GET /jobs/{job_uid}; on completion result_data contains the same payload the old 200 body carried.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobCreatedResponse"
-                }
-              }
-            }
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -3143,6 +3133,16 @@
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
+          },
+          "202": {
+            "description": "Accepted - job queued. Poll GET /jobs/{job_uid}; on completion result_data contains the same payload the old 200 body carried.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobCreatedResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -4920,6 +4920,9 @@
               }
             }
           },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -4928,9 +4931,6 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
-          },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -5169,6 +5169,9 @@
               }
             }
           },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -5177,9 +5180,6 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
-          },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -5249,6 +5249,9 @@
               }
             }
           },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -5257,9 +5260,6 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
-          },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -5384,6 +5384,9 @@
               }
             }
           },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -5392,9 +5395,6 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
-          },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -5704,6 +5704,9 @@
               }
             }
           },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -5712,9 +5715,6 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
-          },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -5784,6 +5784,9 @@
               }
             }
           },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -5792,9 +5795,6 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
-          },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -5854,6 +5854,9 @@
               }
             }
           },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -5862,9 +5865,6 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
-          },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -6346,6 +6346,9 @@
               }
             }
           },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -6354,9 +6357,6 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
-          },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -6426,6 +6426,9 @@
               }
             }
           },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -6434,9 +6437,6 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
-          },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -7728,11 +7728,11 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "Existing contact updated (matched by email)"
-          },
           "201": {
             "description": "Contact created"
+          },
+          "200": {
+            "description": "Existing contact updated (matched by email)"
           },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
@@ -14765,6 +14765,1345 @@
           },
           "422": {
             "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/social/accounts/{account_id}/pinterest/boards": {
+      "get": {
+        "summary": "Pinterest boards",
+        "operationId": "pinterestBoards",
+        "tags": [
+          "Social"
+        ],
+        "description": "The account's Pinterest boards (id, name, privacy) - required to target a board when pinning. Requires scope `social:read`.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Connected account id."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pinterest boards",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "boards": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        },
+                        "sandbox": {
+                          "type": "boolean"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "description": "Platform rejected the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "PLATFORM_ERROR"
+                          ]
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/social/accounts/{account_id}/youtube/playlists": {
+      "get": {
+        "summary": "YouTube playlists",
+        "operationId": "youtubePlaylists",
+        "tags": [
+          "Social"
+        ],
+        "description": "The channel's playlists (title, privacy, item count) - target one when uploading. Requires scope `social:read`.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Connected account id."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "YouTube playlists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "playlists": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "title": {
+                                "type": "string"
+                              },
+                              "description": {
+                                "type": "string"
+                              },
+                              "privacy": {
+                                "type": "string"
+                              },
+                              "item_count": {
+                                "type": "integer"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "description": "Platform rejected the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "PLATFORM_ERROR"
+                          ]
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/social/accounts/{account_id}/instagram/publishing-limit": {
+      "get": {
+        "summary": "Instagram publishing limit",
+        "operationId": "instagramPublishingLimit",
+        "tags": [
+          "Social"
+        ],
+        "description": "Instagram's daily content-publishing quota for this account: total, remaining, and whether a publish would be allowed right now. Requires scope `social:read`.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Connected account id."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Instagram publishing limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "account_id": {
+                          "type": "integer"
+                        },
+                        "quota_total": {
+                          "type": "integer"
+                        },
+                        "quota_remaining": {
+                          "type": "integer"
+                        },
+                        "can_publish": {
+                          "type": "boolean"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "description": "Platform rejected the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "PLATFORM_ERROR"
+                          ]
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/social/accounts/{account_id}/gmb/performance": {
+      "get": {
+        "summary": "Google Business performance",
+        "operationId": "gmbPerformance",
+        "tags": [
+          "Social"
+        ],
+        "description": "Business Profile performance for the window: impressions by surface (Search/Maps, mobile/desktop) with deltas vs the previous window, plus a daily series. Data lags ~1 day (Google). Requires scope `social:read`.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Connected account id."
+          },
+          {
+            "name": "days",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 28,
+              "minimum": 7,
+              "maximum": 90
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Google Business performance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "account_id, days + the performance report (impressions, sources, daily series, deltas)."
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "description": "Platform rejected the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "PLATFORM_ERROR"
+                          ]
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/social/accounts/{account_id}/gmb/search-keywords": {
+      "get": {
+        "summary": "Google Business search keywords",
+        "operationId": "gmbSearchKeywords",
+        "tags": [
+          "Social"
+        ],
+        "description": "The search terms people used on Google before seeing this Business Profile, with monthly impression counts. Requires scope `social:read`.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Connected account id."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 12,
+              "minimum": 1,
+              "maximum": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Google Business search keywords",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "account_id": {
+                          "type": "integer"
+                        },
+                        "keywords": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "description": "Platform rejected the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "PLATFORM_ERROR"
+                          ]
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/social/accounts/{account_id}/reddit/search": {
+      "get": {
+        "summary": "Reddit search",
+        "operationId": "redditSearch",
+        "tags": [
+          "Social"
+        ],
+        "description": "Search Reddit (optionally restricted to one subreddit) with the account's own credentials - find where a topic is being discussed before posting. Requires scope `social:read`.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Connected account id."
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subreddit",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "relevance",
+                "hot",
+                "top",
+                "new",
+                "comments"
+              ],
+              "default": "relevance"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reddit search",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "title": {
+                                "type": "string"
+                              },
+                              "subreddit": {
+                                "type": "string"
+                              },
+                              "author": {
+                                "type": "string"
+                              },
+                              "score": {
+                                "type": "integer"
+                              },
+                              "num_comments": {
+                                "type": "integer"
+                              },
+                              "created_utc": {
+                                "type": "integer"
+                              },
+                              "over_18": {
+                                "type": "boolean"
+                              },
+                              "url": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "description": "Platform rejected the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "PLATFORM_ERROR"
+                          ]
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/social/accounts/{account_id}/reddit/feed": {
+      "get": {
+        "summary": "Reddit feed",
+        "operationId": "redditFeed",
+        "tags": [
+          "Social"
+        ],
+        "description": "The account's home feed or one subreddit's feed (hot / new / top / rising). Requires scope `social:read`.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Connected account id."
+          },
+          {
+            "name": "subreddit",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "hot",
+                "new",
+                "top",
+                "rising"
+              ],
+              "default": "hot"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reddit feed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "posts": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "title": {
+                                "type": "string"
+                              },
+                              "subreddit": {
+                                "type": "string"
+                              },
+                              "author": {
+                                "type": "string"
+                              },
+                              "score": {
+                                "type": "integer"
+                              },
+                              "num_comments": {
+                                "type": "integer"
+                              },
+                              "created_utc": {
+                                "type": "integer"
+                              },
+                              "over_18": {
+                                "type": "boolean"
+                              },
+                              "url": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "description": "Platform rejected the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "PLATFORM_ERROR"
+                          ]
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/social/accounts/{account_id}/reddit/subreddits": {
+      "get": {
+        "summary": "Subscribed subreddits",
+        "operationId": "redditSubreddits",
+        "tags": [
+          "Social"
+        ],
+        "description": "Subreddits the connected account subscribes to (name, title, subscriber count). Requires scope `social:read`.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Connected account id."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Subscribed subreddits",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "subreddits": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "title": {
+                                "type": "string"
+                              },
+                              "subscribers": {
+                                "type": "integer"
+                              },
+                              "over_18": {
+                                "type": "boolean"
+                              },
+                              "url": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "description": "Platform rejected the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "PLATFORM_ERROR"
+                          ]
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/social/accounts/{account_id}/reddit/subreddits/{subreddit}/rules": {
+      "get": {
+        "summary": "Subreddit rules",
+        "operationId": "redditSubredditRules",
+        "tags": [
+          "Social"
+        ],
+        "description": "A subreddit's posting rules - check them BEFORE submitting so the post doesn't get removed. Requires scope `social:read`.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Connected account id."
+          },
+          {
+            "name": "subreddit",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Rules",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "subreddit": {
+                          "type": "string"
+                        },
+                        "rules": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "short_name": {
+                                "type": "string"
+                              },
+                              "description": {
+                                "type": "string"
+                              },
+                              "kind": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "description": "Platform rejected the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "PLATFORM_ERROR"
+                          ]
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/social/accounts/{account_id}/instagram/stories": {
+      "get": {
+        "summary": "Instagram stories",
+        "operationId": "instagramStories",
+        "tags": [
+          "Social"
+        ],
+        "description": "The account's currently live stories (id, media type, URL, permalink, timestamp). Requires scope `social:read`.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Connected account id."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Instagram stories",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "stories": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "description": "Platform rejected the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "PLATFORM_ERROR"
+                          ]
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/social/accounts/{account_id}/facebook/post-reactions": {
+      "get": {
+        "summary": "Facebook post reactions",
+        "operationId": "facebookPostReactions",
+        "tags": [
+          "Social"
+        ],
+        "description": "Reaction-type breakdown (like, love, wow, haha, sad, angry, care) for a published Facebook post. Pass remote_post_id, or post_id of a SmartlyQ post published to this account. Requires scope `social:read`.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Connected account id."
+          },
+          {
+            "name": "post_id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "SmartlyQ post id."
+          },
+          {
+            "name": "remote_post_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Raw Facebook post id."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Facebook post reactions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "remote_post_id": {
+                          "type": "string"
+                        },
+                        "total": {
+                          "type": "integer"
+                        },
+                        "reactions": {
+                          "type": "object",
+                          "properties": {
+                            "like": {
+                              "type": "integer"
+                            },
+                            "love": {
+                              "type": "integer"
+                            },
+                            "wow": {
+                              "type": "integer"
+                            },
+                            "haha": {
+                              "type": "integer"
+                            },
+                            "sad": {
+                              "type": "integer"
+                            },
+                            "angry": {
+                              "type": "integer"
+                            },
+                            "care": {
+                              "type": "integer"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "description": "Platform rejected the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "PLATFORM_ERROR"
+                          ]
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
