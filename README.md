@@ -449,6 +449,26 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Social.InstagramStoryInsights(ctx, accountId, storyId, query)` | `GET /social/accounts/{account_id}/instagram/stories/{story_id}/insights` | Instagram story insights |
 | `client.Social.XRetweet(ctx, accountId, body)` | `POST /social/accounts/{account_id}/x/retweets` | Retweet on X |
 | `client.Social.XUnretweet(ctx, accountId, tweetId)` | `DELETE /social/accounts/{account_id}/x/retweets/{tweet_id}` | Undo retweet |
+| `client.Social.EditPublishedPost(ctx, postId, body)` | `POST /social/posts/{post_id}/edit` | Edit published post |
+| `client.Social.UpdatePostMetadata(ctx, postId, body)` | `POST /social/posts/{post_id}/update-metadata` | Update YouTube metadata |
+| `client.Social.SyncExternalPosts(ctx, body)` | `POST /social/posts/sync-external` | Sync external posts |
+| `client.Social.AccountInsights(ctx, accountId)` | `GET /social/accounts/{account_id}/insights` | Live account insights |
+| `client.Social.GmbLocations(ctx, accountId, query)` | `GET /social/accounts/{account_id}/gmb/locations` | List Google locations |
+| `client.Social.GmbLocation(ctx, accountId, query)` | `GET /social/accounts/{account_id}/gmb/location` | Get business info |
+| `client.Social.GmbUpdateLocation(ctx, accountId, body)` | `PATCH /social/accounts/{account_id}/gmb/location` | Update business info |
+| `client.Social.GmbAttributes(ctx, accountId)` | `GET /social/accounts/{account_id}/gmb/attributes` | Get attributes |
+| `client.Social.GmbUpdateAttributes(ctx, accountId, body)` | `PUT /social/accounts/{account_id}/gmb/attributes` | Update attributes |
+| `client.Social.GmbAttributeMetadata(ctx, accountId)` | `GET /social/accounts/{account_id}/gmb/attributes/metadata` | Available attributes |
+| `client.Social.GmbMedia(ctx, accountId)` | `GET /social/accounts/{account_id}/gmb/media` | List media |
+| `client.Social.GmbCreateMedia(ctx, accountId, body)` | `POST /social/accounts/{account_id}/gmb/media` | Add photo |
+| `client.Social.GmbDeleteMedia(ctx, accountId, body)` | `DELETE /social/accounts/{account_id}/gmb/media` | Delete media |
+| `client.Social.GmbFoodMenus(ctx, accountId)` | `GET /social/accounts/{account_id}/gmb/food-menus` | Get food menus |
+| `client.Social.GmbUpdateFoodMenus(ctx, accountId, body)` | `PUT /social/accounts/{account_id}/gmb/food-menus` | Update food menus |
+| `client.Social.GmbPlaceActions(ctx, accountId)` | `GET /social/accounts/{account_id}/gmb/place-actions` | List place-action links |
+| `client.Social.GmbCreatePlaceAction(ctx, accountId, body)` | `POST /social/accounts/{account_id}/gmb/place-actions` | Create place-action link |
+| `client.Social.GmbDeletePlaceAction(ctx, accountId, body)` | `DELETE /social/accounts/{account_id}/gmb/place-actions` | Delete place-action link |
+| `client.Social.GmbVerifications(ctx, accountId)` | `GET /social/accounts/{account_id}/gmb/verifications` | List verifications |
+| `client.Social.GmbVerificationOptions(ctx, accountId, body)` | `POST /social/accounts/{account_id}/gmb/verifications/options` | Verification options |
 
 ### URLs
 

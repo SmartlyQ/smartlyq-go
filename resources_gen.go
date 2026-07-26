@@ -1411,6 +1411,146 @@ func (r *SocialResource) XUnretweet(ctx context.Context, accountId string, tweet
 	return r.client.do(ctx, "DELETE", "/social/accounts/"+url.PathEscape(accountId)+"/x/retweets/"+url.PathEscape(tweetId), nil, nil, opts)
 }
 
+// EditPublishedPost - Edit published post.
+//
+// POST /social/posts/{post_id}/edit
+func (r *SocialResource) EditPublishedPost(ctx context.Context, postId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/social/posts/"+url.PathEscape(postId)+"/edit", nil, body, opts)
+}
+
+// UpdatePostMetadata - Update YouTube metadata.
+//
+// POST /social/posts/{post_id}/update-metadata
+func (r *SocialResource) UpdatePostMetadata(ctx context.Context, postId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/social/posts/"+url.PathEscape(postId)+"/update-metadata", nil, body, opts)
+}
+
+// SyncExternalPosts - Sync external posts.
+//
+// POST /social/posts/sync-external
+func (r *SocialResource) SyncExternalPosts(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/social/posts/sync-external", nil, body, opts)
+}
+
+// AccountInsights - Live account insights.
+//
+// GET /social/accounts/{account_id}/insights
+func (r *SocialResource) AccountInsights(ctx context.Context, accountId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/insights", nil, nil, opts)
+}
+
+// GmbLocations - List Google locations.
+//
+// GET /social/accounts/{account_id}/gmb/locations
+func (r *SocialResource) GmbLocations(ctx context.Context, accountId string, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/gmb/locations", query, nil, opts)
+}
+
+// GmbLocation - Get business info.
+//
+// GET /social/accounts/{account_id}/gmb/location
+func (r *SocialResource) GmbLocation(ctx context.Context, accountId string, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/gmb/location", query, nil, opts)
+}
+
+// GmbUpdateLocation - Update business info.
+//
+// PATCH /social/accounts/{account_id}/gmb/location
+func (r *SocialResource) GmbUpdateLocation(ctx context.Context, accountId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "PATCH", "/social/accounts/"+url.PathEscape(accountId)+"/gmb/location", nil, body, opts)
+}
+
+// GmbAttributes - Get attributes.
+//
+// GET /social/accounts/{account_id}/gmb/attributes
+func (r *SocialResource) GmbAttributes(ctx context.Context, accountId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/gmb/attributes", nil, nil, opts)
+}
+
+// GmbUpdateAttributes - Update attributes.
+//
+// PUT /social/accounts/{account_id}/gmb/attributes
+func (r *SocialResource) GmbUpdateAttributes(ctx context.Context, accountId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "PUT", "/social/accounts/"+url.PathEscape(accountId)+"/gmb/attributes", nil, body, opts)
+}
+
+// GmbAttributeMetadata - Available attributes.
+//
+// GET /social/accounts/{account_id}/gmb/attributes/metadata
+func (r *SocialResource) GmbAttributeMetadata(ctx context.Context, accountId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/gmb/attributes/metadata", nil, nil, opts)
+}
+
+// GmbMedia - List media.
+//
+// GET /social/accounts/{account_id}/gmb/media
+func (r *SocialResource) GmbMedia(ctx context.Context, accountId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/gmb/media", nil, nil, opts)
+}
+
+// GmbCreateMedia - Add photo.
+//
+// POST /social/accounts/{account_id}/gmb/media
+func (r *SocialResource) GmbCreateMedia(ctx context.Context, accountId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/social/accounts/"+url.PathEscape(accountId)+"/gmb/media", nil, body, opts)
+}
+
+// GmbDeleteMedia - Delete media.
+//
+// DELETE /social/accounts/{account_id}/gmb/media
+func (r *SocialResource) GmbDeleteMedia(ctx context.Context, accountId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "DELETE", "/social/accounts/"+url.PathEscape(accountId)+"/gmb/media", nil, body, opts)
+}
+
+// GmbFoodMenus - Get food menus.
+//
+// GET /social/accounts/{account_id}/gmb/food-menus
+func (r *SocialResource) GmbFoodMenus(ctx context.Context, accountId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/gmb/food-menus", nil, nil, opts)
+}
+
+// GmbUpdateFoodMenus - Update food menus.
+//
+// PUT /social/accounts/{account_id}/gmb/food-menus
+func (r *SocialResource) GmbUpdateFoodMenus(ctx context.Context, accountId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "PUT", "/social/accounts/"+url.PathEscape(accountId)+"/gmb/food-menus", nil, body, opts)
+}
+
+// GmbPlaceActions - List place-action links.
+//
+// GET /social/accounts/{account_id}/gmb/place-actions
+func (r *SocialResource) GmbPlaceActions(ctx context.Context, accountId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/gmb/place-actions", nil, nil, opts)
+}
+
+// GmbCreatePlaceAction - Create place-action link.
+//
+// POST /social/accounts/{account_id}/gmb/place-actions
+func (r *SocialResource) GmbCreatePlaceAction(ctx context.Context, accountId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/social/accounts/"+url.PathEscape(accountId)+"/gmb/place-actions", nil, body, opts)
+}
+
+// GmbDeletePlaceAction - Delete place-action link.
+//
+// DELETE /social/accounts/{account_id}/gmb/place-actions
+func (r *SocialResource) GmbDeletePlaceAction(ctx context.Context, accountId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "DELETE", "/social/accounts/"+url.PathEscape(accountId)+"/gmb/place-actions", nil, body, opts)
+}
+
+// GmbVerifications - List verifications.
+//
+// GET /social/accounts/{account_id}/gmb/verifications
+func (r *SocialResource) GmbVerifications(ctx context.Context, accountId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/gmb/verifications", nil, nil, opts)
+}
+
+// GmbVerificationOptions - Verification options.
+//
+// POST /social/accounts/{account_id}/gmb/verifications/options
+func (r *SocialResource) GmbVerificationOptions(ctx context.Context, accountId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/social/accounts/"+url.PathEscape(accountId)+"/gmb/verifications/options", nil, body, opts)
+}
+
 // URLsResource groups the URLs endpoints.
 type URLsResource struct{ client *Client }
 

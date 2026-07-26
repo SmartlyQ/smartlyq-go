@@ -1306,6 +1306,146 @@ func TestSocialXUnretweet(t *testing.T) {
 	})
 }
 
+func TestSocialEditPublishedPost(t *testing.T) {
+	assertEndpoint(t, "POST", "/social/posts/test-postId/edit", func(c *Client) error {
+		_, err := c.Social.EditPublishedPost(context.Background(), "test-postId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialUpdatePostMetadata(t *testing.T) {
+	assertEndpoint(t, "POST", "/social/posts/test-postId/update-metadata", func(c *Client) error {
+		_, err := c.Social.UpdatePostMetadata(context.Background(), "test-postId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialSyncExternalPosts(t *testing.T) {
+	assertEndpoint(t, "POST", "/social/posts/sync-external", func(c *Client) error {
+		_, err := c.Social.SyncExternalPosts(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialAccountInsights(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/insights", func(c *Client) error {
+		_, err := c.Social.AccountInsights(context.Background(), "test-accountId", nil)
+		return err
+	})
+}
+
+func TestSocialGmbLocations(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/gmb/locations", func(c *Client) error {
+		_, err := c.Social.GmbLocations(context.Background(), "test-accountId", nil, nil)
+		return err
+	})
+}
+
+func TestSocialGmbLocation(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/gmb/location", func(c *Client) error {
+		_, err := c.Social.GmbLocation(context.Background(), "test-accountId", nil, nil)
+		return err
+	})
+}
+
+func TestSocialGmbUpdateLocation(t *testing.T) {
+	assertEndpoint(t, "PATCH", "/social/accounts/test-accountId/gmb/location", func(c *Client) error {
+		_, err := c.Social.GmbUpdateLocation(context.Background(), "test-accountId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialGmbAttributes(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/gmb/attributes", func(c *Client) error {
+		_, err := c.Social.GmbAttributes(context.Background(), "test-accountId", nil)
+		return err
+	})
+}
+
+func TestSocialGmbUpdateAttributes(t *testing.T) {
+	assertEndpoint(t, "PUT", "/social/accounts/test-accountId/gmb/attributes", func(c *Client) error {
+		_, err := c.Social.GmbUpdateAttributes(context.Background(), "test-accountId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialGmbAttributeMetadata(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/gmb/attributes/metadata", func(c *Client) error {
+		_, err := c.Social.GmbAttributeMetadata(context.Background(), "test-accountId", nil)
+		return err
+	})
+}
+
+func TestSocialGmbMedia(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/gmb/media", func(c *Client) error {
+		_, err := c.Social.GmbMedia(context.Background(), "test-accountId", nil)
+		return err
+	})
+}
+
+func TestSocialGmbCreateMedia(t *testing.T) {
+	assertEndpoint(t, "POST", "/social/accounts/test-accountId/gmb/media", func(c *Client) error {
+		_, err := c.Social.GmbCreateMedia(context.Background(), "test-accountId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialGmbDeleteMedia(t *testing.T) {
+	assertEndpoint(t, "DELETE", "/social/accounts/test-accountId/gmb/media", func(c *Client) error {
+		_, err := c.Social.GmbDeleteMedia(context.Background(), "test-accountId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialGmbFoodMenus(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/gmb/food-menus", func(c *Client) error {
+		_, err := c.Social.GmbFoodMenus(context.Background(), "test-accountId", nil)
+		return err
+	})
+}
+
+func TestSocialGmbUpdateFoodMenus(t *testing.T) {
+	assertEndpoint(t, "PUT", "/social/accounts/test-accountId/gmb/food-menus", func(c *Client) error {
+		_, err := c.Social.GmbUpdateFoodMenus(context.Background(), "test-accountId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialGmbPlaceActions(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/gmb/place-actions", func(c *Client) error {
+		_, err := c.Social.GmbPlaceActions(context.Background(), "test-accountId", nil)
+		return err
+	})
+}
+
+func TestSocialGmbCreatePlaceAction(t *testing.T) {
+	assertEndpoint(t, "POST", "/social/accounts/test-accountId/gmb/place-actions", func(c *Client) error {
+		_, err := c.Social.GmbCreatePlaceAction(context.Background(), "test-accountId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialGmbDeletePlaceAction(t *testing.T) {
+	assertEndpoint(t, "DELETE", "/social/accounts/test-accountId/gmb/place-actions", func(c *Client) error {
+		_, err := c.Social.GmbDeletePlaceAction(context.Background(), "test-accountId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialGmbVerifications(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/gmb/verifications", func(c *Client) error {
+		_, err := c.Social.GmbVerifications(context.Background(), "test-accountId", nil)
+		return err
+	})
+}
+
+func TestSocialGmbVerificationOptions(t *testing.T) {
+	assertEndpoint(t, "POST", "/social/accounts/test-accountId/gmb/verifications/options", func(c *Client) error {
+		_, err := c.Social.GmbVerificationOptions(context.Background(), "test-accountId", map[string]any{}, nil)
+		return err
+	})
+}
+
 func TestURLsShorten(t *testing.T) {
 	assertEndpoint(t, "POST", "/urls/shorten", func(c *Client) error {
 		_, err := c.URLs.Shorten(context.Background(), map[string]any{}, nil)
