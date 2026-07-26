@@ -361,7 +361,7 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Social.GetPost(ctx, postId)` | `GET /social/posts/{post_id}` | Get social post |
 | `client.Social.UpdatePost(ctx, postId, body)` | `PATCH /social/posts/{post_id}` | Update social post |
 | `client.Social.DeletePost(ctx, postId)` | `DELETE /social/posts/{post_id}` | Delete social post |
-| `client.Social.DisconnectAccount(ctx, accountId)` | `DELETE /social/accounts/{account_id}` | Disconnect a social account |
+| `client.Social.UpdateAccount(ctx, accountId, body)` | `PATCH /social/accounts/{account_id}` | Rename account |
 | `client.Social.GetAccountHealth(ctx, accountId)` | `GET /social/accounts/{account_id}/health` | Account health |
 | `client.Social.GetAccountReconnectUrl(ctx, accountId)` | `GET /social/accounts/{account_id}/reconnect-url` | Account reconnect URL |
 | `client.Social.PauseAccount(ctx, accountId)` | `POST /social/accounts/{account_id}/pause` | Pause posting to an account |
@@ -369,6 +369,28 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Social.RetryPost(ctx, postId, body)` | `POST /social/posts/{post_id}/retry` | Retry publishing a post |
 | `client.Social.ConnectAccountStatus(ctx, platform)` | `GET /social/connect/{platform}` | Poll headless connection status |
 | `client.Social.ConnectAccount(ctx, platform, body)` | `POST /social/connect/{platform}` | Start headless account connection |
+| `client.Social.ListQueues(ctx)` | `GET /social/queues` | List queues |
+| `client.Social.CreateQueue(ctx, body)` | `POST /social/queues` | Create queue |
+| `client.Social.GetQueue(ctx, queueId)` | `GET /social/queues/{queue_id}` | Get queue |
+| `client.Social.UpdateQueue(ctx, queueId, body)` | `PUT /social/queues/{queue_id}` | Update queue |
+| `client.Social.DeleteQueue(ctx, queueId)` | `DELETE /social/queues/{queue_id}` | Delete queue |
+| `client.Social.GetQueueNextSlot(ctx, queueId)` | `GET /social/queues/{queue_id}/next-slot` | Get next open slot |
+| `client.Social.PreviewQueueSlots(ctx, queueId, query)` | `GET /social/queues/{queue_id}/preview` | Preview upcoming slots |
+| `client.Social.UnpublishPost(ctx, postId, body)` | `POST /social/posts/{post_id}/unpublish` | Unpublish post |
+| `client.Social.ValidatePost(ctx, body)` | `POST /social/validate/post` | Validate post content |
+| `client.Social.ValidateMedia(ctx, body)` | `POST /social/validate/media` | Validate media URL |
+| `client.Social.StopPostRecycle(ctx, postId)` | `DELETE /social/posts/{post_id}/recycle` | Stop recycling |
+| `client.Social.BulkSchedulePosts(ctx, body)` | `POST /social/posts/bulk` | Bulk schedule posts |
+| `client.Social.ValidateBulkBatch(ctx, body)` | `POST /social/posts/bulk/validate` | Validate a bulk batch |
+| `client.Social.BulkAccountHealth(ctx)` | `GET /social/accounts/health` | Bulk account health |
+| `client.Social.AccountFollowerStats(ctx, query)` | `GET /social/accounts/follower-stats` | Follower stats |
+| `client.Social.TiktokCreatorInfo(ctx, accountId)` | `GET /social/accounts/{account_id}/tiktok/creator-info` | TikTok creator info |
+| `client.Social.MoveAccount(ctx, accountId, body)` | `POST /social/accounts/{account_id}/move` | Move account to profile |
+| `client.Social.ListAccountGroups(ctx)` | `GET /social/account-groups` | List account groups |
+| `client.Social.CreateAccountGroup(ctx, body)` | `POST /social/account-groups` | Create account group |
+| `client.Social.GetAccountGroup(ctx, groupId)` | `GET /social/account-groups/{group_id}` | Get account group |
+| `client.Social.UpdateAccountGroup(ctx, groupId, body)` | `PUT /social/account-groups/{group_id}` | Update account group |
+| `client.Social.DeleteAccountGroup(ctx, groupId)` | `DELETE /social/account-groups/{group_id}` | Delete account group |
 
 ### URLs
 
@@ -400,7 +422,10 @@ All methods below are available on the client. Every method also accepts a trail
 | --- | --- | --- |
 | `client.Webhooks.List(ctx)` | `GET /webhooks` | List webhooks |
 | `client.Webhooks.Create(ctx, body)` | `POST /webhooks` | Create webhook |
+| `client.Webhooks.Update(ctx, id, body)` | `PUT /webhooks/{id}` | Update webhook |
 | `client.Webhooks.Delete(ctx, id)` | `DELETE /webhooks/{id}` | Delete webhook |
+| `client.Webhooks.ListLogs(ctx, query)` | `GET /webhooks/logs` | List webhook delivery logs |
+| `client.Webhooks.Test(ctx, id)` | `POST /webhooks/{id}/test` | Send test webhook |
 
 ### Workspaces
 

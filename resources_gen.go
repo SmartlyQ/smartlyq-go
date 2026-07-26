@@ -885,11 +885,11 @@ func (r *SocialResource) DeletePost(ctx context.Context, postId string, opts *Re
 	return r.client.do(ctx, "DELETE", "/social/posts/"+url.PathEscape(postId), nil, nil, opts)
 }
 
-// DisconnectAccount - Disconnect a social account.
+// UpdateAccount - Rename account.
 //
-// DELETE /social/accounts/{account_id}
-func (r *SocialResource) DisconnectAccount(ctx context.Context, accountId string, opts *RequestOptions) (*Envelope, error) {
-	return r.client.do(ctx, "DELETE", "/social/accounts/"+url.PathEscape(accountId), nil, nil, opts)
+// PATCH /social/accounts/{account_id}
+func (r *SocialResource) UpdateAccount(ctx context.Context, accountId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "PATCH", "/social/accounts/"+url.PathEscape(accountId), nil, body, opts)
 }
 
 // GetAccountHealth - Account health.
@@ -939,6 +939,160 @@ func (r *SocialResource) ConnectAccountStatus(ctx context.Context, platform stri
 // POST /social/connect/{platform}
 func (r *SocialResource) ConnectAccount(ctx context.Context, platform string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
 	return r.client.do(ctx, "POST", "/social/connect/"+url.PathEscape(platform), nil, body, opts)
+}
+
+// ListQueues - List queues.
+//
+// GET /social/queues
+func (r *SocialResource) ListQueues(ctx context.Context, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/queues", nil, nil, opts)
+}
+
+// CreateQueue - Create queue.
+//
+// POST /social/queues
+func (r *SocialResource) CreateQueue(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/social/queues", nil, body, opts)
+}
+
+// GetQueue - Get queue.
+//
+// GET /social/queues/{queue_id}
+func (r *SocialResource) GetQueue(ctx context.Context, queueId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/queues/"+url.PathEscape(queueId), nil, nil, opts)
+}
+
+// UpdateQueue - Update queue.
+//
+// PUT /social/queues/{queue_id}
+func (r *SocialResource) UpdateQueue(ctx context.Context, queueId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "PUT", "/social/queues/"+url.PathEscape(queueId), nil, body, opts)
+}
+
+// DeleteQueue - Delete queue.
+//
+// DELETE /social/queues/{queue_id}
+func (r *SocialResource) DeleteQueue(ctx context.Context, queueId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "DELETE", "/social/queues/"+url.PathEscape(queueId), nil, nil, opts)
+}
+
+// GetQueueNextSlot - Get next open slot.
+//
+// GET /social/queues/{queue_id}/next-slot
+func (r *SocialResource) GetQueueNextSlot(ctx context.Context, queueId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/queues/"+url.PathEscape(queueId)+"/next-slot", nil, nil, opts)
+}
+
+// PreviewQueueSlots - Preview upcoming slots.
+//
+// GET /social/queues/{queue_id}/preview
+func (r *SocialResource) PreviewQueueSlots(ctx context.Context, queueId string, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/queues/"+url.PathEscape(queueId)+"/preview", query, nil, opts)
+}
+
+// UnpublishPost - Unpublish post.
+//
+// POST /social/posts/{post_id}/unpublish
+func (r *SocialResource) UnpublishPost(ctx context.Context, postId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/social/posts/"+url.PathEscape(postId)+"/unpublish", nil, body, opts)
+}
+
+// ValidatePost - Validate post content.
+//
+// POST /social/validate/post
+func (r *SocialResource) ValidatePost(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/social/validate/post", nil, body, opts)
+}
+
+// ValidateMedia - Validate media URL.
+//
+// POST /social/validate/media
+func (r *SocialResource) ValidateMedia(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/social/validate/media", nil, body, opts)
+}
+
+// StopPostRecycle - Stop recycling.
+//
+// DELETE /social/posts/{post_id}/recycle
+func (r *SocialResource) StopPostRecycle(ctx context.Context, postId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "DELETE", "/social/posts/"+url.PathEscape(postId)+"/recycle", nil, nil, opts)
+}
+
+// BulkSchedulePosts - Bulk schedule posts.
+//
+// POST /social/posts/bulk
+func (r *SocialResource) BulkSchedulePosts(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/social/posts/bulk", nil, body, opts)
+}
+
+// ValidateBulkBatch - Validate a bulk batch.
+//
+// POST /social/posts/bulk/validate
+func (r *SocialResource) ValidateBulkBatch(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/social/posts/bulk/validate", nil, body, opts)
+}
+
+// BulkAccountHealth - Bulk account health.
+//
+// GET /social/accounts/health
+func (r *SocialResource) BulkAccountHealth(ctx context.Context, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/health", nil, nil, opts)
+}
+
+// AccountFollowerStats - Follower stats.
+//
+// GET /social/accounts/follower-stats
+func (r *SocialResource) AccountFollowerStats(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/follower-stats", query, nil, opts)
+}
+
+// TiktokCreatorInfo - TikTok creator info.
+//
+// GET /social/accounts/{account_id}/tiktok/creator-info
+func (r *SocialResource) TiktokCreatorInfo(ctx context.Context, accountId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/tiktok/creator-info", nil, nil, opts)
+}
+
+// MoveAccount - Move account to profile.
+//
+// POST /social/accounts/{account_id}/move
+func (r *SocialResource) MoveAccount(ctx context.Context, accountId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/social/accounts/"+url.PathEscape(accountId)+"/move", nil, body, opts)
+}
+
+// ListAccountGroups - List account groups.
+//
+// GET /social/account-groups
+func (r *SocialResource) ListAccountGroups(ctx context.Context, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/account-groups", nil, nil, opts)
+}
+
+// CreateAccountGroup - Create account group.
+//
+// POST /social/account-groups
+func (r *SocialResource) CreateAccountGroup(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/social/account-groups", nil, body, opts)
+}
+
+// GetAccountGroup - Get account group.
+//
+// GET /social/account-groups/{group_id}
+func (r *SocialResource) GetAccountGroup(ctx context.Context, groupId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/account-groups/"+url.PathEscape(groupId), nil, nil, opts)
+}
+
+// UpdateAccountGroup - Update account group.
+//
+// PUT /social/account-groups/{group_id}
+func (r *SocialResource) UpdateAccountGroup(ctx context.Context, groupId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "PUT", "/social/account-groups/"+url.PathEscape(groupId), nil, body, opts)
+}
+
+// DeleteAccountGroup - Delete account group.
+//
+// DELETE /social/account-groups/{group_id}
+func (r *SocialResource) DeleteAccountGroup(ctx context.Context, groupId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "DELETE", "/social/account-groups/"+url.PathEscape(groupId), nil, nil, opts)
 }
 
 // URLsResource groups the URLs endpoints.
@@ -1062,11 +1216,32 @@ func (r *WebhooksResource) Create(ctx context.Context, body map[string]any, opts
 	return r.client.do(ctx, "POST", "/webhooks", nil, body, opts)
 }
 
+// Update - Update webhook.
+//
+// PUT /webhooks/{id}
+func (r *WebhooksResource) Update(ctx context.Context, id string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "PUT", "/webhooks/"+url.PathEscape(id), nil, body, opts)
+}
+
 // Delete - Delete webhook.
 //
 // DELETE /webhooks/{id}
 func (r *WebhooksResource) Delete(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
 	return r.client.do(ctx, "DELETE", "/webhooks/"+url.PathEscape(id), nil, nil, opts)
+}
+
+// ListLogs - List webhook delivery logs.
+//
+// GET /webhooks/logs
+func (r *WebhooksResource) ListLogs(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/webhooks/logs", query, nil, opts)
+}
+
+// Test - Send test webhook.
+//
+// POST /webhooks/{id}/test
+func (r *WebhooksResource) Test(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/webhooks/"+url.PathEscape(id)+"/test", nil, nil, opts)
 }
 
 // WorkspacesResource groups the Workspaces endpoints.

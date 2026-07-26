@@ -861,6 +861,49 @@
           "403": {
             "$ref": "#/components/responses/Forbidden"
           },
+          "409": {
+            "description": "Duplicate content within 24h",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "DUPLICATE_CONTENT"
+                          ]
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "object",
+                          "properties": {
+                            "existing_post_id": {
+                              "type": "integer"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "422": {
             "$ref": "#/components/responses/ValidationError"
           },
@@ -977,6 +1020,49 @@
           "403": {
             "$ref": "#/components/responses/Forbidden"
           },
+          "409": {
+            "description": "Duplicate content within 24h",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "DUPLICATE_CONTENT"
+                          ]
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "object",
+                          "properties": {
+                            "existing_post_id": {
+                              "type": "integer"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "422": {
             "$ref": "#/components/responses/ValidationError"
           },
@@ -991,7 +1077,8 @@
           {
             "$ref": "#/components/parameters/ProfileHeader"
           }
-        ]
+        ],
+        "description": " Pass queue_id (instead of scheduled_time) to drop the post into a posting queue's next open slot. Supports evergreen recycling via the optional `recycle` object: each published occurrence automatically schedules the next one until the chain hits its bound."
       }
     },
     "/social/posts/{post_id}": {
@@ -2795,6 +2882,16 @@
           }
         },
         "responses": {
+          "202": {
+            "description": "Accepted - job queued. Poll GET /jobs/{job_uid}; on completion result_data contains the same payload the old 200 body carried.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobCreatedResponse"
+                }
+              }
+            }
+          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -2812,16 +2909,6 @@
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
-          },
-          "202": {
-            "description": "Accepted - job queued. Poll GET /jobs/{job_uid}; on completion result_data contains the same payload the old 200 body carried.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobCreatedResponse"
-                }
-              }
-            }
           }
         }
       }
@@ -2862,6 +2949,16 @@
           }
         },
         "responses": {
+          "202": {
+            "description": "Accepted - job queued. Poll GET /jobs/{job_uid}; on completion result_data contains the same payload the old 200 body carried.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobCreatedResponse"
+                }
+              }
+            }
+          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -2879,16 +2976,6 @@
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
-          },
-          "202": {
-            "description": "Accepted - job queued. Poll GET /jobs/{job_uid}; on completion result_data contains the same payload the old 200 body carried.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobCreatedResponse"
-                }
-              }
-            }
           }
         }
       }
@@ -2940,6 +3027,16 @@
           }
         },
         "responses": {
+          "202": {
+            "description": "Accepted - job queued. Poll GET /jobs/{job_uid}; on completion result_data contains the same payload the old 200 body carried.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobCreatedResponse"
+                }
+              }
+            }
+          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -2957,16 +3054,6 @@
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
-          },
-          "202": {
-            "description": "Accepted - job queued. Poll GET /jobs/{job_uid}; on completion result_data contains the same payload the old 200 body carried.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobCreatedResponse"
-                }
-              }
-            }
           }
         }
       }
@@ -3029,6 +3116,16 @@
           }
         },
         "responses": {
+          "202": {
+            "description": "Accepted - job queued. Poll GET /jobs/{job_uid}; on completion result_data contains the same payload the old 200 body carried.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobCreatedResponse"
+                }
+              }
+            }
+          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -3046,16 +3143,6 @@
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
-          },
-          "202": {
-            "description": "Accepted - job queued. Poll GET /jobs/{job_uid}; on completion result_data contains the same payload the old 200 body carried.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobCreatedResponse"
-                }
-              }
-            }
           }
         }
       }
@@ -4699,12 +4786,13 @@
       }
     },
     "/social/accounts/{account_id}": {
-      "delete": {
-        "summary": "Disconnect a social account",
-        "operationId": "disconnectSocialAccount",
+      "patch": {
+        "summary": "Rename account",
+        "operationId": "updateSocialAccount",
         "tags": [
           "Social"
         ],
+        "description": "Rename a connected social account (display name inside SmartlyQ - does not change anything on the platform). Requires scope `social:write`.",
         "parameters": [
           {
             "name": "account_id",
@@ -4712,13 +4800,31 @@
             "required": true,
             "schema": {
               "type": "integer"
-            },
-            "description": "Connected account id"
+            }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "account_name"
+                ],
+                "properties": {
+                  "account_name": {
+                    "type": "string",
+                    "maxLength": 255
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "Renamed",
             "content": {
               "application/json": {
                 "schema": {
@@ -4731,39 +4837,35 @@
                       ]
                     },
                     "data": {
-                      "type": "null",
-                      "description": "No payload on success."
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "platform": {
+                          "type": "string"
+                        },
+                        "account_name": {
+                          "type": "string"
+                        }
+                      }
                     },
                     "meta": {
                       "$ref": "#/components/schemas/RequestMeta"
                     }
                   }
-                },
-                "example": {
-                  "success": true,
-                  "data": null,
-                  "meta": {
-                    "request_id": "req_abc123",
-                    "timestamp": "2026-03-01T16:00:00Z"
-                  }
                 }
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
           },
-          "500": {
-            "$ref": "#/components/responses/ServerError"
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           }
         }
       }
@@ -4999,9 +5101,6 @@
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -5010,6 +5109,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -5079,9 +5181,6 @@
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -5090,6 +5189,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -5214,9 +5316,6 @@
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -5225,6 +5324,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -5534,9 +5636,6 @@
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -5545,6 +5644,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -5614,9 +5716,6 @@
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -5625,6 +5724,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -5684,9 +5786,6 @@
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -5695,6 +5794,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -6176,9 +6278,6 @@
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -6187,6 +6286,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -6256,9 +6358,6 @@
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -6267,6 +6366,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -6593,6 +6695,156 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update webhook",
+        "operationId": "updateWebhook",
+        "tags": [
+          "Webhooks"
+        ],
+        "description": "Update a webhook's `url`, `events`, or `status`. Only supplied fields change. `url` is re-validated (public HTTPS, SSRF-guarded); `events` must all come from the 25-event catalog (unknown names are rejected); setting `status` to `active` also recovers an endpoint auto-paused as `failing`. Requires scope `webhooks:write`. Not available under X-Profile-Id delegation - webhooks live on your developer workspace and receive profile events automatically (with profile_id attached).",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Webhook id."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Provide at least one field.",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "Public HTTPS endpoint."
+                  },
+                  "events": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "post.published",
+                        "post.partial",
+                        "post.failed",
+                        "account.connected",
+                        "account.disconnected",
+                        "account.token_expired",
+                        "comment.received",
+                        "message.received",
+                        "job.completed",
+                        "job.failed",
+                        "balance.low",
+                        "balance.depleted",
+                        "key.revoked",
+                        "wallet.recharge.succeeded",
+                        "wallet.recharge.failed",
+                        "account_billing.charged",
+                        "account_billing.failed",
+                        "contact.created",
+                        "contact.updated",
+                        "contact.tag_added",
+                        "contact.tag_removed",
+                        "deal.created",
+                        "deal.stage_changed",
+                        "deal.won",
+                        "deal.lost"
+                      ]
+                    },
+                    "description": "Full replacement list of subscribed events."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "active",
+                      "paused"
+                    ],
+                    "description": "Pause or resume deliveries."
+                  }
+                }
+              },
+              "example": {
+                "events": [
+                  "post.published",
+                  "post.failed",
+                  "comment.received"
+                ],
+                "status": "active"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated webhook",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "url": {
+                          "type": "string",
+                          "format": "uri"
+                        },
+                        "events": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "status": {
+                          "type": "string",
+                          "description": "active | paused | failing"
+                        },
+                        "last_triggered_at": {
+                          "type": "string",
+                          "format": "date-time",
+                          "nullable": true
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           }
         }
       }
@@ -7408,11 +7660,11 @@
           }
         },
         "responses": {
-          "201": {
-            "description": "Contact created"
-          },
           "200": {
             "description": "Existing contact updated (matched by email)"
+          },
+          "201": {
+            "description": "Contact created"
           },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
@@ -9468,6 +9720,2509 @@
           }
         }
       }
+    },
+    "/webhooks/logs": {
+      "get": {
+        "summary": "List webhook delivery logs",
+        "operationId": "listWebhookLogs",
+        "tags": [
+          "Webhooks"
+        ],
+        "description": "Paginated log of webhook delivery attempts across your endpoints, newest first (90-day retention). Each row carries the full delivery envelope, the destination's response code and a response-body excerpt, the attempt count, and the next retry time when pending. Requires scope `webhooks:read`. Not available under X-Profile-Id delegation - webhooks live on your developer workspace and receive profile events automatically (with profile_id attached).",
+        "parameters": [
+          {
+            "name": "webhook_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Filter to one webhook."
+          },
+          {
+            "name": "event",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by event name (e.g. post.published)."
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "delivered",
+                "dead_letter"
+              ]
+            },
+            "description": "Filter by delivery status."
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delivery log",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "deliveries": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer"
+                              },
+                              "webhook_id": {
+                                "type": "integer"
+                              },
+                              "event": {
+                                "type": "string"
+                              },
+                              "event_id": {
+                                "type": "string",
+                                "description": "The envelope's stable evt_ id (matches X-SmartlyQ-Event-Id)."
+                              },
+                              "status": {
+                                "type": "string",
+                                "enum": [
+                                  "pending",
+                                  "delivered",
+                                  "dead_letter"
+                                ]
+                              },
+                              "attempt": {
+                                "type": "integer"
+                              },
+                              "response_code": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "response_body": {
+                                "type": "string",
+                                "nullable": true,
+                                "description": "First 500 chars of the destination's response."
+                              },
+                              "payload": {
+                                "type": "object",
+                                "nullable": true,
+                                "description": "The delivered envelope {id, event, created_at, data}."
+                              },
+                              "created_at": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "delivered_at": {
+                                "type": "string",
+                                "format": "date-time",
+                                "nullable": true
+                              },
+                              "next_retry_at": {
+                                "type": "string",
+                                "format": "date-time",
+                                "nullable": true
+                              }
+                            }
+                          }
+                        },
+                        "pagination": {
+                          "type": "object",
+                          "properties": {
+                            "total": {
+                              "type": "integer"
+                            },
+                            "page": {
+                              "type": "integer"
+                            },
+                            "per_page": {
+                              "type": "integer"
+                            },
+                            "total_pages": {
+                              "type": "integer"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/webhooks/{id}/test": {
+      "post": {
+        "summary": "Send test webhook",
+        "operationId": "testWebhook",
+        "tags": [
+          "Webhooks"
+        ],
+        "description": "Synchronously sends a `webhook.test` delivery to the endpoint through the real signing pipeline (same headers and HMAC signature as production events) and returns the outcome. Works even when the endpoint is paused or failing. Test deliveries are never retried by the worker. Requires scope `webhooks:write`. Not available under X-Profile-Id delegation - webhooks live on your developer workspace and receive profile events automatically (with profile_id attached).",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Webhook id."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Test result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "delivered": {
+                          "type": "boolean",
+                          "description": "True when the endpoint answered 2xx."
+                        },
+                        "event_id": {
+                          "type": "string"
+                        },
+                        "delivery_id": {
+                          "type": "integer"
+                        },
+                        "response_code": {
+                          "type": "integer",
+                          "nullable": true
+                        },
+                        "response_body": {
+                          "type": "string",
+                          "nullable": true
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "delivered": true,
+                    "event_id": "evt_1a2b3c",
+                    "delivery_id": 9812,
+                    "response_code": 200,
+                    "response_body": "ok"
+                  },
+                  "meta": {
+                    "request_id": "req_abc123"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/social/queues": {
+      "get": {
+        "summary": "List queues",
+        "operationId": "listQueues",
+        "tags": [
+          "Social"
+        ],
+        "description": "List the workspace's posting queues (recurring weekly slot schedules). Requires scope `social:read`.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "queues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "slots": {
+                                "type": "object",
+                                "description": "Weekly slot map: keys Mon..Sun, values arrays of 24h \"HH:MM\" strings, e.g. {\"Mon\": [\"09:00\", \"15:00\"], \"Thu\": [\"10:30\"]}. Max 50 slots per queue.",
+                                "propertyNames": {
+                                  "enum": [
+                                    "Mon",
+                                    "Tue",
+                                    "Wed",
+                                    "Thu",
+                                    "Fri",
+                                    "Sat",
+                                    "Sun"
+                                  ]
+                                },
+                                "additionalProperties": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                                  }
+                                }
+                              },
+                              "timezone": {
+                                "type": "string",
+                                "description": "IANA timezone the slots are interpreted in (default UTC)."
+                              },
+                              "is_active": {
+                                "type": "boolean"
+                              },
+                              "created_at": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "format": "date-time"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create queue",
+        "operationId": "createQueue",
+        "tags": [
+          "Social"
+        ],
+        "description": "Create a posting queue. Posts join it via `POST /social/posts/schedule` with `queue_id`; each post takes the next open slot (FIFO). Max 20 queues per workspace. Requires scope `social:write`.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "slots"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 100
+                  },
+                  "slots": {
+                    "type": "object",
+                    "description": "Weekly slot map: keys Mon..Sun, values arrays of 24h \"HH:MM\" strings, e.g. {\"Mon\": [\"09:00\", \"15:00\"], \"Thu\": [\"10:30\"]}. Max 50 slots per queue.",
+                    "propertyNames": {
+                      "enum": [
+                        "Mon",
+                        "Tue",
+                        "Wed",
+                        "Thu",
+                        "Fri",
+                        "Sat",
+                        "Sun"
+                      ]
+                    },
+                    "additionalProperties": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                      }
+                    }
+                  },
+                  "timezone": {
+                    "type": "string",
+                    "description": "IANA timezone for the slots (default UTC)."
+                  },
+                  "is_active": {
+                    "type": "boolean",
+                    "default": true
+                  }
+                }
+              },
+              "example": {
+                "name": "Weekday mornings",
+                "slots": {
+                  "Mon": [
+                    "09:00"
+                  ],
+                  "Wed": [
+                    "09:00"
+                  ],
+                  "Fri": [
+                    "09:00",
+                    "15:00"
+                  ]
+                },
+                "timezone": "Europe/Madrid"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "slots": {
+                          "type": "object",
+                          "description": "Weekly slot map: keys Mon..Sun, values arrays of 24h \"HH:MM\" strings, e.g. {\"Mon\": [\"09:00\", \"15:00\"], \"Thu\": [\"10:30\"]}. Max 50 slots per queue.",
+                          "propertyNames": {
+                            "enum": [
+                              "Mon",
+                              "Tue",
+                              "Wed",
+                              "Thu",
+                              "Fri",
+                              "Sat",
+                              "Sun"
+                            ]
+                          },
+                          "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                            }
+                          }
+                        },
+                        "timezone": {
+                          "type": "string",
+                          "description": "IANA timezone the slots are interpreted in (default UTC)."
+                        },
+                        "is_active": {
+                          "type": "boolean"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/social/queues/{queue_id}": {
+      "get": {
+        "summary": "Get queue",
+        "operationId": "getQueue",
+        "tags": [
+          "Social"
+        ],
+        "description": "Fetch one queue, including its next open slot. Requires scope `social:read`.",
+        "parameters": [
+          {
+            "name": "queue_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Queue id."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "allOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "slots": {
+                              "type": "object",
+                              "description": "Weekly slot map: keys Mon..Sun, values arrays of 24h \"HH:MM\" strings, e.g. {\"Mon\": [\"09:00\", \"15:00\"], \"Thu\": [\"10:30\"]}. Max 50 slots per queue.",
+                              "propertyNames": {
+                                "enum": [
+                                  "Mon",
+                                  "Tue",
+                                  "Wed",
+                                  "Thu",
+                                  "Fri",
+                                  "Sat",
+                                  "Sun"
+                                ]
+                              },
+                              "additionalProperties": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                                }
+                              }
+                            },
+                            "timezone": {
+                              "type": "string",
+                              "description": "IANA timezone the slots are interpreted in (default UTC)."
+                            },
+                            "is_active": {
+                              "type": "boolean"
+                            },
+                            "created_at": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "updated_at": {
+                              "type": "string",
+                              "format": "date-time"
+                            }
+                          }
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "next_slot": {
+                              "type": "string",
+                              "nullable": true,
+                              "description": "Next open slot, UTC 'Y-m-d H:i:s', or null when the queue has no open slots in the next 60 days."
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update queue",
+        "operationId": "updateQueue",
+        "tags": [
+          "Social"
+        ],
+        "description": "Update name, slots, timezone, or active state. Only supplied fields change; already-queued posts keep their resolved times. Requires scope `social:write`.",
+        "parameters": [
+          {
+            "name": "queue_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Queue id."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Provide at least one field.",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 100
+                  },
+                  "slots": {
+                    "type": "object",
+                    "description": "Weekly slot map: keys Mon..Sun, values arrays of 24h \"HH:MM\" strings, e.g. {\"Mon\": [\"09:00\", \"15:00\"], \"Thu\": [\"10:30\"]}. Max 50 slots per queue.",
+                    "propertyNames": {
+                      "enum": [
+                        "Mon",
+                        "Tue",
+                        "Wed",
+                        "Thu",
+                        "Fri",
+                        "Sat",
+                        "Sun"
+                      ]
+                    },
+                    "additionalProperties": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                      }
+                    }
+                  },
+                  "timezone": {
+                    "type": "string"
+                  },
+                  "is_active": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "slots": {
+                          "type": "object",
+                          "description": "Weekly slot map: keys Mon..Sun, values arrays of 24h \"HH:MM\" strings, e.g. {\"Mon\": [\"09:00\", \"15:00\"], \"Thu\": [\"10:30\"]}. Max 50 slots per queue.",
+                          "propertyNames": {
+                            "enum": [
+                              "Mon",
+                              "Tue",
+                              "Wed",
+                              "Thu",
+                              "Fri",
+                              "Sat",
+                              "Sun"
+                            ]
+                          },
+                          "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                            }
+                          }
+                        },
+                        "timezone": {
+                          "type": "string",
+                          "description": "IANA timezone the slots are interpreted in (default UTC)."
+                        },
+                        "is_active": {
+                          "type": "boolean"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete queue",
+        "operationId": "deleteQueue",
+        "tags": [
+          "Social"
+        ],
+        "description": "Delete a queue. Posts already scheduled through it keep their resolved times. Requires scope `social:write`.",
+        "parameters": [
+          {
+            "name": "queue_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Queue id."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "null"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/social/queues/{queue_id}/next-slot": {
+      "get": {
+        "summary": "Get next open slot",
+        "operationId": "getQueueNextSlot",
+        "tags": [
+          "Social"
+        ],
+        "description": "The next unoccupied slot in the queue (UTC). For preview only - to actually schedule into the queue, pass `queue_id` to `POST /social/posts/schedule` (that call resolves and occupies the slot atomically). Requires scope `social:read`.",
+        "parameters": [
+          {
+            "name": "queue_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Queue id."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "queue_id": {
+                          "type": "integer"
+                        },
+                        "next_slot": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "UTC 'Y-m-d H:i:s', or null when full for the next 60 days."
+                        },
+                        "timezone": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/social/queues/{queue_id}/preview": {
+      "get": {
+        "summary": "Preview upcoming slots",
+        "operationId": "previewQueueSlots",
+        "tags": [
+          "Social"
+        ],
+        "description": "The next N open slots (default 10, max 50), continuing the same walk `next-slot` uses. Requires scope `social:read`.",
+        "parameters": [
+          {
+            "name": "queue_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Queue id."
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "maximum": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "queue_id": {
+                          "type": "integer"
+                        },
+                        "count": {
+                          "type": "integer"
+                        },
+                        "slots": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "description": "UTC 'Y-m-d H:i:s' values, ascending."
+                        },
+                        "timezone": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/social/posts/{post_id}/unpublish": {
+      "post": {
+        "summary": "Unpublish post",
+        "operationId": "unpublishPost",
+        "tags": [
+          "Social"
+        ],
+        "description": "Delete a PUBLISHED post from its native platforms while keeping the SmartlyQ record - its status flips to `unpublished`. Optional `platforms` restricts which networks are removed. Supported for deletion: Threads, Facebook, LinkedIn, YouTube, X/Twitter, Pinterest, Tumblr, Bluesky, Google Business (Instagram, TikTok and Snapchat expose no delete API - those targets are reported as skipped). If any attempted native delete fails, nothing changes on our side and per-platform errors are returned so you can retry. Drafts and scheduled posts should use `DELETE /social/posts/{post_id}` instead. Requires scope `social:write`.",
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Post id."
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "platforms": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Restrict native deletion to these platforms. Omit to remove from every platform the post published to."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Unpublished",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "post_id": {
+                          "type": "integer"
+                        },
+                        "status": {
+                          "type": "string",
+                          "enum": [
+                            "unpublished"
+                          ]
+                        },
+                        "platforms": {
+                          "type": "object",
+                          "additionalProperties": true,
+                          "description": "Per-platform deletion results."
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "description": "One or more native deletes failed; the post is unchanged. The error details carry per-platform results.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "PLATFORM_DELETE_FAILED"
+                          ]
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/social/validate/post": {
+      "post": {
+        "summary": "Validate post content",
+        "operationId": "validatePost",
+        "tags": [
+          "Social"
+        ],
+        "description": "Dry-run the same declarative checks the create path uses, WITHOUT creating anything: per-platform caption limits (each limit grounded in the platform handler or the platform's documented maximum), required-media rules (e.g. Instagram), and media extension screening. Free and unbilled. Platforms with no honestly-documented ceiling (Snapchat stories carry no caption; Tumblr documents no body cap) report limit: null. Requires scope `social:read`.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "platforms"
+                ],
+                "properties": {
+                  "content": {
+                    "type": "string",
+                    "description": "Post text to check."
+                  },
+                  "platforms": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Target platforms, e.g. [\"twitter\", \"instagram\"]."
+                  },
+                  "media_urls": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Media URLs the post would carry (used for required-media and extension checks)."
+                  }
+                }
+              },
+              "example": {
+                "content": "Launching today! 🚀",
+                "platforms": [
+                  "twitter",
+                  "instagram",
+                  "linkedin"
+                ],
+                "media_urls": [
+                  "https://cdn.example.com/launch.jpg"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Validation report",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "valid": {
+                          "type": "boolean"
+                        },
+                        "errors": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "description": "Human-readable, actionable problems (empty when valid)."
+                        },
+                        "platforms": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "object",
+                            "properties": {
+                              "characters": {
+                                "type": "integer"
+                              },
+                              "limit": {
+                                "type": "integer",
+                                "nullable": true,
+                                "description": "Caption limit, or null when the platform has no documented ceiling."
+                              },
+                              "within_limit": {
+                                "type": "boolean"
+                              },
+                              "requires_media": {
+                                "type": "boolean"
+                              },
+                              "media_ok": {
+                                "type": "boolean"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/social/validate/media": {
+      "post": {
+        "summary": "Validate media URL",
+        "operationId": "validateMedia",
+        "tags": [
+          "Social"
+        ],
+        "description": "Checks that a media URL is publicly reachable and reports its content type, byte size, and detected kind (image/video). SSRF-guarded: private and internal hosts are rejected. Uses a HEAD request with a 1-byte ranged-GET fallback for CDNs that refuse HEAD. Free and unbilled. Requires scope `social:read`.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "url"
+                ],
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "Public http(s) media URL."
+                  }
+                }
+              },
+              "example": {
+                "url": "https://cdn.example.com/launch.jpg"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Media check",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string"
+                        },
+                        "reachable": {
+                          "type": "boolean"
+                        },
+                        "http_code": {
+                          "type": "integer"
+                        },
+                        "content_type": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "size_bytes": {
+                          "type": "integer",
+                          "nullable": true
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "image",
+                            "video",
+                            "unknown"
+                          ]
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/social/posts/{post_id}/recycle": {
+      "delete": {
+        "summary": "Stop recycling",
+        "operationId": "stopPostRecycle",
+        "tags": [
+          "Social"
+        ],
+        "description": "Stops an evergreen recycling chain: clears the recycle config on every post in the chain and cancels any not-yet-published auto-spawned occurrences back to draft. Works on any post in the chain (original or an occurrence). Unbilled. Requires scope `social:write`.",
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Any post id in the recycling chain."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Chain stopped",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "stopped": {
+                          "type": "boolean"
+                        },
+                        "cancelled_occurrences": {
+                          "type": "integer",
+                          "description": "Scheduled future occurrences moved back to draft."
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "description": "Post is not part of a recycling chain",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "NOT_RECYCLING"
+                          ]
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/social/posts/bulk": {
+      "post": {
+        "summary": "Bulk schedule posts",
+        "operationId": "bulkSchedulePosts",
+        "tags": [
+          "Social"
+        ],
+        "description": "Schedule up to 50 posts in one call, from a JSON `posts` array or an inline `csv` string. Billed one post unit per row x platform. Any structural problem (missing fields, bad dates, in-batch duplicate rows) rejects the WHOLE batch with 422 before anything is created - and the charge is refunded. After that gate, row-level failures (e.g. a disconnected account, a 24h duplicate) are reported per row in the 201 response. Run the free dry-run first: POST /social/posts/bulk/validate. Requires scope `social:write`.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "posts": {
+                    "type": "array",
+                    "maxItems": 50,
+                    "description": "Up to 50 posts. Each row needs content, platforms, account_ids and scheduled_time.",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "content",
+                        "platforms",
+                        "account_ids",
+                        "scheduled_time"
+                      ],
+                      "properties": {
+                        "content": {
+                          "type": "string"
+                        },
+                        "platforms": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "account_ids": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer"
+                          }
+                        },
+                        "scheduled_time": {
+                          "type": "string",
+                          "description": "When to publish (interpreted in `timezone`, default UTC)."
+                        },
+                        "timezone": {
+                          "type": "string",
+                          "description": "Optional per-row IANA timezone override."
+                        },
+                        "media_urls": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "link": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "csv": {
+                    "type": "string",
+                    "description": "Alternative to posts: inline CSV with a header line. Columns: content, platforms, account_ids, scheduled_time, media_urls, link (list cells split on | or ,). Provide posts OR csv, not both."
+                  },
+                  "timezone": {
+                    "type": "string",
+                    "description": "Default timezone for rows without their own (IANA name, default UTC)."
+                  },
+                  "allow_duplicates": {
+                    "type": "boolean",
+                    "description": "Skip the 24h duplicate-content guard for this batch."
+                  }
+                }
+              },
+              "example": {
+                "posts": [
+                  {
+                    "content": "Big news Monday!",
+                    "platforms": [
+                      "twitter",
+                      "linkedin"
+                    ],
+                    "account_ids": [
+                      12,
+                      15
+                    ],
+                    "scheduled_time": "2026-08-03 09:00:00"
+                  },
+                  {
+                    "content": "Behind the scenes 🎬",
+                    "platforms": [
+                      "instagram"
+                    ],
+                    "account_ids": [
+                      18
+                    ],
+                    "scheduled_time": "2026-08-04 17:30:00",
+                    "media_urls": [
+                      "https://cdn.example.com/bts.jpg"
+                    ]
+                  }
+                ],
+                "timezone": "Europe/Athens"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Batch processed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "created": {
+                          "type": "integer"
+                        },
+                        "failed": {
+                          "type": "integer"
+                        },
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "row": {
+                                "type": "integer"
+                              },
+                              "post_id": {
+                                "type": "integer",
+                                "description": "Present on success."
+                              },
+                              "status": {
+                                "type": "string"
+                              },
+                              "scheduled_time": {
+                                "type": "string"
+                              },
+                              "error": {
+                                "type": "string",
+                                "description": "Present on row failure (e.g. DUPLICATE_CONTENT)."
+                              },
+                              "message": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/InsufficientBalance"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/social/posts/bulk/validate": {
+      "post": {
+        "summary": "Validate a bulk batch",
+        "operationId": "validateBulkBatch",
+        "tags": [
+          "Social"
+        ],
+        "description": "Free dry-run of the same batch body as POST /social/posts/bulk: per-row structural checks, per-platform caption/media limits, and the 24h duplicate-content check. Nothing is created or billed. Requires scope `social:read`.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "posts": {
+                    "type": "array",
+                    "maxItems": 50,
+                    "description": "Up to 50 posts. Each row needs content, platforms, account_ids and scheduled_time.",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "content",
+                        "platforms",
+                        "account_ids",
+                        "scheduled_time"
+                      ],
+                      "properties": {
+                        "content": {
+                          "type": "string"
+                        },
+                        "platforms": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "account_ids": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer"
+                          }
+                        },
+                        "scheduled_time": {
+                          "type": "string",
+                          "description": "When to publish (interpreted in `timezone`, default UTC)."
+                        },
+                        "timezone": {
+                          "type": "string",
+                          "description": "Optional per-row IANA timezone override."
+                        },
+                        "media_urls": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "link": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "csv": {
+                    "type": "string",
+                    "description": "Alternative to posts: inline CSV with a header line. Columns: content, platforms, account_ids, scheduled_time, media_urls, link (list cells split on | or ,). Provide posts OR csv, not both."
+                  },
+                  "timezone": {
+                    "type": "string",
+                    "description": "Default timezone for rows without their own (IANA name, default UTC)."
+                  },
+                  "allow_duplicates": {
+                    "type": "boolean",
+                    "description": "Skip the 24h duplicate-content guard for this batch."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Batch report",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "valid": {
+                          "type": "boolean"
+                        },
+                        "rows": {
+                          "type": "integer"
+                        },
+                        "report": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "row": {
+                                "type": "integer"
+                              },
+                              "valid": {
+                                "type": "boolean"
+                              },
+                              "errors": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/social/accounts/health": {
+      "get": {
+        "summary": "Bulk account health",
+        "operationId": "bulkAccountHealth",
+        "tags": [
+          "Social"
+        ],
+        "description": "Health of every connected account in one call: healthy / expiring (token within 7 days) / expired / paused tallies plus per-account status. Same fields as the per-account health endpoint. Requires scope `social:read`.",
+        "responses": {
+          "200": {
+            "description": "Health summary",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "healthy": {
+                          "type": "integer"
+                        },
+                        "expiring": {
+                          "type": "integer"
+                        },
+                        "expired": {
+                          "type": "integer"
+                        },
+                        "paused": {
+                          "type": "integer"
+                        },
+                        "accounts": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer"
+                              },
+                              "platform": {
+                                "type": "string"
+                              },
+                              "account_name": {
+                                "type": "string"
+                              },
+                              "is_active": {
+                                "type": "boolean"
+                              },
+                              "status": {
+                                "type": "string"
+                              },
+                              "token_expired": {
+                                "type": "boolean"
+                              },
+                              "validity_days": {
+                                "type": "integer"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/social/accounts/follower-stats": {
+      "get": {
+        "summary": "Follower stats",
+        "operationId": "accountFollowerStats",
+        "tags": [
+          "Social"
+        ],
+        "description": "Daily follower history and growth per account, from the analytics snapshots the platform collects. Requires scope `social:read`.",
+        "parameters": [
+          {
+            "name": "days",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 30,
+              "minimum": 1,
+              "maximum": 365
+            },
+            "description": "History window."
+          },
+          {
+            "name": "account_id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Limit to one account."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Follower stats",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "days": {
+                          "type": "integer"
+                        },
+                        "accounts": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "account_id": {
+                                "type": "integer"
+                              },
+                              "platform": {
+                                "type": "string"
+                              },
+                              "account_name": {
+                                "type": "string"
+                              },
+                              "followers": {
+                                "type": "integer",
+                                "description": "Latest snapshot."
+                              },
+                              "growth": {
+                                "type": "integer",
+                                "description": "Delta over the window."
+                              },
+                              "growth_pct": {
+                                "type": "number",
+                                "nullable": true
+                              },
+                              "history": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "date": {
+                                      "type": "string"
+                                    },
+                                    "followers": {
+                                      "type": "integer"
+                                    },
+                                    "new_followers": {
+                                      "type": "integer"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/social/accounts/{account_id}/tiktok/creator-info": {
+      "get": {
+        "summary": "TikTok creator info",
+        "operationId": "tiktokCreatorInfo",
+        "tags": [
+          "Social"
+        ],
+        "description": "Live TikTok creator settings for a connected TikTok account: available privacy levels, whether comments/duet/stitch are disabled, and the account's maximum video duration. TikTok requires surfacing these before showing post options. Requires scope `social:read`.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Creator info",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "account_id": {
+                          "type": "integer"
+                        },
+                        "creator_username": {
+                          "type": "string"
+                        },
+                        "creator_nickname": {
+                          "type": "string"
+                        },
+                        "privacy_level_options": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "comment_disabled": {
+                          "type": "boolean"
+                        },
+                        "duet_disabled": {
+                          "type": "boolean"
+                        },
+                        "stitch_disabled": {
+                          "type": "boolean"
+                        },
+                        "max_video_post_duration_sec": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "description": "TikTok rejected the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "PLATFORM_ERROR"
+                          ]
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/social/accounts/{account_id}/move": {
+      "post": {
+        "summary": "Move account to profile",
+        "operationId": "moveSocialAccount",
+        "tags": [
+          "Social"
+        ],
+        "description": "Move a connected account between your developer workspace and one of your profiles (or profile to profile). Pass profile_id 0 to move it back to the developer workspace. Must be called WITHOUT X-Profile-Id; requires scopes `social:write` AND `profiles:manage`. Rejected with 409 while the account has scheduled or in-flight posts.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "profile_id"
+                ],
+                "properties": {
+                  "profile_id": {
+                    "type": "integer",
+                    "description": "Target profile id; 0 = developer workspace."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Moved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "platform": {
+                          "type": "string"
+                        },
+                        "account_name": {
+                          "type": "string"
+                        },
+                        "profile_id": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/social/account-groups": {
+      "get": {
+        "summary": "List account groups",
+        "operationId": "listAccountGroups",
+        "tags": [
+          "Social"
+        ],
+        "description": "Named sets of connected accounts, so integrations can address a whole client or brand with one id. Requires scope `social:read`.",
+        "responses": {
+          "200": {
+            "description": "Groups",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "account_ids": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer"
+                            }
+                          },
+                          "created_at": {
+                            "type": "string"
+                          },
+                          "updated_at": {
+                            "type": "string",
+                            "nullable": true
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create account group",
+        "operationId": "createAccountGroup",
+        "tags": [
+          "Social"
+        ],
+        "description": "Create a group (max 50 per workspace, 100 accounts per group). Every account id must be a connected account of this workspace. Requires scope `social:write`.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 120
+                  },
+                  "account_ids": {
+                    "type": "array",
+                    "maxItems": 100,
+                    "items": {
+                      "type": "integer"
+                    },
+                    "description": "Connected account ids of this workspace (validated on every write)."
+                  }
+                },
+                "required": [
+                  "name",
+                  "account_ids"
+                ]
+              },
+              "example": {
+                "name": "Acme Corp accounts",
+                "account_ids": [
+                  12,
+                  15,
+                  18
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "account_ids": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer"
+                          }
+                        },
+                        "created_at": {
+                          "type": "string"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "nullable": true
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/social/account-groups/{group_id}": {
+      "get": {
+        "summary": "Get account group",
+        "operationId": "getAccountGroup",
+        "tags": [
+          "Social"
+        ],
+        "parameters": [
+          {
+            "name": "group_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Group",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "account_ids": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer"
+                          }
+                        },
+                        "created_at": {
+                          "type": "string"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "nullable": true
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update account group",
+        "operationId": "updateAccountGroup",
+        "tags": [
+          "Social"
+        ],
+        "description": "Update the name and/or replace the member list. Requires scope `social:write`.",
+        "parameters": [
+          {
+            "name": "group_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 120
+                  },
+                  "account_ids": {
+                    "type": "array",
+                    "maxItems": 100,
+                    "items": {
+                      "type": "integer"
+                    },
+                    "description": "Connected account ids of this workspace (validated on every write)."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "account_ids": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer"
+                          }
+                        },
+                        "created_at": {
+                          "type": "string"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "nullable": true
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete account group",
+        "operationId": "deleteAccountGroup",
+        "tags": [
+          "Social"
+        ],
+        "description": "Deletes the group only - the accounts stay connected. Requires scope `social:write`.",
+        "parameters": [
+          {
+            "name": "group_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -10520,6 +13275,10 @@
           "link": {
             "type": "string",
             "description": "URL to include with the post"
+          },
+          "allow_duplicates": {
+            "type": "boolean",
+            "description": "Skip the 24h duplicate-content guard. Without it, content identical to a post created in this workspace in the last 24 hours is rejected with 409 DUPLICATE_CONTENT (and the charge is refunded)."
           }
         }
       },
@@ -10528,8 +13287,7 @@
         "required": [
           "content",
           "platforms",
-          "account_ids",
-          "scheduled_time"
+          "account_ids"
         ],
         "properties": {
           "content": {
@@ -10577,8 +13335,46 @@
           "link": {
             "type": "string",
             "description": "URL to include with the post"
+          },
+          "queue_id": {
+            "type": "integer",
+            "description": "Schedule into a posting queue instead of a fixed time: the queue's next open slot is resolved server-side and the post occupies it. Mutually exclusive with scheduled_time."
+          },
+          "timezone": {
+            "type": "string",
+            "description": "IANA timezone scheduled_time is expressed in (default UTC). Ignored with queue_id (the queue's own timezone applies)."
+          },
+          "recycle": {
+            "type": "object",
+            "description": "Evergreen recycling: after this post publishes, the next occurrence is automatically scheduled interval_hours later, repeating until a bound is hit. A bound is REQUIRED - set max_repeats and/or until (no unbounded chains). Stop a chain anytime with DELETE /social/posts/{post_id}/recycle.",
+            "required": [
+              "interval_hours"
+            ],
+            "properties": {
+              "interval_hours": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 8760,
+                "description": "Hours between occurrences (1 to 8760 = 1 year)."
+              },
+              "max_repeats": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 100,
+                "description": "Maximum number of automatic repeats after the original post."
+              },
+              "until": {
+                "type": "string",
+                "description": "UTC datetime (Y-m-d H:i:s) after which no further occurrences are scheduled. Must be within 2 years."
+              }
+            }
+          },
+          "allow_duplicates": {
+            "type": "boolean",
+            "description": "Skip the 24h duplicate-content guard. Without it, content identical to a post created in this workspace in the last 24 hours is rejected with 409 DUPLICATE_CONTENT (and the charge is refunded)."
           }
-        }
+        },
+        "description": "Schedule request. Provide scheduled_time (with optional timezone) OR queue_id (next open slot), not both."
       },
       "SocialPostUpdateRequest": {
         "type": "object",

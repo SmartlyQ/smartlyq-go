@@ -795,9 +795,9 @@ func TestSocialDeletePost(t *testing.T) {
 	})
 }
 
-func TestSocialDisconnectAccount(t *testing.T) {
-	assertEndpoint(t, "DELETE", "/social/accounts/test-accountId", func(c *Client) error {
-		_, err := c.Social.DisconnectAccount(context.Background(), "test-accountId", nil)
+func TestSocialUpdateAccount(t *testing.T) {
+	assertEndpoint(t, "PATCH", "/social/accounts/test-accountId", func(c *Client) error {
+		_, err := c.Social.UpdateAccount(context.Background(), "test-accountId", map[string]any{}, nil)
 		return err
 	})
 }
@@ -847,6 +847,160 @@ func TestSocialConnectAccountStatus(t *testing.T) {
 func TestSocialConnectAccount(t *testing.T) {
 	assertEndpoint(t, "POST", "/social/connect/test-platform", func(c *Client) error {
 		_, err := c.Social.ConnectAccount(context.Background(), "test-platform", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialListQueues(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/queues", func(c *Client) error {
+		_, err := c.Social.ListQueues(context.Background(), nil)
+		return err
+	})
+}
+
+func TestSocialCreateQueue(t *testing.T) {
+	assertEndpoint(t, "POST", "/social/queues", func(c *Client) error {
+		_, err := c.Social.CreateQueue(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialGetQueue(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/queues/test-queueId", func(c *Client) error {
+		_, err := c.Social.GetQueue(context.Background(), "test-queueId", nil)
+		return err
+	})
+}
+
+func TestSocialUpdateQueue(t *testing.T) {
+	assertEndpoint(t, "PUT", "/social/queues/test-queueId", func(c *Client) error {
+		_, err := c.Social.UpdateQueue(context.Background(), "test-queueId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialDeleteQueue(t *testing.T) {
+	assertEndpoint(t, "DELETE", "/social/queues/test-queueId", func(c *Client) error {
+		_, err := c.Social.DeleteQueue(context.Background(), "test-queueId", nil)
+		return err
+	})
+}
+
+func TestSocialGetQueueNextSlot(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/queues/test-queueId/next-slot", func(c *Client) error {
+		_, err := c.Social.GetQueueNextSlot(context.Background(), "test-queueId", nil)
+		return err
+	})
+}
+
+func TestSocialPreviewQueueSlots(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/queues/test-queueId/preview", func(c *Client) error {
+		_, err := c.Social.PreviewQueueSlots(context.Background(), "test-queueId", nil, nil)
+		return err
+	})
+}
+
+func TestSocialUnpublishPost(t *testing.T) {
+	assertEndpoint(t, "POST", "/social/posts/test-postId/unpublish", func(c *Client) error {
+		_, err := c.Social.UnpublishPost(context.Background(), "test-postId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialValidatePost(t *testing.T) {
+	assertEndpoint(t, "POST", "/social/validate/post", func(c *Client) error {
+		_, err := c.Social.ValidatePost(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialValidateMedia(t *testing.T) {
+	assertEndpoint(t, "POST", "/social/validate/media", func(c *Client) error {
+		_, err := c.Social.ValidateMedia(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialStopPostRecycle(t *testing.T) {
+	assertEndpoint(t, "DELETE", "/social/posts/test-postId/recycle", func(c *Client) error {
+		_, err := c.Social.StopPostRecycle(context.Background(), "test-postId", nil)
+		return err
+	})
+}
+
+func TestSocialBulkSchedulePosts(t *testing.T) {
+	assertEndpoint(t, "POST", "/social/posts/bulk", func(c *Client) error {
+		_, err := c.Social.BulkSchedulePosts(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialValidateBulkBatch(t *testing.T) {
+	assertEndpoint(t, "POST", "/social/posts/bulk/validate", func(c *Client) error {
+		_, err := c.Social.ValidateBulkBatch(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialBulkAccountHealth(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/health", func(c *Client) error {
+		_, err := c.Social.BulkAccountHealth(context.Background(), nil)
+		return err
+	})
+}
+
+func TestSocialAccountFollowerStats(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/follower-stats", func(c *Client) error {
+		_, err := c.Social.AccountFollowerStats(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestSocialTiktokCreatorInfo(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/tiktok/creator-info", func(c *Client) error {
+		_, err := c.Social.TiktokCreatorInfo(context.Background(), "test-accountId", nil)
+		return err
+	})
+}
+
+func TestSocialMoveAccount(t *testing.T) {
+	assertEndpoint(t, "POST", "/social/accounts/test-accountId/move", func(c *Client) error {
+		_, err := c.Social.MoveAccount(context.Background(), "test-accountId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialListAccountGroups(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/account-groups", func(c *Client) error {
+		_, err := c.Social.ListAccountGroups(context.Background(), nil)
+		return err
+	})
+}
+
+func TestSocialCreateAccountGroup(t *testing.T) {
+	assertEndpoint(t, "POST", "/social/account-groups", func(c *Client) error {
+		_, err := c.Social.CreateAccountGroup(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialGetAccountGroup(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/account-groups/test-groupId", func(c *Client) error {
+		_, err := c.Social.GetAccountGroup(context.Background(), "test-groupId", nil)
+		return err
+	})
+}
+
+func TestSocialUpdateAccountGroup(t *testing.T) {
+	assertEndpoint(t, "PUT", "/social/account-groups/test-groupId", func(c *Client) error {
+		_, err := c.Social.UpdateAccountGroup(context.Background(), "test-groupId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialDeleteAccountGroup(t *testing.T) {
+	assertEndpoint(t, "DELETE", "/social/account-groups/test-groupId", func(c *Client) error {
+		_, err := c.Social.DeleteAccountGroup(context.Background(), "test-groupId", nil)
 		return err
 	})
 }
@@ -963,9 +1117,30 @@ func TestWebhooksCreate(t *testing.T) {
 	})
 }
 
+func TestWebhooksUpdate(t *testing.T) {
+	assertEndpoint(t, "PUT", "/webhooks/test-id", func(c *Client) error {
+		_, err := c.Webhooks.Update(context.Background(), "test-id", map[string]any{}, nil)
+		return err
+	})
+}
+
 func TestWebhooksDelete(t *testing.T) {
 	assertEndpoint(t, "DELETE", "/webhooks/test-id", func(c *Client) error {
 		_, err := c.Webhooks.Delete(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
+func TestWebhooksListLogs(t *testing.T) {
+	assertEndpoint(t, "GET", "/webhooks/logs", func(c *Client) error {
+		_, err := c.Webhooks.ListLogs(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestWebhooksTest(t *testing.T) {
+	assertEndpoint(t, "POST", "/webhooks/test-id/test", func(c *Client) error {
+		_, err := c.Webhooks.Test(context.Background(), "test-id", nil)
 		return err
 	})
 }
