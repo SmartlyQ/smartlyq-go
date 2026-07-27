@@ -669,6 +669,13 @@ func TestMediaGetUploadUrl(t *testing.T) {
 	})
 }
 
+func TestMediaUploadDirect(t *testing.T) {
+	assertEndpoint(t, "POST", "/media/upload-direct", func(c *Client) error {
+		_, err := c.Media.UploadDirect(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
 func TestPresentationsGenerate(t *testing.T) {
 	assertEndpoint(t, "POST", "/presentations/generate", func(c *Client) error {
 		_, err := c.Presentations.Generate(context.Background(), map[string]any{}, nil)
@@ -714,6 +721,13 @@ func TestProfilesCreate(t *testing.T) {
 func TestProfilesGet(t *testing.T) {
 	assertEndpoint(t, "GET", "/profiles/test-id", func(c *Client) error {
 		_, err := c.Profiles.Get(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
+func TestProfilesUpdate(t *testing.T) {
+	assertEndpoint(t, "PATCH", "/profiles/test-id", func(c *Client) error {
+		_, err := c.Profiles.Update(context.Background(), "test-id", map[string]any{}, nil)
 		return err
 	})
 }

@@ -756,6 +756,13 @@ func (r *MediaResource) GetUploadUrl(ctx context.Context, body map[string]any, o
 	return r.client.do(ctx, "POST", "/media/upload-url", nil, body, opts)
 }
 
+// UploadDirect - Upload a file directly.
+//
+// POST /media/upload-direct
+func (r *MediaResource) UploadDirect(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/media/upload-direct", nil, body, opts)
+}
+
 // PresentationsResource groups the Presentations endpoints.
 type PresentationsResource struct{ client *Client }
 
@@ -809,6 +816,13 @@ func (r *ProfilesResource) Create(ctx context.Context, body map[string]any, opts
 // GET /profiles/{id}
 func (r *ProfilesResource) Get(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
 	return r.client.do(ctx, "GET", "/profiles/"+url.PathEscape(id), nil, nil, opts)
+}
+
+// Update - Update a profile.
+//
+// PATCH /profiles/{id}
+func (r *ProfilesResource) Update(ctx context.Context, id string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "PATCH", "/profiles/"+url.PathEscape(id), nil, body, opts)
 }
 
 // Delete - Delete a profile.

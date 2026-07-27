@@ -328,6 +328,7 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Media.Get(ctx, mediaId)` | `GET /media/{media_id}` | Get media |
 | `client.Media.Delete(ctx, mediaId)` | `DELETE /media/{media_id}` | Delete media |
 | `client.Media.GetUploadUrl(ctx, body)` | `POST /media/upload-url` | Get presigned upload URL |
+| `client.Media.UploadDirect(ctx, body)` | `POST /media/upload-direct` | Upload a file directly |
 
 ### Presentations
 
@@ -345,6 +346,7 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Profiles.List(ctx, query)` | `GET /profiles` | List profiles |
 | `client.Profiles.Create(ctx, body)` | `POST /profiles` | Create a profile |
 | `client.Profiles.Get(ctx, id)` | `GET /profiles/{id}` | Get a profile |
+| `client.Profiles.Update(ctx, id, body)` | `PATCH /profiles/{id}` | Update a profile |
 | `client.Profiles.Delete(ctx, id, body)` | `DELETE /profiles/{id}` | Delete a profile |
 | `client.Profiles.ListAccounts(ctx, id)` | `GET /profiles/{id}/accounts` | List a profile's connected accounts |
 | `client.Profiles.Pause(ctx, id)` | `POST /profiles/{id}/pause` | Pause a profile |
