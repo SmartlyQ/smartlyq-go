@@ -1038,15 +1038,6 @@
           "403": {
             "$ref": "#/components/responses/Forbidden"
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          },
-          "500": {
-            "$ref": "#/components/responses/ServerError"
-          },
           "409": {
             "description": "Duplicate content within 24h",
             "content": {
@@ -1089,6 +1080,15 @@
                 }
               }
             }
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
           }
         },
         "parameters": [
@@ -1258,15 +1258,6 @@
           "403": {
             "$ref": "#/components/responses/Forbidden"
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          },
-          "500": {
-            "$ref": "#/components/responses/ServerError"
-          },
           "409": {
             "description": "Duplicate content within 24h",
             "content": {
@@ -1309,6 +1300,15 @@
                 }
               }
             }
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
           }
         },
         "parameters": [
@@ -3182,24 +3182,6 @@
           }
         },
         "responses": {
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "402": {
-            "$ref": "#/components/responses/InsufficientBalance"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          },
-          "500": {
-            "$ref": "#/components/responses/ServerError"
-          },
           "202": {
             "description": "Accepted - job queued. Poll GET /jobs/{job_uid}; on completion result_data contains the same payload the old 200 body carried.",
             "content": {
@@ -3224,6 +3206,24 @@
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/InsufficientBalance"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
           }
         }
       }
@@ -3264,24 +3264,6 @@
           }
         },
         "responses": {
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "402": {
-            "$ref": "#/components/responses/InsufficientBalance"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          },
-          "500": {
-            "$ref": "#/components/responses/ServerError"
-          },
           "202": {
             "description": "Accepted - job queued. Poll GET /jobs/{job_uid}; on completion result_data contains the same payload the old 200 body carried.",
             "content": {
@@ -3306,6 +3288,24 @@
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/InsufficientBalance"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
           }
         }
       }
@@ -3357,24 +3357,6 @@
           }
         },
         "responses": {
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "402": {
-            "$ref": "#/components/responses/InsufficientBalance"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          },
-          "500": {
-            "$ref": "#/components/responses/ServerError"
-          },
           "202": {
             "description": "Accepted - job queued. Poll GET /jobs/{job_uid}; on completion result_data contains the same payload the old 200 body carried.",
             "content": {
@@ -3399,6 +3381,24 @@
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/InsufficientBalance"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
           }
         }
       }
@@ -3461,24 +3461,6 @@
           }
         },
         "responses": {
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "402": {
-            "$ref": "#/components/responses/InsufficientBalance"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          },
-          "500": {
-            "$ref": "#/components/responses/ServerError"
-          },
           "202": {
             "description": "Accepted - job queued. Poll GET /jobs/{job_uid}; on completion result_data contains the same payload the old 200 body carried.",
             "content": {
@@ -3503,6 +3485,24 @@
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/InsufficientBalance"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
           }
         }
       }
@@ -5808,9 +5808,6 @@
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -5819,6 +5816,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -6057,9 +6057,6 @@
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -6068,6 +6065,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -6137,9 +6137,6 @@
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -6148,6 +6145,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -6272,9 +6272,6 @@
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -6283,6 +6280,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -6592,9 +6592,6 @@
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -6603,6 +6600,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -6672,9 +6672,6 @@
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -6683,6 +6680,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -6742,9 +6742,6 @@
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -6753,6 +6750,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -7283,9 +7283,6 @@
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -7294,6 +7291,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -7364,9 +7364,6 @@
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -7375,6 +7372,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -8879,7 +8879,7 @@
                                     },
                                     "end": {
                                       "type": "number",
-                                      "example": 41.0
+                                      "example": 41
                                     }
                                   }
                                 },
@@ -8889,7 +8889,7 @@
                                     "title": "The 3-second hook",
                                     "score": 0.92,
                                     "start": 12.4,
-                                    "end": 41.0
+                                    "end": 41
                                   }
                                 ]
                               },
@@ -8910,7 +8910,7 @@
                                   "title": "The 3-second hook",
                                   "score": 0.92,
                                   "start": 12.4,
-                                  "end": 41.0
+                                  "end": 41
                                 }
                               ],
                               "created_at": "2026-07-26T09:41:22Z"
@@ -8938,7 +8938,7 @@
                             "title": "The 3-second hook",
                             "score": 0.92,
                             "start": 12.4,
-                            "end": 41.0
+                            "end": 41
                           }
                         ],
                         "created_at": "2026-07-26T09:41:22Z"
@@ -9033,7 +9033,7 @@
                               },
                               "end": {
                                 "type": "number",
-                                "example": 41.0
+                                "example": 41
                               }
                             }
                           },
@@ -9043,7 +9043,7 @@
                               "title": "The 3-second hook",
                               "score": 0.92,
                               "start": 12.4,
-                              "end": 41.0
+                              "end": 41
                             }
                           ]
                         },
@@ -9070,7 +9070,7 @@
                         "title": "The 3-second hook",
                         "score": 0.92,
                         "start": 12.4,
-                        "end": 41.0
+                        "end": 41
                       }
                     ],
                     "created_at": "2026-07-26T09:41:22Z"
@@ -9264,6 +9264,125 @@
           }
         },
         "responses": {
+          "200": {
+            "description": "Existing contact updated (matched by email)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 8412
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "Ada Lovelace"
+                        },
+                        "first_name": {
+                          "type": "string",
+                          "example": "Ada"
+                        },
+                        "last_name": {
+                          "type": "string",
+                          "example": "Lovelace"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "ada@example.com"
+                        },
+                        "phone": {
+                          "type": "string",
+                          "example": "+30 694 123 4567"
+                        },
+                        "company": {
+                          "type": "string",
+                          "example": "Acme Corp"
+                        },
+                        "role": {
+                          "type": "string",
+                          "example": "Head of Growth"
+                        },
+                        "status": {
+                          "type": "string",
+                          "example": "customer"
+                        },
+                        "tags": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "example": [
+                            "vip",
+                            "newsletter"
+                          ]
+                        },
+                        "attributes": {
+                          "type": "object",
+                          "example": {
+                            "lead_source": "webinar"
+                          }
+                        },
+                        "source": {
+                          "type": "string",
+                          "example": "api"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "example": "2026-07-01T10:15:00Z"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "example": "2026-07-26T09:41:22Z"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "id": 8412,
+                    "name": "Ada Lovelace",
+                    "first_name": "Ada",
+                    "last_name": "Lovelace",
+                    "email": "ada@example.com",
+                    "phone": "+30 694 123 4567",
+                    "company": "Acme Corp",
+                    "role": "Head of Growth",
+                    "status": "customer",
+                    "tags": [
+                      "vip",
+                      "newsletter"
+                    ],
+                    "attributes": {
+                      "lead_source": "webinar"
+                    },
+                    "source": "api",
+                    "created_at": "2026-07-01T10:15:00Z",
+                    "updated_at": "2026-07-26T09:41:22Z",
+                    "matched_by": "email"
+                  },
+                  "meta": {
+                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                    "timestamp": "2026-07-26T09:41:22Z"
+                  }
+                }
+              }
+            }
+          },
           "201": {
             "description": "Contact created",
             "content": {
@@ -9375,125 +9494,6 @@
                     "created_at": "2026-07-01T10:15:00Z",
                     "updated_at": "2026-07-26T09:41:22Z",
                     "matched_by": null
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Existing contact updated (matched by email)",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        true
-                      ]
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "integer",
-                          "example": 8412
-                        },
-                        "name": {
-                          "type": "string",
-                          "example": "Ada Lovelace"
-                        },
-                        "first_name": {
-                          "type": "string",
-                          "example": "Ada"
-                        },
-                        "last_name": {
-                          "type": "string",
-                          "example": "Lovelace"
-                        },
-                        "email": {
-                          "type": "string",
-                          "example": "ada@example.com"
-                        },
-                        "phone": {
-                          "type": "string",
-                          "example": "+30 694 123 4567"
-                        },
-                        "company": {
-                          "type": "string",
-                          "example": "Acme Corp"
-                        },
-                        "role": {
-                          "type": "string",
-                          "example": "Head of Growth"
-                        },
-                        "status": {
-                          "type": "string",
-                          "example": "customer"
-                        },
-                        "tags": {
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          },
-                          "example": [
-                            "vip",
-                            "newsletter"
-                          ]
-                        },
-                        "attributes": {
-                          "type": "object",
-                          "example": {
-                            "lead_source": "webinar"
-                          }
-                        },
-                        "source": {
-                          "type": "string",
-                          "example": "api"
-                        },
-                        "created_at": {
-                          "type": "string",
-                          "example": "2026-07-01T10:15:00Z"
-                        },
-                        "updated_at": {
-                          "type": "string",
-                          "example": "2026-07-26T09:41:22Z"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": true,
-                  "data": {
-                    "id": 8412,
-                    "name": "Ada Lovelace",
-                    "first_name": "Ada",
-                    "last_name": "Lovelace",
-                    "email": "ada@example.com",
-                    "phone": "+30 694 123 4567",
-                    "company": "Acme Corp",
-                    "role": "Head of Growth",
-                    "status": "customer",
-                    "tags": [
-                      "vip",
-                      "newsletter"
-                    ],
-                    "attributes": {
-                      "lead_source": "webinar"
-                    },
-                    "source": "api",
-                    "created_at": "2026-07-01T10:15:00Z",
-                    "updated_at": "2026-07-26T09:41:22Z",
-                    "matched_by": "email"
                   },
                   "meta": {
                     "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
@@ -10850,7 +10850,7 @@
                           },
                           "value": {
                             "type": "number",
-                            "example": 2500.0
+                            "example": 2500
                           },
                           "stage": {
                             "type": "string",
@@ -10889,7 +10889,7 @@
                       "name": "Acme annual plan",
                       "contact_email": "ada@example.com",
                       "company": "Acme Corp",
-                      "value": 2500.0,
+                      "value": 2500,
                       "stage": "proposal",
                       "status": "open",
                       "assigned_user_id": null,
@@ -11015,7 +11015,7 @@
                         },
                         "value": {
                           "type": "number",
-                          "example": 2500.0
+                          "example": 2500
                         },
                         "stage": {
                           "type": "string",
@@ -11049,7 +11049,7 @@
                     "name": "Acme annual plan",
                     "contact_email": "ada@example.com",
                     "company": "Acme Corp",
-                    "value": 2500.0,
+                    "value": 2500,
                     "stage": "proposal",
                     "status": "open",
                     "assigned_user_id": null,
@@ -11125,7 +11125,7 @@
                         },
                         "value": {
                           "type": "number",
-                          "example": 2500.0
+                          "example": 2500
                         },
                         "stage": {
                           "type": "string",
@@ -11159,7 +11159,7 @@
                     "name": "Acme annual plan",
                     "contact_email": "ada@example.com",
                     "company": "Acme Corp",
-                    "value": 2500.0,
+                    "value": 2500,
                     "stage": "proposal",
                     "status": "open",
                     "assigned_user_id": null,
@@ -11284,7 +11284,7 @@
                         },
                         "value": {
                           "type": "number",
-                          "example": 2500.0
+                          "example": 2500
                         },
                         "stage": {
                           "type": "string",
@@ -11318,7 +11318,7 @@
                     "name": "Acme annual plan",
                     "contact_email": "ada@example.com",
                     "company": "Acme Corp",
-                    "value": 2500.0,
+                    "value": 2500,
                     "stage": "proposal",
                     "status": "open",
                     "assigned_user_id": null,
@@ -11473,7 +11473,7 @@
                         },
                         "value": {
                           "type": "number",
-                          "example": 2500.0
+                          "example": 2500
                         },
                         "stage": {
                           "type": "string",
@@ -11507,7 +11507,7 @@
                     "name": "Acme annual plan",
                     "contact_email": "ada@example.com",
                     "company": "Acme Corp",
-                    "value": 2500.0,
+                    "value": 2500,
                     "stage": "proposal",
                     "status": "won",
                     "assigned_user_id": null,
@@ -12361,11 +12361,11 @@
                         },
                         "balance_sqc": {
                           "type": "number",
-                          "example": 1250.0
+                          "example": 1250
                         },
                         "sub_wallet_balance": {
                           "type": "number",
-                          "example": 1250.0
+                          "example": 1250
                         }
                       }
                     },
@@ -12385,8 +12385,8 @@
                     "billing_mode": "saas",
                     "state": "active",
                     "rebilling_enabled": true,
-                    "balance_sqc": 1250.0,
-                    "sub_wallet_balance": 1250.0
+                    "balance_sqc": 1250,
+                    "sub_wallet_balance": 1250
                   },
                   "meta": {
                     "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
@@ -12464,7 +12464,7 @@
                         },
                         "balance_sqc": {
                           "type": "number",
-                          "example": 1250.0
+                          "example": 1250
                         }
                       }
                     },
@@ -12482,7 +12482,7 @@
                     "state": "active",
                     "billing_mode": "saas",
                     "rebilling_enabled": true,
-                    "balance_sqc": 1250.0
+                    "balance_sqc": 1250
                   },
                   "meta": {
                     "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
@@ -12546,11 +12546,11 @@
                               },
                               "price": {
                                 "type": "number",
-                                "example": 97.0
+                                "example": 97
                               },
                               "setup_fee": {
                                 "type": "number",
-                                "example": 0.0
+                                "example": 0
                               },
                               "currency": {
                                 "type": "string",
@@ -12562,7 +12562,7 @@
                               },
                               "credits_per_period": {
                                 "type": "number",
-                                "example": 5000.0
+                                "example": 5000
                               },
                               "workspaces_limit": {
                                 "type": "integer",
@@ -12587,11 +12587,11 @@
                               "tenant_id": 7,
                               "name": "Agency Pro",
                               "description": "Full suite for client workspaces.",
-                              "price": 97.0,
-                              "setup_fee": 0.0,
+                              "price": 97,
+                              "setup_fee": 0,
                               "currency": "USD",
                               "interval": "monthly",
-                              "credits_per_period": 5000.0,
+                              "credits_per_period": 5000,
                               "workspaces_limit": 10,
                               "features": [
                                 "social",
@@ -12617,11 +12617,11 @@
                         "tenant_id": 7,
                         "name": "Agency Pro",
                         "description": "Full suite for client workspaces.",
-                        "price": 97.0,
-                        "setup_fee": 0.0,
+                        "price": 97,
+                        "setup_fee": 0,
                         "currency": "USD",
                         "interval": "monthly",
-                        "credits_per_period": 5000.0,
+                        "credits_per_period": 5000,
                         "workspaces_limit": 10,
                         "features": [
                           "social",
@@ -12699,11 +12699,11 @@
                         },
                         "price": {
                           "type": "number",
-                          "example": 97.0
+                          "example": 97
                         },
                         "setup_fee": {
                           "type": "number",
-                          "example": 0.0
+                          "example": 0
                         },
                         "currency": {
                           "type": "string",
@@ -12715,7 +12715,7 @@
                         },
                         "credits_per_period": {
                           "type": "number",
-                          "example": 5000.0
+                          "example": 5000
                         },
                         "workspaces_limit": {
                           "type": "integer",
@@ -12746,11 +12746,11 @@
                     "tenant_id": 7,
                     "name": "Agency Pro",
                     "description": "Full suite for client workspaces.",
-                    "price": 97.0,
-                    "setup_fee": 0.0,
+                    "price": 97,
+                    "setup_fee": 0,
                     "currency": "USD",
                     "interval": "monthly",
-                    "credits_per_period": 5000.0,
+                    "credits_per_period": 5000,
                     "workspaces_limit": 10,
                     "features": [
                       "social",
@@ -27424,6 +27424,244 @@
           },
           "422": {
             "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/social/comments/{post_id}": {
+      "get": {
+        "summary": "Get one post's comments (threaded)",
+        "operationId": "getPostComments",
+        "description": "Returns a single post's comments as a nested reply tree, with post metadata. A by-id convenience over GET /social/comments (which already threads replies). Reply nesting is populated for every platform except Pinterest (whose comments are flat). Requires social:read.",
+        "tags": [
+          "Comments"
+        ],
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The SmartlyQ post id."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Post with threaded comments",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "id": 8841,
+                    "post_id": 8841,
+                    "remote_post_id": "178...",
+                    "platform": "twitter",
+                    "content": "Launch day!",
+                    "permalink": "https://x.com/acme/status/178...",
+                    "comment_count": 3,
+                    "comments": [
+                      {
+                        "id": 51,
+                        "author_name": "Jamie",
+                        "content": "Congrats!",
+                        "is_reply": 0,
+                        "replies": [
+                          {
+                            "id": 52,
+                            "author_name": "Acme",
+                            "content": "Thanks!",
+                            "is_reply": 1,
+                            "replies": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/contacts/{id}/fields/{slug}": {
+      "put": {
+        "summary": "Set one custom field",
+        "operationId": "setContactField",
+        "description": "Set a single custom field on a contact by its slug (the field's key). The slug must be a defined custom field in this workspace (create one with POST /custom-fields). Merges into the contact's attributes without touching other fields. Requires contacts:write.",
+        "tags": [
+          "CRM Contacts"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The custom field's key/slug."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "value": {
+                    "description": "The value to store (string, number, boolean or null)."
+                  }
+                }
+              },
+              "example": {
+                "value": "enterprise"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated attributes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "attributes": {
+                      "plan_tier": "enterprise"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Clear one custom field",
+        "operationId": "clearContactField",
+        "description": "Remove a single custom field from a contact by slug. Succeeds (200) even if the field was not set. Requires contacts:write.",
+        "tags": [
+          "CRM Contacts"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The custom field's key/slug."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Remaining attributes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "attributes": {}
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/me/billing": {
+      "get": {
+        "summary": "Billing overview",
+        "operationId": "getBilling",
+        "description": "A read-only superset of GET /me/balance: the wallet balance breakdown, the monthly cycle reset, auto-recharge configuration, and whether a card is on file. Use payment.status to know if the next billable call is at risk.",
+        "tags": [
+          "Account"
+        ],
+        "responses": {
+          "200": {
+            "description": "Billing overview",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "currency": "USD",
+                    "balance": {
+                      "total": "42.5000",
+                      "purchased": "40.0000",
+                      "monthly": "2.5000"
+                    },
+                    "cycle": {
+                      "monthly_reset_at": "2026-08-01T00:00:00Z"
+                    },
+                    "auto_recharge": {
+                      "enabled": true,
+                      "below": "5.0000",
+                      "amount": "25.0000",
+                      "active": true
+                    },
+                    "payment": {
+                      "card_on_file": true,
+                      "status": "ok"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }

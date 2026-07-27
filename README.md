@@ -160,6 +160,7 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Account.GetMe(ctx)` | `GET /me` | Get current user profile |
 | `client.Account.GetMeUsage(ctx, query)` | `GET /me/usage` | Get usage summary |
 | `client.Account.GetMeBalance(ctx)` | `GET /me/balance` | Get wallet balance |
+| `client.Account.GetBilling(ctx)` | `GET /me/billing` | Billing overview |
 
 ### AI Captain
 
@@ -241,6 +242,7 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Comments.ReplyTo(ctx, commentId, body)` | `POST /social/comments/{comment_id}/reply` | Reply to a comment |
 | `client.Comments.Hide(ctx, commentId)` | `POST /social/comments/{comment_id}/hide` | Hide or unhide a comment |
 | `client.Comments.Delete(ctx, commentId)` | `DELETE /social/comments/{comment_id}` | Delete a comment |
+| `client.Comments.GetPost(ctx, postId)` | `GET /social/comments/{post_id}` | Get one post's comments (threaded) |
 
 ### Content
 
@@ -272,6 +274,8 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Contacts.AddNote(ctx, id, body)` | `POST /contacts/{id}/notes` | Add a note to a contact |
 | `client.Contacts.Enroll(ctx, id, body)` | `POST /contacts/{id}/enroll` | Enroll a contact in an automation |
 | `client.Contacts.AddMessage(ctx, id, body)` | `POST /contacts/{id}/messages` | Log a message on a contact's timeline |
+| `client.Contacts.SetField(ctx, id, slug, body)` | `PUT /contacts/{id}/fields/{slug}` | Set one custom field |
+| `client.Contacts.ClearField(ctx, id, slug)` | `DELETE /contacts/{id}/fields/{slug}` | Clear one custom field |
 
 ### CRM Custom Fields
 

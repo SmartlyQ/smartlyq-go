@@ -92,6 +92,13 @@ func (r *AccountResource) GetMeBalance(ctx context.Context, opts *RequestOptions
 	return r.client.do(ctx, "GET", "/me/balance", nil, nil, opts)
 }
 
+// GetBilling - Billing overview.
+//
+// GET /me/billing
+func (r *AccountResource) GetBilling(ctx context.Context, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/me/billing", nil, nil, opts)
+}
+
 // CaptainResource groups the AI Captain endpoints.
 type CaptainResource struct{ client *Client }
 
@@ -435,6 +442,13 @@ func (r *CommentsResource) Delete(ctx context.Context, commentId string, opts *R
 	return r.client.do(ctx, "DELETE", "/social/comments/"+url.PathEscape(commentId), nil, nil, opts)
 }
 
+// GetPost - Get one post's comments (threaded).
+//
+// GET /social/comments/{post_id}
+func (r *CommentsResource) GetPost(ctx context.Context, postId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/comments/"+url.PathEscape(postId), nil, nil, opts)
+}
+
 // ContentResource groups the Content endpoints.
 type ContentResource struct{ client *Client }
 
@@ -554,6 +568,20 @@ func (r *ContactsResource) Enroll(ctx context.Context, id string, body map[strin
 // POST /contacts/{id}/messages
 func (r *ContactsResource) AddMessage(ctx context.Context, id string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
 	return r.client.do(ctx, "POST", "/contacts/"+url.PathEscape(id)+"/messages", nil, body, opts)
+}
+
+// SetField - Set one custom field.
+//
+// PUT /contacts/{id}/fields/{slug}
+func (r *ContactsResource) SetField(ctx context.Context, id string, slug string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "PUT", "/contacts/"+url.PathEscape(id)+"/fields/"+url.PathEscape(slug), nil, body, opts)
+}
+
+// ClearField - Clear one custom field.
+//
+// DELETE /contacts/{id}/fields/{slug}
+func (r *ContactsResource) ClearField(ctx context.Context, id string, slug string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "DELETE", "/contacts/"+url.PathEscape(id)+"/fields/"+url.PathEscape(slug), nil, nil, opts)
 }
 
 // CustomFieldsResource groups the CRM Custom Fields endpoints.

@@ -53,6 +53,13 @@ func TestAccountGetMeBalance(t *testing.T) {
 	})
 }
 
+func TestAccountGetBilling(t *testing.T) {
+	assertEndpoint(t, "GET", "/me/billing", func(c *Client) error {
+		_, err := c.Account.GetBilling(context.Background(), nil)
+		return err
+	})
+}
+
 func TestCaptainSendMessage(t *testing.T) {
 	assertEndpoint(t, "POST", "/captain/messages", func(c *Client) error {
 		_, err := c.Captain.SendMessage(context.Background(), map[string]any{}, nil)
@@ -375,6 +382,13 @@ func TestCommentsDelete(t *testing.T) {
 	})
 }
 
+func TestCommentsGetPost(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/comments/test-postId", func(c *Client) error {
+		_, err := c.Comments.GetPost(context.Background(), "test-postId", nil)
+		return err
+	})
+}
+
 func TestContentRewrite(t *testing.T) {
 	assertEndpoint(t, "POST", "/content/rewrite", func(c *Client) error {
 		_, err := c.Content.Rewrite(context.Background(), map[string]any{}, nil)
@@ -483,6 +497,20 @@ func TestContactsEnroll(t *testing.T) {
 func TestContactsAddMessage(t *testing.T) {
 	assertEndpoint(t, "POST", "/contacts/test-id/messages", func(c *Client) error {
 		_, err := c.Contacts.AddMessage(context.Background(), "test-id", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestContactsSetField(t *testing.T) {
+	assertEndpoint(t, "PUT", "/contacts/test-id/fields/test-slug", func(c *Client) error {
+		_, err := c.Contacts.SetField(context.Background(), "test-id", "test-slug", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestContactsClearField(t *testing.T) {
+	assertEndpoint(t, "DELETE", "/contacts/test-id/fields/test-slug", func(c *Client) error {
+		_, err := c.Contacts.ClearField(context.Background(), "test-id", "test-slug", nil)
 		return err
 	})
 }
