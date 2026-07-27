@@ -1747,6 +1747,48 @@ func TestWebhooksTest(t *testing.T) {
 	})
 }
 
+func TestWhatsAppSendWhatsAppMessage(t *testing.T) {
+	assertEndpoint(t, "POST", "/whatsapp/messages", func(c *Client) error {
+		_, err := c.WhatsApp.SendWhatsAppMessage(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestWhatsAppListWhatsAppTemplates(t *testing.T) {
+	assertEndpoint(t, "GET", "/whatsapp/templates", func(c *Client) error {
+		_, err := c.WhatsApp.ListWhatsAppTemplates(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestWhatsAppCreateWhatsAppTemplate(t *testing.T) {
+	assertEndpoint(t, "POST", "/whatsapp/templates", func(c *Client) error {
+		_, err := c.WhatsApp.CreateWhatsAppTemplate(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestWhatsAppGetWhatsAppBusinessProfile(t *testing.T) {
+	assertEndpoint(t, "GET", "/whatsapp/business-profile", func(c *Client) error {
+		_, err := c.WhatsApp.GetWhatsAppBusinessProfile(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestWhatsAppUpdateWhatsAppBusinessProfile(t *testing.T) {
+	assertEndpoint(t, "PATCH", "/whatsapp/business-profile", func(c *Client) error {
+		_, err := c.WhatsApp.UpdateWhatsAppBusinessProfile(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestWhatsAppListWhatsAppPhoneNumbers(t *testing.T) {
+	assertEndpoint(t, "GET", "/whatsapp/phone-numbers", func(c *Client) error {
+		_, err := c.WhatsApp.ListWhatsAppPhoneNumbers(context.Background(), nil, nil)
+		return err
+	})
+}
+
 func TestWorkspacesList(t *testing.T) {
 	assertEndpoint(t, "GET", "/workspaces", func(c *Client) error {
 		_, err := c.Workspaces.List(context.Background(), nil)

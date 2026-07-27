@@ -35,6 +35,7 @@ type resources struct {
 	URLs          *URLsResource
 	Videos        *VideosResource
 	Webhooks      *WebhooksResource
+	WhatsApp      *WhatsAppResource
 	Workspaces    *WorkspacesResource
 }
 
@@ -65,6 +66,7 @@ func (c *Client) initResources() {
 	c.URLs = &URLsResource{client: c}
 	c.Videos = &VideosResource{client: c}
 	c.Webhooks = &WebhooksResource{client: c}
+	c.WhatsApp = &WhatsAppResource{client: c}
 	c.Workspaces = &WorkspacesResource{client: c}
 }
 
@@ -1859,6 +1861,51 @@ func (r *WebhooksResource) ListLogs(ctx context.Context, query map[string]string
 // POST /webhooks/{id}/test
 func (r *WebhooksResource) Test(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
 	return r.client.do(ctx, "POST", "/webhooks/"+url.PathEscape(id)+"/test", nil, nil, opts)
+}
+
+// WhatsAppResource groups the WhatsApp endpoints.
+type WhatsAppResource struct{ client *Client }
+
+// SendWhatsAppMessage - Send a WhatsApp message.
+//
+// POST /whatsapp/messages
+func (r *WhatsAppResource) SendWhatsAppMessage(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/whatsapp/messages", nil, body, opts)
+}
+
+// ListWhatsAppTemplates - List message templates.
+//
+// GET /whatsapp/templates
+func (r *WhatsAppResource) ListWhatsAppTemplates(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/whatsapp/templates", query, nil, opts)
+}
+
+// CreateWhatsAppTemplate - Create a message template.
+//
+// POST /whatsapp/templates
+func (r *WhatsAppResource) CreateWhatsAppTemplate(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/whatsapp/templates", nil, body, opts)
+}
+
+// GetWhatsAppBusinessProfile - Get business profile.
+//
+// GET /whatsapp/business-profile
+func (r *WhatsAppResource) GetWhatsAppBusinessProfile(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/whatsapp/business-profile", query, nil, opts)
+}
+
+// UpdateWhatsAppBusinessProfile - Update business profile.
+//
+// PATCH /whatsapp/business-profile
+func (r *WhatsAppResource) UpdateWhatsAppBusinessProfile(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "PATCH", "/whatsapp/business-profile", nil, body, opts)
+}
+
+// ListWhatsAppPhoneNumbers - List phone numbers.
+//
+// GET /whatsapp/phone-numbers
+func (r *WhatsAppResource) ListWhatsAppPhoneNumbers(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/whatsapp/phone-numbers", query, nil, opts)
 }
 
 // WorkspacesResource groups the Workspaces endpoints.

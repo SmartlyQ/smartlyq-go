@@ -7565,7 +7565,10 @@
                         "conversation.started",
                         "reaction.received",
                         "review.new",
-                        "review.updated"
+                        "review.updated",
+                        "message.delivered",
+                        "message.read",
+                        "message.failed"
                       ]
                     },
                     "description": "Events to subscribe to. Must be from the 25-event catalog (see the webhooks object in this spec and the Webhooks guide)."
@@ -7784,7 +7787,10 @@
                         "conversation.started",
                         "reaction.received",
                         "review.new",
-                        "review.updated"
+                        "review.updated",
+                        "message.delivered",
+                        "message.read",
+                        "message.failed"
                       ]
                     },
                     "description": "Full replacement list of subscribed events."
@@ -7922,10 +7928,11 @@
                 "tumblr",
                 "gmb",
                 "discord",
-                "telegram"
+                "telegram",
+                "whatsapp"
               ]
             },
-            "description": "Platform to connect. All 15 platforms are supported (use `twitter` for X, `gmb` for Google Business). 14 are OAuth flows returning a `connect_url` (`discord` runs the server-webhook authorize flow). `telegram` is a CREDENTIAL connect instead: pass `bot_token` + `chat` in the body and the account connects immediately - no URL to open."
+            "description": "Platform to connect. All 15 platforms are supported (use `twitter` for X, `gmb` for Google Business). 14 are OAuth flows returning a `connect_url` (`discord` runs the server-webhook authorize flow). `telegram` is a CREDENTIAL connect instead: pass `bot_token` + `chat` in the body and the account connects immediately - no URL to open. `whatsapp` is a credential connect too: POST body { waba_id, phone_number_id, access_token } (a Meta system-user token) links one WhatsApp Business number."
           },
           {
             "$ref": "#/components/parameters/ProfileHeader"
@@ -27665,6 +27672,366 @@
           }
         }
       }
+    },
+    "/whatsapp/messages": {
+      "post": {
+        "summary": "Send a WhatsApp message",
+        "operationId": "sendWhatsAppMessage",
+        "description": "Send a message from a connected WhatsApp number. `text` and `media` are SESSION messages - deliverable only inside the 24-hour customer window (i.e. after the user messaged you). Outside it, only `template` (an approved HSM) is deliverable. Requires social:write.",
+        "tags": [
+          "WhatsApp"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "account_id",
+                  "to"
+                ],
+                "properties": {
+                  "account_id": {
+                    "type": "integer",
+                    "description": "A connected WhatsApp number (social account id)."
+                  },
+                  "to": {
+                    "type": "string",
+                    "description": "Recipient phone in E.164 (e.g. +14155551234)."
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "text",
+                      "media",
+                      "template"
+                    ],
+                    "default": "text"
+                  },
+                  "text": {
+                    "type": "string",
+                    "description": "Body for type=text."
+                  },
+                  "media": {
+                    "type": "object",
+                    "description": "For type=media.",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "enum": [
+                          "image",
+                          "video",
+                          "document",
+                          "audio"
+                        ]
+                      },
+                      "link": {
+                        "type": "string"
+                      },
+                      "caption": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "template": {
+                    "type": "object",
+                    "description": "For type=template.",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "language": {
+                        "type": "string",
+                        "default": "en_US"
+                      },
+                      "components": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "account_id": 42,
+                "to": "+14155551234",
+                "type": "text",
+                "text": "Thanks for reaching out!"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Sent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "message_id": "wamid.HBg...",
+                    "status": "sent"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "description": "WhatsApp rejected the message (e.g. outside the 24h window with no template)."
+          }
+        }
+      }
+    },
+    "/whatsapp/templates": {
+      "get": {
+        "summary": "List message templates",
+        "operationId": "listWhatsAppTemplates",
+        "description": "List the WhatsApp Business Account's message templates. Requires social:read.",
+        "tags": [
+          "WhatsApp"
+        ],
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "A connected WhatsApp number (social account id)."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Templates",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a message template",
+        "operationId": "createWhatsAppTemplate",
+        "description": "Submit a message template to Meta for approval. Requires social:write.",
+        "tags": [
+          "WhatsApp"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "account_id",
+                  "name",
+                  "category",
+                  "language",
+                  "components"
+                ],
+                "properties": {
+                  "account_id": {
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "category": {
+                    "type": "string",
+                    "enum": [
+                      "MARKETING",
+                      "UTILITY",
+                      "AUTHENTICATION"
+                    ]
+                  },
+                  "language": {
+                    "type": "string",
+                    "example": "en_US"
+                  },
+                  "components": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    },
+                    "description": "Header/body/footer/buttons per the WhatsApp template schema."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Submitted for approval",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/whatsapp/business-profile": {
+      "get": {
+        "summary": "Get business profile",
+        "operationId": "getWhatsAppBusinessProfile",
+        "description": "Read the number's WhatsApp business profile. Requires social:read.",
+        "tags": [
+          "WhatsApp"
+        ],
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "A connected WhatsApp number (social account id)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Profile",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update business profile",
+        "operationId": "updateWhatsAppBusinessProfile",
+        "description": "Update about/address/email/description/vertical/websites on the number's profile. Requires social:write.",
+        "tags": [
+          "WhatsApp"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "account_id"
+                ],
+                "properties": {
+                  "account_id": {
+                    "type": "integer"
+                  },
+                  "about": {
+                    "type": "string"
+                  },
+                  "address": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "vertical": {
+                    "type": "string"
+                  },
+                  "websites": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/whatsapp/phone-numbers": {
+      "get": {
+        "summary": "List phone numbers",
+        "operationId": "listWhatsAppPhoneNumbers",
+        "description": "List the phone numbers on this connection's WhatsApp Business Account. Requires social:read.",
+        "tags": [
+          "WhatsApp"
+        ],
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "A connected WhatsApp number (social account id)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Numbers",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -32415,6 +32782,156 @@
                       "created_at": {
                         "type": "string",
                         "format": "date-time"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Acknowledged."
+          }
+        }
+      }
+    },
+    "message.delivered": {
+      "post": {
+        "operationId": "webhookMessageDelivered",
+        "summary": "message.delivered",
+        "description": "An outbound message was delivered to the recipient (WhatsApp). Delivered as a signed HTTP POST; respond 2xx to acknowledge. Retries: 5 attempts, exponential backoff.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "event": {
+                    "type": "string",
+                    "const": "message.delivered"
+                  },
+                  "created_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "platform": {
+                        "type": "string"
+                      },
+                      "remote_message_id": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Acknowledged."
+          }
+        }
+      }
+    },
+    "message.read": {
+      "post": {
+        "operationId": "webhookMessageRead",
+        "summary": "message.read",
+        "description": "A recipient read an outbound message (WhatsApp). Delivered as a signed HTTP POST; respond 2xx to acknowledge. Retries: 5 attempts, exponential backoff.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "event": {
+                    "type": "string",
+                    "const": "message.read"
+                  },
+                  "created_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "platform": {
+                        "type": "string"
+                      },
+                      "remote_message_id": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Acknowledged."
+          }
+        }
+      }
+    },
+    "message.failed": {
+      "post": {
+        "operationId": "webhookMessageFailed",
+        "summary": "message.failed",
+        "description": "An outbound message failed to deliver (WhatsApp), with the platform error. Delivered as a signed HTTP POST; respond 2xx to acknowledge. Retries: 5 attempts, exponential backoff.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "event": {
+                    "type": "string",
+                    "const": "message.failed"
+                  },
+                  "created_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "platform": {
+                        "type": "string"
+                      },
+                      "remote_message_id": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "error": {
+                        "type": "object"
                       }
                     }
                   }

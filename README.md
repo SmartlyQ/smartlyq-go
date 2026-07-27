@@ -528,6 +528,17 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Webhooks.ListLogs(ctx, query)` | `GET /webhooks/logs` | List webhook delivery logs |
 | `client.Webhooks.Test(ctx, id)` | `POST /webhooks/{id}/test` | Send test webhook |
 
+### WhatsApp
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `client.WhatsApp.SendWhatsAppMessage(ctx, body)` | `POST /whatsapp/messages` | Send a WhatsApp message |
+| `client.WhatsApp.ListWhatsAppTemplates(ctx, query)` | `GET /whatsapp/templates` | List message templates |
+| `client.WhatsApp.CreateWhatsAppTemplate(ctx, body)` | `POST /whatsapp/templates` | Create a message template |
+| `client.WhatsApp.GetWhatsAppBusinessProfile(ctx, query)` | `GET /whatsapp/business-profile` | Get business profile |
+| `client.WhatsApp.UpdateWhatsAppBusinessProfile(ctx, body)` | `PATCH /whatsapp/business-profile` | Update business profile |
+| `client.WhatsApp.ListWhatsAppPhoneNumbers(ctx, query)` | `GET /whatsapp/phone-numbers` | List phone numbers |
+
 ### Workspaces
 
 | Method | Endpoint | Description |
