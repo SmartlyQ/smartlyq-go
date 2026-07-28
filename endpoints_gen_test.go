@@ -1320,6 +1320,13 @@ func TestSocialPinterestBoards(t *testing.T) {
 	})
 }
 
+func TestSocialCreatePinterestBoard(t *testing.T) {
+	assertEndpoint(t, "POST", "/social/accounts/test-accountId/pinterest/boards", func(c *Client) error {
+		_, err := c.Social.CreatePinterestBoard(context.Background(), "test-accountId", map[string]any{}, nil)
+		return err
+	})
+}
+
 func TestSocialYoutubePlaylists(t *testing.T) {
 	assertEndpoint(t, "GET", "/social/accounts/test-accountId/youtube/playlists", func(c *Client) error {
 		_, err := c.Social.YoutubePlaylists(context.Background(), "test-accountId", nil)
@@ -1656,6 +1663,48 @@ func TestSocialConnectSelect(t *testing.T) {
 	})
 }
 
+func TestSocialGetFacebookPage(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/facebook/page", func(c *Client) error {
+		_, err := c.Social.GetFacebookPage(context.Background(), "test-accountId", nil)
+		return err
+	})
+}
+
+func TestSocialUpdateFacebookPage(t *testing.T) {
+	assertEndpoint(t, "PATCH", "/social/accounts/test-accountId/facebook/page", func(c *Client) error {
+		_, err := c.Social.UpdateFacebookPage(context.Background(), "test-accountId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialUpdateYoutubePlaylist(t *testing.T) {
+	assertEndpoint(t, "PATCH", "/social/accounts/test-accountId/youtube/playlists/test-playlistId", func(c *Client) error {
+		_, err := c.Social.UpdateYoutubePlaylist(context.Background(), "test-accountId", "test-playlistId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialListMentions(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/mentions", func(c *Client) error {
+		_, err := c.Social.ListMentions(context.Background(), "test-accountId", nil, nil)
+		return err
+	})
+}
+
+func TestSocialReplyToMention(t *testing.T) {
+	assertEndpoint(t, "POST", "/social/accounts/test-accountId/mentions/test-mentionId/reply", func(c *Client) error {
+		_, err := c.Social.ReplyToMention(context.Background(), "test-accountId", "test-mentionId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialListRedditFlairs(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/reddit/subreddits/test-subreddit/flairs", func(c *Client) error {
+		_, err := c.Social.ListRedditFlairs(context.Background(), "test-accountId", "test-subreddit", nil)
+		return err
+	})
+}
+
 func TestURLsShorten(t *testing.T) {
 	assertEndpoint(t, "POST", "/urls/shorten", func(c *Client) error {
 		_, err := c.URLs.Shorten(context.Background(), map[string]any{}, nil)
@@ -1890,6 +1939,20 @@ func TestWhatsAppGetDisplayName(t *testing.T) {
 func TestWhatsAppUpdateDisplayName(t *testing.T) {
 	assertEndpoint(t, "POST", "/whatsapp/business-profile/display-name", func(c *Client) error {
 		_, err := c.WhatsApp.UpdateDisplayName(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestWhatsAppListTemplateLibrary(t *testing.T) {
+	assertEndpoint(t, "GET", "/whatsapp/template-library", func(c *Client) error {
+		_, err := c.WhatsApp.ListTemplateLibrary(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestWhatsAppCreateTemplateFromLibrary(t *testing.T) {
+	assertEndpoint(t, "POST", "/whatsapp/templates/from-library", func(c *Client) error {
+		_, err := c.WhatsApp.CreateTemplateFromLibrary(context.Background(), map[string]any{}, nil)
 		return err
 	})
 }

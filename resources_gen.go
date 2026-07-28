@@ -1432,6 +1432,13 @@ func (r *SocialResource) PinterestBoards(ctx context.Context, accountId string, 
 	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/pinterest/boards", nil, nil, opts)
 }
 
+// CreatePinterestBoard - Create a Pinterest board.
+//
+// POST /social/accounts/{account_id}/pinterest/boards
+func (r *SocialResource) CreatePinterestBoard(ctx context.Context, accountId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/social/accounts/"+url.PathEscape(accountId)+"/pinterest/boards", nil, body, opts)
+}
+
 // YoutubePlaylists - YouTube playlists.
 //
 // GET /social/accounts/{account_id}/youtube/playlists
@@ -1768,6 +1775,48 @@ func (r *SocialResource) ConnectSelect(ctx context.Context, accountId string, bo
 	return r.client.do(ctx, "POST", "/social/accounts/"+url.PathEscape(accountId)+"/connect-select", nil, body, opts)
 }
 
+// GetFacebookPage - Get Facebook page details.
+//
+// GET /social/accounts/{account_id}/facebook/page
+func (r *SocialResource) GetFacebookPage(ctx context.Context, accountId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/facebook/page", nil, nil, opts)
+}
+
+// UpdateFacebookPage - Update Facebook page details.
+//
+// PATCH /social/accounts/{account_id}/facebook/page
+func (r *SocialResource) UpdateFacebookPage(ctx context.Context, accountId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "PATCH", "/social/accounts/"+url.PathEscape(accountId)+"/facebook/page", nil, body, opts)
+}
+
+// UpdateYoutubePlaylist - Update a YouTube playlist.
+//
+// PATCH /social/accounts/{account_id}/youtube/playlists/{playlist_id}
+func (r *SocialResource) UpdateYoutubePlaylist(ctx context.Context, accountId string, playlistId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "PATCH", "/social/accounts/"+url.PathEscape(accountId)+"/youtube/playlists/"+url.PathEscape(playlistId), nil, body, opts)
+}
+
+// ListMentions - List mentions.
+//
+// GET /social/accounts/{account_id}/mentions
+func (r *SocialResource) ListMentions(ctx context.Context, accountId string, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/mentions", query, nil, opts)
+}
+
+// ReplyToMention - Reply to a mention.
+//
+// POST /social/accounts/{account_id}/mentions/{mention_id}/reply
+func (r *SocialResource) ReplyToMention(ctx context.Context, accountId string, mentionId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/social/accounts/"+url.PathEscape(accountId)+"/mentions/"+url.PathEscape(mentionId)+"/reply", nil, body, opts)
+}
+
+// ListRedditFlairs - List subreddit post flairs.
+//
+// GET /social/accounts/{account_id}/reddit/subreddits/{subreddit}/flairs
+func (r *SocialResource) ListRedditFlairs(ctx context.Context, accountId string, subreddit string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/reddit/subreddits/"+url.PathEscape(subreddit)+"/flairs", nil, nil, opts)
+}
+
 // URLsResource groups the URLs endpoints.
 type URLsResource struct{ client *Client }
 
@@ -2016,6 +2065,20 @@ func (r *WhatsAppResource) GetDisplayName(ctx context.Context, query map[string]
 // POST /whatsapp/business-profile/display-name
 func (r *WhatsAppResource) UpdateDisplayName(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
 	return r.client.do(ctx, "POST", "/whatsapp/business-profile/display-name", nil, body, opts)
+}
+
+// ListTemplateLibrary - Browse the shared template library.
+//
+// GET /whatsapp/template-library
+func (r *WhatsAppResource) ListTemplateLibrary(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/whatsapp/template-library", query, nil, opts)
+}
+
+// CreateTemplateFromLibrary - Adopt a library template.
+//
+// POST /whatsapp/templates/from-library
+func (r *WhatsAppResource) CreateTemplateFromLibrary(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/whatsapp/templates/from-library", nil, body, opts)
 }
 
 // WorkspacesResource groups the Workspaces endpoints.

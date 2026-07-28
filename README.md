@@ -456,6 +456,7 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Social.UpdateConversation(ctx, conversationId, body)` | `PATCH /social/conversations/{conversation_id}` | Archive / reopen conversation |
 | `client.Social.SearchConversations(ctx, query)` | `GET /social/conversations/search` | Search conversations |
 | `client.Social.PinterestBoards(ctx, accountId)` | `GET /social/accounts/{account_id}/pinterest/boards` | Pinterest boards |
+| `client.Social.CreatePinterestBoard(ctx, accountId, body)` | `POST /social/accounts/{account_id}/pinterest/boards` | Create a Pinterest board |
 | `client.Social.YoutubePlaylists(ctx, accountId)` | `GET /social/accounts/{account_id}/youtube/playlists` | YouTube playlists |
 | `client.Social.InstagramPublishingLimit(ctx, accountId)` | `GET /social/accounts/{account_id}/instagram/publishing-limit` | Instagram publishing limit |
 | `client.Social.GmbPerformance(ctx, accountId, query)` | `GET /social/accounts/{account_id}/gmb/performance` | Google Business performance |
@@ -504,6 +505,12 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Social.InstagramAudience(ctx, accountId, query)` | `GET /social/accounts/{account_id}/instagram/audience` | Instagram audience demographics |
 | `client.Social.ConnectOptions(ctx, accountId)` | `GET /social/accounts/{account_id}/connect-options` | Connection target options |
 | `client.Social.ConnectSelect(ctx, accountId, body)` | `POST /social/accounts/{account_id}/connect-select` | Select connection target |
+| `client.Social.GetFacebookPage(ctx, accountId)` | `GET /social/accounts/{account_id}/facebook/page` | Get Facebook page details |
+| `client.Social.UpdateFacebookPage(ctx, accountId, body)` | `PATCH /social/accounts/{account_id}/facebook/page` | Update Facebook page details |
+| `client.Social.UpdateYoutubePlaylist(ctx, accountId, playlistId, body)` | `PATCH /social/accounts/{account_id}/youtube/playlists/{playlist_id}` | Update a YouTube playlist |
+| `client.Social.ListMentions(ctx, accountId, query)` | `GET /social/accounts/{account_id}/mentions` | List mentions |
+| `client.Social.ReplyToMention(ctx, accountId, mentionId, body)` | `POST /social/accounts/{account_id}/mentions/{mention_id}/reply` | Reply to a mention |
+| `client.Social.ListRedditFlairs(ctx, accountId, subreddit)` | `GET /social/accounts/{account_id}/reddit/subreddits/{subreddit}/flairs` | List subreddit post flairs |
 
 ### URLs
 
@@ -558,6 +565,8 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.WhatsApp.UpdateProfilePhoto(ctx, body)` | `POST /whatsapp/business-profile/photo` | Set the WhatsApp profile photo |
 | `client.WhatsApp.GetDisplayName(ctx, query)` | `GET /whatsapp/business-profile/display-name` | Get the WhatsApp display name |
 | `client.WhatsApp.UpdateDisplayName(ctx, body)` | `POST /whatsapp/business-profile/display-name` | Request a WhatsApp display-name change |
+| `client.WhatsApp.ListTemplateLibrary(ctx, query)` | `GET /whatsapp/template-library` | Browse the shared template library |
+| `client.WhatsApp.CreateTemplateFromLibrary(ctx, body)` | `POST /whatsapp/templates/from-library` | Adopt a library template |
 
 ### Workspaces
 

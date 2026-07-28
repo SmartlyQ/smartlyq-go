@@ -20399,6 +20399,113 @@
             }
           }
         }
+      },
+      "post": {
+        "summary": "Create a Pinterest board",
+        "operationId": "createPinterestBoard",
+        "tags": [
+          "Social"
+        ],
+        "description": "Create a board to pin into. Listing the existing boards is the GET on this same path.\n\nRequires scope `social:write`. If the account was connected before SmartlyQ requested the permission this call needs, it answers `403 CONNECTION_SCOPE_MISSING` with `reconnect_required: true` - reconnect the account to fix it.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Connected social account id."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "privacy": {
+                    "type": "string",
+                    "enum": [
+                      "PUBLIC",
+                      "PROTECTED",
+                      "SECRET"
+                    ],
+                    "default": "PUBLIC"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Board created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "board": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "privacy": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
       }
     },
     "/social/accounts/{account_id}/youtube/playlists": {
@@ -29738,6 +29845,811 @@
                           "type": "string"
                         },
                         "end_date": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/social/accounts/{account_id}/facebook/page": {
+      "get": {
+        "summary": "Get Facebook page details",
+        "operationId": "getFacebookPage",
+        "tags": [
+          "Social"
+        ],
+        "description": "The page's own profile - name, about, description, category, contact details, address, opening hours, follower counts and publish state. These are the fields a management screen shows and edits; the performance numbers live on `/facebook/page-insights`.\n\nRequires scope `social:read`. If the account was connected before SmartlyQ requested the permission this call needs, it answers `403 CONNECTION_SCOPE_MISSING` with `reconnect_required: true` - reconnect the account to fix it.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Connected social account id."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Page details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "page": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update Facebook page details",
+        "operationId": "updateFacebookPage",
+        "tags": [
+          "Social"
+        ],
+        "description": "Edit the page's public details. Send only the fields you want to change.\n\nNeeds the page-metadata permission on the connection. Pages connected through an older flow that never requested it get `reconnect_required` rather than a silent no-op.\n\nRequires scope `social:write`.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Connected social account id."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "about": {
+                    "type": "string",
+                    "description": "Short description shown under the page name."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Long description."
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "website": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "emails": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "hours": {
+                    "type": "object",
+                    "description": "Opening hours keyed the way Facebook expects, e.g. mon_1_open / mon_1_close."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Page updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "updated": {
+                          "type": "boolean"
+                        },
+                        "fields": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "description": "Fields that were sent."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/social/accounts/{account_id}/youtube/playlists/{playlist_id}": {
+      "patch": {
+        "summary": "Update a YouTube playlist",
+        "operationId": "updateYoutubePlaylist",
+        "tags": [
+          "Social"
+        ],
+        "description": "Rename a playlist, change its description, or change who can see it. Send only what you want to change: YouTube's own update replaces every field you submit, so SmartlyQ reads the playlist first and merges, rather than blanking the fields you left out.\n\nRequires scope `social:write`. If the account was connected before SmartlyQ requested the permission this call needs, it answers `403 CONNECTION_SCOPE_MISSING` with `reconnect_required: true` - reconnect the account to fix it.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Connected social account id."
+          },
+          {
+            "name": "playlist_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Playlist id from GET /social/accounts/{account_id}/youtube/playlists."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "privacy_status": {
+                    "type": "string",
+                    "enum": [
+                      "public",
+                      "private",
+                      "unlisted"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Playlist updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "playlist": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "title": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "privacy_status": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/social/accounts/{account_id}/mentions": {
+      "get": {
+        "summary": "List mentions",
+        "operationId": "listMentions",
+        "tags": [
+          "Social"
+        ],
+        "description": "Posts where this account was tagged. Facebook pages return posts they were tagged in; Instagram returns media the account was @-mentioned in. X has its own richer endpoint at `/social/accounts/{account_id}/x/mentions`.\n\nRequires scope `social:read`. If the account was connected before SmartlyQ requested the permission this call needs, it answers `403 CONNECTION_SCOPE_MISSING` with `reconnect_required: true` - reconnect the account to fix it.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Connected social account id."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Mentions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "mentions": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "platform": {
+                                "type": "string"
+                              },
+                              "text": {
+                                "type": "string"
+                              },
+                              "author": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "created_at": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "url": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "media_url": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/social/accounts/{account_id}/mentions/{mention_id}/reply": {
+      "post": {
+        "summary": "Reply to a mention",
+        "operationId": "replyToMention",
+        "tags": [
+          "Social"
+        ],
+        "description": "Reply publicly to a mention. On Facebook this comments on the tagged post; on Instagram it goes through the mentions edge, which is how Meta expects a business to answer a tag.\n\nRequires scope `social:write`. If the account was connected before SmartlyQ requested the permission this call needs, it answers `403 CONNECTION_SCOPE_MISSING` with `reconnect_required: true` - reconnect the account to fix it.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Connected social account id."
+          },
+          {
+            "name": "mention_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Mention id from GET /social/accounts/{account_id}/mentions."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "message"
+                ],
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Reply posted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "replied": {
+                          "type": "boolean"
+                        },
+                        "mention_id": {
+                          "type": "string"
+                        },
+                        "reply_id": {
+                          "type": "string",
+                          "nullable": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/social/accounts/{account_id}/reddit/subreddits/{subreddit}/flairs": {
+      "get": {
+        "summary": "List subreddit post flairs",
+        "operationId": "listRedditFlairs",
+        "tags": [
+          "Social"
+        ],
+        "description": "The post flairs a subreddit offers. Many subreddits reject a submission that has no flair, so read this first and pass the id back as `platform_options.reddit.flair_id` when you post.\n\nSubreddits that expose no flairs, or restrict them to moderators, return an empty list - that is a normal answer, not a failure. Requires scope `social:read`.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Connected social account id."
+          },
+          {
+            "name": "subreddit",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Subreddit name, with or without the r/ prefix."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Flairs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "subreddit": {
+                          "type": "string"
+                        },
+                        "flairs": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "text": {
+                                "type": "string"
+                              },
+                              "text_editable": {
+                                "type": "boolean"
+                              },
+                              "background_color": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "text_color": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "mod_only": {
+                                "type": "boolean"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/whatsapp/template-library": {
+      "get": {
+        "summary": "Browse the shared template library",
+        "operationId": "listWhatsappTemplateLibrary",
+        "tags": [
+          "WhatsApp"
+        ],
+        "description": "Meta's library of prewritten, pre-approved message templates. Adopting one skips the draft-and-wait-for-review cycle, so it is worth browsing before writing a template by hand. Adopt an entry with `POST /whatsapp/templates/from-library`.\n\nRequires scope `social:read`.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "A connected WhatsApp number (social account id)."
+          },
+          {
+            "name": "topic",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "industry",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Library entries",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "templates": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        },
+                        "paging": {
+                          "type": "object",
+                          "nullable": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/whatsapp/templates/from-library": {
+      "post": {
+        "summary": "Adopt a library template",
+        "operationId": "createWhatsappTemplateFromLibrary",
+        "tags": [
+          "WhatsApp"
+        ],
+        "description": "Create a template on your WhatsApp Business Account from a library entry. Meta clones the prewritten body under the name you choose; anything the entry leaves open, such as button URLs, is passed through from this request.\n\nRequires scope `social:write`.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "account_id",
+                  "library_template_name",
+                  "name",
+                  "language"
+                ],
+                "properties": {
+                  "account_id": {
+                    "type": "integer",
+                    "description": "A connected WhatsApp number (social account id)."
+                  },
+                  "library_template_name": {
+                    "type": "string",
+                    "description": "Entry name from GET /whatsapp/template-library."
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "The name your template will have on your WABA."
+                  },
+                  "language": {
+                    "type": "string",
+                    "description": "Language code, e.g. en_US."
+                  },
+                  "category": {
+                    "type": "string",
+                    "enum": [
+                      "MARKETING",
+                      "UTILITY",
+                      "AUTHENTICATION"
+                    ],
+                    "default": "UTILITY"
+                  },
+                  "library_template_button_inputs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    },
+                    "description": "Values for buttons the library entry leaves open."
+                  },
+                  "message_send_ttl_seconds": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Template created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "status": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "name": {
                           "type": "string"
                         }
                       }
