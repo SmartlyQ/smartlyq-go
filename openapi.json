@@ -3,7 +3,7 @@
   "info": {
     "title": "SmartlyQ API",
     "version": "1.0.0",
-    "description": "# SmartlyQ API\n\nREST API for the SmartlyQ platform: generate content, manage social posts, chatbots, media, and more.\n\n## Quick Start\n\n1. Get an API key from [app.smartlyq.com/my/developer](https://app.smartlyq.com/my/developer).\n2. Send your first request:\n\n```bash\ncurl -H \"Authorization: Bearer YOUR_API_KEY\" https://api.smartlyq.com/v1/me\n```\n\n## Idempotency\n\nEvery `POST`/`PUT`/`PATCH` endpoint supports safe retries: send an `X-Idempotency-Key` header (any unique string, e.g. a UUID). If the same key is replayed within 24 hours with the same request, you get the original response back - the action never runs twice, and you are never double-billed. Reusing a key with a *different* body or endpoint returns `409 IDEMPOTENCY_CONFLICT`.\n\n```bash\ncurl -X POST https://api.smartlyq.com/v1/social/posts/schedule \\\n  -H \"Authorization: Bearer sqk_live_xxxx\" \\\n  -H \"X-Idempotency-Key: 5f0c9a4e-2b7d-4d1a-9c58-e2ff10c3a771\" \\\n  -d '{...}'\n```\n\n## Authentication\n\nAll requests (except health/docs) require a **Bearer token**. Use your API key as the token:\n\n- **Key types:** `sqk_live_*` (live) or `sqk_test_*` (test/sandbox).\n- **Header:** `Authorization: Bearer sqk_live_xxxx` or `Authorization: Bearer sqk_test_xxxx`.\n\n| Scope | Description |\n|-------|-------------|\n| `articles:read` | List and get articles |\n| `articles:write` | Generate, delete articles |\n| `images:read` | List and get images |\n| `images:write` | Generate, delete images |\n| `videos:read` | List and get videos |\n| `videos:write` | Generate, delete videos |\n| `presentations:read` | List and get presentations |\n| `presentations:write` | Generate presentations |\n| `social:read` | Accounts (health, follower stats, platform lookups), posts, queues, comments, DMs, reviews, pre-flight validation, Reddit research |\n| `social:write` | Create/schedule/bulk posts, recycling, unpublish, queues, reply to comments/DMs/reviews, account rename/move, account groups |\n| `audio:read` | Get audio resources |\n| `audio:write` | Text-to-speech, speech-to-text |\n| `urls:read` | List and get short URLs and stats |\n| `urls:write` | Shorten, delete URLs |\n| `captain:use` | AI Captain messages and conversations |\n| `chatbot:use` | Chatbots, train, messages, conversations |\n| `media:read` | List and get media |\n| `media:write` | Upload, delete media |\n| `analytics:read` | Overview, post and account analytics, derived insights (best-time, decay, frequency), inbox analytics |\n| `jobs:read` | List and get async jobs, cancel |\n| `seo:read` | Keyword research, SERP, rank tracking, competitors, backlinks, on-page audits |\n| `contacts:read` | List and get CRM contacts, tags, notes; list automations and their runs |\n| `contacts:write` | Create/update/delete contacts (single or bulk); tags and notes; enroll in, activate and trigger automations |\n| `opportunities:read` | List pipelines and deals/opportunities |\n| `opportunities:write` | Create/update deals, move stages, set status |\n| `webhooks:read` | List webhooks and delivery logs |\n| `webhooks:write` | Create, update, test and delete webhooks |\n| `workspaces:read` | List and get sub-account workspaces |\n| `workspaces:write` | Create, disable SaaS, and delete sub-account workspaces |\n| `workspaces:bulk` | Apply pause / resume / disable-SaaS to many sub-accounts at once (high-trust; requires an active SaaS plan) |\n\n## Billing & Credits\n\n- **Prepaid wallet:** API usage is deducted from your Developer API wallet (credits in SQC).\n- **Pricing:** See the [pricing table](https://smartlyq.com/pricing) and in-app Developer dashboard for per-operation costs.\n- **How it works:** Each billable request (e.g. generate, post, chatbot message) consumes credits; response may include `usage` with `cost` and `balance_remaining`.\n- **Top up:** Add credits via [app.smartlyq.com/my/developer](https://app.smartlyq.com/my/developer) (wallet / top-up).\n\n## Rate Limiting\n\nLimits apply per API key (and may be enforced per user or IP). Default is 60 requests per minute per key (overridable per key).\n\nResponse headers:\n\n| Header | Description |\n|--------|-------------|\n| `X-RateLimit-Limit` | Max requests per window |\n| `X-RateLimit-Remaining` | Remaining in current window |\n| `X-RateLimit-Reset` | Unix timestamp when the window resets |\n\nWhen exceeded: HTTP `429` with `Retry-After` header.\n\n## Errors\n\nErrors are JSON with a consistent shape:\n\n```json\n{\n  \"success\": false,\n  \"error\": {\n    \"code\": \"ERROR_CODE\",\n    \"message\": \"Human-readable message\",\n    \"details\": {}\n  },\n  \"meta\": { \"request_id\": \"...\", \"timestamp\": \"...\" }\n}\n```\n\n| HTTP | Code | Meaning |\n|-----|------|---------|\n| 400 | `BAD_REQUEST` | Malformed or invalid request |\n| 401 | `UNAUTHORIZED` | Missing or invalid API key |\n| 402 | `INSUFFICIENT_BALANCE` | Not enough credits |\n| 403 | `FORBIDDEN` | Valid key but insufficient scope or access |\n| 404 | `RESOURCE_NOT_FOUND` | Resource does not exist |\n| 409 | `CONFLICT` | Conflict (e.g. duplicate idempotency) |\n| 422 | `VALIDATION_ERROR` | Validation failed (fields in details) |\n| 429 | `RATE_LIMIT_EXCEEDED` | Too many requests |\n| 500 | `INTERNAL_ERROR` | Server error |\n\n## Async Jobs & Polling\n\nSome operations (e.g. article or video generation) return **HTTP 202 Accepted** with a `job_id`. Poll for status:\n\n- **Poll:** `GET /jobs/{job_id}` until `status` is `completed`, `failed`, or `cancelled`.\n- Response includes `result` or `error` when finished.\n\n## Webhooks\n\nConfigure webhook URLs in the Developer dashboard. We send HTTP POST to your URL with a signed payload.\n\n- **Verification:** Validate signature using your webhook secret (see dashboard).\n- **Events:** 25 events across posting, accounts, inbox, jobs, billing, and CRM - e.g. `post.published`, `comment.received`, `contact.created`. Full catalog with payload schemas: the `webhooks` object in this spec and the [Webhooks guide](https://docs.smartlyq.com/guides/webhooks).\n\n## Idempotency\n\nFor POST/PUT/PATCH, send **`X-Idempotency-Key`** (unique value per logical operation). Within 24 hours, the same key returns the same response without re-executing.\n\n## Pagination\n\n- **Offset:** `page` (1-based) and `per_page` (default 20, max 100).\n- Response includes `pagination` with `page`, `per_page`, `total`, `pages`.\n\n## Versioning\n\nCurrent version is **v1**. Base path: `https://api.smartlyq.com/v1`. Future versions will use new path prefixes (e.g. `/v2/`).\n",
+    "description": "# SmartlyQ API\n\nREST API for the SmartlyQ platform: generate content, manage social posts, chatbots, media, and more.\n\n## Quick Start\n\n1. Get an API key from [app.smartlyq.com/my/developer](https://app.smartlyq.com/my/developer).\n2. Send your first request:\n\n```bash\ncurl -H \"Authorization: Bearer YOUR_API_KEY\" https://api.smartlyq.com/v1/me\n```\n\n## Idempotency\n\nEvery `POST`/`PUT`/`PATCH` endpoint supports safe retries: send an `X-Idempotency-Key` header (any unique string, e.g. a UUID). If the same key is replayed within 24 hours with the same request, you get the original response back - the action never runs twice, and you are never double-billed. Reusing a key with a *different* body or endpoint returns `409 IDEMPOTENCY_CONFLICT`.\n\n```bash\ncurl -X POST https://api.smartlyq.com/v1/social/posts/schedule \\\n  -H \"Authorization: Bearer sqk_live_xxxx\" \\\n  -H \"X-Idempotency-Key: 5f0c9a4e-2b7d-4d1a-9c58-e2ff10c3a771\" \\\n  -d '{...}'\n```\n\n## Authentication\n\nAll requests (except health/docs) require a **Bearer token**. Use your API key as the token:\n\n- **Key types:** `sqk_live_*` (live) or `sqk_test_*` (test/sandbox).\n- **Header:** `Authorization: Bearer sqk_live_xxxx` or `Authorization: Bearer sqk_test_xxxx`.\n\n| Scope | Description |\n|-------|-------------|\n| `articles:read` | List and get articles |\n| `articles:write` | Generate, delete articles |\n| `images:read` | List and get images |\n| `images:write` | Generate, delete images |\n| `videos:read` | List and get videos |\n| `videos:write` | Generate, delete videos |\n| `presentations:read` | List and get presentations |\n| `presentations:write` | Generate presentations |\n| `social:read` | Accounts (health, follower stats, platform lookups), posts, queues, comments, DMs, reviews, pre-flight validation, Reddit research |\n| `social:write` | Create/schedule/bulk posts, recycling, unpublish, queues, reply to comments/DMs/reviews, account rename/move, account groups |\n| `audio:read` | Get audio resources |\n| `audio:write` | Text-to-speech, speech-to-text |\n| `urls:read` | List and get short URLs and stats |\n| `urls:write` | Shorten, delete URLs |\n| `captain:use` | AI Captain messages and conversations |\n| `chatbot:use` | Chatbots, train, messages, conversations |\n| `media:read` | List and get media |\n| `media:write` | Upload, delete media |\n| `analytics:read` | Overview, post and account analytics, derived insights (best-time, decay, frequency), inbox analytics |\n| `jobs:read` | List and get async jobs, cancel |\n| `seo:read` | Keyword research, SERP, rank tracking, competitors, backlinks, on-page audits |\n| `contacts:read` | List and get CRM contacts, tags, notes; list automations and their runs |\n| `contacts:write` | Create/update/delete contacts (single or bulk); tags and notes; enroll in, activate and trigger automations |\n| `opportunities:read` | List pipelines and deals/opportunities |\n| `opportunities:write` | Create/update deals, move stages, set status |\n| `webhooks:read` | List webhooks and delivery logs |\n| `webhooks:write` | Create, update, test and delete webhooks |\n| `logs:read` | Read your API request + webhook delivery logs |\n| `workspaces:read` | List and get sub-account workspaces |\n| `workspaces:write` | Create, disable SaaS, and delete sub-account workspaces |\n| `workspaces:bulk` | Apply pause / resume / disable-SaaS to many sub-accounts at once (high-trust; requires an active SaaS plan) |\n\n## Billing & Credits\n\n- **Prepaid wallet:** API usage is deducted from your Developer API wallet (credits in SQC).\n- **Pricing:** See the [pricing table](https://smartlyq.com/pricing) and in-app Developer dashboard for per-operation costs.\n- **How it works:** Each billable request (e.g. generate, post, chatbot message) consumes credits; response may include `usage` with `cost` and `balance_remaining`.\n- **Top up:** Add credits via [app.smartlyq.com/my/developer](https://app.smartlyq.com/my/developer) (wallet / top-up).\n\n## Rate Limiting\n\nLimits apply per API key (and may be enforced per user or IP). Default is 60 requests per minute per key (overridable per key).\n\nResponse headers:\n\n| Header | Description |\n|--------|-------------|\n| `X-RateLimit-Limit` | Max requests per window |\n| `X-RateLimit-Remaining` | Remaining in current window |\n| `X-RateLimit-Reset` | Unix timestamp when the window resets |\n\nWhen exceeded: HTTP `429` with `Retry-After` header.\n\n## Errors\n\nErrors are JSON with a consistent shape:\n\n```json\n{\n  \"success\": false,\n  \"error\": {\n    \"code\": \"ERROR_CODE\",\n    \"message\": \"Human-readable message\",\n    \"details\": {}\n  },\n  \"meta\": { \"request_id\": \"...\", \"timestamp\": \"...\" }\n}\n```\n\n| HTTP | Code | Meaning |\n|-----|------|---------|\n| 400 | `BAD_REQUEST` | Malformed or invalid request |\n| 401 | `UNAUTHORIZED` | Missing or invalid API key |\n| 402 | `INSUFFICIENT_BALANCE` | Not enough credits |\n| 403 | `FORBIDDEN` | Valid key but insufficient scope or access |\n| 404 | `RESOURCE_NOT_FOUND` | Resource does not exist |\n| 409 | `CONFLICT` | Conflict (e.g. duplicate idempotency) |\n| 422 | `VALIDATION_ERROR` | Validation failed (fields in details) |\n| 429 | `RATE_LIMIT_EXCEEDED` | Too many requests |\n| 500 | `INTERNAL_ERROR` | Server error |\n\n## Async Jobs & Polling\n\nSome operations (e.g. article or video generation) return **HTTP 202 Accepted** with a `job_id`. Poll for status:\n\n- **Poll:** `GET /jobs/{job_id}` until `status` is `completed`, `failed`, or `cancelled`.\n- Response includes `result` or `error` when finished.\n\n## Webhooks\n\nConfigure webhook URLs in the Developer dashboard. We send HTTP POST to your URL with a signed payload.\n\n- **Verification:** Validate signature using your webhook secret (see dashboard).\n- **Events:** 25 events across posting, accounts, inbox, jobs, billing, and CRM - e.g. `post.published`, `comment.received`, `contact.created`. Full catalog with payload schemas: the `webhooks` object in this spec and the [Webhooks guide](https://docs.smartlyq.com/guides/webhooks).\n\n## Idempotency\n\nFor POST/PUT/PATCH, send **`X-Idempotency-Key`** (unique value per logical operation). Within 24 hours, the same key returns the same response without re-executing.\n\n## Pagination\n\n- **Offset:** `page` (1-based) and `per_page` (default 20, max 100).\n- Response includes `pagination` with `page`, `per_page`, `total`, `pages`.\n\n## Versioning\n\nCurrent version is **v1**. Base path: `https://api.smartlyq.com/v1`. Future versions will use new path prefixes (e.g. `/v2/`).\n",
     "contact": {
       "name": "SmartlyQ Support",
       "url": "https://smartlyq.com",
@@ -117,6 +117,14 @@
     {
       "name": "Presentations",
       "description": "AI presentation (slide deck) generation from a prompt"
+    },
+    {
+      "name": "Logs",
+      "description": "Your own API request and webhook delivery history."
+    },
+    {
+      "name": "WhatsApp",
+      "description": "WhatsApp Business Cloud messaging, templates and business profile."
     }
   ],
   "paths": {
@@ -7901,7 +7909,7 @@
     "/social/connect/{platform}": {
       "post": {
         "summary": "Start headless account connection",
-        "description": "Begin connecting a NEW social account from your own UI (no SmartlyQ dashboard session needed). Returns a one-time `connect_url` (valid 15 minutes) — open it in a browser so the user can authorize. After they approve, the platform's OAuth callback completes the connection and (if provided) redirects to `return_url` with `?connected=<count>&platform=<name>`. Supported on all platforms. Platforms that expose multiple targets (YouTube channels, Google Business locations, Tumblr blogs, LinkedIn pages) connect them all automatically. Poll completion with `GET /social/connect/{state_token}`. Requires scope `social:write`.",
+        "description": "Begin connecting a NEW social account from your own UI (no SmartlyQ dashboard session needed). Returns a one-time `connect_url` (valid 15 minutes) — open it in a browser so the user can authorize. After they approve, the platform's OAuth callback completes the connection and (if provided) redirects to `return_url` with `?connected=<count>&platform=<name>`. Supported on all platforms. Platforms that expose multiple targets (YouTube channels, Google Business locations, Tumblr blogs, LinkedIn pages) connect them all automatically. Poll completion with `GET /social/connect/{state_token}`. Requires scope `social:write`.\n\nSome platforms connect with credentials instead of a browser round trip, and return the connected account directly rather than a `connect_url`: Telegram (`bot_token` + `chat`), WhatsApp (`waba_id` + `phone_number_id` + `access_token`) and Bluesky (`identifier` + `app_password`).",
         "operationId": "connectSocialAccount",
         "tags": [
           "Social"
@@ -7957,6 +7965,26 @@
                   "chat": {
                     "type": "string",
                     "description": "Telegram only (required for it): the target channel/group as `@channelusername` or a numeric chat id. Private chats are rejected."
+                  },
+                  "identifier": {
+                    "type": "string",
+                    "description": "Bluesky only: your handle (e.g. yourname.bsky.social), DID, or account email. Send it with `app_password` to connect without a browser."
+                  },
+                  "app_password": {
+                    "type": "string",
+                    "description": "Bluesky only: an app password generated in Bluesky settings (format xxxx-xxxx-xxxx-xxxx) - never your account password, which is rejected. Supplying this connects the account immediately instead of returning a connect_url."
+                  },
+                  "waba_id": {
+                    "type": "string",
+                    "description": "WhatsApp only (required for it): your WhatsApp Business Account id."
+                  },
+                  "phone_number_id": {
+                    "type": "string",
+                    "description": "WhatsApp only (required for it): the phone number id to connect, from the WABA."
+                  },
+                  "access_token": {
+                    "type": "string",
+                    "description": "WhatsApp only (required for it): a system-user access token with whatsapp_business_messaging and whatsapp_business_management. Stored encrypted."
                   }
                 }
               }
@@ -27677,7 +27705,7 @@
       "post": {
         "summary": "Send a WhatsApp message",
         "operationId": "sendWhatsAppMessage",
-        "description": "Send a message from a connected WhatsApp number. `text`, `media`, `interactive_buttons`, `interactive_list`, `location`, and `contacts` are SESSION messages - deliverable only inside the 24-hour customer window (i.e. after the user messaged you). Outside it, only `template` (an approved HSM) is deliverable. `context_message_id` (any type except `contacts`) threads the message as a reply under a prior WhatsApp message id, rendering as a quoted reply in the customer's app. Requires social:write.",
+        "description": "Send a message from a connected WhatsApp number. `text`, `media`, `interactive_buttons`, `interactive_list`, `location`, and `contacts` are SESSION messages - deliverable only inside the 24-hour customer window (i.e. after the user messaged you). Outside it, only `template` (an approved HSM) is deliverable. `context_message_id` (any type except `contacts`) threads the message as a reply under a prior WhatsApp message id, rendering as a quoted reply in the customer's app. Requires social:write.\n\nBilled per message from your API wallet, in addition to your plan's monthly WhatsApp send limit. The `usage` block on the response reports units, cost and remaining balance.",
         "tags": [
           "WhatsApp"
         ],
@@ -28244,6 +28272,1495 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/logs": {
+      "get": {
+        "summary": "List developer logs",
+        "operationId": "listLogs",
+        "tags": [
+          "Logs"
+        ],
+        "description": "Your workspace's own request history: API calls and webhook delivery attempts merged into one time-ordered feed, newest first, with 90-day retention. `source` tells the two apart and decides which fields are populated - API rows carry method/endpoint/timing/cost, webhook rows carry event/attempt/status.\n\nRequest and response bodies are omitted unless you pass `include_payloads=true`: they contain whatever was sent, so they are opt-in rather than returned in every page.\n\nRequires scope `logs:read`.",
+        "parameters": [
+          {
+            "name": "source",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "api",
+                "webhook"
+              ]
+            },
+            "description": "Limit to one stream."
+          },
+          {
+            "name": "endpoint",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Substring match on the endpoint path (API rows) or event name (webhook rows)."
+          },
+          {
+            "name": "status_code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Exact HTTP status. Pins results to API rows."
+          },
+          {
+            "name": "result",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "errors",
+                "success"
+              ]
+            },
+            "description": "Only failures, or only successes."
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Activity type filter, e.g. social, images, videos."
+          },
+          {
+            "name": "platform",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated platform filter, e.g. facebook,instagram."
+          },
+          {
+            "name": "api_key_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Limit to one API key. Pins results to API rows."
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Start of the window (YYYY-MM-DD or a date-time)."
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "End of the window (YYYY-MM-DD or a date-time)."
+          },
+          {
+            "name": "include_payloads",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "description": "Include request/response bodies. Off by default."
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": ""
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100
+            },
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Log feed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "source": {
+                            "type": "string",
+                            "enum": [
+                              "api",
+                              "webhook"
+                            ],
+                            "description": "Which stream the row came from."
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "activity_type": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "platform": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "account_ref": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "status_code": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "method": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "API rows only."
+                          },
+                          "endpoint": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "API rows only."
+                          },
+                          "response_time": {
+                            "type": "integer",
+                            "nullable": true,
+                            "description": "Milliseconds. API rows only."
+                          },
+                          "units_used": {
+                            "type": "integer",
+                            "nullable": true,
+                            "description": "API rows only."
+                          },
+                          "cost": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "USD charged. API rows only."
+                          },
+                          "api_key_id": {
+                            "type": "integer",
+                            "nullable": true,
+                            "description": "API rows only."
+                          },
+                          "request_id": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "API rows only."
+                          },
+                          "ip_address": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "API rows only."
+                          },
+                          "user_agent": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "API rows only."
+                          },
+                          "is_test": {
+                            "type": "boolean",
+                            "description": "API rows only."
+                          },
+                          "event": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Webhook rows only, e.g. post.published."
+                          },
+                          "attempt": {
+                            "type": "integer",
+                            "nullable": true,
+                            "description": "Webhook rows only."
+                          },
+                          "status": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Webhook rows only: pending, delivered or dead_letter."
+                          },
+                          "next_retry_at": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Webhook rows only."
+                          },
+                          "request_payload": {
+                            "description": "Only when include_payloads=true.",
+                            "nullable": true
+                          },
+                          "response_payload": {
+                            "description": "Only when include_payloads=true.",
+                            "nullable": true
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        }
+      }
+    },
+    "/webhooks/deliveries/{id}/replay": {
+      "post": {
+        "summary": "Replay a webhook delivery",
+        "operationId": "replayWebhookDelivery",
+        "tags": [
+          "Webhooks"
+        ],
+        "description": "Re-queue a past delivery so it is sent again - the fix-up after your receiver was down or rejecting. The original event and payload are replayed unchanged and signed afresh, and the attempt counter resets so retry backoff starts clean. Find delivery ids with `GET /webhooks/logs`.\n\nRequires scope `webhooks:write`. Not available under X-Profile-Id delegation.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Delivery id from GET /webhooks/logs."
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Delivery re-queued",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "delivery_id": {
+                          "type": "integer"
+                        },
+                        "status": {
+                          "type": "string",
+                          "enum": [
+                            "pending"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/urls/{id}": {
+      "patch": {
+        "summary": "Update a short URL",
+        "operationId": "updateShortUrl",
+        "tags": [
+          "URLs"
+        ],
+        "description": "Repoint an existing short link at a new destination, rename it, or deactivate it. The short code never changes, so links already printed, posted or scanned keep working and their click history stays attached.\n\nSend only the fields you want to change. Free - the link was already charged for at creation. Requires scope `urls:write`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "New destination URL."
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "New label. Send an empty string to clear it."
+                  },
+                  "is_active": {
+                    "type": "boolean",
+                    "description": "Set false to stop the link resolving."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated short URL",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/social/conversations/{conversation_id}/messages/{message_id}/reactions": {
+      "post": {
+        "summary": "React to a message",
+        "operationId": "reactToMessage",
+        "tags": [
+          "Direct Messages"
+        ],
+        "description": "React to a message as the connected account. Sending a different emoji replaces the previous reaction.\n\nSupported on Messenger, Instagram, Bluesky and WhatsApp. Other platforms return an honest error rather than silently doing nothing. Requires scope `social:write`.",
+        "parameters": [
+          {
+            "name": "conversation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "message_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Message id from GET /social/conversations/{conversation_id}/messages."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "emoji"
+                ],
+                "properties": {
+                  "emoji": {
+                    "type": "string",
+                    "description": "The emoji to react with."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Reaction sent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "success": {
+                          "type": "boolean"
+                        },
+                        "our_reaction": {
+                          "type": "string",
+                          "nullable": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove a message reaction",
+        "operationId": "removeMessageReaction",
+        "tags": [
+          "Direct Messages"
+        ],
+        "description": "Clear the reaction this account previously sent on a message.\n\nSupported on Messenger, Instagram, Bluesky and WhatsApp. Other platforms return an honest error rather than silently doing nothing. Requires scope `social:write`.",
+        "parameters": [
+          {
+            "name": "conversation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "message_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Message id from GET /social/conversations/{conversation_id}/messages."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reaction removed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "success": {
+                          "type": "boolean"
+                        },
+                        "our_reaction": {
+                          "type": "string",
+                          "nullable": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/whatsapp/templates/{name}": {
+      "get": {
+        "summary": "Get a WhatsApp template",
+        "operationId": "getWhatsappTemplate",
+        "tags": [
+          "WhatsApp"
+        ],
+        "description": "One template by name. A template name can hold several rows - one per language - so this returns every translation under that name. Requires scope `social:read`.",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Template name."
+          },
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "A connected WhatsApp number (social account id)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Template versions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "templates": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update a WhatsApp template",
+        "operationId": "updateWhatsappTemplate",
+        "tags": [
+          "WhatsApp"
+        ],
+        "description": "Replace an existing template's components. Name and language are fixed at creation - changing either means creating a new template. Editing an approved template sends it back through Meta review.\n\nIf the name has more than one language version you must pass `template_id` to say which one to edit; the endpoint refuses to guess. Requires scope `social:write`.",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Template name."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "account_id",
+                  "components"
+                ],
+                "properties": {
+                  "account_id": {
+                    "type": "integer",
+                    "description": "A connected WhatsApp number (social account id)."
+                  },
+                  "components": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    },
+                    "description": "Full replacement component list, in Meta's template component format."
+                  },
+                  "category": {
+                    "type": "string",
+                    "enum": [
+                      "MARKETING",
+                      "UTILITY",
+                      "AUTHENTICATION"
+                    ],
+                    "description": "Optional category change."
+                  },
+                  "template_id": {
+                    "type": "string",
+                    "description": "Required only when the name has several language versions."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Template updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "template_id": {
+                          "type": "string"
+                        },
+                        "updated": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a WhatsApp template",
+        "operationId": "deleteWhatsappTemplate",
+        "tags": [
+          "WhatsApp"
+        ],
+        "description": "Delete a template. Without `template_id` this removes every language version of the name; with it, only that one translation. Requires scope `social:write`.",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Template name."
+          },
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "A connected WhatsApp number (social account id)."
+          },
+          {
+            "name": "template_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Delete only this language version."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Template deleted"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/whatsapp/business-profile/photo": {
+      "post": {
+        "summary": "Set the WhatsApp profile photo",
+        "operationId": "updateWhatsappProfilePhoto",
+        "tags": [
+          "WhatsApp"
+        ],
+        "description": "Set the profile picture customers see for this number. Meta does not accept an image URL here: upload the file through Meta's resumable upload API first and pass the handle it returns.\n\nRequires scope `social:write`.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "account_id",
+                  "handle"
+                ],
+                "properties": {
+                  "account_id": {
+                    "type": "integer",
+                    "description": "A connected WhatsApp number (social account id)."
+                  },
+                  "handle": {
+                    "type": "string",
+                    "description": "Media handle from Meta's resumable upload API."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Photo updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "updated": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/whatsapp/business-profile/display-name": {
+      "get": {
+        "summary": "Get the WhatsApp display name",
+        "operationId": "getWhatsappDisplayName",
+        "tags": [
+          "WhatsApp"
+        ],
+        "description": "The name customers see in chat, plus where any pending name change stands with Meta review and the number's current quality rating. Requires scope `social:read`.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "A connected WhatsApp number (social account id)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Display name",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "display_name": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "phone_number": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "name_status": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "Review state of the current name."
+                        },
+                        "new_name_status": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "Review state of a pending change."
+                        },
+                        "quality_rating": {
+                          "type": "string",
+                          "nullable": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      },
+      "post": {
+        "summary": "Request a WhatsApp display-name change",
+        "operationId": "updateWhatsappDisplayName",
+        "tags": [
+          "WhatsApp"
+        ],
+        "description": "Submit a new display name. This does not take effect immediately - Meta reviews it, and the old name stays live until approval, so a 202 here means \"submitted\", not \"changed\". Poll `GET /whatsapp/business-profile/display-name` and watch `name_status`.\n\nRequires scope `social:write`.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "account_id",
+                  "display_name"
+                ],
+                "properties": {
+                  "account_id": {
+                    "type": "integer",
+                    "description": "A connected WhatsApp number (social account id)."
+                  },
+                  "display_name": {
+                    "type": "string",
+                    "description": "The name to submit for review."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Change submitted for review",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "submitted": {
+                          "type": "boolean"
+                        },
+                        "display_name": {
+                          "type": "string"
+                        },
+                        "note": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/analytics/youtube/channel-insights": {
+      "get": {
+        "summary": "YouTube channel insights",
+        "operationId": "getYoutubeChannelInsights",
+        "tags": [
+          "Analytics"
+        ],
+        "description": "Channel totals for a date range: views, watch time, average view duration and percentage, subscribers gained and lost, likes, dislikes, comments and shares.\n\nThis reads the YouTube Analytics API, which needs its own OAuth permission (`yt-analytics.readonly`). SmartlyQ only began requesting it on 28 July 2026, so channels connected before that answer `403 CONNECTION_SCOPE_MISSING` with `reconnect_required: true` until the account is reconnected. Requires scope `analytics:read`.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "A connected YouTube channel (social account id)."
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Start of the range, YYYY-MM-DD. Defaults to 28 days before end_date."
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "End of the range, YYYY-MM-DD. Defaults to yesterday."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Report",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "columns": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "description": "Metric/dimension names, in row order."
+                        },
+                        "rows": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          },
+                          "description": "One object per row, keyed by column name."
+                        },
+                        "start_date": {
+                          "type": "string"
+                        },
+                        "end_date": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/analytics/youtube/daily-views": {
+      "get": {
+        "summary": "YouTube daily views",
+        "operationId": "getYoutubeDailyViews",
+        "tags": [
+          "Analytics"
+        ],
+        "description": "Views, watch time, average view duration and subscribers gained broken down by day - the shape a time-series chart needs.\n\nThis reads the YouTube Analytics API, which needs its own OAuth permission (`yt-analytics.readonly`). SmartlyQ only began requesting it on 28 July 2026, so channels connected before that answer `403 CONNECTION_SCOPE_MISSING` with `reconnect_required: true` until the account is reconnected. Requires scope `analytics:read`.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "A connected YouTube channel (social account id)."
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Start of the range, YYYY-MM-DD. Defaults to 28 days before end_date."
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "End of the range, YYYY-MM-DD. Defaults to yesterday."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Report",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "columns": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "description": "Metric/dimension names, in row order."
+                        },
+                        "rows": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          },
+                          "description": "One object per row, keyed by column name."
+                        },
+                        "start_date": {
+                          "type": "string"
+                        },
+                        "end_date": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/analytics/youtube/video-retention": {
+      "get": {
+        "summary": "YouTube audience retention",
+        "operationId": "getYoutubeVideoRetention",
+        "tags": [
+          "Analytics"
+        ],
+        "description": "The retention curve for one video: what share of viewers is still watching at each point of the video, plus how that compares with similar videos on YouTube. Rows are ordered by `elapsedVideoTimeRatio`, from 0 (start) to 1 (end).\n\nThis reads the YouTube Analytics API, which needs its own OAuth permission (`yt-analytics.readonly`). SmartlyQ only began requesting it on 28 July 2026, so channels connected before that answer `403 CONNECTION_SCOPE_MISSING` with `reconnect_required: true` until the account is reconnected. Requires scope `analytics:read`.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "A connected YouTube channel (social account id)."
+          },
+          {
+            "name": "video_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "YouTube video id (the v= value from its URL)."
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Start of the range, YYYY-MM-DD. Defaults to 28 days before end_date."
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "End of the range, YYYY-MM-DD. Defaults to yesterday."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Report",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "columns": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "description": "Metric/dimension names, in row order."
+                        },
+                        "rows": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          },
+                          "description": "One object per row, keyed by column name."
+                        },
+                        "start_date": {
+                          "type": "string"
+                        },
+                        "end_date": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/analytics/youtube/demographics": {
+      "get": {
+        "summary": "YouTube viewer demographics",
+        "operationId": "getYoutubeDemographics",
+        "tags": [
+          "Analytics"
+        ],
+        "description": "Viewer split by age bracket and gender, as a percentage of views. Pass `video_id` to scope it to one video. YouTube withholds demographics below a privacy threshold - that comes back as an empty `rows` array rather than an error.\n\nThis reads the YouTube Analytics API, which needs its own OAuth permission (`yt-analytics.readonly`). SmartlyQ only began requesting it on 28 July 2026, so channels connected before that answer `403 CONNECTION_SCOPE_MISSING` with `reconnect_required: true` until the account is reconnected. Requires scope `analytics:read`.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "A connected YouTube channel (social account id)."
+          },
+          {
+            "name": "video_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Limit to one video."
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Start of the range, YYYY-MM-DD. Defaults to 28 days before end_date."
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "End of the range, YYYY-MM-DD. Defaults to yesterday."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Report",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "columns": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "description": "Metric/dimension names, in row order."
+                        },
+                        "rows": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          },
+                          "description": "One object per row, keyed by column name."
+                        },
+                        "start_date": {
+                          "type": "string"
+                        },
+                        "end_date": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "$ref": "#/components/responses/BadRequest"
           }
         }
       }

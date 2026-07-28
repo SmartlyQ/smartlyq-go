@@ -25,6 +25,7 @@ type resources struct {
 	Messages      *MessagesResource
 	Images        *ImagesResource
 	Jobs          *JobsResource
+	Logs          *LogsResource
 	Media         *MediaResource
 	Presentations *PresentationsResource
 	Profiles      *ProfilesResource
@@ -56,6 +57,7 @@ func (c *Client) initResources() {
 	c.Messages = &MessagesResource{client: c}
 	c.Images = &ImagesResource{client: c}
 	c.Jobs = &JobsResource{client: c}
+	c.Logs = &LogsResource{client: c}
 	c.Media = &MediaResource{client: c}
 	c.Presentations = &PresentationsResource{client: c}
 	c.Profiles = &ProfilesResource{client: c}
@@ -231,6 +233,34 @@ func (r *AnalyticsResource) InboxConversations(ctx context.Context, query map[st
 // GET /analytics/inbox/conversations/{conversation_id}
 func (r *AnalyticsResource) InboxConversationDetail(ctx context.Context, conversationId string, opts *RequestOptions) (*Envelope, error) {
 	return r.client.do(ctx, "GET", "/analytics/inbox/conversations/"+url.PathEscape(conversationId), nil, nil, opts)
+}
+
+// GetYoutubeChannelInsights - YouTube channel insights.
+//
+// GET /analytics/youtube/channel-insights
+func (r *AnalyticsResource) GetYoutubeChannelInsights(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/analytics/youtube/channel-insights", query, nil, opts)
+}
+
+// GetYoutubeDailyViews - YouTube daily views.
+//
+// GET /analytics/youtube/daily-views
+func (r *AnalyticsResource) GetYoutubeDailyViews(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/analytics/youtube/daily-views", query, nil, opts)
+}
+
+// GetYoutubeVideoRetention - YouTube audience retention.
+//
+// GET /analytics/youtube/video-retention
+func (r *AnalyticsResource) GetYoutubeVideoRetention(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/analytics/youtube/video-retention", query, nil, opts)
+}
+
+// GetYoutubeDemographics - YouTube viewer demographics.
+//
+// GET /analytics/youtube/demographics
+func (r *AnalyticsResource) GetYoutubeDemographics(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/analytics/youtube/demographics", query, nil, opts)
 }
 
 // ArticlesResource groups the Articles endpoints.
@@ -700,6 +730,20 @@ func (r *MessagesResource) MarkConversationRead(ctx context.Context, conversatio
 	return r.client.do(ctx, "POST", "/social/conversations/"+url.PathEscape(conversationId)+"/read", nil, nil, opts)
 }
 
+// ReactTo - React to a message.
+//
+// POST /social/conversations/{conversation_id}/messages/{message_id}/reactions
+func (r *MessagesResource) ReactTo(ctx context.Context, conversationId string, messageId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/social/conversations/"+url.PathEscape(conversationId)+"/messages/"+url.PathEscape(messageId)+"/reactions", nil, body, opts)
+}
+
+// RemoveReaction - Remove a message reaction.
+//
+// DELETE /social/conversations/{conversation_id}/messages/{message_id}/reactions
+func (r *MessagesResource) RemoveReaction(ctx context.Context, conversationId string, messageId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "DELETE", "/social/conversations/"+url.PathEscape(conversationId)+"/messages/"+url.PathEscape(messageId)+"/reactions", nil, nil, opts)
+}
+
 // ImagesResource groups the Images endpoints.
 type ImagesResource struct{ client *Client }
 
@@ -753,6 +797,16 @@ func (r *JobsResource) Get(ctx context.Context, jobId string, opts *RequestOptio
 // POST /jobs/{job_id}/cancel
 func (r *JobsResource) Cancel(ctx context.Context, jobId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
 	return r.client.do(ctx, "POST", "/jobs/"+url.PathEscape(jobId)+"/cancel", nil, body, opts)
+}
+
+// LogsResource groups the Logs endpoints.
+type LogsResource struct{ client *Client }
+
+// List - List developer logs.
+//
+// GET /logs
+func (r *LogsResource) List(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/logs", query, nil, opts)
 }
 
 // MediaResource groups the Media endpoints.
@@ -1752,6 +1806,13 @@ func (r *URLsResource) GetStats(ctx context.Context, urlId string, opts *Request
 	return r.client.do(ctx, "GET", "/urls/"+url.PathEscape(urlId)+"/stats", nil, nil, opts)
 }
 
+// UpdateShort - Update a short URL.
+//
+// PATCH /urls/{id}
+func (r *URLsResource) UpdateShort(ctx context.Context, id string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "PATCH", "/urls/"+url.PathEscape(id), nil, body, opts)
+}
+
 // VideosResource groups the Videos endpoints.
 type VideosResource struct{ client *Client }
 
@@ -1863,6 +1924,13 @@ func (r *WebhooksResource) Test(ctx context.Context, id string, opts *RequestOpt
 	return r.client.do(ctx, "POST", "/webhooks/"+url.PathEscape(id)+"/test", nil, nil, opts)
 }
 
+// ReplayDelivery - Replay a webhook delivery.
+//
+// POST /webhooks/deliveries/{id}/replay
+func (r *WebhooksResource) ReplayDelivery(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/webhooks/deliveries/"+url.PathEscape(id)+"/replay", nil, nil, opts)
+}
+
 // WhatsAppResource groups the WhatsApp endpoints.
 type WhatsAppResource struct{ client *Client }
 
@@ -1906,6 +1974,48 @@ func (r *WhatsAppResource) UpdateWhatsAppBusinessProfile(ctx context.Context, bo
 // GET /whatsapp/phone-numbers
 func (r *WhatsAppResource) ListWhatsAppPhoneNumbers(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
 	return r.client.do(ctx, "GET", "/whatsapp/phone-numbers", query, nil, opts)
+}
+
+// GetTemplate - Get a WhatsApp template.
+//
+// GET /whatsapp/templates/{name}
+func (r *WhatsAppResource) GetTemplate(ctx context.Context, name string, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/whatsapp/templates/"+url.PathEscape(name), query, nil, opts)
+}
+
+// UpdateTemplate - Update a WhatsApp template.
+//
+// PATCH /whatsapp/templates/{name}
+func (r *WhatsAppResource) UpdateTemplate(ctx context.Context, name string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "PATCH", "/whatsapp/templates/"+url.PathEscape(name), nil, body, opts)
+}
+
+// DeleteTemplate - Delete a WhatsApp template.
+//
+// DELETE /whatsapp/templates/{name}
+func (r *WhatsAppResource) DeleteTemplate(ctx context.Context, name string, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "DELETE", "/whatsapp/templates/"+url.PathEscape(name), query, nil, opts)
+}
+
+// UpdateProfilePhoto - Set the WhatsApp profile photo.
+//
+// POST /whatsapp/business-profile/photo
+func (r *WhatsAppResource) UpdateProfilePhoto(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/whatsapp/business-profile/photo", nil, body, opts)
+}
+
+// GetDisplayName - Get the WhatsApp display name.
+//
+// GET /whatsapp/business-profile/display-name
+func (r *WhatsAppResource) GetDisplayName(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/whatsapp/business-profile/display-name", query, nil, opts)
+}
+
+// UpdateDisplayName - Request a WhatsApp display-name change.
+//
+// POST /whatsapp/business-profile/display-name
+func (r *WhatsAppResource) UpdateDisplayName(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/whatsapp/business-profile/display-name", nil, body, opts)
 }
 
 // WorkspacesResource groups the Workspaces endpoints.

@@ -189,6 +189,10 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Analytics.InboxTopAccounts(ctx, query)` | `GET /analytics/inbox/top-accounts` | Inbox top accounts |
 | `client.Analytics.InboxConversations(ctx, query)` | `GET /analytics/inbox/conversations` | Inbox conversation stats |
 | `client.Analytics.InboxConversationDetail(ctx, conversationId)` | `GET /analytics/inbox/conversations/{conversation_id}` | Conversation analytics |
+| `client.Analytics.GetYoutubeChannelInsights(ctx, query)` | `GET /analytics/youtube/channel-insights` | YouTube channel insights |
+| `client.Analytics.GetYoutubeDailyViews(ctx, query)` | `GET /analytics/youtube/daily-views` | YouTube daily views |
+| `client.Analytics.GetYoutubeVideoRetention(ctx, query)` | `GET /analytics/youtube/video-retention` | YouTube audience retention |
+| `client.Analytics.GetYoutubeDemographics(ctx, query)` | `GET /analytics/youtube/demographics` | YouTube viewer demographics |
 
 ### Articles
 
@@ -306,6 +310,8 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Messages.List(ctx, conversationId, query)` | `GET /social/conversations/{conversation_id}/messages` | List messages in a conversation |
 | `client.Messages.Send(ctx, conversationId, body)` | `POST /social/conversations/{conversation_id}/messages` | Send a direct message |
 | `client.Messages.MarkConversationRead(ctx, conversationId)` | `POST /social/conversations/{conversation_id}/read` | Mark a conversation read |
+| `client.Messages.ReactTo(ctx, conversationId, messageId, body)` | `POST /social/conversations/{conversation_id}/messages/{message_id}/reactions` | React to a message |
+| `client.Messages.RemoveReaction(ctx, conversationId, messageId)` | `DELETE /social/conversations/{conversation_id}/messages/{message_id}/reactions` | Remove a message reaction |
 
 ### Images
 
@@ -323,6 +329,12 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Jobs.List(ctx, query)` | `GET /jobs` | List jobs |
 | `client.Jobs.Get(ctx, jobId)` | `GET /jobs/{job_id}` | Get job |
 | `client.Jobs.Cancel(ctx, jobId, body)` | `POST /jobs/{job_id}/cancel` | Cancel job |
+
+### Logs
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `client.Logs.List(ctx, query)` | `GET /logs` | List developer logs |
 
 ### Media
 
@@ -502,6 +514,7 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.URLs.Get(ctx, urlId)` | `GET /urls/{url_id}` | Get short URL |
 | `client.URLs.Delete(ctx, urlId)` | `DELETE /urls/{url_id}` | Delete short URL |
 | `client.URLs.GetStats(ctx, urlId)` | `GET /urls/{url_id}/stats` | Get short URL stats |
+| `client.URLs.UpdateShort(ctx, id, body)` | `PATCH /urls/{id}` | Update a short URL |
 
 ### Videos
 
@@ -527,6 +540,7 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Webhooks.Delete(ctx, id)` | `DELETE /webhooks/{id}` | Delete webhook |
 | `client.Webhooks.ListLogs(ctx, query)` | `GET /webhooks/logs` | List webhook delivery logs |
 | `client.Webhooks.Test(ctx, id)` | `POST /webhooks/{id}/test` | Send test webhook |
+| `client.Webhooks.ReplayDelivery(ctx, id)` | `POST /webhooks/deliveries/{id}/replay` | Replay a webhook delivery |
 
 ### WhatsApp
 
@@ -538,6 +552,12 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.WhatsApp.GetWhatsAppBusinessProfile(ctx, query)` | `GET /whatsapp/business-profile` | Get business profile |
 | `client.WhatsApp.UpdateWhatsAppBusinessProfile(ctx, body)` | `PATCH /whatsapp/business-profile` | Update business profile |
 | `client.WhatsApp.ListWhatsAppPhoneNumbers(ctx, query)` | `GET /whatsapp/phone-numbers` | List phone numbers |
+| `client.WhatsApp.GetTemplate(ctx, name, query)` | `GET /whatsapp/templates/{name}` | Get a WhatsApp template |
+| `client.WhatsApp.UpdateTemplate(ctx, name, body)` | `PATCH /whatsapp/templates/{name}` | Update a WhatsApp template |
+| `client.WhatsApp.DeleteTemplate(ctx, name, query)` | `DELETE /whatsapp/templates/{name}` | Delete a WhatsApp template |
+| `client.WhatsApp.UpdateProfilePhoto(ctx, body)` | `POST /whatsapp/business-profile/photo` | Set the WhatsApp profile photo |
+| `client.WhatsApp.GetDisplayName(ctx, query)` | `GET /whatsapp/business-profile/display-name` | Get the WhatsApp display name |
+| `client.WhatsApp.UpdateDisplayName(ctx, body)` | `POST /whatsapp/business-profile/display-name` | Request a WhatsApp display-name change |
 
 ### Workspaces
 

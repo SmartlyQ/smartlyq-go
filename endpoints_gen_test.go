@@ -186,6 +186,34 @@ func TestAnalyticsInboxConversationDetail(t *testing.T) {
 	})
 }
 
+func TestAnalyticsGetYoutubeChannelInsights(t *testing.T) {
+	assertEndpoint(t, "GET", "/analytics/youtube/channel-insights", func(c *Client) error {
+		_, err := c.Analytics.GetYoutubeChannelInsights(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestAnalyticsGetYoutubeDailyViews(t *testing.T) {
+	assertEndpoint(t, "GET", "/analytics/youtube/daily-views", func(c *Client) error {
+		_, err := c.Analytics.GetYoutubeDailyViews(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestAnalyticsGetYoutubeVideoRetention(t *testing.T) {
+	assertEndpoint(t, "GET", "/analytics/youtube/video-retention", func(c *Client) error {
+		_, err := c.Analytics.GetYoutubeVideoRetention(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestAnalyticsGetYoutubeDemographics(t *testing.T) {
+	assertEndpoint(t, "GET", "/analytics/youtube/demographics", func(c *Client) error {
+		_, err := c.Analytics.GetYoutubeDemographics(context.Background(), nil, nil)
+		return err
+	})
+}
+
 func TestArticlesGenerate(t *testing.T) {
 	assertEndpoint(t, "POST", "/articles/generate", func(c *Client) error {
 		_, err := c.Articles.Generate(context.Background(), map[string]any{}, nil)
@@ -620,6 +648,20 @@ func TestMessagesMarkConversationRead(t *testing.T) {
 	})
 }
 
+func TestMessagesReactTo(t *testing.T) {
+	assertEndpoint(t, "POST", "/social/conversations/test-conversationId/messages/test-messageId/reactions", func(c *Client) error {
+		_, err := c.Messages.ReactTo(context.Background(), "test-conversationId", "test-messageId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestMessagesRemoveReaction(t *testing.T) {
+	assertEndpoint(t, "DELETE", "/social/conversations/test-conversationId/messages/test-messageId/reactions", func(c *Client) error {
+		_, err := c.Messages.RemoveReaction(context.Background(), "test-conversationId", "test-messageId", nil)
+		return err
+	})
+}
+
 func TestImagesGenerate(t *testing.T) {
 	assertEndpoint(t, "POST", "/images/generate", func(c *Client) error {
 		_, err := c.Images.Generate(context.Background(), map[string]any{}, nil)
@@ -665,6 +707,13 @@ func TestJobsGet(t *testing.T) {
 func TestJobsCancel(t *testing.T) {
 	assertEndpoint(t, "POST", "/jobs/test-jobId/cancel", func(c *Client) error {
 		_, err := c.Jobs.Cancel(context.Background(), "test-jobId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestLogsList(t *testing.T) {
+	assertEndpoint(t, "GET", "/logs", func(c *Client) error {
+		_, err := c.Logs.List(context.Background(), nil, nil)
 		return err
 	})
 }
@@ -1642,6 +1691,13 @@ func TestURLsGetStats(t *testing.T) {
 	})
 }
 
+func TestURLsUpdateShort(t *testing.T) {
+	assertEndpoint(t, "PATCH", "/urls/test-id", func(c *Client) error {
+		_, err := c.URLs.UpdateShort(context.Background(), "test-id", map[string]any{}, nil)
+		return err
+	})
+}
+
 func TestVideosListModels(t *testing.T) {
 	assertEndpoint(t, "GET", "/videos/models", func(c *Client) error {
 		_, err := c.Videos.ListModels(context.Background(), nil)
@@ -1747,6 +1803,13 @@ func TestWebhooksTest(t *testing.T) {
 	})
 }
 
+func TestWebhooksReplayDelivery(t *testing.T) {
+	assertEndpoint(t, "POST", "/webhooks/deliveries/test-id/replay", func(c *Client) error {
+		_, err := c.Webhooks.ReplayDelivery(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
 func TestWhatsAppSendWhatsAppMessage(t *testing.T) {
 	assertEndpoint(t, "POST", "/whatsapp/messages", func(c *Client) error {
 		_, err := c.WhatsApp.SendWhatsAppMessage(context.Background(), map[string]any{}, nil)
@@ -1785,6 +1848,48 @@ func TestWhatsAppUpdateWhatsAppBusinessProfile(t *testing.T) {
 func TestWhatsAppListWhatsAppPhoneNumbers(t *testing.T) {
 	assertEndpoint(t, "GET", "/whatsapp/phone-numbers", func(c *Client) error {
 		_, err := c.WhatsApp.ListWhatsAppPhoneNumbers(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestWhatsAppGetTemplate(t *testing.T) {
+	assertEndpoint(t, "GET", "/whatsapp/templates/test-name", func(c *Client) error {
+		_, err := c.WhatsApp.GetTemplate(context.Background(), "test-name", nil, nil)
+		return err
+	})
+}
+
+func TestWhatsAppUpdateTemplate(t *testing.T) {
+	assertEndpoint(t, "PATCH", "/whatsapp/templates/test-name", func(c *Client) error {
+		_, err := c.WhatsApp.UpdateTemplate(context.Background(), "test-name", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestWhatsAppDeleteTemplate(t *testing.T) {
+	assertEndpoint(t, "DELETE", "/whatsapp/templates/test-name", func(c *Client) error {
+		_, err := c.WhatsApp.DeleteTemplate(context.Background(), "test-name", nil, nil)
+		return err
+	})
+}
+
+func TestWhatsAppUpdateProfilePhoto(t *testing.T) {
+	assertEndpoint(t, "POST", "/whatsapp/business-profile/photo", func(c *Client) error {
+		_, err := c.WhatsApp.UpdateProfilePhoto(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestWhatsAppGetDisplayName(t *testing.T) {
+	assertEndpoint(t, "GET", "/whatsapp/business-profile/display-name", func(c *Client) error {
+		_, err := c.WhatsApp.GetDisplayName(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestWhatsAppUpdateDisplayName(t *testing.T) {
+	assertEndpoint(t, "POST", "/whatsapp/business-profile/display-name", func(c *Client) error {
+		_, err := c.WhatsApp.UpdateDisplayName(context.Background(), map[string]any{}, nil)
 		return err
 	})
 }
