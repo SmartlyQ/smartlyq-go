@@ -27812,7 +27812,7 @@
       "post": {
         "summary": "Send a WhatsApp message",
         "operationId": "sendWhatsAppMessage",
-        "description": "Send a message from a connected WhatsApp number. `text`, `media`, `interactive_buttons`, `interactive_list`, `location`, and `contacts` are SESSION messages - deliverable only inside the 24-hour customer window (i.e. after the user messaged you). Outside it, only `template` (an approved HSM) is deliverable. `context_message_id` (any type except `contacts`) threads the message as a reply under a prior WhatsApp message id, rendering as a quoted reply in the customer's app. Requires social:write.\n\nBilled per message from your API wallet, in addition to your plan's monthly WhatsApp send limit. The `usage` block on the response reports units, cost and remaining balance.",
+        "description": "Send a message from a connected WhatsApp number. `text`, `media`, `interactive_buttons`, `interactive_list`, `location`, and `contacts` are SESSION messages - deliverable only inside the 24-hour customer window (i.e. after the user messaged you). Outside it, only `template` (an approved HSM) is deliverable. `context_message_id` (any type except `contacts`) threads the message as a reply under a prior WhatsApp message id, rendering as a quoted reply in the customer's app. Requires social:write.\n\n**Pricing.** Billed per message from your API wallet, on top of your plan's monthly WhatsApp send limit. The price depends on the destination country and the message category, mirroring how WhatsApp itself prices, so a utility message to one market and a marketing message to another cost different amounts. Free-form replies are billed as `service`, priced at the destination market's utility rate. The response carries a `pricing` block showing which rate was applied, and the `usage` block reports cost and remaining balance. You are charged only for a message accepted for delivery - a rejected send is refunded automatically.",
         "tags": [
           "WhatsApp"
         ],
@@ -27991,6 +27991,16 @@
                   "emoji": {
                     "type": "string",
                     "description": "For type=reaction. The emoji to react with, or an empty string to remove a previously-sent reaction. Requires context_message_id."
+                  },
+                  "category": {
+                    "type": "string",
+                    "enum": [
+                      "marketing",
+                      "utility",
+                      "authentication",
+                      "service"
+                    ],
+                    "description": "Pricing category for a template send. Optional - if omitted we read it from the template itself. Free-form sends are always billed as `service`."
                   }
                 }
               },
@@ -28120,13 +28130,69 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "message_id": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "pricing": {
+                          "type": "object",
+                          "description": "What this send was priced at.",
+                          "properties": {
+                            "category": {
+                              "type": "string",
+                              "description": "Category actually billed."
+                            },
+                            "market": {
+                              "type": "string",
+                              "description": "Market the destination resolved to."
+                            },
+                            "calling_code": {
+                              "type": "string",
+                              "description": "Country calling code matched."
+                            },
+                            "rate": {
+                              "type": "string",
+                              "description": "USD charged for this message."
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "usage": {
+                      "type": "object"
+                    }
+                  }
                 },
                 "example": {
                   "success": true,
                   "data": {
                     "message_id": "wamid.HBg...",
-                    "status": "sent"
+                    "status": "sent",
+                    "pricing": {
+                      "category": "utility",
+                      "market": "United States",
+                      "calling_code": "1",
+                      "rate": "0.003600"
+                    }
+                  },
+                  "usage": {
+                    "units": 1,
+                    "cost": "0.0036",
+                    "balance_remaining": "24.9964"
                   }
                 }
               }
