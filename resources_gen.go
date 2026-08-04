@@ -356,6 +356,34 @@ func (r *AutomationsResource) Trigger(ctx context.Context, automationId string, 
 	return r.client.do(ctx, "POST", "/automations/"+url.PathEscape(automationId)+"/trigger", nil, body, opts)
 }
 
+// Duplicate - Duplicate an automation.
+//
+// POST /automations/{automation_id}/duplicate
+func (r *AutomationsResource) Duplicate(ctx context.Context, automationId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/automations/"+url.PathEscape(automationId)+"/duplicate", nil, nil, opts)
+}
+
+// ListVersions - List automation versions.
+//
+// GET /automations/{automation_id}/versions
+func (r *AutomationsResource) ListVersions(ctx context.Context, automationId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/automations/"+url.PathEscape(automationId)+"/versions", nil, nil, opts)
+}
+
+// GetVersion - Get one automation version.
+//
+// GET /automations/{automation_id}/versions/{version}
+func (r *AutomationsResource) GetVersion(ctx context.Context, automationId string, version string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/automations/"+url.PathEscape(automationId)+"/versions/"+url.PathEscape(version), nil, nil, opts)
+}
+
+// RestoreVersion - Restore an automation version.
+//
+// POST /automations/{automation_id}/versions/{version}/restore
+func (r *AutomationsResource) RestoreVersion(ctx context.Context, automationId string, version string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/automations/"+url.PathEscape(automationId)+"/versions/"+url.PathEscape(version)+"/restore", nil, nil, opts)
+}
+
 // ListRuns - List runs.
 //
 // GET /automations/{automation_id}/runs
@@ -465,6 +493,27 @@ func (r *CommentsResource) ReplyTo(ctx context.Context, commentId string, body m
 // POST /social/comments/{comment_id}/hide
 func (r *CommentsResource) Hide(ctx context.Context, commentId string, opts *RequestOptions) (*Envelope, error) {
 	return r.client.do(ctx, "POST", "/social/comments/"+url.PathEscape(commentId)+"/hide", nil, nil, opts)
+}
+
+// Moderate - Approve or reject a comment.
+//
+// POST /social/comments/{comment_id}/moderate
+func (r *CommentsResource) Moderate(ctx context.Context, commentId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/social/comments/"+url.PathEscape(commentId)+"/moderate", nil, body, opts)
+}
+
+// Like - Like a comment.
+//
+// POST /social/comments/{comment_id}/like
+func (r *CommentsResource) Like(ctx context.Context, commentId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/social/comments/"+url.PathEscape(commentId)+"/like", nil, nil, opts)
+}
+
+// Unlike - Unlike a comment.
+//
+// DELETE /social/comments/{comment_id}/like
+func (r *CommentsResource) Unlike(ctx context.Context, commentId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "DELETE", "/social/comments/"+url.PathEscape(commentId)+"/like", nil, nil, opts)
 }
 
 // Delete - Delete a comment.
@@ -728,6 +777,13 @@ func (r *MessagesResource) Send(ctx context.Context, conversationId string, body
 // POST /social/conversations/{conversation_id}/read
 func (r *MessagesResource) MarkConversationRead(ctx context.Context, conversationId string, opts *RequestOptions) (*Envelope, error) {
 	return r.client.do(ctx, "POST", "/social/conversations/"+url.PathEscape(conversationId)+"/read", nil, nil, opts)
+}
+
+// Delete - Delete a sent message.
+//
+// DELETE /social/conversations/{conversation_id}/messages/{message_id}
+func (r *MessagesResource) Delete(ctx context.Context, conversationId string, messageId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "DELETE", "/social/conversations/"+url.PathEscape(conversationId)+"/messages/"+url.PathEscape(messageId), nil, nil, opts)
 }
 
 // ReactTo - React to a message.

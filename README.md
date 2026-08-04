@@ -220,6 +220,10 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Automations.Activate(ctx, automationId)` | `POST /automations/{automation_id}/activate` | Activate automation |
 | `client.Automations.Deactivate(ctx, automationId)` | `POST /automations/{automation_id}/deactivate` | Pause automation |
 | `client.Automations.Trigger(ctx, automationId, body)` | `POST /automations/{automation_id}/trigger` | Trigger automation |
+| `client.Automations.Duplicate(ctx, automationId)` | `POST /automations/{automation_id}/duplicate` | Duplicate an automation |
+| `client.Automations.ListVersions(ctx, automationId)` | `GET /automations/{automation_id}/versions` | List automation versions |
+| `client.Automations.GetVersion(ctx, automationId, version)` | `GET /automations/{automation_id}/versions/{version}` | Get one automation version |
+| `client.Automations.RestoreVersion(ctx, automationId, version)` | `POST /automations/{automation_id}/versions/{version}/restore` | Restore an automation version |
 | `client.Automations.ListRuns(ctx, automationId, query)` | `GET /automations/{automation_id}/runs` | List runs |
 | `client.Automations.GetRun(ctx, automationId, runId)` | `GET /automations/{automation_id}/runs/{run_id}` | Get run |
 
@@ -245,6 +249,9 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Comments.List(ctx, query)` | `GET /social/comments` | List comments |
 | `client.Comments.ReplyTo(ctx, commentId, body)` | `POST /social/comments/{comment_id}/reply` | Reply to a comment |
 | `client.Comments.Hide(ctx, commentId)` | `POST /social/comments/{comment_id}/hide` | Hide or unhide a comment |
+| `client.Comments.Moderate(ctx, commentId, body)` | `POST /social/comments/{comment_id}/moderate` | Approve or reject a comment |
+| `client.Comments.Like(ctx, commentId)` | `POST /social/comments/{comment_id}/like` | Like a comment |
+| `client.Comments.Unlike(ctx, commentId)` | `DELETE /social/comments/{comment_id}/like` | Unlike a comment |
 | `client.Comments.Delete(ctx, commentId)` | `DELETE /social/comments/{comment_id}` | Delete a comment |
 | `client.Comments.GetPost(ctx, postId)` | `GET /social/comments/{post_id}` | Get one post's comments (threaded) |
 
@@ -310,6 +317,7 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Messages.List(ctx, conversationId, query)` | `GET /social/conversations/{conversation_id}/messages` | List messages in a conversation |
 | `client.Messages.Send(ctx, conversationId, body)` | `POST /social/conversations/{conversation_id}/messages` | Send a direct message |
 | `client.Messages.MarkConversationRead(ctx, conversationId)` | `POST /social/conversations/{conversation_id}/read` | Mark a conversation read |
+| `client.Messages.Delete(ctx, conversationId, messageId)` | `DELETE /social/conversations/{conversation_id}/messages/{message_id}` | Delete a sent message |
 | `client.Messages.ReactTo(ctx, conversationId, messageId, body)` | `POST /social/conversations/{conversation_id}/messages/{message_id}/reactions` | React to a message |
 | `client.Messages.RemoveReaction(ctx, conversationId, messageId)` | `DELETE /social/conversations/{conversation_id}/messages/{message_id}/reactions` | Remove a message reaction |
 

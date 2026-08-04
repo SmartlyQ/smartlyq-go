@@ -298,6 +298,34 @@ func TestAutomationsTrigger(t *testing.T) {
 	})
 }
 
+func TestAutomationsDuplicate(t *testing.T) {
+	assertEndpoint(t, "POST", "/automations/test-automationId/duplicate", func(c *Client) error {
+		_, err := c.Automations.Duplicate(context.Background(), "test-automationId", nil)
+		return err
+	})
+}
+
+func TestAutomationsListVersions(t *testing.T) {
+	assertEndpoint(t, "GET", "/automations/test-automationId/versions", func(c *Client) error {
+		_, err := c.Automations.ListVersions(context.Background(), "test-automationId", nil)
+		return err
+	})
+}
+
+func TestAutomationsGetVersion(t *testing.T) {
+	assertEndpoint(t, "GET", "/automations/test-automationId/versions/test-version", func(c *Client) error {
+		_, err := c.Automations.GetVersion(context.Background(), "test-automationId", "test-version", nil)
+		return err
+	})
+}
+
+func TestAutomationsRestoreVersion(t *testing.T) {
+	assertEndpoint(t, "POST", "/automations/test-automationId/versions/test-version/restore", func(c *Client) error {
+		_, err := c.Automations.RestoreVersion(context.Background(), "test-automationId", "test-version", nil)
+		return err
+	})
+}
+
 func TestAutomationsListRuns(t *testing.T) {
 	assertEndpoint(t, "GET", "/automations/test-automationId/runs", func(c *Client) error {
 		_, err := c.Automations.ListRuns(context.Background(), "test-automationId", nil, nil)
@@ -399,6 +427,27 @@ func TestCommentsReplyTo(t *testing.T) {
 func TestCommentsHide(t *testing.T) {
 	assertEndpoint(t, "POST", "/social/comments/test-commentId/hide", func(c *Client) error {
 		_, err := c.Comments.Hide(context.Background(), "test-commentId", nil)
+		return err
+	})
+}
+
+func TestCommentsModerate(t *testing.T) {
+	assertEndpoint(t, "POST", "/social/comments/test-commentId/moderate", func(c *Client) error {
+		_, err := c.Comments.Moderate(context.Background(), "test-commentId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestCommentsLike(t *testing.T) {
+	assertEndpoint(t, "POST", "/social/comments/test-commentId/like", func(c *Client) error {
+		_, err := c.Comments.Like(context.Background(), "test-commentId", nil)
+		return err
+	})
+}
+
+func TestCommentsUnlike(t *testing.T) {
+	assertEndpoint(t, "DELETE", "/social/comments/test-commentId/like", func(c *Client) error {
+		_, err := c.Comments.Unlike(context.Background(), "test-commentId", nil)
 		return err
 	})
 }
@@ -644,6 +693,13 @@ func TestMessagesSend(t *testing.T) {
 func TestMessagesMarkConversationRead(t *testing.T) {
 	assertEndpoint(t, "POST", "/social/conversations/test-conversationId/read", func(c *Client) error {
 		_, err := c.Messages.MarkConversationRead(context.Background(), "test-conversationId", nil)
+		return err
+	})
+}
+
+func TestMessagesDelete(t *testing.T) {
+	assertEndpoint(t, "DELETE", "/social/conversations/test-conversationId/messages/test-messageId", func(c *Client) error {
+		_, err := c.Messages.Delete(context.Background(), "test-conversationId", "test-messageId", nil)
 		return err
 	})
 }

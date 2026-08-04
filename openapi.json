@@ -6698,6 +6698,273 @@
         }
       }
     },
+    "/social/comments/{comment_id}/moderate": {
+      "post": {
+        "summary": "Approve or reject a comment",
+        "operationId": "moderateComment",
+        "description": "Full moderation status change, optionally banning the author. YouTube only - other platforms only support hide/unhide (POST .../hide) and delete (DELETE .../{comment_id}), which every platform honors. Requires social:write.",
+        "tags": [
+          "Comments"
+        ],
+        "parameters": [
+          {
+            "name": "comment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Comment id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "status"
+                ],
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "approved",
+                      "rejected"
+                    ]
+                  },
+                  "ban_author": {
+                    "type": "boolean",
+                    "description": "Reject the comment AND ban this author from commenting again. Only meaningful with status=rejected.",
+                    "default": false
+                  }
+                }
+              },
+              "example": {
+                "status": "rejected",
+                "ban_author": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "success": {
+                          "type": "boolean"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "banned_author": {
+                          "type": "boolean"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "success": true,
+                    "status": "rejected",
+                    "banned_author": false
+                  },
+                  "meta": {
+                    "request_id": "req_abc123",
+                    "timestamp": "2026-08-04T16:00:00Z"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/social/comments/{comment_id}/like": {
+      "post": {
+        "summary": "Like a comment",
+        "operationId": "likeComment",
+        "description": "Like a comment as the connected account. Facebook only - Instagram's Graph API has no comment-like edge. Requires social:write.",
+        "tags": [
+          "Comments"
+        ],
+        "parameters": [
+          {
+            "name": "comment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Comment id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "success": {
+                          "type": "boolean"
+                        },
+                        "liked": {
+                          "type": "boolean"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "success": true,
+                    "liked": true
+                  },
+                  "meta": {
+                    "request_id": "req_abc123",
+                    "timestamp": "2026-08-04T16:00:00Z"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Unlike a comment",
+        "operationId": "unlikeComment",
+        "description": "Remove your like from a comment. Facebook only. Requires social:write.",
+        "tags": [
+          "Comments"
+        ],
+        "parameters": [
+          {
+            "name": "comment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Comment id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "success": {
+                          "type": "boolean"
+                        },
+                        "liked": {
+                          "type": "boolean"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "success": true,
+                    "liked": false
+                  },
+                  "meta": {
+                    "request_id": "req_abc123",
+                    "timestamp": "2026-08-04T16:00:00Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
     "/social/comments/{comment_id}": {
       "delete": {
         "summary": "Delete a comment",
@@ -19924,6 +20191,373 @@
         }
       }
     },
+    "/automations/{automation_id}/duplicate": {
+      "post": {
+        "summary": "Duplicate an automation",
+        "operationId": "duplicateAutomation",
+        "tags": [
+          "Automations"
+        ],
+        "description": "Copies the automation's graph and trigger config into a new automation, named \"<original> (copy)\". Always starts as `draft`, regardless of the source's status, so a duplicate never silently begins running triggers. A webhook-triggered source gets a fresh webhook token on the copy, not a shared one. Requires scope `contacts:write`.",
+        "parameters": [
+          {
+            "name": "automation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "trigger_type": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string",
+                          "enum": [
+                            "draft",
+                            "active",
+                            "paused",
+                            "archived"
+                          ]
+                        },
+                        "last_run_at": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "run_count": {
+                          "type": "integer"
+                        },
+                        "error_count": {
+                          "type": "integer"
+                        },
+                        "created": {
+                          "type": "string"
+                        },
+                        "updated": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/automations/{automation_id}/versions": {
+      "get": {
+        "summary": "List automation versions",
+        "operationId": "listAutomationVersions",
+        "tags": [
+          "Automations"
+        ],
+        "description": "A snapshot of the graph is taken automatically every time it's edited - BEFORE the edit is applied - so version N is what the graph looked like immediately before edit N. Newest first, capped at the most recent 20. Requires scope `contacts:read`.",
+        "parameters": [
+          {
+            "name": "automation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "version": {
+                            "type": "integer",
+                            "description": "Per-automation version number (1, 2, 3...), not a global id."
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "The automation's name at the time of this snapshot."
+                          },
+                          "created_by": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "format": "date-time"
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": [
+                    {
+                      "version": 3,
+                      "name": "Welcome sequence",
+                      "created_by": 12,
+                      "created_at": "2026-08-03T10:15:00Z"
+                    },
+                    {
+                      "version": 2,
+                      "name": "Welcome sequence",
+                      "created_by": 12,
+                      "created_at": "2026-08-01T09:02:00Z"
+                    }
+                  ],
+                  "meta": {
+                    "request_id": "req_abc123",
+                    "timestamp": "2026-08-04T16:00:00Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/automations/{automation_id}/versions/{version}": {
+      "get": {
+        "summary": "Get one automation version",
+        "operationId": "getAutomationVersion",
+        "tags": [
+          "Automations"
+        ],
+        "description": "One snapshot, including its full graph. Requires scope `contacts:read`.",
+        "parameters": [
+          {
+            "name": "automation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Version number from GET /automations/{automation_id}/versions."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "version": {
+                          "type": "integer"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "graph": {
+                          "type": "object",
+                          "description": "The @xyflow/react node + edge graph as it stood at this version."
+                        },
+                        "created_by": {
+                          "type": "integer",
+                          "nullable": true
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/automations/{automation_id}/versions/{version}/restore": {
+      "post": {
+        "summary": "Restore an automation version",
+        "operationId": "restoreAutomationVersion",
+        "tags": [
+          "Automations"
+        ],
+        "description": "Puts that version's graph back onto the live automation. The current graph is snapshotted first (the same hook every edit goes through), so a restore is itself just another edit - always undoable, never destructive. Requires scope `contacts:write`.",
+        "parameters": [
+          {
+            "name": "automation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "trigger_type": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string",
+                          "enum": [
+                            "draft",
+                            "active",
+                            "paused",
+                            "archived"
+                          ]
+                        },
+                        "last_run_at": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "run_count": {
+                          "type": "integer"
+                        },
+                        "error_count": {
+                          "type": "integer"
+                        },
+                        "created": {
+                          "type": "string"
+                        },
+                        "updated": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
     "/automations/{automation_id}/runs": {
       "get": {
         "summary": "List runs",
@@ -28872,6 +29506,95 @@
           },
           "422": {
             "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/social/conversations/{conversation_id}/messages/{message_id}": {
+      "delete": {
+        "summary": "Delete a sent message",
+        "operationId": "deleteMessage",
+        "tags": [
+          "Direct Messages"
+        ],
+        "description": "Delete a message you sent. X and Bluesky only - Messenger, Instagram, and WhatsApp have no unsend API for a business-sent message. On Bluesky this deletes for YOUR side of the conversation only (their chat API has no unsend-for-everyone) - a successful response's `note` says so explicitly when it applies. Requires scope `social:write`.",
+        "parameters": [
+          {
+            "name": "conversation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "message_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Message id from GET /social/conversations/{conversation_id}/messages. Must be a message you sent."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "success": {
+                          "type": "boolean"
+                        },
+                        "note": {
+                          "type": "string",
+                          "description": "Present on Bluesky: clarifies the delete was for-self only."
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "success": true
+                  },
+                  "meta": {
+                    "request_id": "req_abc123",
+                    "timestamp": "2026-08-04T16:00:00Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
           }
         }
       }
