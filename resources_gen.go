@@ -2081,6 +2081,97 @@ func (r *WhatsAppResource) ListWhatsAppPhoneNumbers(ctx context.Context, query m
 	return r.client.do(ctx, "GET", "/whatsapp/phone-numbers", query, nil, opts)
 }
 
+// ListWhatsAppFlows - List flows.
+//
+// GET /whatsapp/flows
+func (r *WhatsAppResource) ListWhatsAppFlows(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/whatsapp/flows", query, nil, opts)
+}
+
+// CreateWhatsAppFlow - Create a flow.
+//
+// POST /whatsapp/flows
+func (r *WhatsAppResource) CreateWhatsAppFlow(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/whatsapp/flows", nil, body, opts)
+}
+
+// GetWhatsAppFlow - Get flow.
+//
+// GET /whatsapp/flows/{flow_id}
+func (r *WhatsAppResource) GetWhatsAppFlow(ctx context.Context, flowId string, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/whatsapp/flows/"+url.PathEscape(flowId), query, nil, opts)
+}
+
+// UpdateWhatsAppFlow - Update flow.
+//
+// PATCH /whatsapp/flows/{flow_id}
+func (r *WhatsAppResource) UpdateWhatsAppFlow(ctx context.Context, flowId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "PATCH", "/whatsapp/flows/"+url.PathEscape(flowId), nil, body, opts)
+}
+
+// DeleteWhatsAppFlow - Delete flow.
+//
+// DELETE /whatsapp/flows/{flow_id}
+func (r *WhatsAppResource) DeleteWhatsAppFlow(ctx context.Context, flowId string, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "DELETE", "/whatsapp/flows/"+url.PathEscape(flowId), query, nil, opts)
+}
+
+// GetWhatsAppFlowJson - Get flow JSON asset.
+//
+// GET /whatsapp/flows/{flow_id}/json
+func (r *WhatsAppResource) GetWhatsAppFlowJson(ctx context.Context, flowId string, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/whatsapp/flows/"+url.PathEscape(flowId)+"/json", query, nil, opts)
+}
+
+// UploadWhatsAppFlowJson - Upload flow JSON.
+//
+// PUT /whatsapp/flows/{flow_id}/json
+func (r *WhatsAppResource) UploadWhatsAppFlowJson(ctx context.Context, flowId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "PUT", "/whatsapp/flows/"+url.PathEscape(flowId)+"/json", nil, body, opts)
+}
+
+// GetWhatsAppFlowPreview - Get flow preview URL.
+//
+// GET /whatsapp/flows/{flow_id}/preview
+func (r *WhatsAppResource) GetWhatsAppFlowPreview(ctx context.Context, flowId string, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/whatsapp/flows/"+url.PathEscape(flowId)+"/preview", query, nil, opts)
+}
+
+// PublishWhatsAppFlow - Publish flow.
+//
+// POST /whatsapp/flows/{flow_id}/publish
+func (r *WhatsAppResource) PublishWhatsAppFlow(ctx context.Context, flowId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/whatsapp/flows/"+url.PathEscape(flowId)+"/publish", nil, body, opts)
+}
+
+// DeprecateWhatsAppFlow - Deprecate flow.
+//
+// POST /whatsapp/flows/{flow_id}/deprecate
+func (r *WhatsAppResource) DeprecateWhatsAppFlow(ctx context.Context, flowId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/whatsapp/flows/"+url.PathEscape(flowId)+"/deprecate", nil, body, opts)
+}
+
+// GetWhatsAppBlockedUsers - List blocked users.
+//
+// GET /whatsapp/block-users
+func (r *WhatsAppResource) GetWhatsAppBlockedUsers(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/whatsapp/block-users", query, nil, opts)
+}
+
+// BlockWhatsAppUsers - Block users.
+//
+// POST /whatsapp/block-users
+func (r *WhatsAppResource) BlockWhatsAppUsers(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/whatsapp/block-users", nil, body, opts)
+}
+
+// UnblockWhatsAppUsers - Unblock users.
+//
+// DELETE /whatsapp/block-users
+func (r *WhatsAppResource) UnblockWhatsAppUsers(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "DELETE", "/whatsapp/block-users", nil, body, opts)
+}
+
 // GetTemplate - Get a WhatsApp template.
 //
 // GET /whatsapp/templates/{name}

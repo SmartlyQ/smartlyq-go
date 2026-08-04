@@ -1046,15 +1046,6 @@
           "403": {
             "$ref": "#/components/responses/Forbidden"
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          },
-          "500": {
-            "$ref": "#/components/responses/ServerError"
-          },
           "409": {
             "description": "Duplicate content within 24h",
             "content": {
@@ -1097,6 +1088,15 @@
                 }
               }
             }
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
           }
         },
         "parameters": [
@@ -1266,15 +1266,6 @@
           "403": {
             "$ref": "#/components/responses/Forbidden"
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          },
-          "500": {
-            "$ref": "#/components/responses/ServerError"
-          },
           "409": {
             "description": "Duplicate content within 24h",
             "content": {
@@ -1317,6 +1308,15 @@
                 }
               }
             }
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
           }
         },
         "parameters": [
@@ -3190,24 +3190,6 @@
           }
         },
         "responses": {
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "402": {
-            "$ref": "#/components/responses/InsufficientBalance"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          },
-          "500": {
-            "$ref": "#/components/responses/ServerError"
-          },
           "202": {
             "description": "Accepted - job queued. Poll GET /jobs/{job_uid}; on completion result_data contains the same payload the old 200 body carried.",
             "content": {
@@ -3232,6 +3214,24 @@
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/InsufficientBalance"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
           }
         }
       }
@@ -3272,24 +3272,6 @@
           }
         },
         "responses": {
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "402": {
-            "$ref": "#/components/responses/InsufficientBalance"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          },
-          "500": {
-            "$ref": "#/components/responses/ServerError"
-          },
           "202": {
             "description": "Accepted - job queued. Poll GET /jobs/{job_uid}; on completion result_data contains the same payload the old 200 body carried.",
             "content": {
@@ -3314,6 +3296,24 @@
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/InsufficientBalance"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
           }
         }
       }
@@ -3365,24 +3365,6 @@
           }
         },
         "responses": {
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "402": {
-            "$ref": "#/components/responses/InsufficientBalance"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          },
-          "500": {
-            "$ref": "#/components/responses/ServerError"
-          },
           "202": {
             "description": "Accepted - job queued. Poll GET /jobs/{job_uid}; on completion result_data contains the same payload the old 200 body carried.",
             "content": {
@@ -3407,6 +3389,24 @@
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/InsufficientBalance"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
           }
         }
       }
@@ -3469,24 +3469,6 @@
           }
         },
         "responses": {
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "402": {
-            "$ref": "#/components/responses/InsufficientBalance"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          },
-          "500": {
-            "$ref": "#/components/responses/ServerError"
-          },
           "202": {
             "description": "Accepted - job queued. Poll GET /jobs/{job_uid}; on completion result_data contains the same payload the old 200 body carried.",
             "content": {
@@ -3511,6 +3493,24 @@
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/InsufficientBalance"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
           }
         }
       }
@@ -5816,9 +5816,6 @@
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -5827,6 +5824,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -6065,9 +6065,6 @@
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -6076,6 +6073,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -6145,9 +6145,6 @@
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -6156,6 +6153,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -6280,9 +6280,6 @@
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -6291,6 +6288,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -6600,9 +6600,6 @@
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -6611,6 +6608,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -6680,9 +6680,6 @@
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -6691,6 +6688,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -6796,9 +6796,6 @@
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -6807,6 +6804,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -6877,14 +6877,14 @@
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -7017,9 +7017,6 @@
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -7028,6 +7025,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -7558,9 +7558,6 @@
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -7569,6 +7566,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -7639,9 +7639,6 @@
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -7650,6 +7647,9 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           },
           "500": {
             "$ref": "#/components/responses/ServerError"
@@ -9181,7 +9181,7 @@
                                     },
                                     "end": {
                                       "type": "number",
-                                      "example": 41.0
+                                      "example": 41
                                     }
                                   }
                                 },
@@ -9191,7 +9191,7 @@
                                     "title": "The 3-second hook",
                                     "score": 0.92,
                                     "start": 12.4,
-                                    "end": 41.0
+                                    "end": 41
                                   }
                                 ]
                               },
@@ -9212,7 +9212,7 @@
                                   "title": "The 3-second hook",
                                   "score": 0.92,
                                   "start": 12.4,
-                                  "end": 41.0
+                                  "end": 41
                                 }
                               ],
                               "created_at": "2026-07-26T09:41:22Z"
@@ -9240,7 +9240,7 @@
                             "title": "The 3-second hook",
                             "score": 0.92,
                             "start": 12.4,
-                            "end": 41.0
+                            "end": 41
                           }
                         ],
                         "created_at": "2026-07-26T09:41:22Z"
@@ -9335,7 +9335,7 @@
                               },
                               "end": {
                                 "type": "number",
-                                "example": 41.0
+                                "example": 41
                               }
                             }
                           },
@@ -9345,7 +9345,7 @@
                               "title": "The 3-second hook",
                               "score": 0.92,
                               "start": 12.4,
-                              "end": 41.0
+                              "end": 41
                             }
                           ]
                         },
@@ -9372,7 +9372,7 @@
                         "title": "The 3-second hook",
                         "score": 0.92,
                         "start": 12.4,
-                        "end": 41.0
+                        "end": 41
                       }
                     ],
                     "created_at": "2026-07-26T09:41:22Z"
@@ -9566,6 +9566,125 @@
           }
         },
         "responses": {
+          "200": {
+            "description": "Existing contact updated (matched by email)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 8412
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "Ada Lovelace"
+                        },
+                        "first_name": {
+                          "type": "string",
+                          "example": "Ada"
+                        },
+                        "last_name": {
+                          "type": "string",
+                          "example": "Lovelace"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "ada@example.com"
+                        },
+                        "phone": {
+                          "type": "string",
+                          "example": "+30 694 123 4567"
+                        },
+                        "company": {
+                          "type": "string",
+                          "example": "Acme Corp"
+                        },
+                        "role": {
+                          "type": "string",
+                          "example": "Head of Growth"
+                        },
+                        "status": {
+                          "type": "string",
+                          "example": "customer"
+                        },
+                        "tags": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "example": [
+                            "vip",
+                            "newsletter"
+                          ]
+                        },
+                        "attributes": {
+                          "type": "object",
+                          "example": {
+                            "lead_source": "webinar"
+                          }
+                        },
+                        "source": {
+                          "type": "string",
+                          "example": "api"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "example": "2026-07-01T10:15:00Z"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "example": "2026-07-26T09:41:22Z"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "id": 8412,
+                    "name": "Ada Lovelace",
+                    "first_name": "Ada",
+                    "last_name": "Lovelace",
+                    "email": "ada@example.com",
+                    "phone": "+30 694 123 4567",
+                    "company": "Acme Corp",
+                    "role": "Head of Growth",
+                    "status": "customer",
+                    "tags": [
+                      "vip",
+                      "newsletter"
+                    ],
+                    "attributes": {
+                      "lead_source": "webinar"
+                    },
+                    "source": "api",
+                    "created_at": "2026-07-01T10:15:00Z",
+                    "updated_at": "2026-07-26T09:41:22Z",
+                    "matched_by": "email"
+                  },
+                  "meta": {
+                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                    "timestamp": "2026-07-26T09:41:22Z"
+                  }
+                }
+              }
+            }
+          },
           "201": {
             "description": "Contact created",
             "content": {
@@ -9677,125 +9796,6 @@
                     "created_at": "2026-07-01T10:15:00Z",
                     "updated_at": "2026-07-26T09:41:22Z",
                     "matched_by": null
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Existing contact updated (matched by email)",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        true
-                      ]
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "integer",
-                          "example": 8412
-                        },
-                        "name": {
-                          "type": "string",
-                          "example": "Ada Lovelace"
-                        },
-                        "first_name": {
-                          "type": "string",
-                          "example": "Ada"
-                        },
-                        "last_name": {
-                          "type": "string",
-                          "example": "Lovelace"
-                        },
-                        "email": {
-                          "type": "string",
-                          "example": "ada@example.com"
-                        },
-                        "phone": {
-                          "type": "string",
-                          "example": "+30 694 123 4567"
-                        },
-                        "company": {
-                          "type": "string",
-                          "example": "Acme Corp"
-                        },
-                        "role": {
-                          "type": "string",
-                          "example": "Head of Growth"
-                        },
-                        "status": {
-                          "type": "string",
-                          "example": "customer"
-                        },
-                        "tags": {
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          },
-                          "example": [
-                            "vip",
-                            "newsletter"
-                          ]
-                        },
-                        "attributes": {
-                          "type": "object",
-                          "example": {
-                            "lead_source": "webinar"
-                          }
-                        },
-                        "source": {
-                          "type": "string",
-                          "example": "api"
-                        },
-                        "created_at": {
-                          "type": "string",
-                          "example": "2026-07-01T10:15:00Z"
-                        },
-                        "updated_at": {
-                          "type": "string",
-                          "example": "2026-07-26T09:41:22Z"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": true,
-                  "data": {
-                    "id": 8412,
-                    "name": "Ada Lovelace",
-                    "first_name": "Ada",
-                    "last_name": "Lovelace",
-                    "email": "ada@example.com",
-                    "phone": "+30 694 123 4567",
-                    "company": "Acme Corp",
-                    "role": "Head of Growth",
-                    "status": "customer",
-                    "tags": [
-                      "vip",
-                      "newsletter"
-                    ],
-                    "attributes": {
-                      "lead_source": "webinar"
-                    },
-                    "source": "api",
-                    "created_at": "2026-07-01T10:15:00Z",
-                    "updated_at": "2026-07-26T09:41:22Z",
-                    "matched_by": "email"
                   },
                   "meta": {
                     "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
@@ -11152,7 +11152,7 @@
                           },
                           "value": {
                             "type": "number",
-                            "example": 2500.0
+                            "example": 2500
                           },
                           "stage": {
                             "type": "string",
@@ -11191,7 +11191,7 @@
                       "name": "Acme annual plan",
                       "contact_email": "ada@example.com",
                       "company": "Acme Corp",
-                      "value": 2500.0,
+                      "value": 2500,
                       "stage": "proposal",
                       "status": "open",
                       "assigned_user_id": null,
@@ -11317,7 +11317,7 @@
                         },
                         "value": {
                           "type": "number",
-                          "example": 2500.0
+                          "example": 2500
                         },
                         "stage": {
                           "type": "string",
@@ -11351,7 +11351,7 @@
                     "name": "Acme annual plan",
                     "contact_email": "ada@example.com",
                     "company": "Acme Corp",
-                    "value": 2500.0,
+                    "value": 2500,
                     "stage": "proposal",
                     "status": "open",
                     "assigned_user_id": null,
@@ -11427,7 +11427,7 @@
                         },
                         "value": {
                           "type": "number",
-                          "example": 2500.0
+                          "example": 2500
                         },
                         "stage": {
                           "type": "string",
@@ -11461,7 +11461,7 @@
                     "name": "Acme annual plan",
                     "contact_email": "ada@example.com",
                     "company": "Acme Corp",
-                    "value": 2500.0,
+                    "value": 2500,
                     "stage": "proposal",
                     "status": "open",
                     "assigned_user_id": null,
@@ -11586,7 +11586,7 @@
                         },
                         "value": {
                           "type": "number",
-                          "example": 2500.0
+                          "example": 2500
                         },
                         "stage": {
                           "type": "string",
@@ -11620,7 +11620,7 @@
                     "name": "Acme annual plan",
                     "contact_email": "ada@example.com",
                     "company": "Acme Corp",
-                    "value": 2500.0,
+                    "value": 2500,
                     "stage": "proposal",
                     "status": "open",
                     "assigned_user_id": null,
@@ -11775,7 +11775,7 @@
                         },
                         "value": {
                           "type": "number",
-                          "example": 2500.0
+                          "example": 2500
                         },
                         "stage": {
                           "type": "string",
@@ -11809,7 +11809,7 @@
                     "name": "Acme annual plan",
                     "contact_email": "ada@example.com",
                     "company": "Acme Corp",
-                    "value": 2500.0,
+                    "value": 2500,
                     "stage": "proposal",
                     "status": "won",
                     "assigned_user_id": null,
@@ -12663,11 +12663,11 @@
                         },
                         "balance_sqc": {
                           "type": "number",
-                          "example": 1250.0
+                          "example": 1250
                         },
                         "sub_wallet_balance": {
                           "type": "number",
-                          "example": 1250.0
+                          "example": 1250
                         }
                       }
                     },
@@ -12687,8 +12687,8 @@
                     "billing_mode": "saas",
                     "state": "active",
                     "rebilling_enabled": true,
-                    "balance_sqc": 1250.0,
-                    "sub_wallet_balance": 1250.0
+                    "balance_sqc": 1250,
+                    "sub_wallet_balance": 1250
                   },
                   "meta": {
                     "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
@@ -12766,7 +12766,7 @@
                         },
                         "balance_sqc": {
                           "type": "number",
-                          "example": 1250.0
+                          "example": 1250
                         }
                       }
                     },
@@ -12784,7 +12784,7 @@
                     "state": "active",
                     "billing_mode": "saas",
                     "rebilling_enabled": true,
-                    "balance_sqc": 1250.0
+                    "balance_sqc": 1250
                   },
                   "meta": {
                     "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
@@ -12848,11 +12848,11 @@
                               },
                               "price": {
                                 "type": "number",
-                                "example": 97.0
+                                "example": 97
                               },
                               "setup_fee": {
                                 "type": "number",
-                                "example": 0.0
+                                "example": 0
                               },
                               "currency": {
                                 "type": "string",
@@ -12864,7 +12864,7 @@
                               },
                               "credits_per_period": {
                                 "type": "number",
-                                "example": 5000.0
+                                "example": 5000
                               },
                               "workspaces_limit": {
                                 "type": "integer",
@@ -12889,11 +12889,11 @@
                               "tenant_id": 7,
                               "name": "Agency Pro",
                               "description": "Full suite for client workspaces.",
-                              "price": 97.0,
-                              "setup_fee": 0.0,
+                              "price": 97,
+                              "setup_fee": 0,
                               "currency": "USD",
                               "interval": "monthly",
-                              "credits_per_period": 5000.0,
+                              "credits_per_period": 5000,
                               "workspaces_limit": 10,
                               "features": [
                                 "social",
@@ -12919,11 +12919,11 @@
                         "tenant_id": 7,
                         "name": "Agency Pro",
                         "description": "Full suite for client workspaces.",
-                        "price": 97.0,
-                        "setup_fee": 0.0,
+                        "price": 97,
+                        "setup_fee": 0,
                         "currency": "USD",
                         "interval": "monthly",
-                        "credits_per_period": 5000.0,
+                        "credits_per_period": 5000,
                         "workspaces_limit": 10,
                         "features": [
                           "social",
@@ -13001,11 +13001,11 @@
                         },
                         "price": {
                           "type": "number",
-                          "example": 97.0
+                          "example": 97
                         },
                         "setup_fee": {
                           "type": "number",
-                          "example": 0.0
+                          "example": 0
                         },
                         "currency": {
                           "type": "string",
@@ -13017,7 +13017,7 @@
                         },
                         "credits_per_period": {
                           "type": "number",
-                          "example": 5000.0
+                          "example": 5000
                         },
                         "workspaces_limit": {
                           "type": "integer",
@@ -13048,11 +13048,11 @@
                     "tenant_id": 7,
                     "name": "Agency Pro",
                     "description": "Full suite for client workspaces.",
-                    "price": 97.0,
-                    "setup_fee": 0.0,
+                    "price": 97,
+                    "setup_fee": 0,
                     "currency": "USD",
                     "interval": "monthly",
-                    "credits_per_period": 5000.0,
+                    "credits_per_period": 5000,
                     "workspaces_limit": 10,
                     "features": [
                       "social",
@@ -28446,7 +28446,7 @@
       "post": {
         "summary": "Send a WhatsApp message",
         "operationId": "sendWhatsAppMessage",
-        "description": "Send a message from a connected WhatsApp number. `text`, `media`, `interactive_buttons`, `interactive_list`, `location`, and `contacts` are SESSION messages - deliverable only inside the 24-hour customer window (i.e. after the user messaged you). Outside it, only `template` (an approved HSM) is deliverable. `context_message_id` (any type except `contacts`) threads the message as a reply under a prior WhatsApp message id, rendering as a quoted reply in the customer's app. Requires social:write.\n\n**Pricing.** Billed per message from your API wallet, on top of your plan's monthly WhatsApp send limit. The price depends on the destination country and the message category, mirroring how WhatsApp itself prices, so a utility message to one market and a marketing message to another cost different amounts. Free-form replies are billed as `service`, priced at the destination market's utility rate. The response carries a `pricing` block showing which rate was applied, and the `usage` block reports cost and remaining balance. You are charged only for a message accepted for delivery - a rejected send is refunded automatically.",
+        "description": "Send a message from a connected WhatsApp number. `text`, `media`, `interactive_buttons`, `interactive_list`, `location`, `contacts`, and `flow` are SESSION messages - deliverable only inside the 24-hour customer window (i.e. after the user messaged you). Outside it, only `template` (an approved HSM) is deliverable. `context_message_id` (any type except `contacts`) threads the message as a reply under a prior WhatsApp message id, rendering as a quoted reply in the customer's app. `type=flow` requires the flow to be PUBLISHED first (see the WhatsApp Flows endpoints) - a DRAFT flow can only be tested via its preview URL. Requires social:write.\n\n**Pricing.** Billed per message from your API wallet, on top of your plan's monthly WhatsApp send limit. The price depends on the destination country and the message category, mirroring how WhatsApp itself prices, so a utility message to one market and a marketing message to another cost different amounts. Free-form replies are billed as `service`, priced at the destination market's utility rate. The response carries a `pricing` block showing which rate was applied, and the `usage` block reports cost and remaining balance. You are charged only for a message accepted for delivery - a rejected send is refunded automatically.",
         "tags": [
           "WhatsApp"
         ],
@@ -28479,13 +28479,18 @@
                       "interactive_list",
                       "location",
                       "contacts",
-                      "reaction"
+                      "reaction",
+                      "flow"
                     ],
                     "default": "text"
                   },
                   "context_message_id": {
                     "type": "string",
                     "description": "A prior WhatsApp message id (wamid) to thread this message as a reply under, or (for type=reaction) the message being reacted to. Renders as a quoted reply in the customer's app."
+                  },
+                  "footer_text": {
+                    "type": "string",
+                    "description": "For type=flow. Optional footer line below the body, max 60 characters."
                   },
                   "text": {
                     "type": "string",
@@ -28626,6 +28631,59 @@
                     "type": "string",
                     "description": "For type=reaction. The emoji to react with, or an empty string to remove a previously-sent reaction. Requires context_message_id."
                   },
+                  "flow": {
+                    "type": "object",
+                    "description": "For type=flow.",
+                    "required": [
+                      "id",
+                      "cta"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "A PUBLISHED flow's id."
+                      },
+                      "cta": {
+                        "type": "string",
+                        "description": "Text on the button that opens the flow, max 20 characters."
+                      },
+                      "token": {
+                        "type": "string",
+                        "description": "Opaque token you supply to correlate this send with the flow's response/completion webhook. Auto-generated if omitted."
+                      },
+                      "action": {
+                        "type": "string",
+                        "enum": [
+                          "navigate",
+                          "data_exchange"
+                        ],
+                        "default": "navigate",
+                        "description": "navigate opens a specific screen directly; data_exchange hands the first screen to your flow endpoint to decide."
+                      },
+                      "action_payload": {
+                        "type": "object",
+                        "description": "Required when action=navigate.",
+                        "properties": {
+                          "screen": {
+                            "type": "string",
+                            "description": "The screen id to open."
+                          },
+                          "data": {
+                            "type": "object",
+                            "description": "Fields to pre-populate on that screen."
+                          }
+                        }
+                      },
+                      "mode": {
+                        "type": "string",
+                        "enum": [
+                          "draft",
+                          "published"
+                        ],
+                        "description": "Defaults to published. Use draft only while testing an unpublished flow with your own test numbers."
+                      }
+                    }
+                  },
                   "category": {
                     "type": "string",
                     "enum": [
@@ -28753,6 +28811,24 @@
                     "context_message_id": "wamid.HBgLMTU1NTU1NTU1NTUVAgARGBI5QTM2RUQ4RkQ2QjM4RjQ4QjQA",
                     "emoji": "👍"
                   }
+                },
+                "flow": {
+                  "summary": "Open a Flow",
+                  "value": {
+                    "account_id": 42,
+                    "to": "+14155551234",
+                    "type": "flow",
+                    "text": "Book your appointment in a few taps.",
+                    "flow": {
+                      "id": "1234567890123456",
+                      "cta": "Book now",
+                      "action": "navigate",
+                      "action_payload": {
+                        "screen": "APPOINTMENT",
+                        "data": {}
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -28832,11 +28908,11 @@
               }
             }
           },
-          "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           },
           "502": {
             "description": "WhatsApp rejected the message (e.g. outside the 24h window with no template)."
@@ -29079,6 +29155,766 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/whatsapp/flows": {
+      "get": {
+        "summary": "List flows",
+        "operationId": "listWhatsAppFlows",
+        "description": "List the WhatsApp Flows on this connection's WhatsApp Business Account. Requires social:read.",
+        "tags": [
+          "WhatsApp"
+        ],
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "A connected WhatsApp number (social account id)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Flows",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "flows": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/WhatsAppFlow"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a flow",
+        "operationId": "createWhatsAppFlow",
+        "description": "Create a new WhatsApp Flow in DRAFT status. Optionally clone an existing flow with clone_flow_id. A freshly created flow has no screens - upload a Flow JSON definition next (PUT /whatsapp/flows/{flow_id}/json), then publish it. Requires social:write.",
+        "tags": [
+          "WhatsApp"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "account_id",
+                  "name",
+                  "categories"
+                ],
+                "properties": {
+                  "account_id": {
+                    "type": "integer",
+                    "description": "A connected WhatsApp number (social account id)."
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "categories": {
+                    "type": "array",
+                    "description": "At least one, e.g. SIGN_UP, APPOINTMENT_BOOKING, SURVEY, LEAD_GENERATION, CONTACT_US, CUSTOMER_SUPPORT, OTHER.",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "clone_flow_id": {
+                    "type": "string",
+                    "description": "An existing flow id to clone instead of starting blank."
+                  }
+                }
+              },
+              "example": {
+                "account_id": 42,
+                "name": "Book an appointment",
+                "categories": [
+                  "APPOINTMENT_BOOKING"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "validation_errors": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/whatsapp/flows/{flow_id}": {
+      "get": {
+        "summary": "Get flow",
+        "operationId": "getWhatsAppFlow",
+        "description": "Get a flow's details: status, categories, validation errors, and the endpoint URI (for data_exchange flows). Requires social:read.",
+        "tags": [
+          "WhatsApp"
+        ],
+        "parameters": [
+          {
+            "name": "flow_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "A connected WhatsApp number (social account id)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Flow",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "flow": {
+                          "$ref": "#/components/schemas/WhatsAppFlow"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update flow",
+        "operationId": "updateWhatsAppFlow",
+        "description": "Update a DRAFT flow's name, categories, or endpoint_uri. Published flows are immutable - create a new flow to change one. Requires social:write.",
+        "tags": [
+          "WhatsApp"
+        ],
+        "parameters": [
+          {
+            "name": "flow_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "account_id"
+                ],
+                "properties": {
+                  "account_id": {
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "categories": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "endpoint_uri": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete flow",
+        "operationId": "deleteWhatsAppFlow",
+        "description": "Delete a DRAFT flow. Irreversible. Published flows can't be deleted, only deprecated. Requires social:write.",
+        "tags": [
+          "WhatsApp"
+        ],
+        "parameters": [
+          {
+            "name": "flow_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "A connected WhatsApp number (social account id)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/whatsapp/flows/{flow_id}/json": {
+      "put": {
+        "summary": "Upload flow JSON",
+        "operationId": "uploadWhatsAppFlowJson",
+        "description": "Upload or replace a DRAFT flow's Flow JSON - the screens, components, and navigation that define the form. Meta validates on upload; the response's validation_errors comes back either way, so a successful upload doesn't guarantee the flow is publishable yet. Requires social:write.",
+        "tags": [
+          "WhatsApp"
+        ],
+        "parameters": [
+          {
+            "name": "flow_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "account_id",
+                  "flow_json"
+                ],
+                "properties": {
+                  "account_id": {
+                    "type": "integer"
+                  },
+                  "flow_json": {
+                    "type": "object",
+                    "description": "The Flow JSON document. See Meta's WhatsApp Flows JSON reference for the schema of screens/components/actions."
+                  }
+                }
+              },
+              "example": {
+                "account_id": 42,
+                "flow_json": {
+                  "version": "6.0",
+                  "screens": [
+                    {
+                      "id": "APPOINTMENT",
+                      "title": "Book appointment",
+                      "terminal": true,
+                      "layout": {
+                        "type": "SingleColumnLayout",
+                        "children": []
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Uploaded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "uploaded": {
+                          "type": "boolean"
+                        },
+                        "validation_errors": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "description": "WhatsApp rejected the upload."
+          }
+        }
+      },
+      "get": {
+        "summary": "Get flow JSON asset",
+        "operationId": "getWhatsAppFlowJson",
+        "description": "Get the uploaded Flow JSON asset's metadata, including a temporary download URL. Requires social:read.",
+        "tags": [
+          "WhatsApp"
+        ],
+        "parameters": [
+          {
+            "name": "flow_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "A connected WhatsApp number (social account id)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Assets",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/whatsapp/flows/{flow_id}/preview": {
+      "get": {
+        "summary": "Get flow preview URL",
+        "operationId": "getWhatsAppFlowPreview",
+        "description": "Get Meta's web-preview URL for the flow (draft or published), embeddable as an iframe. The URL is reused across calls (valid roughly 30 days) unless invalidate=true mints a fresh one. Requires social:read.",
+        "tags": [
+          "WhatsApp"
+        ],
+        "parameters": [
+          {
+            "name": "flow_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "A connected WhatsApp number (social account id)."
+          },
+          {
+            "name": "invalidate",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "description": "Mint a fresh preview URL instead of reusing the existing one."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Preview URL",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "preview_url": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "expires_at": {
+                          "type": "string",
+                          "nullable": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/whatsapp/flows/{flow_id}/publish": {
+      "post": {
+        "summary": "Publish flow",
+        "operationId": "publishWhatsAppFlow",
+        "description": "Publish a DRAFT flow, making it sendable via POST /whatsapp/messages with type=flow. Irreversible - published flows are immutable; to change one, create a new flow. Requires social:write.",
+        "tags": [
+          "WhatsApp"
+        ],
+        "parameters": [
+          {
+            "name": "flow_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "account_id"
+                ],
+                "properties": {
+                  "account_id": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Published"
+          },
+          "502": {
+            "description": "The flow failed Meta's publish validation."
+          }
+        }
+      }
+    },
+    "/whatsapp/flows/{flow_id}/deprecate": {
+      "post": {
+        "summary": "Deprecate flow",
+        "operationId": "deprecateWhatsAppFlow",
+        "description": "Deprecate a published flow, stopping it from being sendable while keeping its submission history and results. Requires social:write.",
+        "tags": [
+          "WhatsApp"
+        ],
+        "parameters": [
+          {
+            "name": "flow_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "account_id"
+                ],
+                "properties": {
+                  "account_id": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Deprecated"
+          }
+        }
+      }
+    },
+    "/whatsapp/block-users": {
+      "get": {
+        "summary": "List blocked users",
+        "operationId": "getWhatsAppBlockedUsers",
+        "description": "List the WhatsApp users blocked on this number. Cursor-paginated; the blocklist holds up to 64,000 users. Requires social:read.",
+        "tags": [
+          "WhatsApp"
+        ],
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "A connected WhatsApp number (social account id)."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50
+            }
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Pagination cursor from the previous page's paging.cursors.after."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Blocked users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "post": {
+        "summary": "Block users",
+        "operationId": "blockWhatsAppUsers",
+        "description": "Block one or more WhatsApp users on this number. Blocked users can't message your number or see your online status, and your sends to them fail. Meta only allows blocking a user who has messaged your business within the last 24 hours - other targets come back in `failed` without failing the rest of the batch. Up to 1,000 users per request. Requires social:write.",
+        "tags": [
+          "WhatsApp"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "account_id",
+                  "users"
+                ],
+                "properties": {
+                  "account_id": {
+                    "type": "integer"
+                  },
+                  "users": {
+                    "type": "array",
+                    "description": "Phone numbers in E.164 form.",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "example": {
+                "account_id": 42,
+                "users": [
+                  "+14155551234"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Blocked",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "description": "WhatsApp rejected the request."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Unblock users",
+        "operationId": "unblockWhatsAppUsers",
+        "description": "Unblock one or more previously blocked WhatsApp users on this number. Up to 1,000 users per request; per-user failures are reported in `failed` without failing the rest of the batch. Requires social:write.",
+        "tags": [
+          "WhatsApp"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "account_id",
+                  "users"
+                ],
+                "properties": {
+                  "account_id": {
+                    "type": "integer"
+                  },
+                  "users": {
+                    "type": "array",
+                    "description": "Phone numbers in E.164 form.",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Unblocked",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
           }
         }
       }
@@ -31864,6 +32700,39 @@
       }
     },
     "schemas": {
+      "WhatsAppFlow": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "DRAFT",
+              "PUBLISHED",
+              "DEPRECATED",
+              "BLOCKED",
+              "THROTTLED"
+            ]
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "validation_errors": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
       "RequestMeta": {
         "type": "object",
         "properties": {

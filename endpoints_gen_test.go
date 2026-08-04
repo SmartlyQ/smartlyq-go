@@ -1957,6 +1957,97 @@ func TestWhatsAppListWhatsAppPhoneNumbers(t *testing.T) {
 	})
 }
 
+func TestWhatsAppListWhatsAppFlows(t *testing.T) {
+	assertEndpoint(t, "GET", "/whatsapp/flows", func(c *Client) error {
+		_, err := c.WhatsApp.ListWhatsAppFlows(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestWhatsAppCreateWhatsAppFlow(t *testing.T) {
+	assertEndpoint(t, "POST", "/whatsapp/flows", func(c *Client) error {
+		_, err := c.WhatsApp.CreateWhatsAppFlow(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestWhatsAppGetWhatsAppFlow(t *testing.T) {
+	assertEndpoint(t, "GET", "/whatsapp/flows/test-flowId", func(c *Client) error {
+		_, err := c.WhatsApp.GetWhatsAppFlow(context.Background(), "test-flowId", nil, nil)
+		return err
+	})
+}
+
+func TestWhatsAppUpdateWhatsAppFlow(t *testing.T) {
+	assertEndpoint(t, "PATCH", "/whatsapp/flows/test-flowId", func(c *Client) error {
+		_, err := c.WhatsApp.UpdateWhatsAppFlow(context.Background(), "test-flowId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestWhatsAppDeleteWhatsAppFlow(t *testing.T) {
+	assertEndpoint(t, "DELETE", "/whatsapp/flows/test-flowId", func(c *Client) error {
+		_, err := c.WhatsApp.DeleteWhatsAppFlow(context.Background(), "test-flowId", nil, nil)
+		return err
+	})
+}
+
+func TestWhatsAppGetWhatsAppFlowJson(t *testing.T) {
+	assertEndpoint(t, "GET", "/whatsapp/flows/test-flowId/json", func(c *Client) error {
+		_, err := c.WhatsApp.GetWhatsAppFlowJson(context.Background(), "test-flowId", nil, nil)
+		return err
+	})
+}
+
+func TestWhatsAppUploadWhatsAppFlowJson(t *testing.T) {
+	assertEndpoint(t, "PUT", "/whatsapp/flows/test-flowId/json", func(c *Client) error {
+		_, err := c.WhatsApp.UploadWhatsAppFlowJson(context.Background(), "test-flowId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestWhatsAppGetWhatsAppFlowPreview(t *testing.T) {
+	assertEndpoint(t, "GET", "/whatsapp/flows/test-flowId/preview", func(c *Client) error {
+		_, err := c.WhatsApp.GetWhatsAppFlowPreview(context.Background(), "test-flowId", nil, nil)
+		return err
+	})
+}
+
+func TestWhatsAppPublishWhatsAppFlow(t *testing.T) {
+	assertEndpoint(t, "POST", "/whatsapp/flows/test-flowId/publish", func(c *Client) error {
+		_, err := c.WhatsApp.PublishWhatsAppFlow(context.Background(), "test-flowId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestWhatsAppDeprecateWhatsAppFlow(t *testing.T) {
+	assertEndpoint(t, "POST", "/whatsapp/flows/test-flowId/deprecate", func(c *Client) error {
+		_, err := c.WhatsApp.DeprecateWhatsAppFlow(context.Background(), "test-flowId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestWhatsAppGetWhatsAppBlockedUsers(t *testing.T) {
+	assertEndpoint(t, "GET", "/whatsapp/block-users", func(c *Client) error {
+		_, err := c.WhatsApp.GetWhatsAppBlockedUsers(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestWhatsAppBlockWhatsAppUsers(t *testing.T) {
+	assertEndpoint(t, "POST", "/whatsapp/block-users", func(c *Client) error {
+		_, err := c.WhatsApp.BlockWhatsAppUsers(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestWhatsAppUnblockWhatsAppUsers(t *testing.T) {
+	assertEndpoint(t, "DELETE", "/whatsapp/block-users", func(c *Client) error {
+		_, err := c.WhatsApp.UnblockWhatsAppUsers(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
 func TestWhatsAppGetTemplate(t *testing.T) {
 	assertEndpoint(t, "GET", "/whatsapp/templates/test-name", func(c *Client) error {
 		_, err := c.WhatsApp.GetTemplate(context.Background(), "test-name", nil, nil)

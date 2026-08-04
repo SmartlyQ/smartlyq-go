@@ -567,6 +567,19 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.WhatsApp.GetWhatsAppBusinessProfile(ctx, query)` | `GET /whatsapp/business-profile` | Get business profile |
 | `client.WhatsApp.UpdateWhatsAppBusinessProfile(ctx, body)` | `PATCH /whatsapp/business-profile` | Update business profile |
 | `client.WhatsApp.ListWhatsAppPhoneNumbers(ctx, query)` | `GET /whatsapp/phone-numbers` | List phone numbers |
+| `client.WhatsApp.ListWhatsAppFlows(ctx, query)` | `GET /whatsapp/flows` | List flows |
+| `client.WhatsApp.CreateWhatsAppFlow(ctx, body)` | `POST /whatsapp/flows` | Create a flow |
+| `client.WhatsApp.GetWhatsAppFlow(ctx, flowId, query)` | `GET /whatsapp/flows/{flow_id}` | Get flow |
+| `client.WhatsApp.UpdateWhatsAppFlow(ctx, flowId, body)` | `PATCH /whatsapp/flows/{flow_id}` | Update flow |
+| `client.WhatsApp.DeleteWhatsAppFlow(ctx, flowId, query)` | `DELETE /whatsapp/flows/{flow_id}` | Delete flow |
+| `client.WhatsApp.GetWhatsAppFlowJson(ctx, flowId, query)` | `GET /whatsapp/flows/{flow_id}/json` | Get flow JSON asset |
+| `client.WhatsApp.UploadWhatsAppFlowJson(ctx, flowId, body)` | `PUT /whatsapp/flows/{flow_id}/json` | Upload flow JSON |
+| `client.WhatsApp.GetWhatsAppFlowPreview(ctx, flowId, query)` | `GET /whatsapp/flows/{flow_id}/preview` | Get flow preview URL |
+| `client.WhatsApp.PublishWhatsAppFlow(ctx, flowId, body)` | `POST /whatsapp/flows/{flow_id}/publish` | Publish flow |
+| `client.WhatsApp.DeprecateWhatsAppFlow(ctx, flowId, body)` | `POST /whatsapp/flows/{flow_id}/deprecate` | Deprecate flow |
+| `client.WhatsApp.GetWhatsAppBlockedUsers(ctx, query)` | `GET /whatsapp/block-users` | List blocked users |
+| `client.WhatsApp.BlockWhatsAppUsers(ctx, body)` | `POST /whatsapp/block-users` | Block users |
+| `client.WhatsApp.UnblockWhatsAppUsers(ctx, body)` | `DELETE /whatsapp/block-users` | Unblock users |
 | `client.WhatsApp.GetTemplate(ctx, name, query)` | `GET /whatsapp/templates/{name}` | Get a WhatsApp template |
 | `client.WhatsApp.UpdateTemplate(ctx, name, body)` | `PATCH /whatsapp/templates/{name}` | Update a WhatsApp template |
 | `client.WhatsApp.DeleteTemplate(ctx, name, query)` | `DELETE /whatsapp/templates/{name}` | Delete a WhatsApp template |
