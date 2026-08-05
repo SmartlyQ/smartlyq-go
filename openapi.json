@@ -29919,6 +29919,441 @@
         }
       }
     },
+    "/whatsapp/sandbox/sessions": {
+      "get": {
+        "summary": "List your sandbox sessions",
+        "operationId": "listWhatsAppSandboxSessions",
+        "description": "Returns your non-expired sandbox sessions (there is at most one, since it's one phone per user) plus the shared sandbox number in E.164. `503 SANDBOX_UNAVAILABLE` if the platform hasn't configured a sandbox number yet. Requires social:read.",
+        "tags": [
+          "WhatsApp"
+        ],
+        "responses": {
+          "200": {
+            "description": "Sessions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "sessions": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/WhatsAppSandboxSession"
+                          }
+                        },
+                        "sandbox_number": {
+                          "type": "string",
+                          "nullable": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The sandbox is not configured on this platform."
+          }
+        }
+      },
+      "post": {
+        "summary": "Start a sandbox activation",
+        "operationId": "createWhatsAppSandboxSession",
+        "description": "Creates (or refreshes) a pending sandbox session for `phone` and immediately fires the locked sandbox template from the shared number to it. The session activates when the phone owner replies to that WhatsApp message - the reply itself proves ownership. Once active, use POST .../sessions/{session_id}/send to re-fire the template and see it land. Limits: 50 sends/24h per user, one phone per user at a time (revoke the existing session before activating a different phone). Requires social:write.",
+        "tags": [
+          "WhatsApp"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "phone"
+                ],
+                "properties": {
+                  "phone": {
+                    "type": "string",
+                    "description": "Phone in E.164 to activate against the sandbox."
+                  }
+                }
+              },
+              "example": {
+                "phone": "+14155551234"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "session": {
+                          "$ref": "#/components/schemas/WhatsAppSandboxSession"
+                        },
+                        "sandbox_number": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "503": {
+            "description": "The sandbox is not configured on this platform."
+          }
+        }
+      }
+    },
+    "/whatsapp/sandbox/sessions/{session_id}": {
+      "delete": {
+        "summary": "Revoke a sandbox session",
+        "operationId": "deleteWhatsAppSandboxSession",
+        "description": "Hard-deletes the session. You lose the ability to send to that phone via the sandbox until you activate it again. Requires social:write.",
+        "tags": [
+          "WhatsApp"
+        ],
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Revoked"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/whatsapp/sandbox/sessions/{session_id}/send": {
+      "post": {
+        "summary": "Send the sandbox template",
+        "operationId": "sendWhatsAppSandboxMessage",
+        "description": "Re-fires the locked sandbox template at an ACTIVE session's phone - the only message the sandbox can send, since the template is the only thing pre-approved on the shared number. 422 if the session is still pending (the phone hasn't replied yet) or the daily limit (50/24h) is reached. Requires social:write.",
+        "tags": [
+          "WhatsApp"
+        ],
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Sent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "message_id": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "status": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/whatsapp/numbers/{sender_id}/bridge": {
+      "post": {
+        "summary": "Bridge an owned number onto WhatsApp",
+        "operationId": "startWhatsAppNumberBridge",
+        "description": "Adds an already-owned phone number (bought via POST /phone-numbers/purchase) to your connected WhatsApp Business Account. Requires an existing WhatsApp connection (Settings > WhatsApp) - this adds a number to it, it does not create one - and SMS or voice capability on the number to receive Meta's verification code. Next: POST .../bridge/request-code. Requires social:write.",
+        "tags": [
+          "WhatsApp"
+        ],
+        "parameters": [
+          {
+            "name": "sender_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The id returned by POST /phone-numbers/purchase."
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Bridge started",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "phone_number_id": {
+                          "type": "string"
+                        },
+                        "bridge_status": {
+                          "type": "string",
+                          "enum": [
+                            "pending_code"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      },
+      "get": {
+        "summary": "Bridge status",
+        "operationId": "getWhatsAppNumberBridgeStatus",
+        "description": "Where the bridge is in Meta's add -> request_code -> verify_code -> register sequence. Requires social:read.",
+        "tags": [
+          "WhatsApp"
+        ],
+        "parameters": [
+          {
+            "name": "sender_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "bridge_status": {
+                          "type": "string",
+                          "enum": [
+                            "none",
+                            "pending_code",
+                            "pending_register",
+                            "linked"
+                          ]
+                        },
+                        "phone_number_id": {
+                          "type": "string",
+                          "nullable": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/whatsapp/numbers/{sender_id}/bridge/request-code": {
+      "post": {
+        "summary": "Request a verification code",
+        "operationId": "requestWhatsAppNumberBridgeCode",
+        "description": "Meta sends a code to the number ITSELF, by SMS or a voice call - not to you. Check the number's inbound SMS/call log in SmartlyQ to read it. Requires social:write.",
+        "tags": [
+          "WhatsApp"
+        ],
+        "parameters": [
+          {
+            "name": "sender_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "method": {
+                    "type": "string",
+                    "enum": [
+                      "sms",
+                      "voice"
+                    ],
+                    "default": "sms"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Requested"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/whatsapp/numbers/{sender_id}/bridge/verify": {
+      "post": {
+        "summary": "Submit the verification code",
+        "operationId": "verifyWhatsAppNumberBridge",
+        "description": "Submits the code, completes Cloud API registration, and connects the number - after this succeeds it behaves like any other connected WhatsApp number (POST /whatsapp/messages with its account_id, etc). Requires social:write.",
+        "tags": [
+          "WhatsApp"
+        ],
+        "parameters": [
+          {
+            "name": "sender_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "code"
+                ],
+                "properties": {
+                  "code": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Linked",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "linked": {
+                          "type": "boolean"
+                        },
+                        "account": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
     "/logs": {
       "get": {
         "summary": "List developer logs",
@@ -32700,6 +33135,36 @@
       }
     },
     "schemas": {
+      "WhatsAppSandboxSession": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "active"
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "nullable": true
+          },
+          "activated_at": {
+            "type": "string",
+            "nullable": true
+          },
+          "expires_at": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "WhatsAppFlow": {
         "type": "object",
         "properties": {

@@ -2172,6 +2172,62 @@ func (r *WhatsAppResource) UnblockWhatsAppUsers(ctx context.Context, body map[st
 	return r.client.do(ctx, "DELETE", "/whatsapp/block-users", nil, body, opts)
 }
 
+// ListWhatsAppSandboxSessions - List your sandbox sessions.
+//
+// GET /whatsapp/sandbox/sessions
+func (r *WhatsAppResource) ListWhatsAppSandboxSessions(ctx context.Context, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/whatsapp/sandbox/sessions", nil, nil, opts)
+}
+
+// CreateWhatsAppSandboxSession - Start a sandbox activation.
+//
+// POST /whatsapp/sandbox/sessions
+func (r *WhatsAppResource) CreateWhatsAppSandboxSession(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/whatsapp/sandbox/sessions", nil, body, opts)
+}
+
+// DeleteWhatsAppSandboxSession - Revoke a sandbox session.
+//
+// DELETE /whatsapp/sandbox/sessions/{session_id}
+func (r *WhatsAppResource) DeleteWhatsAppSandboxSession(ctx context.Context, sessionId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "DELETE", "/whatsapp/sandbox/sessions/"+url.PathEscape(sessionId), nil, nil, opts)
+}
+
+// SendWhatsAppSandboxMessage - Send the sandbox template.
+//
+// POST /whatsapp/sandbox/sessions/{session_id}/send
+func (r *WhatsAppResource) SendWhatsAppSandboxMessage(ctx context.Context, sessionId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/whatsapp/sandbox/sessions/"+url.PathEscape(sessionId)+"/send", nil, nil, opts)
+}
+
+// GetWhatsAppNumberBridgeStatus - Bridge status.
+//
+// GET /whatsapp/numbers/{sender_id}/bridge
+func (r *WhatsAppResource) GetWhatsAppNumberBridgeStatus(ctx context.Context, senderId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/whatsapp/numbers/"+url.PathEscape(senderId)+"/bridge", nil, nil, opts)
+}
+
+// StartWhatsAppNumberBridge - Bridge an owned number onto WhatsApp.
+//
+// POST /whatsapp/numbers/{sender_id}/bridge
+func (r *WhatsAppResource) StartWhatsAppNumberBridge(ctx context.Context, senderId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/whatsapp/numbers/"+url.PathEscape(senderId)+"/bridge", nil, nil, opts)
+}
+
+// RequestWhatsAppNumberBridgeCode - Request a verification code.
+//
+// POST /whatsapp/numbers/{sender_id}/bridge/request-code
+func (r *WhatsAppResource) RequestWhatsAppNumberBridgeCode(ctx context.Context, senderId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/whatsapp/numbers/"+url.PathEscape(senderId)+"/bridge/request-code", nil, body, opts)
+}
+
+// VerifyWhatsAppNumberBridge - Submit the verification code.
+//
+// POST /whatsapp/numbers/{sender_id}/bridge/verify
+func (r *WhatsAppResource) VerifyWhatsAppNumberBridge(ctx context.Context, senderId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/whatsapp/numbers/"+url.PathEscape(senderId)+"/bridge/verify", nil, body, opts)
+}
+
 // GetTemplate - Get a WhatsApp template.
 //
 // GET /whatsapp/templates/{name}

@@ -580,6 +580,14 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.WhatsApp.GetWhatsAppBlockedUsers(ctx, query)` | `GET /whatsapp/block-users` | List blocked users |
 | `client.WhatsApp.BlockWhatsAppUsers(ctx, body)` | `POST /whatsapp/block-users` | Block users |
 | `client.WhatsApp.UnblockWhatsAppUsers(ctx, body)` | `DELETE /whatsapp/block-users` | Unblock users |
+| `client.WhatsApp.ListWhatsAppSandboxSessions(ctx)` | `GET /whatsapp/sandbox/sessions` | List your sandbox sessions |
+| `client.WhatsApp.CreateWhatsAppSandboxSession(ctx, body)` | `POST /whatsapp/sandbox/sessions` | Start a sandbox activation |
+| `client.WhatsApp.DeleteWhatsAppSandboxSession(ctx, sessionId)` | `DELETE /whatsapp/sandbox/sessions/{session_id}` | Revoke a sandbox session |
+| `client.WhatsApp.SendWhatsAppSandboxMessage(ctx, sessionId)` | `POST /whatsapp/sandbox/sessions/{session_id}/send` | Send the sandbox template |
+| `client.WhatsApp.GetWhatsAppNumberBridgeStatus(ctx, senderId)` | `GET /whatsapp/numbers/{sender_id}/bridge` | Bridge status |
+| `client.WhatsApp.StartWhatsAppNumberBridge(ctx, senderId)` | `POST /whatsapp/numbers/{sender_id}/bridge` | Bridge an owned number onto WhatsApp |
+| `client.WhatsApp.RequestWhatsAppNumberBridgeCode(ctx, senderId, body)` | `POST /whatsapp/numbers/{sender_id}/bridge/request-code` | Request a verification code |
+| `client.WhatsApp.VerifyWhatsAppNumberBridge(ctx, senderId, body)` | `POST /whatsapp/numbers/{sender_id}/bridge/verify` | Submit the verification code |
 | `client.WhatsApp.GetTemplate(ctx, name, query)` | `GET /whatsapp/templates/{name}` | Get a WhatsApp template |
 | `client.WhatsApp.UpdateTemplate(ctx, name, body)` | `PATCH /whatsapp/templates/{name}` | Update a WhatsApp template |
 | `client.WhatsApp.DeleteTemplate(ctx, name, query)` | `DELETE /whatsapp/templates/{name}` | Delete a WhatsApp template |

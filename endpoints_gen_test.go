@@ -2048,6 +2048,62 @@ func TestWhatsAppUnblockWhatsAppUsers(t *testing.T) {
 	})
 }
 
+func TestWhatsAppListWhatsAppSandboxSessions(t *testing.T) {
+	assertEndpoint(t, "GET", "/whatsapp/sandbox/sessions", func(c *Client) error {
+		_, err := c.WhatsApp.ListWhatsAppSandboxSessions(context.Background(), nil)
+		return err
+	})
+}
+
+func TestWhatsAppCreateWhatsAppSandboxSession(t *testing.T) {
+	assertEndpoint(t, "POST", "/whatsapp/sandbox/sessions", func(c *Client) error {
+		_, err := c.WhatsApp.CreateWhatsAppSandboxSession(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestWhatsAppDeleteWhatsAppSandboxSession(t *testing.T) {
+	assertEndpoint(t, "DELETE", "/whatsapp/sandbox/sessions/test-sessionId", func(c *Client) error {
+		_, err := c.WhatsApp.DeleteWhatsAppSandboxSession(context.Background(), "test-sessionId", nil)
+		return err
+	})
+}
+
+func TestWhatsAppSendWhatsAppSandboxMessage(t *testing.T) {
+	assertEndpoint(t, "POST", "/whatsapp/sandbox/sessions/test-sessionId/send", func(c *Client) error {
+		_, err := c.WhatsApp.SendWhatsAppSandboxMessage(context.Background(), "test-sessionId", nil)
+		return err
+	})
+}
+
+func TestWhatsAppGetWhatsAppNumberBridgeStatus(t *testing.T) {
+	assertEndpoint(t, "GET", "/whatsapp/numbers/test-senderId/bridge", func(c *Client) error {
+		_, err := c.WhatsApp.GetWhatsAppNumberBridgeStatus(context.Background(), "test-senderId", nil)
+		return err
+	})
+}
+
+func TestWhatsAppStartWhatsAppNumberBridge(t *testing.T) {
+	assertEndpoint(t, "POST", "/whatsapp/numbers/test-senderId/bridge", func(c *Client) error {
+		_, err := c.WhatsApp.StartWhatsAppNumberBridge(context.Background(), "test-senderId", nil)
+		return err
+	})
+}
+
+func TestWhatsAppRequestWhatsAppNumberBridgeCode(t *testing.T) {
+	assertEndpoint(t, "POST", "/whatsapp/numbers/test-senderId/bridge/request-code", func(c *Client) error {
+		_, err := c.WhatsApp.RequestWhatsAppNumberBridgeCode(context.Background(), "test-senderId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestWhatsAppVerifyWhatsAppNumberBridge(t *testing.T) {
+	assertEndpoint(t, "POST", "/whatsapp/numbers/test-senderId/bridge/verify", func(c *Client) error {
+		_, err := c.WhatsApp.VerifyWhatsAppNumberBridge(context.Background(), "test-senderId", map[string]any{}, nil)
+		return err
+	})
+}
+
 func TestWhatsAppGetTemplate(t *testing.T) {
 	assertEndpoint(t, "GET", "/whatsapp/templates/test-name", func(c *Client) error {
 		_, err := c.WhatsApp.GetTemplate(context.Background(), "test-name", nil, nil)
