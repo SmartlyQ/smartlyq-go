@@ -5063,6 +5063,7 @@
       "post": {
         "summary": "Get presigned upload URL",
         "operationId": "getMediaUploadUrl",
+        "description": "Returns a presigned URL - PUT your file's bytes directly there (Content-Type must match what you declared here). The returned media_id has file_size=0 until you call POST /media/{media_id}/confirm afterward; there's no other way this API learns the upload completed. For most callers POST /media/upload-direct is simpler (one request, no separate confirm step) - use presign for large files or when you want the client to upload directly to storage instead of through this API.",
         "tags": [
           "Media"
         ],
@@ -5109,6 +5110,63 @@
           },
           "422": {
             "$ref": "#/components/responses/ValidationError"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/media/{media_id}/confirm": {
+      "post": {
+        "summary": "Confirm a presigned upload",
+        "operationId": "confirmMediaUpload",
+        "description": "Call this after PUTting your file to the presigned URL from POST /media/upload-url. HEADs the object in storage and backfills the real file_size (and mime_type, if the client's PUT Content-Type disagreed with what was declared at presign time) - the presign flow has no other completion signal. 422 NOT_UPLOADED if nothing has landed at the key yet.",
+        "tags": [
+          "Media"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/MediaIdParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Upload confirmed, record updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MediaSingleResponse"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "id": 128,
+                    "url": "https://example.com/launch",
+                    "filename": "example-filename",
+                    "size_bytes": 482113,
+                    "mime_type": "example-mime-type",
+                    "created_at": "2026-07-26T09:41:22Z"
+                  },
+                  "meta": {
+                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                    "timestamp": "2026-07-26T09:41:22Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "description": "No object found at the presigned URL yet - PUT the file there first, then confirm."
           },
           "500": {
             "$ref": "#/components/responses/ServerError"

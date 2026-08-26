@@ -802,6 +802,13 @@ func TestMediaGetUploadUrl(t *testing.T) {
 	})
 }
 
+func TestMediaConfirmUpload(t *testing.T) {
+	assertEndpoint(t, "POST", "/media/test-mediaId/confirm", func(c *Client) error {
+		_, err := c.Media.ConfirmUpload(context.Background(), "test-mediaId", nil)
+		return err
+	})
+}
+
 func TestMediaUploadDirect(t *testing.T) {
 	assertEndpoint(t, "POST", "/media/upload-direct", func(c *Client) error {
 		_, err := c.Media.UploadDirect(context.Background(), map[string]any{}, nil)

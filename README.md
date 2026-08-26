@@ -352,6 +352,7 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Media.Get(ctx, mediaId)` | `GET /media/{media_id}` | Get media |
 | `client.Media.Delete(ctx, mediaId)` | `DELETE /media/{media_id}` | Delete media |
 | `client.Media.GetUploadUrl(ctx, body)` | `POST /media/upload-url` | Get presigned upload URL |
+| `client.Media.ConfirmUpload(ctx, mediaId)` | `POST /media/{media_id}/confirm` | Confirm a presigned upload |
 | `client.Media.UploadDirect(ctx, body)` | `POST /media/upload-direct` | Upload a file directly |
 
 ### Presentations

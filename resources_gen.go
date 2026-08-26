@@ -896,6 +896,13 @@ func (r *MediaResource) GetUploadUrl(ctx context.Context, body map[string]any, o
 	return r.client.do(ctx, "POST", "/media/upload-url", nil, body, opts)
 }
 
+// ConfirmUpload - Confirm a presigned upload.
+//
+// POST /media/{media_id}/confirm
+func (r *MediaResource) ConfirmUpload(ctx context.Context, mediaId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/media/"+url.PathEscape(mediaId)+"/confirm", nil, nil, opts)
+}
+
 // UploadDirect - Upload a file directly.
 //
 // POST /media/upload-direct
