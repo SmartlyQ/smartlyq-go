@@ -10,6 +10,7 @@ import (
 // resources holds one field per API resource group; it is embedded in Client.
 type resources struct {
 	Account       *AccountResource
+	Ads           *AdsResource
 	Captain       *CaptainResource
 	Analytics     *AnalyticsResource
 	Articles      *ArticlesResource
@@ -42,6 +43,7 @@ type resources struct {
 
 func (c *Client) initResources() {
 	c.Account = &AccountResource{client: c}
+	c.Ads = &AdsResource{client: c}
 	c.Captain = &CaptainResource{client: c}
 	c.Analytics = &AnalyticsResource{client: c}
 	c.Articles = &ArticlesResource{client: c}
@@ -101,6 +103,268 @@ func (r *AccountResource) GetMeBalance(ctx context.Context, opts *RequestOptions
 // GET /me/billing
 func (r *AccountResource) GetBilling(ctx context.Context, opts *RequestOptions) (*Envelope, error) {
 	return r.client.do(ctx, "GET", "/me/billing", nil, nil, opts)
+}
+
+// AdsResource groups the Ads endpoints.
+type AdsResource struct{ client *Client }
+
+// ListCampaigns - List campaigns.
+//
+// GET /ads/campaigns
+func (r *AdsResource) ListCampaigns(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/ads/campaigns", query, nil, opts)
+}
+
+// CreateCampaign - Create a campaign.
+//
+// POST /ads/campaigns
+func (r *AdsResource) CreateCampaign(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/ads/campaigns", nil, body, opts)
+}
+
+// GetCampaign - Get a campaign.
+//
+// GET /ads/campaigns/{id}
+func (r *AdsResource) GetCampaign(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/ads/campaigns/"+url.PathEscape(id), nil, nil, opts)
+}
+
+// UpdateCampaign - Update a campaign.
+//
+// PATCH /ads/campaigns/{id}
+func (r *AdsResource) UpdateCampaign(ctx context.Context, id string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "PATCH", "/ads/campaigns/"+url.PathEscape(id), nil, body, opts)
+}
+
+// DeleteCampaign - Delete a campaign.
+//
+// DELETE /ads/campaigns/{id}
+func (r *AdsResource) DeleteCampaign(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "DELETE", "/ads/campaigns/"+url.PathEscape(id), nil, nil, opts)
+}
+
+// PauseCampaign - Pause a campaign.
+//
+// POST /ads/campaigns/{id}/pause
+func (r *AdsResource) PauseCampaign(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/ads/campaigns/"+url.PathEscape(id)+"/pause", nil, nil, opts)
+}
+
+// ResumeCampaign - Resume a campaign.
+//
+// POST /ads/campaigns/{id}/resume
+func (r *AdsResource) ResumeCampaign(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/ads/campaigns/"+url.PathEscape(id)+"/resume", nil, nil, opts)
+}
+
+// DuplicateCampaign - Duplicate a campaign.
+//
+// POST /ads/campaigns/{id}/duplicate
+func (r *AdsResource) DuplicateCampaign(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/ads/campaigns/"+url.PathEscape(id)+"/duplicate", nil, nil, opts)
+}
+
+// ArchiveCampaign - Archive a campaign.
+//
+// POST /ads/campaigns/{id}/archive
+func (r *AdsResource) ArchiveCampaign(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/ads/campaigns/"+url.PathEscape(id)+"/archive", nil, nil, opts)
+}
+
+// BulkCampaignStatus - Bulk pause/resume campaigns.
+//
+// POST /ads/campaigns/bulk-status
+func (r *AdsResource) BulkCampaignStatus(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/ads/campaigns/bulk-status", nil, body, opts)
+}
+
+// ListSets - List ad sets.
+//
+// GET /ads/ad-sets
+func (r *AdsResource) ListSets(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/ads/ad-sets", query, nil, opts)
+}
+
+// GetSet - Get an ad set.
+//
+// GET /ads/ad-sets/{id}
+func (r *AdsResource) GetSet(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/ads/ad-sets/"+url.PathEscape(id), nil, nil, opts)
+}
+
+// DeleteSet - Delete an ad set.
+//
+// DELETE /ads/ad-sets/{id}
+func (r *AdsResource) DeleteSet(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "DELETE", "/ads/ad-sets/"+url.PathEscape(id), nil, nil, opts)
+}
+
+// PauseSet - Pause an ad set.
+//
+// POST /ads/ad-sets/{id}/pause
+func (r *AdsResource) PauseSet(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/ads/ad-sets/"+url.PathEscape(id)+"/pause", nil, nil, opts)
+}
+
+// ResumeSet - Resume an ad set.
+//
+// POST /ads/ad-sets/{id}/resume
+func (r *AdsResource) ResumeSet(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/ads/ad-sets/"+url.PathEscape(id)+"/resume", nil, nil, opts)
+}
+
+// DuplicateSet - Duplicate an ad set.
+//
+// POST /ads/ad-sets/{id}/duplicate
+func (r *AdsResource) DuplicateSet(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/ads/ad-sets/"+url.PathEscape(id)+"/duplicate", nil, nil, opts)
+}
+
+// ArchiveSet - Archive an ad set.
+//
+// POST /ads/ad-sets/{id}/archive
+func (r *AdsResource) ArchiveSet(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/ads/ad-sets/"+url.PathEscape(id)+"/archive", nil, nil, opts)
+}
+
+// List - List ads.
+//
+// GET /ads/ads
+func (r *AdsResource) List(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/ads/ads", query, nil, opts)
+}
+
+// Get - Get an ad.
+//
+// GET /ads/ads/{id}
+func (r *AdsResource) Get(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/ads/ads/"+url.PathEscape(id), nil, nil, opts)
+}
+
+// Delete - Delete an ad.
+//
+// DELETE /ads/ads/{id}
+func (r *AdsResource) Delete(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "DELETE", "/ads/ads/"+url.PathEscape(id), nil, nil, opts)
+}
+
+// Pause - Pause an ad.
+//
+// POST /ads/ads/{id}/pause
+func (r *AdsResource) Pause(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/ads/ads/"+url.PathEscape(id)+"/pause", nil, nil, opts)
+}
+
+// Resume - Resume an ad.
+//
+// POST /ads/ads/{id}/resume
+func (r *AdsResource) Resume(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/ads/ads/"+url.PathEscape(id)+"/resume", nil, nil, opts)
+}
+
+// Duplicate - Duplicate an ad.
+//
+// POST /ads/ads/{id}/duplicate
+func (r *AdsResource) Duplicate(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/ads/ads/"+url.PathEscape(id)+"/duplicate", nil, nil, opts)
+}
+
+// Archive - Archive an ad.
+//
+// POST /ads/ads/{id}/archive
+func (r *AdsResource) Archive(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/ads/ads/"+url.PathEscape(id)+"/archive", nil, nil, opts)
+}
+
+// ListAudiences - List audiences.
+//
+// GET /ads/audiences
+func (r *AdsResource) ListAudiences(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/ads/audiences", query, nil, opts)
+}
+
+// ListPixels - List pixels / conversion destinations.
+//
+// GET /ads/pixels
+func (r *AdsResource) ListPixels(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/ads/pixels", query, nil, opts)
+}
+
+// ListLeadForms - List lead forms.
+//
+// GET /ads/lead-forms
+func (r *AdsResource) ListLeadForms(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/ads/lead-forms", query, nil, opts)
+}
+
+// CreateLeadForm - Create a lead form.
+//
+// POST /ads/lead-forms
+func (r *AdsResource) CreateLeadForm(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/ads/lead-forms", nil, body, opts)
+}
+
+// ListCreatives - List creatives.
+//
+// GET /ads/creatives
+func (r *AdsResource) ListCreatives(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/ads/creatives", query, nil, opts)
+}
+
+// CreateCreative - Create a creative.
+//
+// POST /ads/creatives
+func (r *AdsResource) CreateCreative(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/ads/creatives", nil, body, opts)
+}
+
+// UpdateCreative - Update a creative.
+//
+// PATCH /ads/creatives/{id}
+func (r *AdsResource) UpdateCreative(ctx context.Context, id string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "PATCH", "/ads/creatives/"+url.PathEscape(id), nil, body, opts)
+}
+
+// DeleteCreative - Delete a creative.
+//
+// DELETE /ads/creatives/{id}
+func (r *AdsResource) DeleteCreative(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "DELETE", "/ads/creatives/"+url.PathEscape(id), nil, nil, opts)
+}
+
+// ListAccounts - List connected ad accounts.
+//
+// GET /ads/accounts
+func (r *AdsResource) ListAccounts(ctx context.Context, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/ads/accounts", nil, nil, opts)
+}
+
+// AccountsDiagnostics - Account health and rate-limit diagnostics.
+//
+// GET /ads/accounts/diagnostics
+func (r *AdsResource) AccountsDiagnostics(ctx context.Context, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/ads/accounts/diagnostics", nil, nil, opts)
+}
+
+// ListAuditLog - List audit log entries.
+//
+// GET /ads/audit-log
+func (r *AdsResource) ListAuditLog(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/ads/audit-log", query, nil, opts)
+}
+
+// AudienceEstimate - Audience-size estimate.
+//
+// POST /ads/estimate
+func (r *AdsResource) AudienceEstimate(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/ads/estimate", nil, body, opts)
+}
+
+// SyncAccounts - Trigger an account sync.
+//
+// POST /ads/sync
+func (r *AdsResource) SyncAccounts(ctx context.Context, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/ads/sync", nil, nil, opts)
 }
 
 // CaptainResource groups the AI Captain endpoints.

@@ -162,6 +162,48 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Account.GetMeBalance(ctx)` | `GET /me/balance` | Get wallet balance |
 | `client.Account.GetBilling(ctx)` | `GET /me/billing` | Billing overview |
 
+### Ads
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `client.Ads.ListCampaigns(ctx, query)` | `GET /ads/campaigns` | List campaigns |
+| `client.Ads.CreateCampaign(ctx, body)` | `POST /ads/campaigns` | Create a campaign |
+| `client.Ads.GetCampaign(ctx, id)` | `GET /ads/campaigns/{id}` | Get a campaign |
+| `client.Ads.UpdateCampaign(ctx, id, body)` | `PATCH /ads/campaigns/{id}` | Update a campaign |
+| `client.Ads.DeleteCampaign(ctx, id)` | `DELETE /ads/campaigns/{id}` | Delete a campaign |
+| `client.Ads.PauseCampaign(ctx, id)` | `POST /ads/campaigns/{id}/pause` | Pause a campaign |
+| `client.Ads.ResumeCampaign(ctx, id)` | `POST /ads/campaigns/{id}/resume` | Resume a campaign |
+| `client.Ads.DuplicateCampaign(ctx, id)` | `POST /ads/campaigns/{id}/duplicate` | Duplicate a campaign |
+| `client.Ads.ArchiveCampaign(ctx, id)` | `POST /ads/campaigns/{id}/archive` | Archive a campaign |
+| `client.Ads.BulkCampaignStatus(ctx, body)` | `POST /ads/campaigns/bulk-status` | Bulk pause/resume campaigns |
+| `client.Ads.ListSets(ctx, query)` | `GET /ads/ad-sets` | List ad sets |
+| `client.Ads.GetSet(ctx, id)` | `GET /ads/ad-sets/{id}` | Get an ad set |
+| `client.Ads.DeleteSet(ctx, id)` | `DELETE /ads/ad-sets/{id}` | Delete an ad set |
+| `client.Ads.PauseSet(ctx, id)` | `POST /ads/ad-sets/{id}/pause` | Pause an ad set |
+| `client.Ads.ResumeSet(ctx, id)` | `POST /ads/ad-sets/{id}/resume` | Resume an ad set |
+| `client.Ads.DuplicateSet(ctx, id)` | `POST /ads/ad-sets/{id}/duplicate` | Duplicate an ad set |
+| `client.Ads.ArchiveSet(ctx, id)` | `POST /ads/ad-sets/{id}/archive` | Archive an ad set |
+| `client.Ads.List(ctx, query)` | `GET /ads/ads` | List ads |
+| `client.Ads.Get(ctx, id)` | `GET /ads/ads/{id}` | Get an ad |
+| `client.Ads.Delete(ctx, id)` | `DELETE /ads/ads/{id}` | Delete an ad |
+| `client.Ads.Pause(ctx, id)` | `POST /ads/ads/{id}/pause` | Pause an ad |
+| `client.Ads.Resume(ctx, id)` | `POST /ads/ads/{id}/resume` | Resume an ad |
+| `client.Ads.Duplicate(ctx, id)` | `POST /ads/ads/{id}/duplicate` | Duplicate an ad |
+| `client.Ads.Archive(ctx, id)` | `POST /ads/ads/{id}/archive` | Archive an ad |
+| `client.Ads.ListAudiences(ctx, query)` | `GET /ads/audiences` | List audiences |
+| `client.Ads.ListPixels(ctx, query)` | `GET /ads/pixels` | List pixels / conversion destinations |
+| `client.Ads.ListLeadForms(ctx, query)` | `GET /ads/lead-forms` | List lead forms |
+| `client.Ads.CreateLeadForm(ctx, body)` | `POST /ads/lead-forms` | Create a lead form |
+| `client.Ads.ListCreatives(ctx, query)` | `GET /ads/creatives` | List creatives |
+| `client.Ads.CreateCreative(ctx, body)` | `POST /ads/creatives` | Create a creative |
+| `client.Ads.UpdateCreative(ctx, id, body)` | `PATCH /ads/creatives/{id}` | Update a creative |
+| `client.Ads.DeleteCreative(ctx, id)` | `DELETE /ads/creatives/{id}` | Delete a creative |
+| `client.Ads.ListAccounts(ctx)` | `GET /ads/accounts` | List connected ad accounts |
+| `client.Ads.AccountsDiagnostics(ctx)` | `GET /ads/accounts/diagnostics` | Account health and rate-limit diagnostics |
+| `client.Ads.ListAuditLog(ctx, query)` | `GET /ads/audit-log` | List audit log entries |
+| `client.Ads.AudienceEstimate(ctx, body)` | `POST /ads/estimate` | Audience-size estimate |
+| `client.Ads.SyncAccounts(ctx)` | `POST /ads/sync` | Trigger an account sync |
+
 ### AI Captain
 
 | Method | Endpoint | Description |

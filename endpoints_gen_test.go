@@ -60,6 +60,265 @@ func TestAccountGetBilling(t *testing.T) {
 	})
 }
 
+func TestAdsListCampaigns(t *testing.T) {
+	assertEndpoint(t, "GET", "/ads/campaigns", func(c *Client) error {
+		_, err := c.Ads.ListCampaigns(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestAdsCreateCampaign(t *testing.T) {
+	assertEndpoint(t, "POST", "/ads/campaigns", func(c *Client) error {
+		_, err := c.Ads.CreateCampaign(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestAdsGetCampaign(t *testing.T) {
+	assertEndpoint(t, "GET", "/ads/campaigns/test-id", func(c *Client) error {
+		_, err := c.Ads.GetCampaign(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
+func TestAdsUpdateCampaign(t *testing.T) {
+	assertEndpoint(t, "PATCH", "/ads/campaigns/test-id", func(c *Client) error {
+		_, err := c.Ads.UpdateCampaign(context.Background(), "test-id", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestAdsDeleteCampaign(t *testing.T) {
+	assertEndpoint(t, "DELETE", "/ads/campaigns/test-id", func(c *Client) error {
+		_, err := c.Ads.DeleteCampaign(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
+func TestAdsPauseCampaign(t *testing.T) {
+	assertEndpoint(t, "POST", "/ads/campaigns/test-id/pause", func(c *Client) error {
+		_, err := c.Ads.PauseCampaign(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
+func TestAdsResumeCampaign(t *testing.T) {
+	assertEndpoint(t, "POST", "/ads/campaigns/test-id/resume", func(c *Client) error {
+		_, err := c.Ads.ResumeCampaign(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
+func TestAdsDuplicateCampaign(t *testing.T) {
+	assertEndpoint(t, "POST", "/ads/campaigns/test-id/duplicate", func(c *Client) error {
+		_, err := c.Ads.DuplicateCampaign(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
+func TestAdsArchiveCampaign(t *testing.T) {
+	assertEndpoint(t, "POST", "/ads/campaigns/test-id/archive", func(c *Client) error {
+		_, err := c.Ads.ArchiveCampaign(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
+func TestAdsBulkCampaignStatus(t *testing.T) {
+	assertEndpoint(t, "POST", "/ads/campaigns/bulk-status", func(c *Client) error {
+		_, err := c.Ads.BulkCampaignStatus(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestAdsListSets(t *testing.T) {
+	assertEndpoint(t, "GET", "/ads/ad-sets", func(c *Client) error {
+		_, err := c.Ads.ListSets(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestAdsGetSet(t *testing.T) {
+	assertEndpoint(t, "GET", "/ads/ad-sets/test-id", func(c *Client) error {
+		_, err := c.Ads.GetSet(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
+func TestAdsDeleteSet(t *testing.T) {
+	assertEndpoint(t, "DELETE", "/ads/ad-sets/test-id", func(c *Client) error {
+		_, err := c.Ads.DeleteSet(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
+func TestAdsPauseSet(t *testing.T) {
+	assertEndpoint(t, "POST", "/ads/ad-sets/test-id/pause", func(c *Client) error {
+		_, err := c.Ads.PauseSet(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
+func TestAdsResumeSet(t *testing.T) {
+	assertEndpoint(t, "POST", "/ads/ad-sets/test-id/resume", func(c *Client) error {
+		_, err := c.Ads.ResumeSet(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
+func TestAdsDuplicateSet(t *testing.T) {
+	assertEndpoint(t, "POST", "/ads/ad-sets/test-id/duplicate", func(c *Client) error {
+		_, err := c.Ads.DuplicateSet(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
+func TestAdsArchiveSet(t *testing.T) {
+	assertEndpoint(t, "POST", "/ads/ad-sets/test-id/archive", func(c *Client) error {
+		_, err := c.Ads.ArchiveSet(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
+func TestAdsList(t *testing.T) {
+	assertEndpoint(t, "GET", "/ads/ads", func(c *Client) error {
+		_, err := c.Ads.List(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestAdsGet(t *testing.T) {
+	assertEndpoint(t, "GET", "/ads/ads/test-id", func(c *Client) error {
+		_, err := c.Ads.Get(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
+func TestAdsDelete(t *testing.T) {
+	assertEndpoint(t, "DELETE", "/ads/ads/test-id", func(c *Client) error {
+		_, err := c.Ads.Delete(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
+func TestAdsPause(t *testing.T) {
+	assertEndpoint(t, "POST", "/ads/ads/test-id/pause", func(c *Client) error {
+		_, err := c.Ads.Pause(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
+func TestAdsResume(t *testing.T) {
+	assertEndpoint(t, "POST", "/ads/ads/test-id/resume", func(c *Client) error {
+		_, err := c.Ads.Resume(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
+func TestAdsDuplicate(t *testing.T) {
+	assertEndpoint(t, "POST", "/ads/ads/test-id/duplicate", func(c *Client) error {
+		_, err := c.Ads.Duplicate(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
+func TestAdsArchive(t *testing.T) {
+	assertEndpoint(t, "POST", "/ads/ads/test-id/archive", func(c *Client) error {
+		_, err := c.Ads.Archive(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
+func TestAdsListAudiences(t *testing.T) {
+	assertEndpoint(t, "GET", "/ads/audiences", func(c *Client) error {
+		_, err := c.Ads.ListAudiences(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestAdsListPixels(t *testing.T) {
+	assertEndpoint(t, "GET", "/ads/pixels", func(c *Client) error {
+		_, err := c.Ads.ListPixels(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestAdsListLeadForms(t *testing.T) {
+	assertEndpoint(t, "GET", "/ads/lead-forms", func(c *Client) error {
+		_, err := c.Ads.ListLeadForms(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestAdsCreateLeadForm(t *testing.T) {
+	assertEndpoint(t, "POST", "/ads/lead-forms", func(c *Client) error {
+		_, err := c.Ads.CreateLeadForm(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestAdsListCreatives(t *testing.T) {
+	assertEndpoint(t, "GET", "/ads/creatives", func(c *Client) error {
+		_, err := c.Ads.ListCreatives(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestAdsCreateCreative(t *testing.T) {
+	assertEndpoint(t, "POST", "/ads/creatives", func(c *Client) error {
+		_, err := c.Ads.CreateCreative(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestAdsUpdateCreative(t *testing.T) {
+	assertEndpoint(t, "PATCH", "/ads/creatives/test-id", func(c *Client) error {
+		_, err := c.Ads.UpdateCreative(context.Background(), "test-id", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestAdsDeleteCreative(t *testing.T) {
+	assertEndpoint(t, "DELETE", "/ads/creatives/test-id", func(c *Client) error {
+		_, err := c.Ads.DeleteCreative(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
+func TestAdsListAccounts(t *testing.T) {
+	assertEndpoint(t, "GET", "/ads/accounts", func(c *Client) error {
+		_, err := c.Ads.ListAccounts(context.Background(), nil)
+		return err
+	})
+}
+
+func TestAdsAccountsDiagnostics(t *testing.T) {
+	assertEndpoint(t, "GET", "/ads/accounts/diagnostics", func(c *Client) error {
+		_, err := c.Ads.AccountsDiagnostics(context.Background(), nil)
+		return err
+	})
+}
+
+func TestAdsListAuditLog(t *testing.T) {
+	assertEndpoint(t, "GET", "/ads/audit-log", func(c *Client) error {
+		_, err := c.Ads.ListAuditLog(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestAdsAudienceEstimate(t *testing.T) {
+	assertEndpoint(t, "POST", "/ads/estimate", func(c *Client) error {
+		_, err := c.Ads.AudienceEstimate(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestAdsSyncAccounts(t *testing.T) {
+	assertEndpoint(t, "POST", "/ads/sync", func(c *Client) error {
+		_, err := c.Ads.SyncAccounts(context.Background(), nil)
+		return err
+	})
+}
+
 func TestCaptainSendMessage(t *testing.T) {
 	assertEndpoint(t, "POST", "/captain/messages", func(c *Client) error {
 		_, err := c.Captain.SendMessage(context.Background(), map[string]any{}, nil)

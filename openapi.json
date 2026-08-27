@@ -125,6 +125,10 @@
     {
       "name": "WhatsApp",
       "description": "WhatsApp Business Cloud messaging, templates and business profile."
+    },
+    {
+      "name": "Ads",
+      "description": "Campaigns, ad sets, ads, audiences, pixels, lead forms, creatives, connected ad accounts, and diagnostics across Meta, Google, TikTok and LinkedIn Ads."
     }
   ],
   "paths": {
@@ -32791,6 +32795,3405 @@
           },
           "502": {
             "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/ads/campaigns": {
+      "get": {
+        "summary": "List campaigns",
+        "operationId": "listAdCampaigns",
+        "tags": [
+          "Ads"
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "platform",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "meta",
+              "enum": [
+                "meta",
+                "google",
+                "tiktok",
+                "linkedin"
+              ]
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Match against name."
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "example": 1,
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "example": 20,
+              "default": 20,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated campaigns",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 5001
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "Spring Sale - US"
+                          },
+                          "platform": {
+                            "type": "string",
+                            "example": "meta",
+                            "enum": [
+                              "meta",
+                              "google",
+                              "tiktok",
+                              "linkedin"
+                            ]
+                          },
+                          "objective": {
+                            "type": "string",
+                            "example": "traffic"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "active",
+                            "enum": [
+                              "draft",
+                              "active",
+                              "paused",
+                              "archived"
+                            ]
+                          },
+                          "budget": {
+                            "type": "number",
+                            "example": 50
+                          },
+                          "budget_type": {
+                            "type": "string",
+                            "example": "daily",
+                            "enum": [
+                              "daily",
+                              "lifetime"
+                            ]
+                          },
+                          "spent": {
+                            "type": "number",
+                            "example": 128.4
+                          },
+                          "impressions": {
+                            "type": "integer",
+                            "example": 48213
+                          },
+                          "clicks": {
+                            "type": "integer",
+                            "example": 921
+                          },
+                          "conversions": {
+                            "type": "integer",
+                            "example": 34
+                          },
+                          "ctr": {
+                            "type": "number",
+                            "example": 1.91
+                          },
+                          "cpa": {
+                            "type": "number",
+                            "example": 3.78
+                          },
+                          "roas": {
+                            "type": "number",
+                            "example": 4.2
+                          },
+                          "purchase_value": {
+                            "type": "number",
+                            "example": 540.0
+                          },
+                          "leads": {
+                            "type": "integer",
+                            "example": 12
+                          },
+                          "start_date": {
+                            "type": "string",
+                            "example": "2026-08-01"
+                          },
+                          "end_date": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "last_sync_at": {
+                            "type": "string",
+                            "example": "2026-08-26T09:00:00Z"
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "example": "2026-08-01T10:00:00Z"
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/PaginationMeta"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a campaign",
+        "operationId": "createAdCampaign",
+        "tags": [
+          "Ads"
+        ],
+        "description": "For `platform: meta` with a `page_id`, launches a real campaign on Meta (same path the in-app wizard uses). Every other platform/shape creates a local draft - only Meta has live launch wiring today.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "platform": {
+                    "type": "string",
+                    "example": "meta",
+                    "enum": [
+                      "meta",
+                      "google",
+                      "tiktok",
+                      "linkedin"
+                    ]
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Spring Sale - US"
+                  },
+                  "objective": {
+                    "type": "string",
+                    "example": "traffic"
+                  },
+                  "page_id": {
+                    "type": "string",
+                    "example": "1234567890",
+                    "description": "Meta only - required to launch live, otherwise a draft is created."
+                  },
+                  "ad_account_id": {
+                    "type": "string",
+                    "example": "act_123456789"
+                  },
+                  "budget": {
+                    "type": "number",
+                    "example": 50
+                  },
+                  "budget_type": {
+                    "type": "string",
+                    "example": "daily",
+                    "enum": [
+                      "daily",
+                      "lifetime"
+                    ]
+                  },
+                  "start_date": {
+                    "type": "string",
+                    "example": "2026-09-01"
+                  },
+                  "end_date": {
+                    "type": "string",
+                    "example": "2026-09-30"
+                  },
+                  "launch": {
+                    "type": "boolean",
+                    "example": false,
+                    "description": "Non-Meta only - true creates an active local draft instead of a draft."
+                  },
+                  "targeting": {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true
+                  },
+                  "creative": {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true
+                  },
+                  "settings": {
+                    "type": "object",
+                    "properties": {},
+                    "additionalProperties": true
+                  }
+                },
+                "required": [
+                  "platform",
+                  "name"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Campaign created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 5001
+                        },
+                        "status": {
+                          "type": "string",
+                          "example": "paused"
+                        },
+                        "warnings": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/ads/campaigns/{id}": {
+      "get": {
+        "summary": "Get a campaign",
+        "operationId": "getAdCampaign",
+        "tags": [
+          "Ads"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Campaign ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Campaign",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 5001
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "Spring Sale - US"
+                        },
+                        "platform": {
+                          "type": "string",
+                          "example": "meta",
+                          "enum": [
+                            "meta",
+                            "google",
+                            "tiktok",
+                            "linkedin"
+                          ]
+                        },
+                        "objective": {
+                          "type": "string",
+                          "example": "traffic"
+                        },
+                        "status": {
+                          "type": "string",
+                          "example": "active",
+                          "enum": [
+                            "draft",
+                            "active",
+                            "paused",
+                            "archived"
+                          ]
+                        },
+                        "budget": {
+                          "type": "number",
+                          "example": 50
+                        },
+                        "budget_type": {
+                          "type": "string",
+                          "example": "daily",
+                          "enum": [
+                            "daily",
+                            "lifetime"
+                          ]
+                        },
+                        "spent": {
+                          "type": "number",
+                          "example": 128.4
+                        },
+                        "impressions": {
+                          "type": "integer",
+                          "example": 48213
+                        },
+                        "clicks": {
+                          "type": "integer",
+                          "example": 921
+                        },
+                        "conversions": {
+                          "type": "integer",
+                          "example": 34
+                        },
+                        "ctr": {
+                          "type": "number",
+                          "example": 1.91
+                        },
+                        "cpa": {
+                          "type": "number",
+                          "example": 3.78
+                        },
+                        "roas": {
+                          "type": "number",
+                          "example": 4.2
+                        },
+                        "purchase_value": {
+                          "type": "number",
+                          "example": 540.0
+                        },
+                        "leads": {
+                          "type": "integer",
+                          "example": 12
+                        },
+                        "start_date": {
+                          "type": "string",
+                          "example": "2026-08-01"
+                        },
+                        "end_date": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "last_sync_at": {
+                          "type": "string",
+                          "example": "2026-08-26T09:00:00Z"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "example": "2026-08-01T10:00:00Z"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update a campaign",
+        "operationId": "updateAdCampaign",
+        "tags": [
+          "Ads"
+        ],
+        "description": "Update name and/or budget. Subject to the same anti-ban edit-cooldown as the in-app wizard - a budget change within Meta's 72h learning-phase window may be blocked (429) or need `confirm_cooldown`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Campaign ID"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Spring Sale - US (v2)"
+                  },
+                  "budget_amount": {
+                    "type": "number",
+                    "example": 75
+                  },
+                  "confirm_cooldown": {
+                    "type": "boolean",
+                    "example": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "updated": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a campaign",
+        "operationId": "deleteAdCampaign",
+        "tags": [
+          "Ads"
+        ],
+        "description": "Deletes on the live platform first (falls back to pausing if the platform delete fails, so nothing keeps spending), then removes it locally along with its ad sets and ads.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Campaign ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "deleted": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/ads/campaigns/{id}/pause": {
+      "post": {
+        "summary": "Pause a campaign",
+        "operationId": "pauseAdCampaign",
+        "tags": [
+          "Ads"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Campaign ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pause a campaign",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "updated": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        }
+      }
+    },
+    "/ads/campaigns/{id}/resume": {
+      "post": {
+        "summary": "Resume a campaign",
+        "operationId": "resumeAdCampaign",
+        "tags": [
+          "Ads"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Campaign ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resume a campaign",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "updated": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        }
+      }
+    },
+    "/ads/campaigns/{id}/duplicate": {
+      "post": {
+        "summary": "Duplicate a campaign",
+        "operationId": "duplicateAdCampaign",
+        "tags": [
+          "Ads"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Campaign ID"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Duplicate a campaign",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 5002
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        }
+      }
+    },
+    "/ads/campaigns/{id}/archive": {
+      "post": {
+        "summary": "Archive a campaign",
+        "operationId": "archiveAdCampaign",
+        "tags": [
+          "Ads"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Campaign ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Archive a campaign",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "archived": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        }
+      }
+    },
+    "/ads/campaigns/bulk-status": {
+      "post": {
+        "summary": "Bulk pause/resume campaigns",
+        "operationId": "bulkAdCampaignStatus",
+        "tags": [
+          "Ads"
+        ],
+        "description": "Up to 100 campaign IDs per call. Never all-or-nothing - each id gets its own result, so a partial failure doesn't block the rest.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    },
+                    "example": [
+                      5001,
+                      5002,
+                      5003
+                    ]
+                  },
+                  "status": {
+                    "type": "string",
+                    "example": "paused",
+                    "enum": [
+                      "active",
+                      "paused"
+                    ]
+                  },
+                  "confirm_cooldown": {
+                    "type": "boolean",
+                    "example": false
+                  }
+                },
+                "required": [
+                  "ids",
+                  "status"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Per-item results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "ok": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 5001
+                              },
+                              "ok": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "error": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "cooldown_warning": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/ads/ad-sets": {
+      "get": {
+        "summary": "List ad sets",
+        "operationId": "listAdSets",
+        "tags": [
+          "Ads"
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "platform",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "meta",
+              "enum": [
+                "meta",
+                "google",
+                "tiktok",
+                "linkedin"
+              ]
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Match against name."
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "example": 1,
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "example": 20,
+              "default": 20,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated ad sets",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 6001
+                          },
+                          "campaign_id": {
+                            "type": "integer",
+                            "example": 5001
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "US 25-45 Interests"
+                          },
+                          "campaign_name": {
+                            "type": "string",
+                            "example": "Spring Sale - US"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "active"
+                          },
+                          "budget": {
+                            "type": "number",
+                            "example": 25
+                          },
+                          "bid_strategy": {
+                            "type": "string",
+                            "example": "highest_volume"
+                          },
+                          "spent": {
+                            "type": "number",
+                            "example": 64.2
+                          },
+                          "impressions": {
+                            "type": "integer",
+                            "example": 24100
+                          },
+                          "clicks": {
+                            "type": "integer",
+                            "example": 460
+                          },
+                          "conversions": {
+                            "type": "integer",
+                            "example": 17
+                          },
+                          "cpa": {
+                            "type": "number",
+                            "example": 3.78
+                          },
+                          "platform": {
+                            "type": "string",
+                            "example": "meta"
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/PaginationMeta"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ads/ad-sets/{id}": {
+      "get": {
+        "summary": "Get an ad set",
+        "operationId": "getAdSet",
+        "tags": [
+          "Ads"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Ad set ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ad set",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 6001
+                        },
+                        "campaign_id": {
+                          "type": "integer",
+                          "example": 5001
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "US 25-45 Interests"
+                        },
+                        "campaign_name": {
+                          "type": "string",
+                          "example": "Spring Sale - US"
+                        },
+                        "status": {
+                          "type": "string",
+                          "example": "active"
+                        },
+                        "budget": {
+                          "type": "number",
+                          "example": 25
+                        },
+                        "bid_strategy": {
+                          "type": "string",
+                          "example": "highest_volume"
+                        },
+                        "spent": {
+                          "type": "number",
+                          "example": 64.2
+                        },
+                        "impressions": {
+                          "type": "integer",
+                          "example": 24100
+                        },
+                        "clicks": {
+                          "type": "integer",
+                          "example": 460
+                        },
+                        "conversions": {
+                          "type": "integer",
+                          "example": 17
+                        },
+                        "cpa": {
+                          "type": "number",
+                          "example": 3.78
+                        },
+                        "platform": {
+                          "type": "string",
+                          "example": "meta"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an ad set",
+        "operationId": "deleteAdSet",
+        "tags": [
+          "Ads"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Ad set ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "deleted": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/ads/ad-sets/{id}/pause": {
+      "post": {
+        "summary": "Pause an ad set",
+        "operationId": "pauseAdSet",
+        "tags": [
+          "Ads"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Ad set ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pause an ad set",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "updated": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/ads/ad-sets/{id}/resume": {
+      "post": {
+        "summary": "Resume an ad set",
+        "operationId": "resumeAdSet",
+        "tags": [
+          "Ads"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Ad set ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resume an ad set",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "updated": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/ads/ad-sets/{id}/duplicate": {
+      "post": {
+        "summary": "Duplicate an ad set",
+        "operationId": "duplicateAdSet",
+        "tags": [
+          "Ads"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Ad set ID"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Duplicate an ad set",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 6002
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/ads/ad-sets/{id}/archive": {
+      "post": {
+        "summary": "Archive an ad set",
+        "operationId": "archiveAdSet",
+        "tags": [
+          "Ads"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Ad set ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Archive an ad set",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "archived": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/ads/ads": {
+      "get": {
+        "summary": "List ads",
+        "operationId": "listAds",
+        "tags": [
+          "Ads"
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "platform",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "meta",
+              "enum": [
+                "meta",
+                "google",
+                "tiktok",
+                "linkedin"
+              ]
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Match against name."
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "image",
+                "video",
+                "carousel",
+                "text"
+              ]
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "example": 1,
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "example": 20,
+              "default": 20,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated ads",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 7001
+                          },
+                          "ad_set_id": {
+                            "type": "integer",
+                            "example": 6001
+                          },
+                          "campaign_id": {
+                            "type": "integer",
+                            "example": 5001
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "Carousel v2"
+                          },
+                          "ad_set_name": {
+                            "type": "string",
+                            "example": "US 25-45 Interests"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "active"
+                          },
+                          "format": {
+                            "type": "string",
+                            "example": "image",
+                            "enum": [
+                              "image",
+                              "video",
+                              "carousel",
+                              "text"
+                            ]
+                          },
+                          "headline": {
+                            "type": "string",
+                            "example": "20% off this week only"
+                          },
+                          "spent": {
+                            "type": "number",
+                            "example": 32.1
+                          },
+                          "impressions": {
+                            "type": "integer",
+                            "example": 12050
+                          },
+                          "clicks": {
+                            "type": "integer",
+                            "example": 230
+                          },
+                          "ctr": {
+                            "type": "number",
+                            "example": 1.91
+                          },
+                          "conversions": {
+                            "type": "integer",
+                            "example": 9
+                          },
+                          "cpa": {
+                            "type": "number",
+                            "example": 3.57
+                          },
+                          "platform": {
+                            "type": "string",
+                            "example": "meta"
+                          },
+                          "destination_url": {
+                            "type": "string",
+                            "example": "https://example.com/spring-sale"
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/PaginationMeta"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ads/ads/{id}": {
+      "get": {
+        "summary": "Get an ad",
+        "operationId": "getAd",
+        "tags": [
+          "Ads"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Ad ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 7001
+                        },
+                        "ad_set_id": {
+                          "type": "integer",
+                          "example": 6001
+                        },
+                        "campaign_id": {
+                          "type": "integer",
+                          "example": 5001
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "Carousel v2"
+                        },
+                        "ad_set_name": {
+                          "type": "string",
+                          "example": "US 25-45 Interests"
+                        },
+                        "status": {
+                          "type": "string",
+                          "example": "active"
+                        },
+                        "format": {
+                          "type": "string",
+                          "example": "image",
+                          "enum": [
+                            "image",
+                            "video",
+                            "carousel",
+                            "text"
+                          ]
+                        },
+                        "headline": {
+                          "type": "string",
+                          "example": "20% off this week only"
+                        },
+                        "spent": {
+                          "type": "number",
+                          "example": 32.1
+                        },
+                        "impressions": {
+                          "type": "integer",
+                          "example": 12050
+                        },
+                        "clicks": {
+                          "type": "integer",
+                          "example": 230
+                        },
+                        "ctr": {
+                          "type": "number",
+                          "example": 1.91
+                        },
+                        "conversions": {
+                          "type": "integer",
+                          "example": 9
+                        },
+                        "cpa": {
+                          "type": "number",
+                          "example": 3.57
+                        },
+                        "platform": {
+                          "type": "string",
+                          "example": "meta"
+                        },
+                        "destination_url": {
+                          "type": "string",
+                          "example": "https://example.com/spring-sale"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an ad",
+        "operationId": "deleteAd",
+        "tags": [
+          "Ads"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Ad ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "deleted": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/ads/ads/{id}/pause": {
+      "post": {
+        "summary": "Pause an ad",
+        "operationId": "pauseAd",
+        "tags": [
+          "Ads"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Ad ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pause an ad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "updated": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/ads/ads/{id}/resume": {
+      "post": {
+        "summary": "Resume an ad",
+        "operationId": "resumeAd",
+        "tags": [
+          "Ads"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Ad ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resume an ad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "updated": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/ads/ads/{id}/duplicate": {
+      "post": {
+        "summary": "Duplicate an ad",
+        "operationId": "duplicateAd",
+        "tags": [
+          "Ads"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Ad ID"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Duplicate an ad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 7002
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/ads/ads/{id}/archive": {
+      "post": {
+        "summary": "Archive an ad",
+        "operationId": "archiveAd",
+        "tags": [
+          "Ads"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Ad ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Archive an ad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "archived": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/ads/audiences": {
+      "get": {
+        "summary": "List audiences",
+        "operationId": "listAdAudiences",
+        "tags": [
+          "Ads"
+        ],
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "custom",
+                "lookalike",
+                "retargeting"
+              ]
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "example": 1,
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "example": 20,
+              "default": 20,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated audiences",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 8001
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "Website visitors - 30 days"
+                          },
+                          "platform": {
+                            "type": "string",
+                            "example": "meta"
+                          },
+                          "type": {
+                            "type": "string",
+                            "example": "retargeting",
+                            "enum": [
+                              "custom",
+                              "lookalike",
+                              "retargeting"
+                            ]
+                          },
+                          "size": {
+                            "type": "integer",
+                            "example": 42000
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "ready",
+                            "enum": [
+                              "ready",
+                              "updating",
+                              "processing",
+                              "error"
+                            ]
+                          },
+                          "source": {
+                            "type": "string",
+                            "example": "website"
+                          },
+                          "description": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "example": "2026-07-01T10:00:00Z"
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/PaginationMeta"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ads/pixels": {
+      "get": {
+        "summary": "List pixels / conversion destinations",
+        "operationId": "listAdPixels",
+        "tags": [
+          "Ads"
+        ],
+        "description": "Local mirror of each connected platform's pixels/conversion actions (Meta, Google, TikTok), kept fresh by the account sync. Read-only - pixels are created in each platform's own tools, not through this API.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "example": 1,
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "example": 20,
+              "default": 20,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated pixels",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 9001
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "Main Store Pixel"
+                          },
+                          "platform": {
+                            "type": "string",
+                            "example": "meta"
+                          },
+                          "type": {
+                            "type": "string",
+                            "example": "pixel",
+                            "enum": [
+                              "pixel",
+                              "conversion_action"
+                            ]
+                          },
+                          "category": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "ACTIVE"
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "example": "2026-06-01T10:00:00Z"
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/PaginationMeta"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ads/lead-forms": {
+      "get": {
+        "summary": "List lead forms",
+        "operationId": "listAdLeadForms",
+        "tags": [
+          "Ads"
+        ],
+        "description": "Meta Lead Ads forms (local mirror, synced from connected Pages).",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "example": 1,
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "example": 20,
+              "default": 20,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated lead forms",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 10001
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "Free Consultation Sign-up"
+                          },
+                          "platform": {
+                            "type": "string",
+                            "example": "meta"
+                          },
+                          "page_id": {
+                            "type": "string",
+                            "example": "1234567890"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "ACTIVE"
+                          },
+                          "questions_count": {
+                            "type": "integer",
+                            "example": 3
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "example": "2026-06-15T10:00:00Z"
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/PaginationMeta"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a lead form",
+        "operationId": "createAdLeadForm",
+        "tags": [
+          "Ads"
+        ],
+        "description": "Meta only. Standard question fields only (no custom multi-choice/date-picker types).",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "page_id": {
+                    "type": "string",
+                    "example": "1234567890"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Free Consultation Sign-up"
+                  },
+                  "standard_fields": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "FULL_NAME",
+                        "FIRST_NAME",
+                        "LAST_NAME",
+                        "EMAIL",
+                        "PHONE_NUMBER",
+                        "CITY",
+                        "STATE",
+                        "COUNTRY",
+                        "ZIP",
+                        "JOB_TITLE",
+                        "COMPANY_NAME"
+                      ]
+                    },
+                    "example": [
+                      "FULL_NAME",
+                      "EMAIL"
+                    ]
+                  },
+                  "privacy_policy_url": {
+                    "type": "string",
+                    "example": "https://example.com/privacy"
+                  },
+                  "privacy_policy_text": {
+                    "type": "string",
+                    "example": "Privacy Policy"
+                  }
+                },
+                "required": [
+                  "page_id",
+                  "name",
+                  "standard_fields",
+                  "privacy_policy_url"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Lead form created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "example": "998877665544"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/ads/creatives": {
+      "get": {
+        "summary": "List creatives",
+        "operationId": "listAdCreatives",
+        "tags": [
+          "Ads"
+        ],
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "image",
+                "video",
+                "carousel",
+                "text"
+              ]
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "example": 1,
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "example": 20,
+              "default": 20,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated creatives",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 11001
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "Summer Banner v1"
+                          },
+                          "format": {
+                            "type": "string",
+                            "example": "image",
+                            "enum": [
+                              "image",
+                              "video",
+                              "carousel",
+                              "text"
+                            ]
+                          },
+                          "platform": {
+                            "type": "string",
+                            "example": "meta"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "draft",
+                            "enum": [
+                              "active",
+                              "draft",
+                              "archived"
+                            ]
+                          },
+                          "file_url": {
+                            "type": "string",
+                            "example": "https://cdn.smartlyq.com/media/abc123.jpg"
+                          },
+                          "thumbnail_url": {
+                            "type": "string",
+                            "example": "https://cdn.smartlyq.com/media/abc123.jpg"
+                          },
+                          "impressions": {
+                            "type": "integer",
+                            "example": 0
+                          },
+                          "clicks": {
+                            "type": "integer",
+                            "example": 0
+                          },
+                          "ctr": {
+                            "type": "number",
+                            "example": 0
+                          },
+                          "conversions": {
+                            "type": "integer",
+                            "example": 0
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "example": "2026-08-20T10:00:00Z"
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/PaginationMeta"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a creative",
+        "operationId": "createAdCreative",
+        "tags": [
+          "Ads"
+        ],
+        "description": "Standalone asset library entry, independent of any ad. Upload the file bytes via `POST /media/upload-direct` first and pass the resulting URL as `file_url` - this endpoint never handles raw file uploads.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Summer Banner v1"
+                  },
+                  "type": {
+                    "type": "string",
+                    "example": "image",
+                    "enum": [
+                      "image",
+                      "video",
+                      "carousel",
+                      "text"
+                    ]
+                  },
+                  "platform": {
+                    "type": "string",
+                    "example": "meta",
+                    "enum": [
+                      "meta",
+                      "google",
+                      "tiktok",
+                      "linkedin"
+                    ]
+                  },
+                  "file_url": {
+                    "type": "string",
+                    "example": "https://cdn.smartlyq.com/media/abc123.jpg",
+                    "description": "Required unless type is text."
+                  },
+                  "thumbnail_url": {
+                    "type": "string",
+                    "example": ""
+                  },
+                  "format": {
+                    "type": "string",
+                    "example": "feed"
+                  },
+                  "variant": {
+                    "type": "string",
+                    "example": "A"
+                  }
+                },
+                "required": [
+                  "name",
+                  "type",
+                  "platform"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creative created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 11002
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/ads/creatives/{id}": {
+      "patch": {
+        "summary": "Update a creative",
+        "operationId": "updateAdCreative",
+        "tags": [
+          "Ads"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Creative ID"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "active",
+                      "draft",
+                      "archived"
+                    ]
+                  },
+                  "variant": {
+                    "type": "string"
+                  },
+                  "format": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "updated": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a creative",
+        "operationId": "deleteAdCreative",
+        "tags": [
+          "Ads"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Creative ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "deleted": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/ads/accounts": {
+      "get": {
+        "summary": "List connected ad accounts",
+        "operationId": "listAdAccounts",
+        "tags": [
+          "Ads"
+        ],
+        "description": "Connected accounts across Meta, Google, TikTok and LinkedIn Ads.",
+        "responses": {
+          "200": {
+            "description": "Accounts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "accounts": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "platform": {
+                                "type": "string",
+                                "example": "meta"
+                              },
+                              "account_name": {
+                                "type": "string",
+                                "example": "Acme Ads"
+                              },
+                              "account_id": {
+                                "type": "string",
+                                "example": "act_123456789"
+                              },
+                              "status": {
+                                "type": "string",
+                                "example": "connected",
+                                "enum": [
+                                  "connected",
+                                  "needs_reconnect"
+                                ]
+                              },
+                              "connected_at": {
+                                "type": "string",
+                                "example": "2026-05-01T10:00:00Z"
+                              },
+                              "currency": {
+                                "type": "string",
+                                "example": "EUR"
+                              },
+                              "timezone": {
+                                "type": "string",
+                                "example": "Europe/Athens"
+                              },
+                              "is_default": {
+                                "type": "integer",
+                                "example": 1
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ads/accounts/diagnostics": {
+      "get": {
+        "summary": "Account health and rate-limit diagnostics",
+        "operationId": "adAccountsDiagnostics",
+        "tags": [
+          "Ads"
+        ],
+        "description": "Per platform, per tracked account: connection status, last sync time/error, and live API rate-limit usage.",
+        "responses": {
+          "200": {
+            "description": "Diagnostics",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "platforms": {
+                          "type": "object",
+                          "properties": {
+                            "meta": {
+                              "type": "object",
+                              "properties": {
+                                "account_count": {
+                                  "type": "integer",
+                                  "example": 1
+                                },
+                                "needs_reconnect_count": {
+                                  "type": "integer",
+                                  "example": 0
+                                },
+                                "accounts": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "account_id": {
+                                        "type": "string",
+                                        "example": "act_123456789"
+                                      },
+                                      "account_name": {
+                                        "type": "string",
+                                        "example": "Acme Ads"
+                                      },
+                                      "status": {
+                                        "type": "string",
+                                        "example": "connected",
+                                        "enum": [
+                                          "connected",
+                                          "needs_reconnect"
+                                        ]
+                                      },
+                                      "last_sync_at": {
+                                        "type": "string",
+                                        "example": "2026-08-26T09:00:00Z",
+                                        "nullable": true
+                                      },
+                                      "last_error": {
+                                        "type": "string",
+                                        "nullable": true
+                                      },
+                                      "rate_limit": {
+                                        "type": "object",
+                                        "properties": {},
+                                        "description": "Shape varies by platform - Meta returns calls_5min/calls_1hour/fb_usage_pct/blocked/limits; Google/TikTok/LinkedIn return calls_today/limit_per_day.",
+                                        "additionalProperties": true
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "additionalProperties": true,
+                          "description": "Keyed by platform (meta/google/tiktok/linkedin); only platforms with tracked accounts appear."
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ads/audit-log": {
+      "get": {
+        "summary": "List audit log entries",
+        "operationId": "listAdAuditLog",
+        "tags": [
+          "Ads"
+        ],
+        "description": "Pass `campaign_id` to scope the log to one campaign and everything under it (its ad sets and ads).",
+        "parameters": [
+          {
+            "name": "action",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "entity_type",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "campaign",
+                "ad_set",
+                "ad",
+                "creative",
+                "lead_form"
+              ]
+            }
+          },
+          {
+            "name": "campaign_id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "example": 1,
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "example": 20,
+              "default": 20,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated audit log",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 55001
+                          },
+                          "timestamp": {
+                            "type": "string",
+                            "example": "2026-08-26T09:00:00Z"
+                          },
+                          "action": {
+                            "type": "string",
+                            "example": "pause"
+                          },
+                          "entity_type": {
+                            "type": "string",
+                            "example": "campaign",
+                            "enum": [
+                              "campaign",
+                              "ad_set",
+                              "ad",
+                              "creative",
+                              "lead_form"
+                            ]
+                          },
+                          "entity_id": {
+                            "type": "integer",
+                            "example": 5001
+                          },
+                          "entity_name": {
+                            "type": "string",
+                            "example": "Spring Sale - US"
+                          },
+                          "details": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "environment": {
+                            "type": "string",
+                            "example": "production"
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/PaginationMeta"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ads/estimate": {
+      "post": {
+        "summary": "Audience-size estimate",
+        "operationId": "adAudienceEstimate",
+        "tags": [
+          "Ads"
+        ],
+        "description": "Meta only today - returns `available: false` (not an error) for every other platform so callers can branch cleanly rather than treating it as a failure. Uses the same targeting-resolution logic as a real campaign launch, so the estimate reflects exactly what would be sent to Meta.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "platform": {
+                    "type": "string",
+                    "example": "meta",
+                    "enum": [
+                      "meta",
+                      "google",
+                      "tiktok",
+                      "linkedin"
+                    ]
+                  },
+                  "ad_account_id": {
+                    "type": "string",
+                    "example": "act_123456789"
+                  },
+                  "objective": {
+                    "type": "string",
+                    "example": "traffic"
+                  },
+                  "targeting": {
+                    "type": "object",
+                    "properties": {
+                      "locations": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "example": [
+                          "United States"
+                        ]
+                      },
+                      "languages": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "age_min": {
+                        "type": "integer",
+                        "example": 18
+                      },
+                      "age_max": {
+                        "type": "integer",
+                        "example": 65
+                      },
+                      "gender": {
+                        "type": "string",
+                        "example": "all",
+                        "enum": [
+                          "all",
+                          "male",
+                          "female"
+                        ]
+                      },
+                      "devices": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "example": [
+                          "desktop",
+                          "mobile"
+                        ]
+                      }
+                    },
+                    "additionalProperties": true
+                  }
+                },
+                "required": [
+                  "platform"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Estimate (or availability)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "available": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "estimate_ready": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "mau_lower_bound": {
+                          "type": "integer",
+                          "example": 265000000
+                        },
+                        "mau_upper_bound": {
+                          "type": "integer",
+                          "example": 311700000
+                        },
+                        "warnings": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ads/sync": {
+      "post": {
+        "summary": "Trigger an account sync",
+        "operationId": "syncAdAccounts",
+        "tags": [
+          "Ads"
+        ],
+        "description": "Fire-and-forget - queues a full sync of campaigns/ad sets/ads/insights across every connected platform. Returns immediately; poll the list endpoints afterward.",
+        "responses": {
+          "202": {
+            "description": "Queued",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "example": "queued"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
