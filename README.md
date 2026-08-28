@@ -191,6 +191,7 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Ads.Duplicate(ctx, id)` | `POST /ads/ads/{id}/duplicate` | Duplicate an ad |
 | `client.Ads.Archive(ctx, id)` | `POST /ads/ads/{id}/archive` | Archive an ad |
 | `client.Ads.ListAudiences(ctx, query)` | `GET /ads/audiences` | List audiences |
+| `client.Ads.CreateAudience(ctx, body)` | `POST /ads/audiences` | Create an audience |
 | `client.Ads.ListPixels(ctx, query)` | `GET /ads/pixels` | List pixels / conversion destinations |
 | `client.Ads.ListLeadForms(ctx, query)` | `GET /ads/lead-forms` | List lead forms |
 | `client.Ads.CreateLeadForm(ctx, body)` | `POST /ads/lead-forms` | Create a lead form |
@@ -203,6 +204,9 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Ads.ListAuditLog(ctx, query)` | `GET /ads/audit-log` | List audit log entries |
 | `client.Ads.AudienceEstimate(ctx, body)` | `POST /ads/estimate` | Audience-size estimate |
 | `client.Ads.SyncAccounts(ctx)` | `POST /ads/sync` | Trigger an account sync |
+| `client.Ads.Analytics(ctx, query)` | `GET /ads/analytics` | Ads performance analytics |
+| `client.Ads.TargetingSearch(ctx, query)` | `GET /ads/targeting-search` | Search Meta interest targeting |
+| `client.Ads.ListPagePosts(ctx, pageId, query)` | `GET /ads/pages/{page_id}/posts` | List a Page's organic posts |
 
 ### AI Captain
 

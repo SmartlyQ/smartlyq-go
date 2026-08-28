@@ -33060,12 +33060,99 @@
                   },
                   "creative": {
                     "type": "object",
-                    "properties": {},
+                    "properties": {
+                      "object_story_id": {
+                        "type": "string",
+                        "example": "1234567890_9876543210",
+                        "description": "Meta only - \"{page_id}_{post_id}\" from GET /ads/pages/{page_id}/posts. Boosts that existing post instead of building a new creative; image_url/video_url/headlines/primary_text are all ignored when this is set."
+                      },
+                      "image_url": {
+                        "type": "string",
+                        "example": "https://example.com/creative.jpg"
+                      },
+                      "video_url": {
+                        "type": "string",
+                        "example": "https://example.com/creative.mp4"
+                      },
+                      "format": {
+                        "type": "string",
+                        "example": "image",
+                        "enum": [
+                          "image",
+                          "video"
+                        ]
+                      },
+                      "headlines": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "example": [
+                          "20% off this week only"
+                        ]
+                      },
+                      "descriptions": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "primary_text": {
+                        "type": "string",
+                        "example": "Shop the sale before it ends."
+                      },
+                      "destination_url": {
+                        "type": "string",
+                        "example": "https://example.com/spring-sale"
+                      },
+                      "cta": {
+                        "type": "string",
+                        "example": "LEARN_MORE",
+                        "description": "Standard link CTAs, or MESSAGE_PAGE (pairs with settings.destination_type=messenger) or CALL_NOW (pairs with settings.phone_number)."
+                      }
+                    },
                     "additionalProperties": true
                   },
                   "settings": {
                     "type": "object",
-                    "properties": {},
+                    "properties": {
+                      "pixel_id": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "pixel_tracking": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "conversion_event": {
+                        "type": "string",
+                        "example": "purchase"
+                      },
+                      "lead_form_id": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "placements": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "destination_type": {
+                        "type": "string",
+                        "example": "",
+                        "enum": [
+                          "",
+                          "messenger"
+                        ],
+                        "description": "Set to messenger for Click-to-Messenger - the ad set targets Messenger chats instead of a link click. Use cta: MESSAGE_PAGE on the creative to match."
+                      },
+                      "phone_number": {
+                        "type": "string",
+                        "example": "",
+                        "description": "E.164 format (e.g. +14155551234), same country as the ad set's targeting. Only takes effect with cta: CALL_NOW on the creative (Click-to-Call) - ignored otherwise."
+                      }
+                    },
                     "additionalProperties": true
                   }
                 },
@@ -35028,6 +35115,129 @@
             }
           }
         }
+      },
+      "post": {
+        "summary": "Create an audience",
+        "operationId": "createAdAudience",
+        "tags": [
+          "Ads"
+        ],
+        "description": "Meta (Custom/Lookalike) or Google (remarketing/CRM user list). Requires a connected ad account on the chosen platform.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "platform": {
+                    "type": "string",
+                    "example": "meta",
+                    "enum": [
+                      "meta",
+                      "google"
+                    ]
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Website visitors - 30 days"
+                  },
+                  "subtype": {
+                    "type": "string",
+                    "example": "custom",
+                    "description": "Meta: custom/lookalike/website_traffic/engagement. Google: rule_based/crm (maps to list_type)."
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": ""
+                  },
+                  "retention_days": {
+                    "type": "integer",
+                    "example": 30
+                  },
+                  "customer_file_source": {
+                    "type": "string",
+                    "example": "USER_PROVIDED_ONLY",
+                    "description": "Meta lookalike/custom audiences only."
+                  },
+                  "origin_audience_id": {
+                    "type": "string",
+                    "example": "",
+                    "description": "Meta lookalike only - source audience to build the lookalike from."
+                  },
+                  "country": {
+                    "type": "string",
+                    "example": "US",
+                    "description": "Meta lookalike only."
+                  },
+                  "ratio": {
+                    "type": "number",
+                    "example": 0.01,
+                    "description": "Meta lookalike only - similarity ratio."
+                  },
+                  "list_type": {
+                    "type": "string",
+                    "example": "rule_based",
+                    "enum": [
+                      "rule_based",
+                      "crm"
+                    ],
+                    "description": "Google only."
+                  },
+                  "url_contains": {
+                    "type": "string",
+                    "example": "/",
+                    "description": "Google rule_based lists only."
+                  }
+                },
+                "required": [
+                  "platform",
+                  "name"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Audience created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 8002
+                        },
+                        "live": {
+                          "type": "boolean",
+                          "example": true,
+                          "description": "False if the platform push failed but the local record still saved."
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
       }
     },
     "/ads/pixels": {
@@ -36184,6 +36394,383 @@
                         "status": {
                           "type": "string",
                           "example": "queued"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ads/analytics": {
+      "get": {
+        "summary": "Ads performance analytics",
+        "operationId": "adAnalytics",
+        "tags": [
+          "Ads"
+        ],
+        "description": "Summary + by-platform breakdown + daily spend chart + period-over-period trends. Date range defaults to the last 30 days.",
+        "parameters": [
+          {
+            "name": "date_from",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "2026-08-01"
+            }
+          },
+          {
+            "name": "date_to",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "2026-08-26"
+            }
+          },
+          {
+            "name": "accounts",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated platform:row_id pairs, e.g. meta:1,google:3. Omit for all connected accounts."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Analytics",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "summary": {
+                          "type": "object",
+                          "properties": {
+                            "spent": {
+                              "type": "number",
+                              "example": 1284.5
+                            },
+                            "impressions": {
+                              "type": "integer",
+                              "example": 482130
+                            },
+                            "clicks": {
+                              "type": "integer",
+                              "example": 9210
+                            },
+                            "conversions": {
+                              "type": "integer",
+                              "example": 340
+                            },
+                            "leads": {
+                              "type": "integer",
+                              "example": 45
+                            },
+                            "purchase_value": {
+                              "type": "number",
+                              "example": 5400.0
+                            },
+                            "ctr": {
+                              "type": "number",
+                              "example": 1.91
+                            },
+                            "cpc": {
+                              "type": "number",
+                              "example": 0.14
+                            },
+                            "roas": {
+                              "type": "number",
+                              "example": 4.2
+                            }
+                          }
+                        },
+                        "by_platform": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "platform": {
+                                "type": "string",
+                                "example": "meta"
+                              },
+                              "spent": {
+                                "type": "number",
+                                "example": 800.0
+                              },
+                              "impressions": {
+                                "type": "integer",
+                                "example": 300000
+                              },
+                              "clicks": {
+                                "type": "integer",
+                                "example": 6000
+                              },
+                              "conversions": {
+                                "type": "integer",
+                                "example": 220
+                              },
+                              "leads": {
+                                "type": "integer",
+                                "example": 30
+                              },
+                              "purchase_value": {
+                                "type": "number",
+                                "example": 3500.0
+                              }
+                            }
+                          }
+                        },
+                        "spend_chart": {
+                          "type": "object",
+                          "properties": {
+                            "labels": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              },
+                              "example": [
+                                "2026-08-25",
+                                "2026-08-26"
+                              ]
+                            },
+                            "datasets": {
+                              "type": "object",
+                              "properties": {
+                                "meta": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "number"
+                                  }
+                                },
+                                "google": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "number"
+                                  }
+                                },
+                                "tiktok": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "number"
+                                  }
+                                },
+                                "linkedin": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "number"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "trends": {
+                          "type": "object",
+                          "properties": {
+                            "spent": {
+                              "type": "number",
+                              "example": 12.4
+                            },
+                            "impressions": {
+                              "type": "number",
+                              "example": 5.1
+                            },
+                            "clicks": {
+                              "type": "number",
+                              "example": -2.3
+                            },
+                            "conversions": {
+                              "type": "number",
+                              "example": 8.0
+                            },
+                            "leads": {
+                              "type": "number",
+                              "example": 0
+                            },
+                            "purchase_value": {
+                              "type": "number",
+                              "example": 15.6
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ads/targeting-search": {
+      "get": {
+        "summary": "Search Meta interest targeting",
+        "operationId": "adTargetingSearch",
+        "tags": [
+          "Ads"
+        ],
+        "description": "Type-ahead interest lookup for building a campaign's targeting.interests array. Meta only. Minimum 3 characters.",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "fitness"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Matching interests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "example": "6003107902433"
+                              },
+                              "name": {
+                                "type": "string",
+                                "example": "Physical fitness"
+                              },
+                              "audience_size": {
+                                "type": "integer",
+                                "example": 480000000
+                              },
+                              "path": {
+                                "type": "string",
+                                "example": "Interests › Fitness and wellness"
+                              }
+                            }
+                          }
+                        },
+                        "throttled": {
+                          "type": "boolean",
+                          "example": false
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ads/pages/{page_id}/posts": {
+      "get": {
+        "summary": "List a Page's organic posts",
+        "operationId": "listAdPagePosts",
+        "tags": [
+          "Ads"
+        ],
+        "description": "Recent organic posts on a connected Meta Page, for picking one to Boost (POST /ads/campaigns with creative.object_story_id).",
+        "parameters": [
+          {
+            "name": "page_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Meta Page ID."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "example": 25,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Posts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "posts": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "example": "1234567890_9876543210"
+                              },
+                              "message": {
+                                "type": "string",
+                                "example": "Big news this week..."
+                              },
+                              "permalink_url": {
+                                "type": "string",
+                                "example": "https://www.facebook.com/1234567890/posts/9876543210"
+                              },
+                              "full_picture": {
+                                "type": "string",
+                                "example": "https://scontent.xx.fbcdn.net/..."
+                              },
+                              "created_time": {
+                                "type": "string",
+                                "example": "2026-08-20T10:00:00Z"
+                              }
+                            }
+                          }
                         }
                       }
                     },

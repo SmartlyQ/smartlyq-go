@@ -235,6 +235,13 @@ func TestAdsListAudiences(t *testing.T) {
 	})
 }
 
+func TestAdsCreateAudience(t *testing.T) {
+	assertEndpoint(t, "POST", "/ads/audiences", func(c *Client) error {
+		_, err := c.Ads.CreateAudience(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
 func TestAdsListPixels(t *testing.T) {
 	assertEndpoint(t, "GET", "/ads/pixels", func(c *Client) error {
 		_, err := c.Ads.ListPixels(context.Background(), nil, nil)
@@ -315,6 +322,27 @@ func TestAdsAudienceEstimate(t *testing.T) {
 func TestAdsSyncAccounts(t *testing.T) {
 	assertEndpoint(t, "POST", "/ads/sync", func(c *Client) error {
 		_, err := c.Ads.SyncAccounts(context.Background(), nil)
+		return err
+	})
+}
+
+func TestAdsAnalytics(t *testing.T) {
+	assertEndpoint(t, "GET", "/ads/analytics", func(c *Client) error {
+		_, err := c.Ads.Analytics(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestAdsTargetingSearch(t *testing.T) {
+	assertEndpoint(t, "GET", "/ads/targeting-search", func(c *Client) error {
+		_, err := c.Ads.TargetingSearch(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestAdsListPagePosts(t *testing.T) {
+	assertEndpoint(t, "GET", "/ads/pages/test-pageId/posts", func(c *Client) error {
+		_, err := c.Ads.ListPagePosts(context.Background(), "test-pageId", nil, nil)
 		return err
 	})
 }

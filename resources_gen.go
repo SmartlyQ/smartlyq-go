@@ -283,6 +283,13 @@ func (r *AdsResource) ListAudiences(ctx context.Context, query map[string]string
 	return r.client.do(ctx, "GET", "/ads/audiences", query, nil, opts)
 }
 
+// CreateAudience - Create an audience.
+//
+// POST /ads/audiences
+func (r *AdsResource) CreateAudience(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/ads/audiences", nil, body, opts)
+}
+
 // ListPixels - List pixels / conversion destinations.
 //
 // GET /ads/pixels
@@ -365,6 +372,27 @@ func (r *AdsResource) AudienceEstimate(ctx context.Context, body map[string]any,
 // POST /ads/sync
 func (r *AdsResource) SyncAccounts(ctx context.Context, opts *RequestOptions) (*Envelope, error) {
 	return r.client.do(ctx, "POST", "/ads/sync", nil, nil, opts)
+}
+
+// Analytics - Ads performance analytics.
+//
+// GET /ads/analytics
+func (r *AdsResource) Analytics(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/ads/analytics", query, nil, opts)
+}
+
+// TargetingSearch - Search Meta interest targeting.
+//
+// GET /ads/targeting-search
+func (r *AdsResource) TargetingSearch(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/ads/targeting-search", query, nil, opts)
+}
+
+// ListPagePosts - List a Page's organic posts.
+//
+// GET /ads/pages/{page_id}/posts
+func (r *AdsResource) ListPagePosts(ctx context.Context, pageId string, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/ads/pages/"+url.PathEscape(pageId)+"/posts", query, nil, opts)
 }
 
 // CaptainResource groups the AI Captain endpoints.
