@@ -33756,7 +33756,7 @@
         "tags": [
           "Ads"
         ],
-        "description": "Up to 100 campaign IDs per call. Never all-or-nothing - each id gets its own result, so a partial failure doesn't block the rest.",
+        "description": "Up to 50 campaign IDs per call. Never all-or-nothing - each id gets its own result, so a partial failure doesn't block the rest. Returns 200 when every id succeeded and 207 when at least one failed, so a client can branch on the status code without parsing the body.",
         "requestBody": {
           "required": true,
           "content": {
@@ -33798,7 +33798,61 @@
         },
         "responses": {
           "200": {
-            "description": "Per-item results",
+            "description": "Per-item results - every id succeeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "ok": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 5001
+                              },
+                              "ok": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "error": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "cooldown_warning": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "207": {
+            "description": "Per-item results - at least one id failed (partial success)",
             "content": {
               "application/json": {
                 "schema": {
