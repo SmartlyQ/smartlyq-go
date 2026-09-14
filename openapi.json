@@ -3,7 +3,7 @@
   "info": {
     "title": "SmartlyQ API",
     "version": "1.0.0",
-    "description": "# SmartlyQ API\n\nREST API for the SmartlyQ platform: generate content, manage social posts, chatbots, media, and more.\n\n## Quick Start\n\n1. Get an API key from [app.smartlyq.com/next/developer](https://app.smartlyq.com/next/developer).\n2. Send your first request:\n\n```bash\ncurl -H \"Authorization: Bearer YOUR_API_KEY\" https://api.smartlyq.com/v1/me\n```\n\n## Idempotency\n\nEvery `POST`/`PUT`/`PATCH` endpoint supports safe retries: send an `X-Idempotency-Key` header (any unique string, e.g. a UUID). If the same key is replayed within 24 hours with the same request, you get the original response back - the action never runs twice, and you are never double-billed. Reusing a key with a *different* body or endpoint returns `409 IDEMPOTENCY_CONFLICT`.\n\n```bash\ncurl -X POST https://api.smartlyq.com/v1/social/posts/schedule \\\n  -H \"Authorization: Bearer sqk_live_xxxx\" \\\n  -H \"X-Idempotency-Key: 5f0c9a4e-2b7d-4d1a-9c58-e2ff10c3a771\" \\\n  -d '{...}'\n```\n\n## Authentication\n\nAll requests (except health/docs) require a **Bearer token**. Use your API key as the token:\n\n- **Key types:** `sqk_live_*` (live) or `sqk_test_*` (test/sandbox).\n- **Header:** `Authorization: Bearer sqk_live_xxxx` or `Authorization: Bearer sqk_test_xxxx`.\n\n| Scope | Description |\n|-------|-------------|\n| `articles:read` | List and get articles |\n| `articles:write` | Generate, delete articles |\n| `images:read` | List and get images |\n| `images:write` | Generate, delete images |\n| `videos:read` | List and get videos |\n| `videos:write` | Generate, delete videos |\n| `presentations:read` | List and get presentations |\n| `presentations:write` | Generate presentations |\n| `social:read` | Accounts (health, follower stats, platform lookups), posts, queues, comments, DMs, reviews, pre-flight validation, Reddit research |\n| `social:write` | Create/schedule/bulk posts, recycling, unpublish, queues, reply to comments/DMs/reviews, account rename/move, account groups |\n| `audio:read` | Get audio resources |\n| `audio:write` | Text-to-speech, speech-to-text |\n| `urls:read` | List and get short URLs and stats |\n| `urls:write` | Shorten, delete URLs |\n| `captain:use` | AI Captain messages and conversations |\n| `chatbot:use` | Chatbots, train, messages, conversations |\n| `media:read` | List and get media |\n| `media:write` | Upload, delete media |\n| `analytics:read` | Overview, post and account analytics, derived insights (best-time, decay, frequency), inbox analytics |\n| `jobs:read` | List and get async jobs, cancel |\n| `seo:read` | Keyword research, SERP, rank tracking, competitors, backlinks, on-page audits |\n| `contacts:read` | List and get CRM contacts, tags, notes; list automations and their runs |\n| `contacts:write` | Create/update/delete contacts (single or bulk); tags and notes; enroll in, activate and trigger automations |\n| `opportunities:read` | List pipelines and deals/opportunities |\n| `opportunities:write` | Create/update deals, move stages, set status |\n| `webhooks:read` | List webhooks and delivery logs |\n| `webhooks:write` | Create, update, test and delete webhooks |\n| `logs:read` | Read your API request + webhook delivery logs |\n| `workspaces:read` | List and get sub-account workspaces |\n| `workspaces:write` | Create, disable SaaS, and delete sub-account workspaces |\n| `workspaces:bulk` | Apply pause / resume / disable-SaaS to many sub-accounts at once (high-trust; requires an active SaaS plan) |\n\n## Billing & Credits\n\n- **Prepaid wallet:** API usage is deducted from your Developer API wallet (credits in SQC).\n- **Pricing:** See the [pricing table](https://smartlyq.com/pricing) and in-app Developer dashboard for per-operation costs.\n- **How it works:** Each billable request (e.g. generate, post, chatbot message) consumes credits; response may include `usage` with `cost` and `balance_remaining`.\n- **Top up:** Add credits via [app.smartlyq.com/next/developer](https://app.smartlyq.com/next/developer) (wallet / top-up).\n\n## Rate Limiting\n\nLimits apply per API key (and may be enforced per user or IP). Default is 60 requests per minute per key (overridable per key).\n\nResponse headers:\n\n| Header | Description |\n|--------|-------------|\n| `X-RateLimit-Limit` | Max requests per window |\n| `X-RateLimit-Remaining` | Remaining in current window |\n| `X-RateLimit-Reset` | Unix timestamp when the window resets |\n\nWhen exceeded: HTTP `429` with `Retry-After` header.\n\n## Errors\n\nErrors are JSON with a consistent shape:\n\n```json\n{\n  \"success\": false,\n  \"error\": {\n    \"code\": \"ERROR_CODE\",\n    \"message\": \"Human-readable message\",\n    \"details\": {}\n  },\n  \"meta\": { \"request_id\": \"...\", \"timestamp\": \"...\" }\n}\n```\n\n| HTTP | Code | Meaning |\n|-----|------|---------|\n| 400 | `BAD_REQUEST` | Malformed or invalid request |\n| 401 | `UNAUTHORIZED` | Missing or invalid API key |\n| 402 | `INSUFFICIENT_BALANCE` | Not enough credits |\n| 403 | `FORBIDDEN` | Valid key but insufficient scope or access |\n| 404 | `RESOURCE_NOT_FOUND` | Resource does not exist |\n| 409 | `CONFLICT` | Conflict (e.g. duplicate idempotency) |\n| 422 | `VALIDATION_ERROR` | Validation failed (fields in details) |\n| 429 | `RATE_LIMIT_EXCEEDED` | Too many requests |\n| 500 | `INTERNAL_ERROR` | Server error |\n\n## Async Jobs & Polling\n\nSome operations (e.g. article or video generation) return **HTTP 202 Accepted** with a `job_id`. Poll for status:\n\n- **Poll:** `GET /jobs/{job_id}` until `status` is `completed`, `failed`, or `cancelled`.\n- Response includes `result` or `error` when finished.\n\n## Webhooks\n\nConfigure webhook URLs in the Developer dashboard. We send HTTP POST to your URL with a signed payload.\n\n- **Verification:** Validate signature using your webhook secret (see dashboard).\n- **Events:** 25 events across posting, accounts, inbox, jobs, billing, and CRM - e.g. `post.published`, `comment.received`, `contact.created`. Full catalog with payload schemas: the `webhooks` object in this spec and the [Webhooks guide](https://docs.smartlyq.com/guides/webhooks).\n\n## Idempotency\n\nFor POST/PUT/PATCH, send **`X-Idempotency-Key`** (unique value per logical operation). Within 24 hours, the same key returns the same response without re-executing.\n\n## Pagination\n\n- **Offset:** `page` (1-based) and `per_page` (default 20, max 100).\n- Response includes `pagination` with `page`, `per_page`, `total`, `pages`.\n\n## Versioning\n\nCurrent version is **v1**. Base path: `https://api.smartlyq.com/v1`. Future versions will use new path prefixes (e.g. `/v2/`).\n",
+    "description": "# SmartlyQ API\n\nREST API for the SmartlyQ platform: generate content, manage social posts, chatbots, media, and more.\n\n## Quick Start\n\n1. Get an API key from [app.smartlyq.com/next/developer](https://app.smartlyq.com/next/developer).\n2. Send your first request:\n\n```bash\ncurl -H \"Authorization: Bearer YOUR_API_KEY\" https://api.smartlyq.com/v1/me\n```\n\n## Idempotency\n\nEvery `POST`/`PUT`/`PATCH` endpoint supports safe retries: send an `X-Idempotency-Key` header (any unique string, e.g. a UUID). If the same key is replayed within 24 hours with the same request, you get the original response back - the action never runs twice, and you are never double-billed. Reusing a key with a *different* body or endpoint returns `409 IDEMPOTENCY_CONFLICT`.\n\n```bash\ncurl -X POST https://api.smartlyq.com/v1/social/posts/schedule \\\n  -H \"Authorization: Bearer sqk_live_xxxx\" \\\n  -H \"X-Idempotency-Key: 5f0c9a4e-2b7d-4d1a-9c58-e2ff10c3a771\" \\\n  -d '{...}'\n```\n\n## Authentication\n\nAll requests (except health/docs) require a **Bearer token**. Use your API key as the token:\n\n- **Key types:** `sqk_live_*` (live) or `sqk_test_*` (test/sandbox).\n- **Header:** `Authorization: Bearer sqk_live_xxxx` or `Authorization: Bearer sqk_test_xxxx`.\n\n| Scope | Description |\n|-------|-------------|\n| `articles:read` | List and get articles |\n| `articles:write` | Generate, delete articles |\n| `images:read` | List and get images |\n| `images:write` | Generate, delete images |\n| `videos:read` | List and get videos |\n| `videos:write` | Generate, delete videos |\n| `presentations:read` | List and get presentations |\n| `presentations:write` | Generate presentations |\n| `social:read` | Accounts (health, follower stats, platform lookups), posts, queues, comments, DMs, reviews, pre-flight validation, Reddit research |\n| `social:write` | Create/schedule/bulk posts, recycling, unpublish, queues, reply to comments/DMs/reviews, account rename/move, account groups |\n| `audio:read` | Get audio resources |\n| `audio:write` | Text-to-speech, speech-to-text |\n| `urls:read` | List and get short URLs and stats |\n| `urls:write` | Shorten, delete URLs |\n| `captain:use` | AI Captain messages and conversations |\n| `chatbot:use` | Chatbots, train, messages, conversations |\n| `media:read` | List and get media |\n| `media:write` | Upload, delete media |\n| `analytics:read` | Overview, post and account analytics, derived insights (best-time, decay, frequency), inbox analytics |\n| `jobs:read` | List and get async jobs, cancel |\n| `seo:read` | Keyword research, SERP, rank tracking, competitors, backlinks, on-page audits |\n| `contacts:read` | List and get CRM contacts, tags, notes; list automations and their runs |\n| `contacts:write` | Create/update/delete contacts (single or bulk); tags and notes; enroll in, activate and trigger automations |\n| `companies:read` | List and get companies, their contacts, deals and value rollup |\n| `companies:write` | Create/update/delete companies; link and unlink contacts |\n| `tasks:read` | List and get CRM tasks and activities |\n| `tasks:write` | Create/update/delete tasks, log time; fires task_created and task_completed |\n| `calendar:read` | List booking pages and the open slots on them |\n| `calendar:write` | Take and cancel bookings |\n| `opportunities:read` | List pipelines and deals/opportunities |\n| `opportunities:write` | Create/update deals, move stages, set status |\n| `webhooks:read` | List webhooks and delivery logs |\n| `webhooks:write` | Create, update, test and delete webhooks |\n| `logs:read` | Read your API request + webhook delivery logs |\n| `workspaces:read` | List and get sub-account workspaces |\n| `workspaces:write` | Create, disable SaaS, and delete sub-account workspaces |\n| `workspaces:bulk` | Apply pause / resume / disable-SaaS to many sub-accounts at once (high-trust; requires an active SaaS plan) |\n\n## Billing & Credits\n\n- **Prepaid wallet:** API usage is deducted from your Developer API wallet (credits in SQC).\n- **Pricing:** See the [pricing table](https://smartlyq.com/pricing) and in-app Developer dashboard for per-operation costs.\n- **How it works:** Each billable request (e.g. generate, post, chatbot message) consumes credits; response may include `usage` with `cost` and `balance_remaining`.\n- **Top up:** Add credits via [app.smartlyq.com/next/developer](https://app.smartlyq.com/next/developer) (wallet / top-up).\n\n## Rate Limiting\n\nLimits apply per API key (and may be enforced per user or IP). Default is 60 requests per minute per key (overridable per key).\n\nResponse headers:\n\n| Header | Description |\n|--------|-------------|\n| `X-RateLimit-Limit` | Max requests per window |\n| `X-RateLimit-Remaining` | Remaining in current window |\n| `X-RateLimit-Reset` | Unix timestamp when the window resets |\n\nWhen exceeded: HTTP `429` with `Retry-After` header.\n\n## Errors\n\nErrors are JSON with a consistent shape:\n\n```json\n{\n  \"success\": false,\n  \"error\": {\n    \"code\": \"ERROR_CODE\",\n    \"message\": \"Human-readable message\",\n    \"details\": {}\n  },\n  \"meta\": { \"request_id\": \"...\", \"timestamp\": \"...\" }\n}\n```\n\n| HTTP | Code | Meaning |\n|-----|------|---------|\n| 400 | `BAD_REQUEST` | Malformed or invalid request |\n| 401 | `UNAUTHORIZED` | Missing or invalid API key |\n| 402 | `INSUFFICIENT_BALANCE` | Not enough credits |\n| 403 | `FORBIDDEN` | Valid key but insufficient scope or access |\n| 404 | `RESOURCE_NOT_FOUND` | Resource does not exist |\n| 409 | `CONFLICT` | Conflict (e.g. duplicate idempotency) |\n| 422 | `VALIDATION_ERROR` | Validation failed (fields in details) |\n| 429 | `RATE_LIMIT_EXCEEDED` | Too many requests |\n| 500 | `INTERNAL_ERROR` | Server error |\n\n## Async Jobs & Polling\n\nSome operations (e.g. article or video generation) return **HTTP 202 Accepted** with a `job_id`. Poll for status:\n\n- **Poll:** `GET /jobs/{job_id}` until `status` is `completed`, `failed`, or `cancelled`.\n- Response includes `result` or `error` when finished.\n\n## Webhooks\n\nConfigure webhook URLs in the Developer dashboard. We send HTTP POST to your URL with a signed payload.\n\n- **Verification:** Validate signature using your webhook secret (see dashboard).\n- **Events:** 25 events across posting, accounts, inbox, jobs, billing, and CRM - e.g. `post.published`, `comment.received`, `contact.created`. Full catalog with payload schemas: the `webhooks` object in this spec and the [Webhooks guide](https://docs.smartlyq.com/guides/webhooks).\n\n## Idempotency\n\nFor POST/PUT/PATCH, send **`X-Idempotency-Key`** (unique value per logical operation). Within 24 hours, the same key returns the same response without re-executing.\n\n## Pagination\n\n- **Offset:** `page` (1-based) and `per_page` (default 20, max 100).\n- Response includes `pagination` with `page`, `per_page`, `total`, `total_pages`.\n\n## Versioning\n\nCurrent version is **v1**. Base path: `https://api.smartlyq.com/v1`. Future versions will use new path prefixes (e.g. `/v2/`).\n",
     "contact": {
       "name": "SmartlyQ Support",
       "url": "https://smartlyq.com",
@@ -37,6 +37,22 @@
     {
       "name": "CRM Opportunities",
       "description": "Sales pipelines and deals/opportunities"
+    },
+    {
+      "name": "CRM Companies",
+      "description": "Companies / organisations, and the contacts linked to them."
+    },
+    {
+      "name": "CRM Tasks",
+      "description": "Tasks and activities, with the automation events they fire."
+    },
+    {
+      "name": "CRM Tags",
+      "description": "The workspace's contact tag vocabulary."
+    },
+    {
+      "name": "Calendar",
+      "description": "Booking pages, open slots, and taking or cancelling bookings."
     },
     {
       "name": "Workspaces",
@@ -36838,6 +36854,1562 @@
           }
         }
       }
+    },
+    "/companies": {
+      "get": {
+        "summary": "List companies",
+        "operationId": "listCompanies",
+        "tags": [
+          "CRM Companies"
+        ],
+        "description": "List companies / organisations with their contact counts. Use this to find the `company_id` that the Contacts API accepts.",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "description": "Match name, domain or industry.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "1-based page. Defaults to 1.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Per page, 10-100. Defaults to 50.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Companies",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Company"
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/PaginationMeta"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a company",
+        "operationId": "createCompany",
+        "tags": [
+          "CRM Companies"
+        ],
+        "description": "Create a company. Only `name` is required.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Required when creating."
+                  },
+                  "domain": {
+                    "type": "string"
+                  },
+                  "industry": {
+                    "type": "string"
+                  },
+                  "company_size": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "website": {
+                    "type": "string"
+                  },
+                  "address": {
+                    "type": "string"
+                  },
+                  "notes": {
+                    "type": "string"
+                  },
+                  "assigned_user_id": {
+                    "type": "integer"
+                  },
+                  "attributes": {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/companies/{id}": {
+      "get": {
+        "summary": "Get a company",
+        "operationId": "getCompany",
+        "tags": [
+          "CRM Companies"
+        ],
+        "description": "The company with every contact linked to it, its deals, and the open/won value rollup across those deals. The rollup is computed from the deals, not stored.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Company id.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Company",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/CompanyDetail"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update a company",
+        "operationId": "updateCompany",
+        "tags": [
+          "CRM Companies"
+        ],
+        "description": "Only the fields you send change.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Company id.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Required when creating."
+                  },
+                  "domain": {
+                    "type": "string"
+                  },
+                  "industry": {
+                    "type": "string"
+                  },
+                  "company_size": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "website": {
+                    "type": "string"
+                  },
+                  "address": {
+                    "type": "string"
+                  },
+                  "notes": {
+                    "type": "string"
+                  },
+                  "assigned_user_id": {
+                    "type": "integer"
+                  },
+                  "attributes": {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a company",
+        "operationId": "deleteCompany",
+        "tags": [
+          "CRM Companies"
+        ],
+        "description": "Deletes the company. Its contacts are **not** deleted - they are unlinked and stay in the CRM.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Company id.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/companies/{id}/contacts": {
+      "post": {
+        "summary": "Link a contact to a company",
+        "operationId": "linkCompanyContact",
+        "tags": [
+          "CRM Companies"
+        ],
+        "description": "A contact belongs to at most one company, so this replaces any previous link.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Company id.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "contact_id"
+                ],
+                "properties": {
+                  "contact_id": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Linked",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Unlink a contact from a company",
+        "operationId": "unlinkCompanyContact",
+        "tags": [
+          "CRM Companies"
+        ],
+        "description": "Detaches the contact, leaving the contact itself untouched. Returns 404 if the contact is linked to a different company, rather than silently detaching them from that one.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Company id.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "contact_id"
+                ],
+                "properties": {
+                  "contact_id": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Unlinked",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tasks": {
+      "get": {
+        "summary": "List tasks",
+        "operationId": "listTasks",
+        "tags": [
+          "CRM Tasks"
+        ],
+        "description": "List CRM tasks and activities. Combine `status=todo` with `due_before=<today>` to get what is overdue.",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "description": "Filter by status.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "todo",
+                "in_progress",
+                "done"
+              ]
+            }
+          },
+          {
+            "name": "contact_id",
+            "in": "query",
+            "required": false,
+            "description": "Only tasks linked to this contact.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "due_before",
+            "in": "query",
+            "required": false,
+            "description": "YYYY-MM-DD. Only tasks due on or before this date.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "description": "Sort column.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "title",
+                "status",
+                "priority",
+                "due_date",
+                "assignee",
+                "created_at",
+                "sort_order"
+              ]
+            }
+          },
+          {
+            "name": "dir",
+            "in": "query",
+            "required": false,
+            "description": "Sort direction. Defaults to asc.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ]
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "1-based page.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Per page, up to 100. Defaults to 50.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tasks",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Task"
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/PaginationMeta"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a task",
+        "operationId": "createTask",
+        "tags": [
+          "CRM Tasks"
+        ],
+        "description": "Creates a task and fires the `task_created` automation event. Set `linked_contact_id` to show it on a contact's record.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "title"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "Required when creating."
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "todo",
+                      "in_progress",
+                      "done"
+                    ]
+                  },
+                  "priority": {
+                    "type": "string",
+                    "enum": [
+                      "low",
+                      "medium",
+                      "high",
+                      "urgent"
+                    ]
+                  },
+                  "due_date": {
+                    "type": "string",
+                    "example": "2026-09-20",
+                    "description": "YYYY-MM-DD."
+                  },
+                  "reminder_at": {
+                    "type": "string",
+                    "example": "2026-09-19 09:00:00"
+                  },
+                  "activity_type": {
+                    "type": "string",
+                    "enum": [
+                      "task",
+                      "call",
+                      "meeting",
+                      "email",
+                      "deadline"
+                    ]
+                  },
+                  "recurrence": {
+                    "type": "string",
+                    "enum": [
+                      "none",
+                      "daily",
+                      "weekly",
+                      "biweekly",
+                      "monthly"
+                    ]
+                  },
+                  "linked_contact_id": {
+                    "type": "integer"
+                  },
+                  "linked_deal_id": {
+                    "type": "integer"
+                  },
+                  "assigned_to": {
+                    "type": "integer"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "subtasks": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tasks/{id}": {
+      "get": {
+        "summary": "Get a task",
+        "operationId": "getTask",
+        "tags": [
+          "CRM Tasks"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Task id.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Task",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Task"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update a task",
+        "operationId": "updateTask",
+        "tags": [
+          "CRM Tasks"
+        ],
+        "description": "Moving a task to `done` for the first time fires the `task_completed` automation event. Mark work done here rather than deleting the task, or that event never fires.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Task id.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "Required when creating."
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "todo",
+                      "in_progress",
+                      "done"
+                    ]
+                  },
+                  "priority": {
+                    "type": "string",
+                    "enum": [
+                      "low",
+                      "medium",
+                      "high",
+                      "urgent"
+                    ]
+                  },
+                  "due_date": {
+                    "type": "string",
+                    "example": "2026-09-20",
+                    "description": "YYYY-MM-DD."
+                  },
+                  "reminder_at": {
+                    "type": "string",
+                    "example": "2026-09-19 09:00:00"
+                  },
+                  "activity_type": {
+                    "type": "string",
+                    "enum": [
+                      "task",
+                      "call",
+                      "meeting",
+                      "email",
+                      "deadline"
+                    ]
+                  },
+                  "recurrence": {
+                    "type": "string",
+                    "enum": [
+                      "none",
+                      "daily",
+                      "weekly",
+                      "biweekly",
+                      "monthly"
+                    ]
+                  },
+                  "linked_contact_id": {
+                    "type": "integer"
+                  },
+                  "linked_deal_id": {
+                    "type": "integer"
+                  },
+                  "assigned_to": {
+                    "type": "integer"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "subtasks": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a task",
+        "operationId": "deleteTask",
+        "tags": [
+          "CRM Tasks"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Task id.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tasks/{id}/time": {
+      "post": {
+        "summary": "Log time on a task",
+        "operationId": "logTaskTime",
+        "tags": [
+          "CRM Tasks"
+        ],
+        "description": "Adds to the task's running tracked total rather than replacing it.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Task id.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "minutes"
+                ],
+                "properties": {
+                  "minutes": {
+                    "type": "integer",
+                    "description": "Minutes to add. Must be positive.",
+                    "example": 30
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Logged",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tags": {
+      "get": {
+        "summary": "List tags",
+        "operationId": "listTags",
+        "tags": [
+          "CRM Tags"
+        ],
+        "description": "Every contact tag in the workspace with its contact count. Read this before applying tags: tags are free text, so a near-miss creates a second tag that looks identical to a person but matches nothing in an automation or segment.",
+        "responses": {
+          "200": {
+            "description": "Tags",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Tag"
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/PaginationMeta"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a tag",
+        "operationId": "createTag",
+        "tags": [
+          "CRM Tags"
+        ],
+        "description": "Creates a tag attached to no contacts, so it exists to be picked. Not needed in order to tag someone - `POST /contacts/{id}/tags` creates a tag on the fly.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Tag"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tags/rename": {
+      "post": {
+        "summary": "Rename a tag",
+        "operationId": "renameTag",
+        "tags": [
+          "CRM Tags"
+        ],
+        "description": "Renames the tag across every contact carrying it, and follows the rename into the automation steps and segments that reference it by name - otherwise the next automation run puts the old name straight back. Tags applied automatically by the calendar (`calendar:*`) cannot be renamed, only removed.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "from",
+                  "to"
+                ],
+                "properties": {
+                  "from": {
+                    "type": "string"
+                  },
+                  "to": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Renamed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "contacts": {
+                          "type": "integer",
+                          "description": "Contacts changed."
+                        },
+                        "automations": {
+                          "type": "integer",
+                          "description": "Automation steps updated."
+                        },
+                        "segments": {
+                          "type": "integer",
+                          "description": "Segments updated."
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tags/merge": {
+      "post": {
+        "summary": "Merge tags",
+        "operationId": "mergeTags",
+        "tags": [
+          "CRM Tags"
+        ],
+        "description": "Folds several tags into one across every contact. Including the target in `from` is a no-op, not an error.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "from",
+                  "to"
+                ],
+                "properties": {
+                  "from": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "to": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Merged",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tags/delete": {
+      "post": {
+        "summary": "Delete a tag",
+        "operationId": "deleteTag",
+        "tags": [
+          "CRM Tags"
+        ],
+        "description": "Removes the tag from every contact carrying it. A body operation rather than `DELETE /tags/{name}` because a tag is free text and may contain a slash, which no path segment can carry.\n\nThe response reports how many automations and segments still reference the tag by name. Those are **not** edited - stripping the last tag from a tag action would leave it failing at runtime - so fix them yourself, or the tag comes back on the next run.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "deleted": {
+                          "type": "boolean"
+                        },
+                        "contacts": {
+                          "type": "integer"
+                        },
+                        "automations": {
+                          "type": "integer"
+                        },
+                        "segments": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/calendar/event-types": {
+      "get": {
+        "summary": "List booking pages",
+        "operationId": "listEventTypes",
+        "tags": [
+          "Calendar"
+        ],
+        "description": "The booking pages this account can take bookings for. Call this first - every other calendar endpoint needs an `event_type_id`. `host_found: false` means there is no calendar account yet, which is different from having no event types.",
+        "responses": {
+          "200": {
+            "description": "Event types",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "host_found": {
+                          "type": "boolean"
+                        },
+                        "event_types": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer"
+                              },
+                              "slug": {
+                                "type": "string"
+                              },
+                              "title": {
+                                "type": "string"
+                              },
+                              "description": {
+                                "type": "string"
+                              },
+                              "length_minutes": {
+                                "type": "integer"
+                              },
+                              "requires_confirmation": {
+                                "type": "boolean"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/calendar/slots": {
+      "get": {
+        "summary": "List open slots",
+        "operationId": "listCalendarSlots",
+        "tags": [
+          "Calendar"
+        ],
+        "description": "The times that are actually free, grouped by day. Worked out from working hours, buffers, existing bookings and any connected Google or Outlook calendar - never offer a time this did not return.",
+        "parameters": [
+          {
+            "name": "event_type_id",
+            "in": "query",
+            "required": true,
+            "description": "From the event types endpoint.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "description": "ISO 8601 start of the window. Defaults to now.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "required": false,
+            "description": "ISO 8601 end. Defaults to 7 days after start; 62 days is the maximum span.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "timezone",
+            "in": "query",
+            "required": false,
+            "description": "IANA timezone identifier, e.g. Europe/Athens. Must be an identifier, NOT an abbreviation like EEST - the calendar rejects those.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Open slots",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "event_type_id": {
+                          "type": "integer"
+                        },
+                        "timezone": {
+                          "type": "string",
+                          "example": "Europe/Athens"
+                        },
+                        "slots": {
+                          "type": "object",
+                          "description": "Open times keyed by day.",
+                          "additionalProperties": true
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/calendar/bookings": {
+      "post": {
+        "summary": "Take a booking",
+        "operationId": "createBooking",
+        "tags": [
+          "Calendar"
+        ],
+        "description": "Books a specific time. The calendar holds the slot, emails the attendee and the host, and creates the connected calendar event - exactly as if the attendee had booked it themselves. Use a start time from the slots endpoint; if the slot has gone since, the calendar's own message says so and you should offer another.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "event_type_id",
+                  "start",
+                  "email"
+                ],
+                "properties": {
+                  "event_type_id": {
+                    "type": "integer"
+                  },
+                  "start": {
+                    "type": "string",
+                    "description": "ISO 8601 start time, from the slots endpoint."
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "Attendee email. The confirmation goes here."
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Attendee name. Defaults to the email."
+                  },
+                  "timezone": {
+                    "type": "string",
+                    "description": "Attendee's IANA timezone."
+                  },
+                  "notes": {
+                    "type": "string"
+                  },
+                  "contact_id": {
+                    "type": "integer",
+                    "description": "CRM contact to link the booking to."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Booked",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "booking_uid": {
+                          "type": "string"
+                        },
+                        "start_time": {
+                          "type": "string"
+                        },
+                        "end_time": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/calendar/bookings/{id}/cancel": {
+      "post": {
+        "summary": "Cancel a booking",
+        "operationId": "cancelBooking",
+        "tags": [
+          "Calendar"
+        ],
+        "description": "Releases the slot, removes the calendar event, tells the attendee and fires webhooks. This is not a bookkeeping change, so only do it when the meeting really is off. Cancelling an already-cancelled booking succeeds rather than erroring.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Booking id, as it appears on the CRM contact's bookings.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "description": "Shown to the attendee. Worth filling in - a blank notice reads badly."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cancelled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "ok": {
+                          "type": "boolean"
+                        },
+                        "status": {
+                          "type": "string",
+                          "enum": [
+                            "cancelled"
+                          ]
+                        },
+                        "already_cancelled": {
+                          "type": "boolean"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -37342,7 +38914,7 @@
           "total": {
             "type": "integer"
           },
-          "pages": {
+          "total_pages": {
             "type": "integer"
           }
         }
@@ -39101,6 +40673,261 @@
           },
           "created_at": {
             "type": "string"
+          }
+        }
+      },
+      "Company": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 812
+          },
+          "name": {
+            "type": "string",
+            "example": "Acme Industries"
+          },
+          "domain": {
+            "type": "string",
+            "example": "acme.com"
+          },
+          "industry": {
+            "type": "string",
+            "example": "Manufacturing"
+          },
+          "company_size": {
+            "type": "string",
+            "example": "51-200"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "website": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "assigned_user_id": {
+            "type": "integer",
+            "nullable": true
+          },
+          "contact_count": {
+            "type": "integer",
+            "description": "Contacts linked to this company. Present on the list endpoint.",
+            "example": 7
+          },
+          "attributes": {
+            "type": "object",
+            "description": "Custom company attribute values, keyed by attribute key. Present on the single-company endpoint.",
+            "additionalProperties": true
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CompanyDetail": {
+        "type": "object",
+        "properties": {
+          "company": {
+            "$ref": "#/components/schemas/Company"
+          },
+          "contacts": {
+            "type": "array",
+            "description": "Every contact linked to this company.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "role": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "avatar": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "deals": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "client_name": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "number"
+                },
+                "stage": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "open",
+                    "won",
+                    "lost"
+                  ]
+                }
+              }
+            }
+          },
+          "rollup": {
+            "type": "object",
+            "description": "Computed from the deals above, not stored.",
+            "properties": {
+              "deal_count": {
+                "type": "integer"
+              },
+              "open_value": {
+                "type": "number",
+                "example": 42000
+              },
+              "won_value": {
+                "type": "number",
+                "example": 18500
+              }
+            }
+          }
+        }
+      },
+      "Task": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 3391
+          },
+          "title": {
+            "type": "string",
+            "example": "Call back about the renewal"
+          },
+          "description": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "todo",
+              "in_progress",
+              "done"
+            ]
+          },
+          "priority": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "urgent"
+            ]
+          },
+          "due_date": {
+            "type": "string",
+            "nullable": true,
+            "example": "2026-09-20"
+          },
+          "linked_deal_id": {
+            "type": "integer",
+            "nullable": true
+          },
+          "linked_contact_id": {
+            "type": "integer",
+            "nullable": true
+          },
+          "assigned_to": {
+            "type": "integer",
+            "nullable": true
+          },
+          "assignee_name": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "subtasks": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "recurrence": {
+            "type": "string",
+            "enum": [
+              "none",
+              "daily",
+              "weekly",
+              "biweekly",
+              "monthly"
+            ]
+          },
+          "time_tracked_minutes": {
+            "type": "integer"
+          },
+          "sort_order": {
+            "type": "integer"
+          },
+          "activity_type": {
+            "type": "string",
+            "enum": [
+              "task",
+              "call",
+              "meeting",
+              "email",
+              "deadline"
+            ]
+          },
+          "reminder_at": {
+            "type": "string",
+            "nullable": true
+          },
+          "reminder_due": {
+            "type": "boolean",
+            "description": "The reminder time has passed and the task is not done."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Tag": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "vip"
+          },
+          "count": {
+            "type": "integer",
+            "description": "Contacts carrying this tag.",
+            "example": 34
           }
         }
       }

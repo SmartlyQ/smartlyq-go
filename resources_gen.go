@@ -16,13 +16,17 @@ type resources struct {
 	Articles      *ArticlesResource
 	Audio         *AudioResource
 	Automations   *AutomationsResource
+	Calendar      *CalendarResource
 	Chatbots      *ChatbotsResource
 	Comments      *CommentsResource
 	Content       *ContentResource
 	CRM           *CRMResource
+	CRMCompanies  *CRMCompaniesResource
 	Contacts      *ContactsResource
 	CustomFields  *CustomFieldsResource
 	Opportunities *OpportunitiesResource
+	CRMTags       *CRMTagsResource
+	CRMTasks      *CRMTasksResource
 	Messages      *MessagesResource
 	Images        *ImagesResource
 	Jobs          *JobsResource
@@ -49,13 +53,17 @@ func (c *Client) initResources() {
 	c.Articles = &ArticlesResource{client: c}
 	c.Audio = &AudioResource{client: c}
 	c.Automations = &AutomationsResource{client: c}
+	c.Calendar = &CalendarResource{client: c}
 	c.Chatbots = &ChatbotsResource{client: c}
 	c.Comments = &CommentsResource{client: c}
 	c.Content = &ContentResource{client: c}
 	c.CRM = &CRMResource{client: c}
+	c.CRMCompanies = &CRMCompaniesResource{client: c}
 	c.Contacts = &ContactsResource{client: c}
 	c.CustomFields = &CustomFieldsResource{client: c}
 	c.Opportunities = &OpportunitiesResource{client: c}
+	c.CRMTags = &CRMTagsResource{client: c}
+	c.CRMTasks = &CRMTasksResource{client: c}
 	c.Messages = &MessagesResource{client: c}
 	c.Images = &ImagesResource{client: c}
 	c.Jobs = &JobsResource{client: c}
@@ -690,6 +698,37 @@ func (r *AutomationsResource) GetRun(ctx context.Context, automationId string, r
 	return r.client.do(ctx, "GET", "/automations/"+url.PathEscape(automationId)+"/runs/"+url.PathEscape(runId), nil, nil, opts)
 }
 
+// CalendarResource groups the Calendar endpoints.
+type CalendarResource struct{ client *Client }
+
+// ListEventTypes - List booking pages.
+//
+// GET /calendar/event-types
+func (r *CalendarResource) ListEventTypes(ctx context.Context, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/calendar/event-types", nil, nil, opts)
+}
+
+// ListSlots - List open slots.
+//
+// GET /calendar/slots
+func (r *CalendarResource) ListSlots(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/calendar/slots", query, nil, opts)
+}
+
+// CreateBooking - Take a booking.
+//
+// POST /calendar/bookings
+func (r *CalendarResource) CreateBooking(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/calendar/bookings", nil, body, opts)
+}
+
+// CancelBooking - Cancel a booking.
+//
+// POST /calendar/bookings/{id}/cancel
+func (r *CalendarResource) CancelBooking(ctx context.Context, id string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/calendar/bookings/"+url.PathEscape(id)+"/cancel", nil, body, opts)
+}
+
 // ChatbotsResource groups the Chatbot endpoints.
 type ChatbotsResource struct{ client *Client }
 
@@ -870,6 +909,58 @@ func (r *CRMResource) ContactChannels(ctx context.Context, id string, opts *Requ
 	return r.client.do(ctx, "GET", "/contacts/"+url.PathEscape(id)+"/channels", nil, nil, opts)
 }
 
+// CRMCompaniesResource groups the CRM Companies endpoints.
+type CRMCompaniesResource struct{ client *Client }
+
+// List - List companies.
+//
+// GET /companies
+func (r *CRMCompaniesResource) List(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/companies", query, nil, opts)
+}
+
+// Create - Create a company.
+//
+// POST /companies
+func (r *CRMCompaniesResource) Create(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/companies", nil, body, opts)
+}
+
+// Get - Get a company.
+//
+// GET /companies/{id}
+func (r *CRMCompaniesResource) Get(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/companies/"+url.PathEscape(id), nil, nil, opts)
+}
+
+// Update - Update a company.
+//
+// PATCH /companies/{id}
+func (r *CRMCompaniesResource) Update(ctx context.Context, id string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "PATCH", "/companies/"+url.PathEscape(id), nil, body, opts)
+}
+
+// Delete - Delete a company.
+//
+// DELETE /companies/{id}
+func (r *CRMCompaniesResource) Delete(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "DELETE", "/companies/"+url.PathEscape(id), nil, nil, opts)
+}
+
+// LinkContact - Link a contact to a company.
+//
+// POST /companies/{id}/contacts
+func (r *CRMCompaniesResource) LinkContact(ctx context.Context, id string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/companies/"+url.PathEscape(id)+"/contacts", nil, body, opts)
+}
+
+// UnlinkContact - Unlink a contact from a company.
+//
+// DELETE /companies/{id}/contacts
+func (r *CRMCompaniesResource) UnlinkContact(ctx context.Context, id string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "DELETE", "/companies/"+url.PathEscape(id)+"/contacts", nil, body, opts)
+}
+
 // ContactsResource groups the CRM Contacts endpoints.
 type ContactsResource struct{ client *Client }
 
@@ -1038,6 +1129,89 @@ func (r *OpportunitiesResource) Delete(ctx context.Context, id string, opts *Req
 // POST /opportunities/{id}/status
 func (r *OpportunitiesResource) UpdateStatus(ctx context.Context, id string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
 	return r.client.do(ctx, "POST", "/opportunities/"+url.PathEscape(id)+"/status", nil, body, opts)
+}
+
+// CRMTagsResource groups the CRM Tags endpoints.
+type CRMTagsResource struct{ client *Client }
+
+// List - List tags.
+//
+// GET /tags
+func (r *CRMTagsResource) List(ctx context.Context, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/tags", nil, nil, opts)
+}
+
+// Create - Create a tag.
+//
+// POST /tags
+func (r *CRMTagsResource) Create(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/tags", nil, body, opts)
+}
+
+// Rename - Rename a tag.
+//
+// POST /tags/rename
+func (r *CRMTagsResource) Rename(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/tags/rename", nil, body, opts)
+}
+
+// Merge - Merge tags.
+//
+// POST /tags/merge
+func (r *CRMTagsResource) Merge(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/tags/merge", nil, body, opts)
+}
+
+// Delete - Delete a tag.
+//
+// POST /tags/delete
+func (r *CRMTagsResource) Delete(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/tags/delete", nil, body, opts)
+}
+
+// CRMTasksResource groups the CRM Tasks endpoints.
+type CRMTasksResource struct{ client *Client }
+
+// List - List tasks.
+//
+// GET /tasks
+func (r *CRMTasksResource) List(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/tasks", query, nil, opts)
+}
+
+// Create - Create a task.
+//
+// POST /tasks
+func (r *CRMTasksResource) Create(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/tasks", nil, body, opts)
+}
+
+// Get - Get a task.
+//
+// GET /tasks/{id}
+func (r *CRMTasksResource) Get(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/tasks/"+url.PathEscape(id), nil, nil, opts)
+}
+
+// Update - Update a task.
+//
+// PATCH /tasks/{id}
+func (r *CRMTasksResource) Update(ctx context.Context, id string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "PATCH", "/tasks/"+url.PathEscape(id), nil, body, opts)
+}
+
+// Delete - Delete a task.
+//
+// DELETE /tasks/{id}
+func (r *CRMTasksResource) Delete(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "DELETE", "/tasks/"+url.PathEscape(id), nil, nil, opts)
+}
+
+// LogTime - Log time on a task.
+//
+// POST /tasks/{id}/time
+func (r *CRMTasksResource) LogTime(ctx context.Context, id string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/tasks/"+url.PathEscape(id)+"/time", nil, body, opts)
 }
 
 // MessagesResource groups the Direct Messages endpoints.

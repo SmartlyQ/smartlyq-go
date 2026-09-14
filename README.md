@@ -273,6 +273,15 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Automations.ListRuns(ctx, automationId, query)` | `GET /automations/{automation_id}/runs` | List runs |
 | `client.Automations.GetRun(ctx, automationId, runId)` | `GET /automations/{automation_id}/runs/{run_id}` | Get run |
 
+### Calendar
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `client.Calendar.ListEventTypes(ctx)` | `GET /calendar/event-types` | List booking pages |
+| `client.Calendar.ListSlots(ctx, query)` | `GET /calendar/slots` | List open slots |
+| `client.Calendar.CreateBooking(ctx, body)` | `POST /calendar/bookings` | Take a booking |
+| `client.Calendar.CancelBooking(ctx, id, body)` | `POST /calendar/bookings/{id}/cancel` | Cancel a booking |
+
 ### Chatbot
 
 | Method | Endpoint | Description |
@@ -317,6 +326,18 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.CRM.BulkImportContacts(ctx, body)` | `POST /contacts/bulk` | Bulk import contacts |
 | `client.CRM.ContactChannels(ctx, id)` | `GET /contacts/{id}/channels` | Contact channels |
 
+### CRM Companies
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `client.CRMCompanies.List(ctx, query)` | `GET /companies` | List companies |
+| `client.CRMCompanies.Create(ctx, body)` | `POST /companies` | Create a company |
+| `client.CRMCompanies.Get(ctx, id)` | `GET /companies/{id}` | Get a company |
+| `client.CRMCompanies.Update(ctx, id, body)` | `PATCH /companies/{id}` | Update a company |
+| `client.CRMCompanies.Delete(ctx, id)` | `DELETE /companies/{id}` | Delete a company |
+| `client.CRMCompanies.LinkContact(ctx, id, body)` | `POST /companies/{id}/contacts` | Link a contact to a company |
+| `client.CRMCompanies.UnlinkContact(ctx, id, body)` | `DELETE /companies/{id}/contacts` | Unlink a contact from a company |
+
 ### CRM Contacts
 
 | Method | Endpoint | Description |
@@ -354,6 +375,27 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Opportunities.Update(ctx, id, body)` | `PATCH /opportunities/{id}` | Update an opportunity |
 | `client.Opportunities.Delete(ctx, id)` | `DELETE /opportunities/{id}` | Delete an opportunity |
 | `client.Opportunities.UpdateStatus(ctx, id, body)` | `POST /opportunities/{id}/status` | Update opportunity status |
+
+### CRM Tags
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `client.CRMTags.List(ctx)` | `GET /tags` | List tags |
+| `client.CRMTags.Create(ctx, body)` | `POST /tags` | Create a tag |
+| `client.CRMTags.Rename(ctx, body)` | `POST /tags/rename` | Rename a tag |
+| `client.CRMTags.Merge(ctx, body)` | `POST /tags/merge` | Merge tags |
+| `client.CRMTags.Delete(ctx, body)` | `POST /tags/delete` | Delete a tag |
+
+### CRM Tasks
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `client.CRMTasks.List(ctx, query)` | `GET /tasks` | List tasks |
+| `client.CRMTasks.Create(ctx, body)` | `POST /tasks` | Create a task |
+| `client.CRMTasks.Get(ctx, id)` | `GET /tasks/{id}` | Get a task |
+| `client.CRMTasks.Update(ctx, id, body)` | `PATCH /tasks/{id}` | Update a task |
+| `client.CRMTasks.Delete(ctx, id)` | `DELETE /tasks/{id}` | Delete a task |
+| `client.CRMTasks.LogTime(ctx, id, body)` | `POST /tasks/{id}/time` | Log time on a task |
 
 ### Direct Messages
 

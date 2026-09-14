@@ -627,6 +627,34 @@ func TestAutomationsGetRun(t *testing.T) {
 	})
 }
 
+func TestCalendarListEventTypes(t *testing.T) {
+	assertEndpoint(t, "GET", "/calendar/event-types", func(c *Client) error {
+		_, err := c.Calendar.ListEventTypes(context.Background(), nil)
+		return err
+	})
+}
+
+func TestCalendarListSlots(t *testing.T) {
+	assertEndpoint(t, "GET", "/calendar/slots", func(c *Client) error {
+		_, err := c.Calendar.ListSlots(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestCalendarCreateBooking(t *testing.T) {
+	assertEndpoint(t, "POST", "/calendar/bookings", func(c *Client) error {
+		_, err := c.Calendar.CreateBooking(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestCalendarCancelBooking(t *testing.T) {
+	assertEndpoint(t, "POST", "/calendar/bookings/test-id/cancel", func(c *Client) error {
+		_, err := c.Calendar.CancelBooking(context.Background(), "test-id", map[string]any{}, nil)
+		return err
+	})
+}
+
 func TestChatbotsList(t *testing.T) {
 	assertEndpoint(t, "GET", "/chatbots", func(c *Client) error {
 		_, err := c.Chatbots.List(context.Background(), nil, nil)
@@ -795,6 +823,55 @@ func TestCRMContactChannels(t *testing.T) {
 	})
 }
 
+func TestCRMCompaniesList(t *testing.T) {
+	assertEndpoint(t, "GET", "/companies", func(c *Client) error {
+		_, err := c.CRMCompanies.List(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestCRMCompaniesCreate(t *testing.T) {
+	assertEndpoint(t, "POST", "/companies", func(c *Client) error {
+		_, err := c.CRMCompanies.Create(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestCRMCompaniesGet(t *testing.T) {
+	assertEndpoint(t, "GET", "/companies/test-id", func(c *Client) error {
+		_, err := c.CRMCompanies.Get(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
+func TestCRMCompaniesUpdate(t *testing.T) {
+	assertEndpoint(t, "PATCH", "/companies/test-id", func(c *Client) error {
+		_, err := c.CRMCompanies.Update(context.Background(), "test-id", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestCRMCompaniesDelete(t *testing.T) {
+	assertEndpoint(t, "DELETE", "/companies/test-id", func(c *Client) error {
+		_, err := c.CRMCompanies.Delete(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
+func TestCRMCompaniesLinkContact(t *testing.T) {
+	assertEndpoint(t, "POST", "/companies/test-id/contacts", func(c *Client) error {
+		_, err := c.CRMCompanies.LinkContact(context.Background(), "test-id", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestCRMCompaniesUnlinkContact(t *testing.T) {
+	assertEndpoint(t, "DELETE", "/companies/test-id/contacts", func(c *Client) error {
+		_, err := c.CRMCompanies.UnlinkContact(context.Background(), "test-id", map[string]any{}, nil)
+		return err
+	})
+}
+
 func TestContactsList(t *testing.T) {
 	assertEndpoint(t, "GET", "/contacts", func(c *Client) error {
 		_, err := c.Contacts.List(context.Background(), nil, nil)
@@ -952,6 +1029,83 @@ func TestOpportunitiesDelete(t *testing.T) {
 func TestOpportunitiesUpdateStatus(t *testing.T) {
 	assertEndpoint(t, "POST", "/opportunities/test-id/status", func(c *Client) error {
 		_, err := c.Opportunities.UpdateStatus(context.Background(), "test-id", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestCRMTagsList(t *testing.T) {
+	assertEndpoint(t, "GET", "/tags", func(c *Client) error {
+		_, err := c.CRMTags.List(context.Background(), nil)
+		return err
+	})
+}
+
+func TestCRMTagsCreate(t *testing.T) {
+	assertEndpoint(t, "POST", "/tags", func(c *Client) error {
+		_, err := c.CRMTags.Create(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestCRMTagsRename(t *testing.T) {
+	assertEndpoint(t, "POST", "/tags/rename", func(c *Client) error {
+		_, err := c.CRMTags.Rename(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestCRMTagsMerge(t *testing.T) {
+	assertEndpoint(t, "POST", "/tags/merge", func(c *Client) error {
+		_, err := c.CRMTags.Merge(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestCRMTagsDelete(t *testing.T) {
+	assertEndpoint(t, "POST", "/tags/delete", func(c *Client) error {
+		_, err := c.CRMTags.Delete(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestCRMTasksList(t *testing.T) {
+	assertEndpoint(t, "GET", "/tasks", func(c *Client) error {
+		_, err := c.CRMTasks.List(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestCRMTasksCreate(t *testing.T) {
+	assertEndpoint(t, "POST", "/tasks", func(c *Client) error {
+		_, err := c.CRMTasks.Create(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestCRMTasksGet(t *testing.T) {
+	assertEndpoint(t, "GET", "/tasks/test-id", func(c *Client) error {
+		_, err := c.CRMTasks.Get(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
+func TestCRMTasksUpdate(t *testing.T) {
+	assertEndpoint(t, "PATCH", "/tasks/test-id", func(c *Client) error {
+		_, err := c.CRMTasks.Update(context.Background(), "test-id", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestCRMTasksDelete(t *testing.T) {
+	assertEndpoint(t, "DELETE", "/tasks/test-id", func(c *Client) error {
+		_, err := c.CRMTasks.Delete(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
+func TestCRMTasksLogTime(t *testing.T) {
+	assertEndpoint(t, "POST", "/tasks/test-id/time", func(c *Client) error {
+		_, err := c.CRMTasks.LogTime(context.Background(), "test-id", map[string]any{}, nil)
 		return err
 	})
 }
