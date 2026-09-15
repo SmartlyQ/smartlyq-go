@@ -33001,7 +33001,8 @@
               }
             }
           }
-        }
+        },
+        "description": "Metric fields (`spent`, `impressions`, `clicks`, `conversions`, `leads`, `purchase_value`, `ctr`, `cpa`, `roas`) cover the **last 28 days**, on every platform. That is the window the ad networks give us daily figures for, so it is the longest total we can report without inventing the missing days - it is NOT the campaign's lifetime. For any other date range, or a per-campaign breakdown of one, use `GET /ads/analytics`."
       },
       "post": {
         "summary": "Create a campaign",
@@ -33371,7 +33372,8 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "description": "Metric fields (`spent`, `impressions`, `clicks`, `conversions`, `leads`, `purchase_value`, `ctr`, `cpa`, `roas`) cover the **last 28 days**, on every platform. That is the window the ad networks give us daily figures for, so it is the longest total we can report without inventing the missing days - it is NOT the campaign's lifetime. For any other date range, or a per-campaign breakdown of one, use `GET /ads/analytics`."
       },
       "patch": {
         "summary": "Update a campaign",
@@ -34069,7 +34071,8 @@
               }
             }
           }
-        }
+        },
+        "description": "Metric fields (`spent`, `impressions`, `clicks`, `conversions`, `leads`, `purchase_value`, `ctr`, `cpa`, `roas`) cover the **last 28 days**, on every platform. That is the window the ad networks give us daily figures for, so it is the longest total we can report without inventing the missing days - it is NOT the campaign's lifetime. For any other date range, or a per-campaign breakdown of one, use `GET /ads/analytics`."
       }
     },
     "/ads/ad-sets/{id}": {
@@ -34644,7 +34647,8 @@
               }
             }
           }
-        }
+        },
+        "description": "Metric fields (`spent`, `impressions`, `clicks`, `conversions`, `leads`, `purchase_value`, `ctr`, `cpa`, `roas`) cover the **last 28 days**, on every platform. That is the window the ad networks give us daily figures for, so it is the longest total we can report without inventing the missing days - it is NOT the campaign's lifetime. For any other date range, or a per-campaign breakdown of one, use `GET /ads/analytics`."
       }
     },
     "/ads/ads/{id}": {
@@ -36485,7 +36489,7 @@
         "tags": [
           "Ads"
         ],
-        "description": "Summary + by-platform breakdown + daily spend chart + period-over-period trends. Date range defaults to the last 30 days.",
+        "description": "Summary + by-platform breakdown + daily spend chart + period-over-period trends. Date range defaults to the last 30 days. Every block here is scoped to that range, including `by_campaign` - unlike the campaign rows from `GET /ads/campaigns`, which carry a fixed 28-day total.",
         "parameters": [
           {
             "name": "date_from",
@@ -36602,6 +36606,56 @@
                               "purchase_value": {
                                 "type": "number",
                                 "example": 3500.0
+                              }
+                            }
+                          }
+                        },
+                        "by_campaign": {
+                          "type": "array",
+                          "description": "One entry per campaign that had activity in the range. A campaign absent from this list spent nothing between these dates.",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "description": "Campaign id, as returned by GET /ads/campaigns.",
+                                "example": 5001
+                              },
+                              "spent": {
+                                "type": "number",
+                                "example": 128.4
+                              },
+                              "impressions": {
+                                "type": "integer",
+                                "example": 48213
+                              },
+                              "clicks": {
+                                "type": "integer",
+                                "example": 921
+                              },
+                              "conversions": {
+                                "type": "integer",
+                                "example": 34
+                              },
+                              "leads": {
+                                "type": "integer",
+                                "example": 12
+                              },
+                              "purchase_value": {
+                                "type": "number",
+                                "example": 540.0
+                              },
+                              "ctr": {
+                                "type": "number",
+                                "example": 1.91
+                              },
+                              "cpa": {
+                                "type": "number",
+                                "example": 3.78
+                              },
+                              "roas": {
+                                "type": "number",
+                                "example": 4.2
                               }
                             }
                           }
@@ -39648,7 +39702,7 @@
           },
           "link": {
             "type": "string",
-            "description": "URL to include with the post"
+            "description": "Destination URL for the post. Applied to the platforms that have a link field (currently Facebook); other selected platforms are reported back in data.warnings, so put the URL in the post text for those. On Facebook a text-only post renders it as a preview card; when media is attached Meta drops the parameter, so the URL is appended to the post text instead. A per-platform platform_options.<platform>.link always takes precedence."
           },
           "allow_duplicates": {
             "type": "boolean",
