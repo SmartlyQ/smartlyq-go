@@ -213,7 +213,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "articles:write"
+        ]
       }
     },
     "/articles": {
@@ -291,7 +294,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "articles:read"
+        ]
       }
     },
     "/articles/{article_id}": {
@@ -343,7 +349,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "articles:read"
+        ]
       },
       "delete": {
         "summary": "Delete article",
@@ -372,7 +381,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "articles:write"
+        ]
       }
     },
     "/images/generate": {
@@ -440,7 +452,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "images:write"
+        ]
       }
     },
     "/images": {
@@ -514,7 +529,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "images:read"
+        ]
       }
     },
     "/images/{image_id}": {
@@ -566,7 +584,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "images:read"
+        ]
       },
       "delete": {
         "summary": "Delete image",
@@ -595,7 +616,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "images:write"
+        ]
       }
     },
     "/videos/models": {
@@ -696,7 +720,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "videos:read"
+        ]
       }
     },
     "/videos/generate": {
@@ -786,7 +813,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "videos:write"
+        ]
       }
     },
     "/videos": {
@@ -868,7 +898,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "videos:read"
+        ]
       }
     },
     "/videos/{video_id}": {
@@ -921,7 +954,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "videos:read"
+        ]
       },
       "delete": {
         "summary": "Delete video",
@@ -950,7 +986,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "videos:write"
+        ]
       }
     },
     "/social/accounts": {
@@ -1000,6 +1039,9 @@
           {
             "$ref": "#/components/parameters/ProfileHeader"
           }
+        ],
+        "x-scopes": [
+          "social:read"
         ]
       }
     },
@@ -1134,6 +1176,9 @@
             },
             "description": "Client idempotency key (X-Request-Id accepted as an alias). Send a fresh key per logical post and REUSE it when retrying that exact call after a timeout / 5xx / connection reset: the retry returns the original post with HTTP 200 and `idempotent_replay: true` instead of creating a duplicate. A key permanently identifies its post in the workspace (deleting the post frees the key). See the Idempotency guide."
           }
+        ],
+        "x-scopes": [
+          "social:write"
         ]
       },
       "get": {
@@ -1220,7 +1265,10 @@
             "$ref": "#/components/responses/ServerError"
           }
         },
-        "description": " Posts imported by external sync carry status 'external' - filter with ?status=external."
+        "description": " Posts imported by external sync carry status 'external' - filter with ?status=external.",
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/social/posts/schedule": {
@@ -1355,7 +1403,10 @@
             "description": "Client idempotency key (X-Request-Id accepted as an alias). Send a fresh key per logical post and REUSE it when retrying that exact call after a timeout / 5xx / connection reset: the retry returns the original post with HTTP 200 and `idempotent_replay: true` instead of creating a duplicate. A key permanently identifies its post in the workspace (deleting the post frees the key). See the Idempotency guide."
           }
         ],
-        "description": " Pass queue_id (instead of scheduled_time) to drop the post into a posting queue's next open slot. Supports evergreen recycling via the optional `recycle` object: each published occurrence automatically schedules the next one until the chain hits its bound."
+        "description": " Pass queue_id (instead of scheduled_time) to drop the post into a posting queue's next open slot. Supports evergreen recycling via the optional `recycle` object: each published occurrence automatically schedules the next one until the chain hits its bound.",
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/posts/{post_id}": {
@@ -1411,7 +1462,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       },
       "patch": {
         "summary": "Update social post",
@@ -1480,7 +1534,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       },
       "delete": {
         "summary": "Delete social post",
@@ -1509,7 +1566,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/content/rewrite": {
@@ -1576,7 +1636,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "articles:write"
+        ]
       }
     },
     "/seo/keyword-research": {
@@ -1723,7 +1786,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "seo:read"
+        ]
       }
     },
     "/seo/serp": {
@@ -1893,7 +1959,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "seo:read"
+        ]
       }
     },
     "/seo/keyword-difficulty": {
@@ -2002,7 +2071,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "seo:read"
+        ]
       }
     },
     "/seo/ranked-keywords": {
@@ -2147,7 +2219,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "seo:read"
+        ]
       }
     },
     "/seo/domain-overview": {
@@ -2288,7 +2363,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "seo:read"
+        ]
       }
     },
     "/seo/competitors": {
@@ -2421,7 +2499,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "seo:read"
+        ]
       }
     },
     "/seo/backlinks-summary": {
@@ -2550,7 +2631,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "seo:read"
+        ]
       }
     },
     "/seo/audit": {
@@ -2677,7 +2761,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "seo:read"
+        ]
       }
     },
     "/seo/backlink-prospects": {
@@ -2824,7 +2911,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "seo:read"
+        ]
       }
     },
     "/seo/referring-domains": {
@@ -2951,7 +3041,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "seo:read"
+        ]
       }
     },
     "/seo/backlink-anchors": {
@@ -3070,7 +3163,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "seo:read"
+        ]
       }
     },
     "/seo/spam-score": {
@@ -3169,7 +3265,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "seo:read"
+        ]
       }
     },
     "/seo/rank-history": {
@@ -3253,7 +3352,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "seo:read"
+        ]
       }
     },
     "/seo/site-audit": {
@@ -3335,7 +3437,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "seo:read"
+        ]
       }
     },
     "/seo/brand-lookup": {
@@ -3428,7 +3533,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "seo:read"
+        ]
       }
     },
     "/seo/prompt-explorer": {
@@ -3532,7 +3640,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "seo:read"
+        ]
       }
     },
     "/seo/ai-audit": {
@@ -3648,7 +3759,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "seo:read"
+        ]
       }
     },
     "/audio/text-to-speech": {
@@ -3715,7 +3829,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "audio:write"
+        ]
       }
     },
     "/audio/speech-to-text": {
@@ -3782,7 +3899,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "audio:write"
+        ]
       }
     },
     "/audio/{audio_id}": {
@@ -3838,7 +3958,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "audio:read"
+        ]
       }
     },
     "/urls/shorten": {
@@ -3911,7 +4034,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "urls:write"
+        ]
       }
     },
     "/urls": {
@@ -3980,7 +4106,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "urls:read"
+        ]
       }
     },
     "/urls/{url_id}": {
@@ -4039,7 +4168,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "urls:read"
+        ]
       },
       "delete": {
         "summary": "Delete short URL",
@@ -4068,7 +4200,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "urls:write"
+        ]
       }
     },
     "/urls/{url_id}/stats": {
@@ -4117,7 +4252,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "urls:read"
+        ]
       }
     },
     "/captain/messages": {
@@ -4190,7 +4328,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "captain:use"
+        ]
       }
     },
     "/captain/conversations": {
@@ -4255,7 +4396,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "captain:use"
+        ]
       }
     },
     "/captain/conversations/{conversation_id}": {
@@ -4312,7 +4456,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "captain:use"
+        ]
       }
     },
     "/chatbots": {
@@ -4384,7 +4531,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "chatbot:use"
+        ]
       },
       "get": {
         "summary": "List chatbots",
@@ -4450,7 +4600,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "chatbot:use"
+        ]
       }
     },
     "/chatbots/{id}": {
@@ -4501,7 +4654,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "chatbot:use"
+        ]
       },
       "patch": {
         "summary": "Update chatbot",
@@ -4573,7 +4729,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "chatbot:use"
+        ]
       },
       "delete": {
         "summary": "Delete chatbot",
@@ -4602,7 +4761,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "chatbot:use"
+        ]
       }
     },
     "/chatbots/{id}/train": {
@@ -4657,7 +4819,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "chatbot:use"
+        ]
       }
     },
     "/chatbots/{id}/train-status": {
@@ -4708,7 +4873,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "chatbot:use"
+        ]
       }
     },
     "/chatbots/{id}/messages": {
@@ -4793,7 +4961,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "chatbot:use"
+        ]
       }
     },
     "/chatbots/{id}/conversations": {
@@ -4853,7 +5024,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "chatbot:use"
+        ]
       }
     },
     "/chatbots/{id}/conversations/{conv_id}/messages": {
@@ -4910,7 +5084,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "chatbot:use"
+        ]
       }
     },
     "/media": {
@@ -4994,7 +5171,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "media:read"
+        ]
       }
     },
     "/media/{media_id}": {
@@ -5047,7 +5227,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "media:read"
+        ]
       },
       "delete": {
         "summary": "Delete media",
@@ -5076,7 +5259,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "media:write"
+        ]
       }
     },
     "/media/upload-url": {
@@ -5134,7 +5320,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "media:write"
+        ]
       }
     },
     "/media/{media_id}/confirm": {
@@ -5191,7 +5380,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "media:write"
+        ]
       }
     },
     "/analytics/overview": {
@@ -5254,7 +5446,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "analytics:read"
+        ]
       }
     },
     "/analytics/posts": {
@@ -5331,7 +5526,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "analytics:read"
+        ]
       }
     },
     "/analytics/accounts/{account_id}": {
@@ -5397,7 +5595,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "analytics:read"
+        ]
       }
     },
     "/jobs": {
@@ -5481,7 +5682,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "jobs:read"
+        ]
       }
     },
     "/jobs/{job_id}": {
@@ -5535,7 +5739,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "jobs:read"
+        ]
       }
     },
     "/jobs/{job_id}/cancel": {
@@ -5606,7 +5813,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "jobs:read"
+        ]
       }
     },
     "/me": {
@@ -5647,7 +5857,8 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": []
       }
     },
     "/me/usage": {
@@ -5703,7 +5914,8 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": []
       }
     },
     "/me/balance": {
@@ -5744,7 +5956,8 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": []
       }
     },
     "/social/accounts/{account_id}": {
@@ -5841,7 +6054,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       },
       "delete": {
         "summary": "Disconnect a social account",
@@ -5909,7 +6125,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/accounts/{account_id}/health": {
@@ -6004,7 +6223,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/social/accounts/{account_id}/reconnect-url": {
@@ -6078,7 +6300,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/social/accounts/{account_id}/pause": {
@@ -6158,7 +6383,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/accounts/{account_id}/resume": {
@@ -6238,7 +6466,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/posts/{post_id}/retry": {
@@ -6373,7 +6604,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/comments": {
@@ -6597,7 +6831,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/social/comments/{comment_id}/reply": {
@@ -6693,7 +6930,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/comments/{comment_id}/hide": {
@@ -6773,7 +7013,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/comments/{comment_id}/moderate": {
@@ -6889,7 +7132,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/comments/{comment_id}/like": {
@@ -6967,7 +7213,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       },
       "delete": {
         "summary": "Unlike a comment",
@@ -7040,7 +7289,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/comments/{comment_id}": {
@@ -7110,7 +7362,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/conversations": {
@@ -7290,7 +7545,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/social/conversations/{conversation_id}/messages": {
@@ -7458,7 +7716,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       },
       "post": {
         "summary": "Send a direct message",
@@ -7652,7 +7913,10 @@
             "$ref": "#/components/responses/ServerError"
           }
         },
-        "description": " Supports structured payloads: buttons (Facebook) and quick_replies (Facebook + Instagram)."
+        "description": " Supports structured payloads: buttons (Facebook) and quick_replies (Facebook + Instagram).",
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/conversations/{conversation_id}/read": {
@@ -7732,7 +7996,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/webhooks": {
@@ -7854,7 +8121,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "webhooks:read"
+        ]
       },
       "post": {
         "summary": "Create webhook",
@@ -8003,7 +8273,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "webhooks:write"
+        ]
       }
     },
     "/webhooks/{id}": {
@@ -8068,7 +8341,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "webhooks:write"
+        ]
       },
       "put": {
         "summary": "Update webhook",
@@ -8248,7 +8524,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "webhooks:write"
+        ]
       }
     },
     "/social/connect/{platform}": {
@@ -8402,7 +8681,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       },
       "get": {
         "summary": "Poll headless connection status",
@@ -8514,7 +8796,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/videos/hook": {
@@ -8601,7 +8886,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "videos:write"
+        ]
       }
     },
     "/videos/broll-suggest": {
@@ -8740,7 +9028,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "videos:write"
+        ]
       }
     },
     "/videos/emphasis": {
@@ -8873,7 +9164,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "videos:write"
+        ]
       }
     },
     "/videos/viral-thumbnail": {
@@ -8969,7 +9263,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "videos:write"
+        ]
       }
     },
     "/content/caption": {
@@ -9076,7 +9373,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/shorts/generate": {
@@ -9180,7 +9480,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "videos:write"
+        ]
       }
     },
     "/shorts": {
@@ -9339,7 +9642,10 @@
           "403": {
             "$ref": "#/components/responses/Forbidden"
           }
-        }
+        },
+        "x-scopes": [
+          "videos:read"
+        ]
       }
     },
     "/shorts/{uid}": {
@@ -9472,7 +9778,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "videos:read"
+        ]
       }
     },
     "/presentations/generate": {
@@ -9569,7 +9878,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "presentations:write"
+        ]
       }
     },
     "/contacts": {
@@ -9892,7 +10204,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:write"
+        ]
       },
       "get": {
         "summary": "List contacts",
@@ -10087,7 +10402,10 @@
           "403": {
             "$ref": "#/components/responses/Forbidden"
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:read"
+        ]
       }
     },
     "/contacts/{id}": {
@@ -10229,7 +10547,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:read"
+        ]
       },
       "patch": {
         "summary": "Update a contact",
@@ -10434,7 +10755,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:write"
+        ]
       },
       "delete": {
         "summary": "Delete contact",
@@ -10492,7 +10816,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:write"
+        ]
       }
     },
     "/contacts/{id}/tags": {
@@ -10593,7 +10920,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:write"
+        ]
       },
       "delete": {
         "summary": "Remove tags from a contact",
@@ -10684,7 +11014,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:write"
+        ]
       }
     },
     "/contacts/{id}/notes": {
@@ -10774,7 +11107,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:read"
+        ]
       },
       "post": {
         "summary": "Add a note to a contact",
@@ -10865,7 +11201,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:write"
+        ]
       }
     },
     "/pipelines": {
@@ -10986,7 +11325,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "opportunities:read"
+        ]
       },
       "post": {
         "summary": "Create a pipeline",
@@ -11125,7 +11467,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "opportunities:write"
+        ]
       }
     },
     "/opportunities": {
@@ -11290,7 +11635,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "opportunities:read"
+        ]
       },
       "post": {
         "summary": "Create an opportunity",
@@ -11446,7 +11794,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "opportunities:write"
+        ]
       }
     },
     "/opportunities/{id}": {
@@ -11556,7 +11907,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "opportunities:read"
+        ]
       },
       "patch": {
         "summary": "Update an opportunity",
@@ -11715,7 +12069,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "opportunities:write"
+        ]
       },
       "delete": {
         "summary": "Delete an opportunity",
@@ -11769,7 +12126,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "opportunities:write"
+        ]
       }
     },
     "/opportunities/{id}/status": {
@@ -11907,7 +12267,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "opportunities:write"
+        ]
       }
     },
     "/workspaces": {
@@ -12015,7 +12378,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "workspaces:write"
+        ]
       },
       "get": {
         "summary": "List workspaces (sub-accounts)",
@@ -12109,7 +12475,10 @@
           "409": {
             "description": "Key's workspace has no agency tenant"
           }
-        }
+        },
+        "x-scopes": [
+          "workspaces:read"
+        ]
       }
     },
     "/workspaces/bulk": {
@@ -12245,7 +12614,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "workspaces:bulk"
+        ]
       }
     },
     "/workspaces/{id}": {
@@ -12331,7 +12703,10 @@
           "404": {
             "description": "Workspace not found in your agency"
           }
-        }
+        },
+        "x-scopes": [
+          "workspaces:read"
+        ]
       },
       "delete": {
         "summary": "Delete a workspace (sub-account)",
@@ -12425,7 +12800,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "workspaces:write"
+        ]
       }
     },
     "/workspaces/{id}/disable-saas": {
@@ -12516,7 +12894,10 @@
           "404": {
             "description": "Workspace not found in your agency"
           }
-        }
+        },
+        "x-scopes": [
+          "workspaces:write"
+        ]
       }
     },
     "/workspaces/{id}/pause": {
@@ -12592,7 +12973,10 @@
           "422": {
             "description": "Cannot pause an agency-owned workspace"
           }
-        }
+        },
+        "x-scopes": [
+          "workspaces:write"
+        ]
       }
     },
     "/workspaces/{id}/resume": {
@@ -12668,7 +13052,10 @@
           "404": {
             "description": "Workspace not found in your agency"
           }
-        }
+        },
+        "x-scopes": [
+          "workspaces:write"
+        ]
       }
     },
     "/workspaces/{id}/subscription": {
@@ -12779,7 +13166,10 @@
           "404": {
             "description": "Workspace not found in your agency"
           }
-        }
+        },
+        "x-scopes": [
+          "workspaces:read"
+        ]
       }
     },
     "/workspaces/{id}/wallet": {
@@ -12875,7 +13265,10 @@
           "404": {
             "description": "Workspace not found in your agency"
           }
-        }
+        },
+        "x-scopes": [
+          "workspaces:read"
+        ]
       }
     },
     "/saas/plans": {
@@ -13022,7 +13415,10 @@
           "409": {
             "description": "Key's workspace has no agency tenant"
           }
-        }
+        },
+        "x-scopes": [
+          "workspaces:read"
+        ]
       }
     },
     "/saas/plans/{id}": {
@@ -13149,7 +13545,10 @@
           "404": {
             "description": "Plan not found in your agency"
           }
-        }
+        },
+        "x-scopes": [
+          "workspaces:read"
+        ]
       }
     },
     "/contacts/{id}/enroll": {
@@ -13249,7 +13648,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:write"
+        ]
       }
     },
     "/contacts/{id}/messages": {
@@ -13365,7 +13767,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:write"
+        ]
       }
     },
     "/custom-fields": {
@@ -13446,7 +13851,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:read"
+        ]
       },
       "post": {
         "summary": "Create a custom field",
@@ -13559,7 +13967,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:write"
+        ]
       }
     },
     "/custom-fields/{id}": {
@@ -13615,7 +14026,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:write"
+        ]
       },
       "patch": {
         "summary": "Update custom field",
@@ -13731,7 +14145,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:write"
+        ]
       }
     },
     "/presentations": {
@@ -13795,7 +14212,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "presentations:read"
+        ]
       }
     },
     "/presentations/{presentation_id}": {
@@ -13873,7 +14293,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "presentations:read"
+        ]
       },
       "delete": {
         "summary": "Delete presentation",
@@ -13948,7 +14371,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "presentations:write"
+        ]
       }
     },
     "/profiles": {
@@ -14012,7 +14438,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "profiles:write"
+        ]
       },
       "get": {
         "summary": "List profiles",
@@ -14061,7 +14490,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "profiles:read"
+        ]
       }
     },
     "/profiles/{id}": {
@@ -14099,7 +14531,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "profiles:read"
+        ]
       },
       "delete": {
         "summary": "Delete a profile",
@@ -14186,7 +14621,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "profiles:write"
+        ]
       },
       "patch": {
         "summary": "Update a profile",
@@ -14253,7 +14691,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "profiles:write"
+        ]
       }
     },
     "/profiles/{id}/accounts": {
@@ -14323,7 +14764,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "profiles:read"
+        ]
       }
     },
     "/profiles/{id}/pause": {
@@ -14388,7 +14832,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "profiles:write"
+        ]
       }
     },
     "/profiles/{id}/resume": {
@@ -14453,7 +14900,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "profiles:write"
+        ]
       }
     },
     "/profiles/{id}/connect-link": {
@@ -14539,7 +14989,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "profiles:write"
+        ]
       }
     },
     "/profiles/{id}/connect/{platform}": {
@@ -14615,7 +15068,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "profiles:write"
+        ]
       }
     },
     "/me/account-billing": {
@@ -14712,7 +15168,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "profiles:read"
+        ]
       }
     },
     "/webhooks/logs": {
@@ -14914,7 +15373,10 @@
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           }
-        }
+        },
+        "x-scopes": [
+          "webhooks:read"
+        ]
       }
     },
     "/webhooks/{id}/test": {
@@ -15000,7 +15462,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "webhooks:write"
+        ]
       }
     },
     "/social/queues": {
@@ -15112,7 +15577,10 @@
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       },
       "post": {
         "summary": "Create queue",
@@ -15279,7 +15747,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/queues/{queue_id}": {
@@ -15408,7 +15879,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       },
       "put": {
         "summary": "Update queue",
@@ -15568,7 +16042,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       },
       "delete": {
         "summary": "Delete queue",
@@ -15627,7 +16104,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/queues/{queue_id}/next-slot": {
@@ -15705,7 +16185,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/social/queues/{queue_id}/preview": {
@@ -15801,7 +16284,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/social/posts/{post_id}/unpublish": {
@@ -15939,7 +16425,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/validate/post": {
@@ -16076,7 +16565,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/social/validate/media": {
@@ -16183,7 +16675,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/social/posts/{post_id}/recycle": {
@@ -16291,7 +16786,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/posts/bulk": {
@@ -16507,7 +17005,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/posts/bulk/validate": {
@@ -16681,7 +17182,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/social/accounts/health": {
@@ -16787,7 +17291,10 @@
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/social/accounts/follower-stats": {
@@ -16925,7 +17432,10 @@
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/social/accounts/{account_id}/tiktok/creator-info": {
@@ -17063,7 +17573,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/social/accounts/{account_id}/move": {
@@ -17170,7 +17683,11 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write",
+          "profiles:manage"
+        ]
       }
     },
     "/social/account-groups": {
@@ -17251,7 +17768,10 @@
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       },
       "post": {
         "summary": "Create account group",
@@ -17364,7 +17884,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/account-groups/{group_id}": {
@@ -17452,7 +17975,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       },
       "put": {
         "summary": "Update account group",
@@ -17566,7 +18092,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       },
       "delete": {
         "summary": "Delete account group",
@@ -17624,7 +18153,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/analytics/daily-metrics": {
@@ -17763,7 +18295,10 @@
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           }
-        }
+        },
+        "x-scopes": [
+          "analytics:read"
+        ]
       }
     },
     "/analytics/best-time": {
@@ -17884,7 +18419,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "analytics:read"
+        ]
       }
     },
     "/analytics/content-decay": {
@@ -17980,7 +18518,10 @@
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           }
-        }
+        },
+        "x-scopes": [
+          "analytics:read"
+        ]
       }
     },
     "/analytics/posting-frequency": {
@@ -18058,7 +18599,10 @@
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           }
-        }
+        },
+        "x-scopes": [
+          "analytics:read"
+        ]
       }
     },
     "/analytics/posts/{post_id}/timeline": {
@@ -18139,7 +18683,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "analytics:read"
+        ]
       }
     },
     "/analytics/inbox/volume": {
@@ -18234,7 +18781,10 @@
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           }
-        }
+        },
+        "x-scopes": [
+          "analytics:read"
+        ]
       }
     },
     "/analytics/inbox/heatmap": {
@@ -18325,7 +18875,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "analytics:read"
+        ]
       }
     },
     "/analytics/inbox/source-breakdown": {
@@ -18420,7 +18973,10 @@
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           }
-        }
+        },
+        "x-scopes": [
+          "analytics:read"
+        ]
       }
     },
     "/analytics/inbox/response-time": {
@@ -18528,7 +19084,10 @@
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           }
-        }
+        },
+        "x-scopes": [
+          "analytics:read"
+        ]
       }
     },
     "/analytics/inbox/top-accounts": {
@@ -18638,7 +19197,10 @@
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           }
-        }
+        },
+        "x-scopes": [
+          "analytics:read"
+        ]
       }
     },
     "/reviews": {
@@ -18808,7 +19370,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/reviews/{review_id}/reply": {
@@ -18939,7 +19504,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       },
       "delete": {
         "summary": "Delete review reply",
@@ -19046,7 +19614,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/reviews/sync": {
@@ -19120,7 +19691,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/conversations/{conversation_id}": {
@@ -19235,7 +19809,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       },
       "patch": {
         "summary": "Archive / reopen conversation",
@@ -19329,7 +19906,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/conversations/search": {
@@ -19460,7 +20040,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/analytics/inbox/conversations": {
@@ -19602,7 +20185,10 @@
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           }
-        }
+        },
+        "x-scopes": [
+          "analytics:read"
+        ]
       }
     },
     "/analytics/inbox/conversations/{conversation_id}": {
@@ -19718,7 +20304,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "analytics:read"
+        ]
       }
     },
     "/automations": {
@@ -19836,7 +20425,10 @@
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:read"
+        ]
       }
     },
     "/automations/{automation_id}": {
@@ -19947,7 +20539,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:read"
+        ]
       }
     },
     "/automations/{automation_id}/activate": {
@@ -20061,7 +20656,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:write"
+        ]
       }
     },
     "/automations/{automation_id}/deactivate": {
@@ -20172,7 +20770,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:write"
+        ]
       }
     },
     "/automations/{automation_id}/trigger": {
@@ -20266,7 +20867,10 @@
           "409": {
             "$ref": "#/components/responses/Conflict"
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:write"
+        ]
       }
     },
     "/automations/{automation_id}/duplicate": {
@@ -20358,7 +20962,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:write"
+        ]
       }
     },
     "/automations/{automation_id}/versions": {
@@ -20452,7 +21059,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:read"
+        ]
       }
     },
     "/automations/{automation_id}/versions/{version}": {
@@ -20533,7 +21143,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:read"
+        ]
       }
     },
     "/automations/{automation_id}/versions/{version}/restore": {
@@ -20633,7 +21246,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:write"
+        ]
       }
     },
     "/automations/{automation_id}/runs": {
@@ -20749,7 +21365,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:read"
+        ]
       }
     },
     "/automations/{automation_id}/runs/{run_id}": {
@@ -20859,7 +21478,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:read"
+        ]
       }
     },
     "/contacts/bulk": {
@@ -20995,7 +21617,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:write"
+        ]
       }
     },
     "/social/accounts/{account_id}/pinterest/boards": {
@@ -21110,7 +21735,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       },
       "post": {
         "summary": "Create a Pinterest board",
@@ -21217,7 +21845,10 @@
           "502": {
             "$ref": "#/components/responses/BadRequest"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/accounts/{account_id}/youtube/playlists": {
@@ -21351,7 +21982,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/social/accounts/{account_id}/instagram/publishing-limit": {
@@ -21469,7 +22103,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/social/accounts/{account_id}/gmb/performance": {
@@ -21579,7 +22216,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/social/accounts/{account_id}/gmb/search-keywords": {
@@ -21704,7 +22344,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/social/accounts/{account_id}/reddit/search": {
@@ -21893,7 +22536,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/social/accounts/{account_id}/reddit/feed": {
@@ -22073,7 +22719,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/social/accounts/{account_id}/reddit/subreddits": {
@@ -22207,7 +22856,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/social/accounts/{account_id}/reddit/subreddits/{subreddit}/rules": {
@@ -22345,7 +22997,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/social/accounts/{account_id}/instagram/stories": {
@@ -22456,7 +23111,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/social/accounts/{account_id}/facebook/post-reactions": {
@@ -22617,7 +23275,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/social/accounts/{account_id}/instagram/stories/{story_id}/insights": {
@@ -22761,7 +23422,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "analytics:read"
+        ]
       }
     },
     "/social/accounts/{account_id}/x/retweets": {
@@ -22905,7 +23569,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/accounts/{account_id}/x/retweets/{tweet_id}": {
@@ -23035,7 +23702,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/posts/{post_id}/edit": {
@@ -23209,7 +23879,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/posts/{post_id}/update-metadata": {
@@ -23383,7 +24056,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/posts/sync-external": {
@@ -23529,7 +24205,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/accounts/{account_id}/insights": {
@@ -23672,7 +24351,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "analytics:read"
+        ]
       }
     },
     "/social/accounts/{account_id}/gmb/locations": {
@@ -23818,7 +24500,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/social/accounts/{account_id}/gmb/location": {
@@ -23968,7 +24653,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       },
       "patch": {
         "summary": "Update business info",
@@ -24123,7 +24811,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/accounts/{account_id}/gmb/attributes": {
@@ -24257,7 +24948,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       },
       "put": {
         "summary": "Update attributes",
@@ -24427,7 +25121,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/accounts/{account_id}/gmb/attributes/metadata": {
@@ -24566,7 +25263,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/social/accounts/{account_id}/gmb/media": {
@@ -24708,7 +25408,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       },
       "post": {
         "summary": "Add photo",
@@ -24860,7 +25563,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       },
       "delete": {
         "summary": "Delete media",
@@ -25002,7 +25708,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/accounts/{account_id}/gmb/food-menus": {
@@ -25136,7 +25845,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       },
       "put": {
         "summary": "Update food menus",
@@ -25292,7 +26004,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/accounts/{account_id}/gmb/place-actions": {
@@ -25430,7 +26145,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       },
       "post": {
         "summary": "Create place-action link",
@@ -25583,7 +26301,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       },
       "delete": {
         "summary": "Delete place-action link",
@@ -25724,7 +26445,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       },
       "patch": {
         "summary": "Update place-action link",
@@ -25863,7 +26587,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/accounts/{account_id}/gmb/verifications": {
@@ -26001,7 +26728,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/social/accounts/{account_id}/gmb/verifications/options": {
@@ -26154,7 +26884,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/social/accounts/{account_id}/reddit/subreddits/{subreddit}": {
@@ -26324,7 +27057,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/social/accounts/{account_id}/x/mentions": {
@@ -26465,7 +27201,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/contacts/{id}/channels": {
@@ -26563,7 +27302,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:read"
+        ]
       }
     },
     "/social/conversations/{conversation_id}/typing": {
@@ -26680,7 +27422,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/comments/{comment_id}/private-reply": {
@@ -26825,7 +27570,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/accounts/{account_id}/messenger/menu": {
@@ -26955,7 +27703,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       },
       "put": {
         "summary": "Set Messenger menu",
@@ -27110,7 +27861,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       },
       "delete": {
         "summary": "Delete Messenger menu",
@@ -27216,7 +27970,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/accounts/{account_id}/instagram/ice-breakers": {
@@ -27345,7 +28102,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       },
       "put": {
         "summary": "Set ice breakers",
@@ -27499,7 +28259,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       },
       "delete": {
         "summary": "Delete ice breakers",
@@ -27605,7 +28368,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/accounts/{account_id}/facebook/page-insights": {
@@ -27773,7 +28539,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "analytics:read"
+        ]
       }
     },
     "/social/accounts/{account_id}/instagram/audience": {
@@ -27922,7 +28691,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "analytics:read"
+        ]
       }
     },
     "/social/accounts/{account_id}/connect-options": {
@@ -28069,7 +28841,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/social/accounts/{account_id}/connect-select": {
@@ -28218,7 +28993,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/media/upload-direct": {
@@ -28279,7 +29057,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "media:write"
+        ]
       }
     },
     "/social/comments/{post_id}": {
@@ -28347,7 +29128,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/contacts/{id}/fields/{slug}": {
@@ -28423,7 +29207,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:write"
+        ]
       },
       "delete": {
         "summary": "Clear one custom field",
@@ -28471,7 +29258,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:write"
+        ]
       }
     },
     "/me/billing": {
@@ -28517,7 +29307,8 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": []
       }
     },
     "/whatsapp/messages": {
@@ -28995,7 +29786,10 @@
           "502": {
             "description": "WhatsApp rejected the message (e.g. outside the 24h window with no template)."
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/whatsapp/templates": {
@@ -29040,7 +29834,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       },
       "post": {
         "summary": "Create a message template",
@@ -29107,7 +29904,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/whatsapp/business-profile": {
@@ -29143,7 +29943,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       },
       "patch": {
         "summary": "Update business profile",
@@ -29198,7 +30001,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/whatsapp/phone-numbers": {
@@ -29234,7 +30040,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/whatsapp/flows": {
@@ -29289,7 +30098,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       },
       "post": {
         "summary": "Create a flow",
@@ -29376,7 +30188,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/whatsapp/flows/{flow_id}": {
@@ -29436,7 +30251,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       },
       "patch": {
         "summary": "Update flow",
@@ -29492,7 +30310,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       },
       "delete": {
         "summary": "Delete flow",
@@ -29527,7 +30348,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/whatsapp/flows/{flow_id}/json": {
@@ -29627,7 +30451,10 @@
           "502": {
             "description": "WhatsApp rejected the upload."
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       },
       "get": {
         "summary": "Get flow JSON asset",
@@ -29669,7 +30496,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/whatsapp/flows/{flow_id}/preview": {
@@ -29744,7 +30574,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/whatsapp/flows/{flow_id}/publish": {
@@ -29790,7 +30623,10 @@
           "502": {
             "description": "The flow failed Meta's publish validation."
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/whatsapp/flows/{flow_id}/deprecate": {
@@ -29833,7 +30669,10 @@
           "200": {
             "description": "Deprecated"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/whatsapp/block-users": {
@@ -29887,7 +30726,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       },
       "post": {
         "summary": "Block users",
@@ -29945,7 +30787,10 @@
           "502": {
             "description": "WhatsApp rejected the request."
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       },
       "delete": {
         "summary": "Unblock users",
@@ -29994,7 +30839,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/whatsapp/sandbox/sessions": {
@@ -30042,7 +30890,10 @@
           "503": {
             "description": "The sandbox is not configured on this platform."
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       },
       "post": {
         "summary": "Start a sandbox activation",
@@ -30109,7 +30960,10 @@
           "503": {
             "description": "The sandbox is not configured on this platform."
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/whatsapp/sandbox/sessions/{session_id}": {
@@ -30137,7 +30991,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/whatsapp/sandbox/sessions/{session_id}/send": {
@@ -30192,7 +31049,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/whatsapp/numbers/{sender_id}/bridge": {
@@ -30250,7 +31110,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       },
       "get": {
         "summary": "Bridge status",
@@ -30309,7 +31172,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/whatsapp/numbers/{sender_id}/bridge/request-code": {
@@ -30357,7 +31223,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/whatsapp/numbers/{sender_id}/bridge/verify": {
@@ -30429,7 +31298,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/logs": {
@@ -30709,7 +31581,10 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "x-scopes": [
+          "logs:read"
+        ]
       }
     },
     "/webhooks/deliveries/{id}/replay": {
@@ -30776,7 +31651,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "webhooks:write"
+        ]
       }
     },
     "/urls/{id}": {
@@ -30856,7 +31734,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "urls:write"
+        ]
       }
     },
     "/social/conversations/{conversation_id}/messages/{message_id}": {
@@ -30945,7 +31826,10 @@
           "500": {
             "$ref": "#/components/responses/ServerError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/conversations/{conversation_id}/messages/{message_id}/reactions": {
@@ -31037,7 +31921,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       },
       "delete": {
         "summary": "Remove a message reaction",
@@ -31108,7 +31995,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/whatsapp/templates/{name}": {
@@ -31187,7 +32077,10 @@
           "502": {
             "$ref": "#/components/responses/BadRequest"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       },
       "patch": {
         "summary": "Update a WhatsApp template",
@@ -31295,7 +32188,10 @@
           "502": {
             "$ref": "#/components/responses/BadRequest"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       },
       "delete": {
         "summary": "Delete a WhatsApp template",
@@ -31352,7 +32248,10 @@
           "502": {
             "$ref": "#/components/responses/BadRequest"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/whatsapp/business-profile/photo": {
@@ -31429,7 +32328,10 @@
           "502": {
             "$ref": "#/components/responses/BadRequest"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/whatsapp/business-profile/display-name": {
@@ -31512,7 +32414,10 @@
           "502": {
             "$ref": "#/components/responses/BadRequest"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       },
       "post": {
         "summary": "Request a WhatsApp display-name change",
@@ -31593,7 +32498,10 @@
           "502": {
             "$ref": "#/components/responses/BadRequest"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/analytics/youtube/channel-insights": {
@@ -31692,7 +32600,10 @@
           "502": {
             "$ref": "#/components/responses/BadRequest"
           }
-        }
+        },
+        "x-scopes": [
+          "analytics:read"
+        ]
       }
     },
     "/analytics/youtube/daily-views": {
@@ -31791,7 +32702,10 @@
           "502": {
             "$ref": "#/components/responses/BadRequest"
           }
-        }
+        },
+        "x-scopes": [
+          "analytics:read"
+        ]
       }
     },
     "/analytics/youtube/video-retention": {
@@ -31899,7 +32813,10 @@
           "502": {
             "$ref": "#/components/responses/BadRequest"
           }
-        }
+        },
+        "x-scopes": [
+          "analytics:read"
+        ]
       }
     },
     "/analytics/youtube/demographics": {
@@ -32007,7 +32924,10 @@
           "502": {
             "$ref": "#/components/responses/BadRequest"
           }
-        }
+        },
+        "x-scopes": [
+          "analytics:read"
+        ]
       }
     },
     "/social/accounts/{account_id}/facebook/page": {
@@ -32071,7 +32991,10 @@
           "502": {
             "$ref": "#/components/responses/BadRequest"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       },
       "patch": {
         "summary": "Update Facebook page details",
@@ -32177,7 +33100,10 @@
           "502": {
             "$ref": "#/components/responses/BadRequest"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/accounts/{account_id}/youtube/playlists/{playlist_id}": {
@@ -32290,7 +33216,10 @@
           "502": {
             "$ref": "#/components/responses/BadRequest"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/accounts/{account_id}/mentions": {
@@ -32394,7 +33323,10 @@
           "502": {
             "$ref": "#/components/responses/BadRequest"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/social/accounts/{account_id}/mentions/{mention_id}/reply": {
@@ -32492,7 +33424,10 @@
           "502": {
             "$ref": "#/components/responses/BadRequest"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/social/accounts/{account_id}/reddit/subreddits/{subreddit}/flairs": {
@@ -32593,7 +33528,10 @@
           "502": {
             "$ref": "#/components/responses/BadRequest"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/whatsapp/template-library": {
@@ -32698,7 +33636,10 @@
           "502": {
             "$ref": "#/components/responses/BadRequest"
           }
-        }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
       }
     },
     "/whatsapp/templates/from-library": {
@@ -32812,7 +33753,10 @@
           "502": {
             "$ref": "#/components/responses/BadRequest"
           }
-        }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
       }
     },
     "/ads/campaigns": {
@@ -33002,7 +33946,10 @@
             }
           }
         },
-        "description": "Metric fields (`spent`, `impressions`, `clicks`, `conversions`, `leads`, `purchase_value`, `ctr`, `cpa`, `roas`) cover the **last 28 days**, on every platform. That is the window the ad networks give us daily figures for, so it is the longest total we can report without inventing the missing days - it is NOT the campaign's lifetime. For any other date range, or a per-campaign breakdown of one, use `GET /ads/analytics`."
+        "description": "Metric fields (`spent`, `impressions`, `clicks`, `conversions`, `leads`, `purchase_value`, `ctr`, `cpa`, `roas`) cover the **last 28 days**, on every platform. That is the window the ad networks give us daily figures for, so it is the longest total we can report without inventing the missing days - it is NOT the campaign's lifetime. For any other date range, or a per-campaign breakdown of one, use `GET /ads/analytics`.",
+        "x-scopes": [
+          "ads:read"
+        ]
       },
       "post": {
         "summary": "Create a campaign",
@@ -33225,7 +34172,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "ads:write"
+        ]
       }
     },
     "/ads/campaigns/{id}": {
@@ -33373,7 +34323,10 @@
             "$ref": "#/components/responses/NotFound"
           }
         },
-        "description": "Metric fields (`spent`, `impressions`, `clicks`, `conversions`, `leads`, `purchase_value`, `ctr`, `cpa`, `roas`) cover the **last 28 days**, on every platform. That is the window the ad networks give us daily figures for, so it is the longest total we can report without inventing the missing days - it is NOT the campaign's lifetime. For any other date range, or a per-campaign breakdown of one, use `GET /ads/analytics`."
+        "description": "Metric fields (`spent`, `impressions`, `clicks`, `conversions`, `leads`, `purchase_value`, `ctr`, `cpa`, `roas`) cover the **last 28 days**, on every platform. That is the window the ad networks give us daily figures for, so it is the longest total we can report without inventing the missing days - it is NOT the campaign's lifetime. For any other date range, or a per-campaign breakdown of one, use `GET /ads/analytics`.",
+        "x-scopes": [
+          "ads:read"
+        ]
       },
       "patch": {
         "summary": "Update a campaign",
@@ -33455,7 +34408,10 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "x-scopes": [
+          "ads:write"
+        ]
       },
       "delete": {
         "summary": "Delete a campaign",
@@ -33514,7 +34470,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "ads:write"
+        ]
       }
     },
     "/ads/campaigns/{id}/pause": {
@@ -33577,7 +34536,10 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "x-scopes": [
+          "ads:write"
+        ]
       }
     },
     "/ads/campaigns/{id}/resume": {
@@ -33640,7 +34602,10 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "x-scopes": [
+          "ads:write"
+        ]
       }
     },
     "/ads/campaigns/{id}/duplicate": {
@@ -33701,7 +34666,10 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "x-scopes": [
+          "ads:write"
+        ]
       }
     },
     "/ads/campaigns/{id}/archive": {
@@ -33764,7 +34732,10 @@
           "429": {
             "$ref": "#/components/responses/RateLimited"
           }
-        }
+        },
+        "x-scopes": [
+          "ads:write"
+        ]
       }
     },
     "/ads/campaigns/bulk-status": {
@@ -33926,7 +34897,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "ads:write"
+        ]
       }
     },
     "/ads/ad-sets": {
@@ -34072,7 +35046,10 @@
             }
           }
         },
-        "description": "Metric fields (`spent`, `impressions`, `clicks`, `conversions`, `leads`, `purchase_value`, `ctr`, `cpa`, `roas`) cover the **last 28 days**, on every platform. That is the window the ad networks give us daily figures for, so it is the longest total we can report without inventing the missing days - it is NOT the campaign's lifetime. For any other date range, or a per-campaign breakdown of one, use `GET /ads/analytics`."
+        "description": "Metric fields (`spent`, `impressions`, `clicks`, `conversions`, `leads`, `purchase_value`, `ctr`, `cpa`, `roas`) cover the **last 28 days**, on every platform. That is the window the ad networks give us daily figures for, so it is the longest total we can report without inventing the missing days - it is NOT the campaign's lifetime. For any other date range, or a per-campaign breakdown of one, use `GET /ads/analytics`.",
+        "x-scopes": [
+          "ads:read"
+        ]
       }
     },
     "/ads/ad-sets/{id}": {
@@ -34175,7 +35152,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "ads:read"
+        ]
       },
       "delete": {
         "summary": "Delete an ad set",
@@ -34233,7 +35213,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "ads:write"
+        ]
       }
     },
     "/ads/ad-sets/{id}/pause": {
@@ -34293,7 +35276,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "ads:write"
+        ]
       }
     },
     "/ads/ad-sets/{id}/resume": {
@@ -34353,7 +35339,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "ads:write"
+        ]
       }
     },
     "/ads/ad-sets/{id}/duplicate": {
@@ -34411,7 +35400,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "ads:write"
+        ]
       }
     },
     "/ads/ad-sets/{id}/archive": {
@@ -34471,7 +35463,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "ads:write"
+        ]
       }
     },
     "/ads/ads": {
@@ -34648,7 +35643,10 @@
             }
           }
         },
-        "description": "Metric fields (`spent`, `impressions`, `clicks`, `conversions`, `leads`, `purchase_value`, `ctr`, `cpa`, `roas`) cover the **last 28 days**, on every platform. That is the window the ad networks give us daily figures for, so it is the longest total we can report without inventing the missing days - it is NOT the campaign's lifetime. For any other date range, or a per-campaign breakdown of one, use `GET /ads/analytics`."
+        "description": "Metric fields (`spent`, `impressions`, `clicks`, `conversions`, `leads`, `purchase_value`, `ctr`, `cpa`, `roas`) cover the **last 28 days**, on every platform. That is the window the ad networks give us daily figures for, so it is the longest total we can report without inventing the missing days - it is NOT the campaign's lifetime. For any other date range, or a per-campaign breakdown of one, use `GET /ads/analytics`.",
+        "x-scopes": [
+          "ads:read"
+        ]
       }
     },
     "/ads/ads/{id}": {
@@ -34769,7 +35767,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "ads:read"
+        ]
       },
       "delete": {
         "summary": "Delete an ad",
@@ -34827,7 +35828,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "ads:write"
+        ]
       }
     },
     "/ads/ads/{id}/pause": {
@@ -34887,7 +35891,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "ads:write"
+        ]
       }
     },
     "/ads/ads/{id}/resume": {
@@ -34947,7 +35954,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "ads:write"
+        ]
       }
     },
     "/ads/ads/{id}/duplicate": {
@@ -35005,7 +36015,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "ads:write"
+        ]
       }
     },
     "/ads/ads/{id}/archive": {
@@ -35065,7 +36078,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "ads:write"
+        ]
       }
     },
     "/ads/audiences": {
@@ -35188,7 +36204,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "ads:read"
+        ]
       },
       "post": {
         "summary": "Create an audience",
@@ -35311,7 +36330,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "ads:write"
+        ]
       }
     },
     "/ads/pixels": {
@@ -35408,7 +36430,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "ads:read"
+        ]
       }
     },
     "/ads/lead-forms": {
@@ -35501,7 +36526,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "ads:read"
+        ]
       },
       "post": {
         "summary": "Create a lead form",
@@ -35601,7 +36629,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "ads:write"
+        ]
       }
     },
     "/ads/creatives": {
@@ -35737,7 +36768,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "ads:read"
+        ]
       },
       "post": {
         "summary": "Create a creative",
@@ -35838,7 +36872,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "ads:write"
+        ]
       }
     },
     "/ads/creatives/{id}": {
@@ -35926,7 +36963,10 @@
           "422": {
             "$ref": "#/components/responses/ValidationError"
           }
-        }
+        },
+        "x-scopes": [
+          "ads:write"
+        ]
       },
       "delete": {
         "summary": "Delete a creative",
@@ -35981,7 +37021,10 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "x-scopes": [
+          "ads:write"
+        ]
       }
     },
     "/ads/accounts": {
@@ -36067,7 +37110,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "ads:read"
+        ]
       }
     },
     "/ads/accounts/diagnostics": {
@@ -36164,7 +37210,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "ads:read"
+        ]
       }
     },
     "/ads/audit-log": {
@@ -36296,7 +37345,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "ads:read"
+        ]
       }
     },
     "/ads/estimate": {
@@ -36437,7 +37489,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "ads:read"
+        ]
       }
     },
     "/ads/sync": {
@@ -36479,7 +37534,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "ads:write"
+        ]
       }
     },
     "/ads/analytics": {
@@ -36743,7 +37801,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "ads:read"
+        ]
       }
     },
     "/ads/targeting-search": {
@@ -36820,7 +37881,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "ads:read"
+        ]
       }
     },
     "/ads/pages/{page_id}/posts": {
@@ -36906,7 +37970,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "ads:read"
+        ]
       }
     },
     "/companies": {
@@ -36977,7 +38044,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "companies:read"
+        ]
       },
       "post": {
         "summary": "Create a company",
@@ -37063,7 +38133,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "companies:write"
+        ]
       }
     },
     "/companies/{id}": {
@@ -37110,7 +38183,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "companies:read"
+        ]
       },
       "patch": {
         "summary": "Update a company",
@@ -37204,7 +38280,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "companies:write"
+        ]
       },
       "delete": {
         "summary": "Delete a company",
@@ -37235,7 +38314,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "companies:write"
+        ]
       }
     },
     "/companies/{id}/contacts": {
@@ -37286,7 +38368,11 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "companies:write",
+          "contacts:write"
+        ]
       },
       "delete": {
         "summary": "Unlink a contact from a company",
@@ -37335,7 +38421,11 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "companies:write",
+          "contacts:write"
+        ]
       }
     },
     "/tasks": {
@@ -37460,7 +38550,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "tasks:read"
+        ]
       },
       "post": {
         "summary": "Create a task",
@@ -37588,7 +38681,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "tasks:write"
+        ]
       }
     },
     "/tasks/{id}": {
@@ -37634,7 +38730,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "tasks:read"
+        ]
       },
       "patch": {
         "summary": "Update a task",
@@ -37770,7 +38869,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "tasks:write"
+        ]
       },
       "delete": {
         "summary": "Delete a task",
@@ -37800,7 +38902,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "tasks:write"
+        ]
       }
     },
     "/tasks/{id}/time": {
@@ -37853,7 +38958,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "tasks:write"
+        ]
       }
     },
     "/tags": {
@@ -37895,7 +39003,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:read"
+        ]
       },
       "post": {
         "summary": "Create a tag",
@@ -37947,7 +39058,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:write"
+        ]
       }
     },
     "/tags/rename": {
@@ -38022,7 +39136,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:write"
+        ]
       }
     },
     "/tags/merge": {
@@ -38069,7 +39186,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:write"
+        ]
       }
     },
     "/tags/delete": {
@@ -38137,7 +39257,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "contacts:write"
+        ]
       }
     },
     "/calendar/event-types": {
@@ -38204,7 +39327,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "calendar:read"
+        ]
       }
     },
     "/calendar/slots": {
@@ -38292,7 +39418,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "calendar:read"
+        ]
       }
     },
     "/calendar/bookings": {
@@ -38385,7 +39514,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "calendar:write"
+        ]
       }
     },
     "/calendar/bookings/{id}/cancel": {
@@ -38462,7 +39594,10 @@
               }
             }
           }
-        }
+        },
+        "x-scopes": [
+          "calendar:write"
+        ]
       }
     }
   },
