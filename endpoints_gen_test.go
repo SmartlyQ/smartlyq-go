@@ -2181,6 +2181,34 @@ func TestSocialUpdateFacebookPage(t *testing.T) {
 	})
 }
 
+func TestSocialGetFacebookPageSettings(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/facebook/page/settings", func(c *Client) error {
+		_, err := c.Social.GetFacebookPageSettings(context.Background(), "test-accountId", nil)
+		return err
+	})
+}
+
+func TestSocialUpdateFacebookPageSettings(t *testing.T) {
+	assertEndpoint(t, "PATCH", "/social/accounts/test-accountId/facebook/page/settings", func(c *Client) error {
+		_, err := c.Social.UpdateFacebookPageSettings(context.Background(), "test-accountId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialSetFacebookPagePicture(t *testing.T) {
+	assertEndpoint(t, "POST", "/social/accounts/test-accountId/facebook/page/picture", func(c *Client) error {
+		_, err := c.Social.SetFacebookPagePicture(context.Background(), "test-accountId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestSocialSetFacebookPageCover(t *testing.T) {
+	assertEndpoint(t, "POST", "/social/accounts/test-accountId/facebook/page/cover", func(c *Client) error {
+		_, err := c.Social.SetFacebookPageCover(context.Background(), "test-accountId", map[string]any{}, nil)
+		return err
+	})
+}
+
 func TestSocialUpdateYoutubePlaylist(t *testing.T) {
 	assertEndpoint(t, "PATCH", "/social/accounts/test-accountId/youtube/playlists/test-playlistId", func(c *Client) error {
 		_, err := c.Social.UpdateYoutubePlaylist(context.Background(), "test-accountId", "test-playlistId", map[string]any{}, nil)

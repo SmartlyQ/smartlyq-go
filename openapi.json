@@ -33036,7 +33036,101 @@
                       "type": "object",
                       "properties": {
                         "page": {
-                          "type": "object"
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "description": "Facebook Page id."
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "username": {
+                              "type": "string"
+                            },
+                            "about": {
+                              "type": "string",
+                              "description": "Short description shown under the page name."
+                            },
+                            "description": {
+                              "type": "string",
+                              "description": "Long description."
+                            },
+                            "category": {
+                              "type": "string"
+                            },
+                            "phone": {
+                              "type": "string"
+                            },
+                            "website": {
+                              "type": "string"
+                            },
+                            "emails": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "single_line_address": {
+                              "type": "string",
+                              "description": "The page's address on one line."
+                            },
+                            "link": {
+                              "type": "string",
+                              "format": "uri",
+                              "description": "The page's URL on Facebook."
+                            },
+                            "fan_count": {
+                              "type": "integer",
+                              "description": "Number of people who like the page."
+                            },
+                            "followers_count": {
+                              "type": "integer"
+                            },
+                            "hours": {
+                              "type": "object",
+                              "description": "Opening hours keyed the way Facebook reports them, e.g. mon_1_open / mon_1_close."
+                            },
+                            "is_published": {
+                              "type": "boolean"
+                            },
+                            "verification_status": {
+                              "type": "string"
+                            },
+                            "picture": {
+                              "type": "object",
+                              "description": "The page's profile picture as a small thumbnail.",
+                              "properties": {
+                                "data": {
+                                  "type": "object",
+                                  "properties": {
+                                    "url": {
+                                      "type": "string",
+                                      "format": "uri"
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "cover": {
+                              "type": "object",
+                              "description": "The page's cover photo. Absent when the page has no cover photo.",
+                              "properties": {
+                                "source": {
+                                  "type": "string",
+                                  "format": "uri",
+                                  "description": "Image URL."
+                                },
+                                "offset_y": {
+                                  "type": "integer",
+                                  "description": "Vertical offset of the image within the cover frame, 0-100."
+                                },
+                                "id": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
                         }
                       }
                     }
@@ -33149,6 +33243,394 @@
                         }
                       }
                     }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
+      }
+    },
+    "/social/accounts/{account_id}/facebook/page/settings": {
+      "get": {
+        "summary": "Get Facebook page settings",
+        "operationId": "getFacebookPageSettings",
+        "tags": [
+          "Social"
+        ],
+        "description": "Read whether people can message the Page. `users_can_message` is `true` when the Page's Message button is on, `false` when messaging is turned off, and `null` when Facebook did not report the setting.\n\nWith a test key (`sqk_test_...`) the request is validated and a success response is returned without contacting Facebook.\n\nRequires scope `social:read`. If the account was connected before SmartlyQ requested the permission this call needs, it answers `403 CONNECTION_SCOPE_MISSING` with `reconnect_required: true` - reconnect the account to fix it.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Connected social account id."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Page settings",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "settings": {
+                          "type": "object",
+                          "properties": {
+                            "users_can_message": {
+                              "type": [
+                                "boolean",
+                                "null"
+                              ],
+                              "description": "Whether people can message the Page. `null` when Facebook did not report the setting."
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "settings": {
+                      "users_can_message": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
+      },
+      "patch": {
+        "summary": "Update Facebook page settings",
+        "operationId": "updateFacebookPageSettings",
+        "tags": [
+          "Social"
+        ],
+        "description": "Turn messaging on the Page on or off.\n\n`false` hides the Page's Message button and also blocks replies in chats that already exist. `true` restores both.\n\nWith a test key (`sqk_test_...`) the request is validated and a success response is returned without contacting Facebook.\n\nIf the account was connected before SmartlyQ requested the permission this call needs, it answers `403 CONNECTION_SCOPE_MISSING` with `reconnect_required: true` - reconnect the account to fix it.\n\nRequires scope `social:write`.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Connected social account id."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "users_can_message"
+                ],
+                "properties": {
+                  "users_can_message": {
+                    "type": "boolean",
+                    "description": "`false` hides the Message button and blocks replies in existing chats; `true` restores both."
+                  }
+                }
+              },
+              "example": {
+                "users_can_message": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Page settings updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "updated": {
+                          "type": "boolean"
+                        },
+                        "settings": {
+                          "type": "object",
+                          "properties": {
+                            "users_can_message": {
+                              "type": "boolean"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "updated": true,
+                    "settings": {
+                      "users_can_message": false
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
+      }
+    },
+    "/social/accounts/{account_id}/facebook/page/picture": {
+      "post": {
+        "summary": "Set Facebook page profile picture",
+        "operationId": "setFacebookPagePicture",
+        "tags": [
+          "Social"
+        ],
+        "description": "Replace the Page's profile picture with the image at `url`. Facebook downloads the image from that URL itself. No feed story is created and followers are not notified.\n\nThe image must be JPG, PNG, GIF, BMP or TIFF and 10 MB or smaller. Facebook shows the picture as a circle, so a square image of 196 x 196 px or larger is recommended (not enforced). An image that fails a check is refused with `422 VALIDATION_ERROR`, with `details.field` set to `url` and `details.reason` one of `invalid_url`, `unreachable`, `too_large` or `unsupported_type`.\n\nWith a test key (`sqk_test_...`) the request is validated, including the image URL, and a success response is returned without contacting Facebook.\n\nIf the account was connected before SmartlyQ requested the permission this call needs, it answers `403 CONNECTION_SCOPE_MISSING` with `reconnect_required: true` - reconnect the account to fix it.\n\nRequires scope `social:write`.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Connected social account id."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "url"
+                ],
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "URL of the image. JPG, PNG, GIF, BMP or TIFF, 10 MB max."
+                  }
+                }
+              },
+              "example": {
+                "url": "https://example.com/images/logo-square.png"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profile picture updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "updated": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "updated": true
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "502": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        },
+        "x-scopes": [
+          "social:write"
+        ]
+      }
+    },
+    "/social/accounts/{account_id}/facebook/page/cover": {
+      "post": {
+        "summary": "Set Facebook page cover photo",
+        "operationId": "setFacebookPageCover",
+        "tags": [
+          "Social"
+        ],
+        "description": "Replace the Page's cover photo with the image at `url`. Facebook downloads the image from that URL itself. No feed story is created and followers are not notified. A cover photo can be replaced through the API but not removed - removing it has to be done on Facebook.\n\nThe image must be JPG, PNG, GIF, BMP or TIFF, 10 MB or smaller, and at least 400 x 150 px. 851 x 315 px is recommended (not enforced). An image that fails a check is refused with `422 VALIDATION_ERROR`, with `details.field` set to `url` and `details.reason` one of `invalid_url`, `unreachable`, `too_large`, `unsupported_type` or `too_small`.\n\nNeeds the business permission on the connection. Connections without it get `403 CONNECTION_SCOPE_MISSING` with `reconnect_required: true` - reconnect the account to fix it.\n\nWith a test key (`sqk_test_...`) the request is validated, including the image URL, and a success response is returned without contacting Facebook.\n\nRequires scope `social:write`.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Connected social account id."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "url"
+                ],
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "URL of the image. JPG, PNG, GIF, BMP or TIFF, 10 MB max, at least 400 x 150 px."
+                  },
+                  "offset_y": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 100,
+                    "default": 50,
+                    "description": "Vertical offset of the image within the cover frame, 0-100."
+                  }
+                }
+              },
+              "example": {
+                "url": "https://example.com/images/cover-851x315.jpg",
+                "offset_y": 50
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cover photo updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "updated": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "updated": true
                   }
                 }
               }

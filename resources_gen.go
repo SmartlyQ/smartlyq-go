@@ -2318,6 +2318,34 @@ func (r *SocialResource) UpdateFacebookPage(ctx context.Context, accountId strin
 	return r.client.do(ctx, "PATCH", "/social/accounts/"+url.PathEscape(accountId)+"/facebook/page", nil, body, opts)
 }
 
+// GetFacebookPageSettings - Get Facebook page settings.
+//
+// GET /social/accounts/{account_id}/facebook/page/settings
+func (r *SocialResource) GetFacebookPageSettings(ctx context.Context, accountId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/facebook/page/settings", nil, nil, opts)
+}
+
+// UpdateFacebookPageSettings - Update Facebook page settings.
+//
+// PATCH /social/accounts/{account_id}/facebook/page/settings
+func (r *SocialResource) UpdateFacebookPageSettings(ctx context.Context, accountId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "PATCH", "/social/accounts/"+url.PathEscape(accountId)+"/facebook/page/settings", nil, body, opts)
+}
+
+// SetFacebookPagePicture - Set Facebook page profile picture.
+//
+// POST /social/accounts/{account_id}/facebook/page/picture
+func (r *SocialResource) SetFacebookPagePicture(ctx context.Context, accountId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/social/accounts/"+url.PathEscape(accountId)+"/facebook/page/picture", nil, body, opts)
+}
+
+// SetFacebookPageCover - Set Facebook page cover photo.
+//
+// POST /social/accounts/{account_id}/facebook/page/cover
+func (r *SocialResource) SetFacebookPageCover(ctx context.Context, accountId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/social/accounts/"+url.PathEscape(accountId)+"/facebook/page/cover", nil, body, opts)
+}
+
 // UpdateYoutubePlaylist - Update a YouTube playlist.
 //
 // PATCH /social/accounts/{account_id}/youtube/playlists/{playlist_id}
