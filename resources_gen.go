@@ -2346,6 +2346,13 @@ func (r *SocialResource) SetFacebookPageCover(ctx context.Context, accountId str
 	return r.client.do(ctx, "POST", "/social/accounts/"+url.PathEscape(accountId)+"/facebook/page/cover", nil, body, opts)
 }
 
+// GetFacebookReelLimit - Get Facebook Reel limit.
+//
+// GET /social/accounts/{account_id}/facebook/reel-limit
+func (r *SocialResource) GetFacebookReelLimit(ctx context.Context, accountId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/facebook/reel-limit", nil, nil, opts)
+}
+
 // UpdateYoutubePlaylist - Update a YouTube playlist.
 //
 // PATCH /social/accounts/{account_id}/youtube/playlists/{playlist_id}

@@ -2209,6 +2209,13 @@ func TestSocialSetFacebookPageCover(t *testing.T) {
 	})
 }
 
+func TestSocialGetFacebookReelLimit(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/facebook/reel-limit", func(c *Client) error {
+		_, err := c.Social.GetFacebookReelLimit(context.Background(), "test-accountId", nil)
+		return err
+	})
+}
+
 func TestSocialUpdateYoutubePlaylist(t *testing.T) {
 	assertEndpoint(t, "PATCH", "/social/accounts/test-accountId/youtube/playlists/test-playlistId", func(c *Client) error {
 		_, err := c.Social.UpdateYoutubePlaylist(context.Background(), "test-accountId", "test-playlistId", map[string]any{}, nil)

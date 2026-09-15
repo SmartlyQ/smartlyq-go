@@ -608,6 +608,7 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Social.UpdateFacebookPageSettings(ctx, accountId, body)` | `PATCH /social/accounts/{account_id}/facebook/page/settings` | Update Facebook page settings |
 | `client.Social.SetFacebookPagePicture(ctx, accountId, body)` | `POST /social/accounts/{account_id}/facebook/page/picture` | Set Facebook page profile picture |
 | `client.Social.SetFacebookPageCover(ctx, accountId, body)` | `POST /social/accounts/{account_id}/facebook/page/cover` | Set Facebook page cover photo |
+| `client.Social.GetFacebookReelLimit(ctx, accountId)` | `GET /social/accounts/{account_id}/facebook/reel-limit` | Get Facebook Reel limit |
 | `client.Social.UpdateYoutubePlaylist(ctx, accountId, playlistId, body)` | `PATCH /social/accounts/{account_id}/youtube/playlists/{playlist_id}` | Update a YouTube playlist |
 | `client.Social.ListMentions(ctx, accountId, query)` | `GET /social/accounts/{account_id}/mentions` | List mentions |
 | `client.Social.ReplyToMention(ctx, accountId, mentionId, body)` | `POST /social/accounts/{account_id}/mentions/{mention_id}/reply` | Reply to a mention |

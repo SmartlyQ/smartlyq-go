@@ -1189,7 +1189,7 @@
         "x-scopes": [
           "social:write"
         ],
-        "description": "Requires scope `social:write`."
+        "description": "Facebook allows 30 API-published Reels per Page in a moving 24-hour window. A post whose `platform_options.facebook.type` is `reel` is refused when a selected Page is already at that limit (Reels published in the last 24 hours plus Reels already scheduled inside that window): `422 PLATFORM_DAILY_LIMIT_REACHED`, with `details` carrying `account_id`, `limit`, `used` and `next_available_at`. Nothing is created. Check first with `GET /social/accounts/{account_id}/facebook/reel-limit`.\n\nRequires scope `social:write`."
       },
       "get": {
         "summary": "List social posts",
@@ -1413,7 +1413,7 @@
             "description": "Client idempotency key (X-Request-Id accepted as an alias). Send a fresh key per logical post and REUSE it when retrying that exact call after a timeout / 5xx / connection reset: the retry returns the original post with HTTP 200 and `idempotent_replay: true` instead of creating a duplicate. A key permanently identifies its post in the workspace (deleting the post frees the key). See the Idempotency guide."
           }
         ],
-        "description": "Pass queue_id (instead of scheduled_time) to drop the post into a posting queue's next open slot. Supports evergreen recycling via the optional `recycle` object: each published occurrence automatically schedules the next one until the chain hits its bound. Requires scope `social:write`.",
+        "description": "Pass queue_id (instead of scheduled_time) to drop the post into a posting queue's next open slot. Supports evergreen recycling via the optional `recycle` object: each published occurrence automatically schedules the next one until the chain hits its bound.\n\nFacebook allows 30 API-published Reels per Page in a moving 24-hour window. A post whose `platform_options.facebook.type` is `reel` is refused when a selected Page would be at that limit at the post's publish time (Reels published plus Reels already scheduled in the 24 hours before it): `422 PLATFORM_DAILY_LIMIT_REACHED`, with `details` carrying `account_id`, `limit`, `used` and `next_available_at`. Nothing is created. If a scheduled Reel still hits the limit when it publishes, that account's result fails with `PLATFORM_DAILY_LIMIT_REACHED` and is not retried automatically.\n\nRequires scope `social:write`.",
         "x-scopes": [
           "social:write"
         ]
@@ -33654,6 +33654,98 @@
         },
         "x-scopes": [
           "social:write"
+        ]
+      }
+    },
+    "/social/accounts/{account_id}/facebook/reel-limit": {
+      "get": {
+        "summary": "Get Facebook Reel limit",
+        "operationId": "getFacebookReelLimit",
+        "tags": [
+          "Social"
+        ],
+        "description": "Facebook allows 30 API-published Reels per Page in a moving 24-hour window. This returns how much of that allowance the Page has left.\n\n`used` counts Reels published for this Page through the API or the app in the last 24 hours, plus Reels already scheduled for it inside that window. Reels posted to the Page outside this platform are not counted, so Facebook can still refuse a Reel when `remaining` is above 0. `next_available_at` is set only when the Page is at the limit, and is when one more Reel fits.\n\nFacebook accounts only - any other account answers `422 VALIDATION_ERROR`.\n\nRequires scope `social:read`.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Connected social account id."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reel limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "account_id": {
+                          "type": "integer",
+                          "description": "Connected social account id."
+                        },
+                        "limit": {
+                          "type": "integer",
+                          "description": "Reels allowed per Page in a moving 24-hour window. Always 30."
+                        },
+                        "used": {
+                          "type": "integer",
+                          "description": "Reels published through the API or the app in the last 24 hours, plus Reels already scheduled inside that window. Reels posted outside this platform are not counted."
+                        },
+                        "remaining": {
+                          "type": "integer",
+                          "description": "Reels that can still be published or scheduled in the window."
+                        },
+                        "next_available_at": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "format": "date-time",
+                          "description": "ISO-8601 UTC time when one more Reel fits. `null` unless the Page is at the limit."
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "account_id": 532,
+                    "limit": 30,
+                    "used": 30,
+                    "remaining": 0,
+                    "next_available_at": "2026-09-16T08:42:00Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        },
+        "x-scopes": [
+          "social:read"
         ]
       }
     },
