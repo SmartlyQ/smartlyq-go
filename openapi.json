@@ -151,7 +151,7 @@
     "/articles/generate": {
       "post": {
         "summary": "Generate article",
-        "description": "Start article generation. Returns 202 with job_id; poll GET /jobs/{job_id} for result. Either `topic` or `keywords` must be provided.",
+        "description": "Start article generation. Returns 202 with job_id; poll GET /jobs/{job_id} for result. Either `topic` or `keywords` must be provided. Requires scope `articles:write`.",
         "operationId": "generateArticle",
         "tags": [
           "Articles"
@@ -297,7 +297,8 @@
         },
         "x-scopes": [
           "articles:read"
-        ]
+        ],
+        "description": "Requires scope `articles:read`."
       }
     },
     "/articles/{article_id}": {
@@ -352,7 +353,8 @@
         },
         "x-scopes": [
           "articles:read"
-        ]
+        ],
+        "description": "Requires scope `articles:read`."
       },
       "delete": {
         "summary": "Delete article",
@@ -384,13 +386,14 @@
         },
         "x-scopes": [
           "articles:write"
-        ]
+        ],
+        "description": "Requires scope `articles:write`."
       }
     },
     "/images/generate": {
       "post": {
         "summary": "Generate image",
-        "description": "Returns 202 with job_id for async generation. Either `prompt` or `description` must be provided.",
+        "description": "Returns 202 with job_id for async generation. Either `prompt` or `description` must be provided. Requires scope `images:write`.",
         "operationId": "generateImage",
         "tags": [
           "Images"
@@ -532,7 +535,8 @@
         },
         "x-scopes": [
           "images:read"
-        ]
+        ],
+        "description": "Requires scope `images:read`."
       }
     },
     "/images/{image_id}": {
@@ -587,7 +591,8 @@
         },
         "x-scopes": [
           "images:read"
-        ]
+        ],
+        "description": "Requires scope `images:read`."
       },
       "delete": {
         "summary": "Delete image",
@@ -619,13 +624,14 @@
         },
         "x-scopes": [
           "images:write"
-        ]
+        ],
+        "description": "Requires scope `images:write`."
       }
     },
     "/videos/models": {
       "get": {
         "summary": "List available video models",
-        "description": "Returns every model currently available for video generation, including valid parameter values for each model and generation type.\n\nCall this endpoint before submitting a generation request to discover what options a specific model supports. Empty arrays (`[]`) mean the parameter is not applicable. Boolean `supports_*` flags indicate optional feature availability.",
+        "description": "Returns every model currently available for video generation, including valid parameter values for each model and generation type.\n\nCall this endpoint before submitting a generation request to discover what options a specific model supports. Empty arrays (`[]`) mean the parameter is not applicable. Boolean `supports_*` flags indicate optional feature availability. Requires scope `videos:read`.",
         "operationId": "listVideoModels",
         "tags": [
           "Videos"
@@ -729,7 +735,7 @@
     "/videos/generate": {
       "post": {
         "summary": "Generate video",
-        "description": "Submits a video generation request. Returns `202 Accepted` immediately with a `job_uid`; poll `GET /v1/jobs/{job_uid}` for status and the final video URL.\n\n**Before submitting:** call `GET /v1/videos/models` to retrieve the valid parameter values (`duration`, `resolution`, `mode`, `aspect_ratio`, etc.) for your chosen model. Passing an unsupported value returns a `422` validation error.\n\n**Billing:** the cost is deducted from your API wallet when the job is accepted. If video generation fails on the provider side the charge is automatically refunded.",
+        "description": "Submits a video generation request. Returns `202 Accepted` immediately with a `job_uid`; poll `GET /v1/jobs/{job_uid}` for status and the final video URL.\n\n**Before submitting:** call `GET /v1/videos/models` to retrieve the valid parameter values (`duration`, `resolution`, `mode`, `aspect_ratio`, etc.) for your chosen model. Passing an unsupported value returns a `422` validation error.\n\n**Billing:** the cost is deducted from your API wallet when the job is accepted. If video generation fails on the provider side the charge is automatically refunded. Requires scope `videos:write`.",
         "operationId": "generateVideo",
         "tags": [
           "Videos"
@@ -901,7 +907,8 @@
         },
         "x-scopes": [
           "videos:read"
-        ]
+        ],
+        "description": "Requires scope `videos:read`."
       }
     },
     "/videos/{video_id}": {
@@ -957,7 +964,8 @@
         },
         "x-scopes": [
           "videos:read"
-        ]
+        ],
+        "description": "Requires scope `videos:read`."
       },
       "delete": {
         "summary": "Delete video",
@@ -989,13 +997,14 @@
         },
         "x-scopes": [
           "videos:write"
-        ]
+        ],
+        "description": "Requires scope `videos:write`."
       }
     },
     "/social/accounts": {
       "get": {
         "summary": "List social accounts",
-        "description": "Returns all connected social media accounts for the authenticated user.",
+        "description": "Returns all connected social media accounts for the authenticated user. Requires scope `social:read`.",
         "operationId": "listSocialAccounts",
         "tags": [
           "Social"
@@ -1179,7 +1188,8 @@
         ],
         "x-scopes": [
           "social:write"
-        ]
+        ],
+        "description": "Requires scope `social:write`."
       },
       "get": {
         "summary": "List social posts",
@@ -1265,7 +1275,7 @@
             "$ref": "#/components/responses/ServerError"
           }
         },
-        "description": " Posts imported by external sync carry status 'external' - filter with ?status=external.",
+        "description": "Posts imported by external sync carry status 'external' - filter with ?status=external. Requires scope `social:read`.",
         "x-scopes": [
           "social:read"
         ]
@@ -1403,7 +1413,7 @@
             "description": "Client idempotency key (X-Request-Id accepted as an alias). Send a fresh key per logical post and REUSE it when retrying that exact call after a timeout / 5xx / connection reset: the retry returns the original post with HTTP 200 and `idempotent_replay: true` instead of creating a duplicate. A key permanently identifies its post in the workspace (deleting the post frees the key). See the Idempotency guide."
           }
         ],
-        "description": " Pass queue_id (instead of scheduled_time) to drop the post into a posting queue's next open slot. Supports evergreen recycling via the optional `recycle` object: each published occurrence automatically schedules the next one until the chain hits its bound.",
+        "description": "Pass queue_id (instead of scheduled_time) to drop the post into a posting queue's next open slot. Supports evergreen recycling via the optional `recycle` object: each published occurrence automatically schedules the next one until the chain hits its bound. Requires scope `social:write`.",
         "x-scopes": [
           "social:write"
         ]
@@ -1465,7 +1475,8 @@
         },
         "x-scopes": [
           "social:read"
-        ]
+        ],
+        "description": "Requires scope `social:read`."
       },
       "patch": {
         "summary": "Update social post",
@@ -1537,7 +1548,8 @@
         },
         "x-scopes": [
           "social:write"
-        ]
+        ],
+        "description": "Requires scope `social:write`."
       },
       "delete": {
         "summary": "Delete social post",
@@ -1569,7 +1581,8 @@
         },
         "x-scopes": [
           "social:write"
-        ]
+        ],
+        "description": "Requires scope `social:write`."
       }
     },
     "/content/rewrite": {
@@ -1639,13 +1652,14 @@
         },
         "x-scopes": [
           "articles:write"
-        ]
+        ],
+        "description": "Requires scope `articles:write`."
       }
     },
     "/seo/keyword-research": {
       "post": {
         "summary": "Keyword research",
-        "description": "Keyword suggestions for a seed keyword with real monthly search volume, CPC and competition.",
+        "description": "Keyword suggestions for a seed keyword with real monthly search volume, CPC and competition. Requires scope `seo:read`.",
         "operationId": "seoKeywordResearch",
         "tags": [
           "SEO"
@@ -1795,7 +1809,7 @@
     "/seo/serp": {
       "post": {
         "summary": "Live SERP lookup",
-        "description": "Live Google organic SERP for a keyword: ranked results, SERP features and People Also Ask.",
+        "description": "Live Google organic SERP for a keyword: ranked results, SERP features and People Also Ask. Requires scope `seo:read`.",
         "operationId": "seoSerp",
         "tags": [
           "SEO"
@@ -1968,7 +1982,7 @@
     "/seo/keyword-difficulty": {
       "post": {
         "summary": "Keyword difficulty",
-        "description": "Bulk keyword difficulty scores (0-100) for a list of keywords.",
+        "description": "Bulk keyword difficulty scores (0-100) for a list of keywords. Requires scope `seo:read`.",
         "operationId": "seoKeywordDifficulty",
         "tags": [
           "SEO"
@@ -2080,7 +2094,7 @@
     "/seo/ranked-keywords": {
       "post": {
         "summary": "Ranked keywords (rank tracking)",
-        "description": "Every keyword a domain ranks for, with position, search volume and estimated traffic.",
+        "description": "Every keyword a domain ranks for, with position, search volume and estimated traffic. Requires scope `seo:read`.",
         "operationId": "seoRankedKeywords",
         "tags": [
           "SEO"
@@ -2228,7 +2242,7 @@
     "/seo/domain-overview": {
       "post": {
         "summary": "Domain rank overview",
-        "description": "Organic rank overview for a domain: estimated keyword count, traffic value and position buckets.",
+        "description": "Organic rank overview for a domain: estimated keyword count, traffic value and position buckets. Requires scope `seo:read`.",
         "operationId": "seoDomainOverview",
         "tags": [
           "SEO"
@@ -2372,7 +2386,7 @@
     "/seo/competitors": {
       "post": {
         "summary": "Organic competitors",
-        "description": "Domains overlapping a target on shared keywords, with common-keyword counts and traffic.",
+        "description": "Domains overlapping a target on shared keywords, with common-keyword counts and traffic. Requires scope `seo:read`.",
         "operationId": "seoCompetitors",
         "tags": [
           "SEO"
@@ -2508,7 +2522,7 @@
     "/seo/backlinks-summary": {
       "post": {
         "summary": "Backlink profile summary",
-        "description": "Backlink profile summary for a domain: authority rank, totals, referring domains, broken links and link types.",
+        "description": "Backlink profile summary for a domain: authority rank, totals, referring domains, broken links and link types. Requires scope `seo:read`.",
         "operationId": "seoBacklinksSummary",
         "tags": [
           "SEO"
@@ -2640,7 +2654,7 @@
     "/seo/audit": {
       "post": {
         "summary": "On-page SEO audit",
-        "description": "Instant on-page SEO audit for a single URL: on-page score and flagged checks.",
+        "description": "Instant on-page SEO audit for a single URL: on-page score and flagged checks. Requires scope `seo:read`.",
         "operationId": "seoAudit",
         "tags": [
           "SEO"
@@ -2770,7 +2784,7 @@
     "/seo/backlink-prospects": {
       "post": {
         "summary": "Backlink prospects (link gap)",
-        "description": "Find link-building prospects: referring domains that link to competitors of the target but not to the target itself.",
+        "description": "Find link-building prospects: referring domains that link to competitors of the target but not to the target itself. Requires scope `seo:read`.",
         "operationId": "seoBacklinkProspects",
         "tags": [
           "SEO"
@@ -2920,7 +2934,7 @@
     "/seo/referring-domains": {
       "post": {
         "summary": "Referring domains",
-        "description": "List the top referring domains for a domain by authority, with backlink counts, first-seen date and dofollow counts.",
+        "description": "List the top referring domains for a domain by authority, with backlink counts, first-seen date and dofollow counts. Requires scope `seo:read`.",
         "operationId": "seoReferringDomains",
         "tags": [
           "SEO"
@@ -3050,7 +3064,7 @@
     "/seo/backlink-anchors": {
       "post": {
         "summary": "Backlink anchors",
-        "description": "List the top backlink anchor texts for a domain, with backlink and referring-domain counts.",
+        "description": "List the top backlink anchor texts for a domain, with backlink and referring-domain counts. Requires scope `seo:read`.",
         "operationId": "seoBacklinkAnchors",
         "tags": [
           "SEO"
@@ -3172,7 +3186,7 @@
     "/seo/spam-score": {
       "post": {
         "summary": "Backlink spam score",
-        "description": "Get the backlink spam/toxicity score (0-100) for one or more domains.",
+        "description": "Get the backlink spam/toxicity score (0-100) for one or more domains. Requires scope `seo:read`.",
         "operationId": "seoSpamScore",
         "tags": [
           "SEO"
@@ -3274,7 +3288,7 @@
     "/seo/rank-history": {
       "post": {
         "summary": "Historical rank overview",
-        "description": "Historical organic rank/traffic trend by month. Premium lookup. Async: returns 202 + job_uid - poll GET /jobs/{job_uid} for the result.\n\nHistorical organic keyword count and traffic (ETV) trend by month. Premium lookup (priced ~10x a normal SEO call).",
+        "description": "Historical organic rank/traffic trend by month. Premium lookup. Async: returns 202 + job_uid - poll GET /jobs/{job_uid} for the result.\n\nHistorical organic keyword count and traffic (ETV) trend by month. Premium lookup (priced ~10x a normal SEO call). Requires scope `seo:read`.",
         "operationId": "seoRankHistory",
         "tags": [
           "SEO"
@@ -3361,7 +3375,7 @@
     "/seo/site-audit": {
       "post": {
         "summary": "Deep site audit",
-        "description": "Deep crawl-based technical site audit. Async: returns 202 + job_uid - poll GET /jobs/{job_uid}; result_data carries the audit (typically 30-90s).\n\nCrawl-based technical SEO audit: overall on-page score, crawl issues, and the worst-scoring pages with their flagged checks. Slower (~10-15s).",
+        "description": "Deep crawl-based technical site audit. Async: returns 202 + job_uid - poll GET /jobs/{job_uid}; result_data carries the audit (typically 30-90s).\n\nCrawl-based technical SEO audit: overall on-page score, crawl issues, and the worst-scoring pages with their flagged checks. Slower (~10-15s). Requires scope `seo:read`.",
         "operationId": "seoSiteAudit",
         "tags": [
           "SEO"
@@ -3446,7 +3460,7 @@
     "/seo/brand-lookup": {
       "post": {
         "summary": "AI Visibility: brand lookup",
-        "description": "AI Visibility brand/domain citation lookup. Async: returns 202 + job_uid - poll GET /jobs/{job_uid} for the result (may take ~1 minute).\n\nHow often ChatGPT and Google AI Overview cite a brand, domain or keyword: total mentions, AI search volume, estimated impressions (split by platform), the citing prompts, cited source domains, related pages and a 12-month trend.",
+        "description": "AI Visibility brand/domain citation lookup. Async: returns 202 + job_uid - poll GET /jobs/{job_uid} for the result (may take ~1 minute).\n\nHow often ChatGPT and Google AI Overview cite a brand, domain or keyword: total mentions, AI search volume, estimated impressions (split by platform), the citing prompts, cited source domains, related pages and a 12-month trend. Requires scope `seo:read`.",
         "operationId": "seoBrandLookup",
         "tags": [
           "SEO"
@@ -3542,7 +3556,7 @@
     "/seo/prompt-explorer": {
       "post": {
         "summary": "AI Visibility: prompt explorer",
-        "description": "Run a prompt across ChatGPT/Claude/Gemini/Perplexity. Async: returns 202 + job_uid - poll GET /jobs/{job_uid} for the result (1-2 minutes).\n\nRun one prompt across ChatGPT, Claude, Gemini and Perplexity side-by-side. Returns each model's answer text, citations and fan-out queries; pass `brand` to get a mentions_brand flag per answer.",
+        "description": "Run a prompt across ChatGPT/Claude/Gemini/Perplexity. Async: returns 202 + job_uid - poll GET /jobs/{job_uid} for the result (1-2 minutes).\n\nRun one prompt across ChatGPT, Claude, Gemini and Perplexity side-by-side. Returns each model's answer text, citations and fan-out queries; pass `brand` to get a mentions_brand flag per answer. Requires scope `seo:read`.",
         "operationId": "seoPromptExplorer",
         "tags": [
           "SEO"
@@ -3649,7 +3663,7 @@
     "/seo/ai-audit": {
       "post": {
         "summary": "AI Visibility Audit (async)",
-        "description": "Zero-input GEO audit: give a website URL and the audit auto-generates realistic customer queries in the market's language (or accepts your own), runs every query across ChatGPT, Claude, Gemini and Perplexity, and scores unaided brand presence. The result contains an AI Presence Score (0-100 = share of query x model checks whose answer mentions the brand or domain), per-query mention results, and the competitors AI recommends instead. Long-running (typically 5-15 minutes): returns 202 with a job_id - poll GET /jobs/{job_id}. Billed per (query x model) check.",
+        "description": "Zero-input GEO audit: give a website URL and the audit auto-generates realistic customer queries in the market's language (or accepts your own), runs every query across ChatGPT, Claude, Gemini and Perplexity, and scores unaided brand presence. The result contains an AI Presence Score (0-100 = share of query x model checks whose answer mentions the brand or domain), per-query mention results, and the competitors AI recommends instead. Long-running (typically 5-15 minutes): returns 202 with a job_id - poll GET /jobs/{job_id}. Billed per (query x model) check. Requires scope `seo:read`.",
         "operationId": "seoAiAudit",
         "tags": [
           "SEO"
@@ -3832,7 +3846,8 @@
         },
         "x-scopes": [
           "audio:write"
-        ]
+        ],
+        "description": "Requires scope `audio:write`."
       }
     },
     "/audio/speech-to-text": {
@@ -3902,7 +3917,8 @@
         },
         "x-scopes": [
           "audio:write"
-        ]
+        ],
+        "description": "Requires scope `audio:write`."
       }
     },
     "/audio/{audio_id}": {
@@ -3961,7 +3977,8 @@
         },
         "x-scopes": [
           "audio:read"
-        ]
+        ],
+        "description": "Requires scope `audio:read`."
       }
     },
     "/urls/shorten": {
@@ -4037,7 +4054,8 @@
         },
         "x-scopes": [
           "urls:write"
-        ]
+        ],
+        "description": "Requires scope `urls:write`."
       }
     },
     "/urls": {
@@ -4109,7 +4127,8 @@
         },
         "x-scopes": [
           "urls:read"
-        ]
+        ],
+        "description": "Requires scope `urls:read`."
       }
     },
     "/urls/{url_id}": {
@@ -4171,7 +4190,8 @@
         },
         "x-scopes": [
           "urls:read"
-        ]
+        ],
+        "description": "Requires scope `urls:read`."
       },
       "delete": {
         "summary": "Delete short URL",
@@ -4203,7 +4223,8 @@
         },
         "x-scopes": [
           "urls:write"
-        ]
+        ],
+        "description": "Requires scope `urls:write`."
       }
     },
     "/urls/{url_id}/stats": {
@@ -4255,7 +4276,8 @@
         },
         "x-scopes": [
           "urls:read"
-        ]
+        ],
+        "description": "Requires scope `urls:read`."
       }
     },
     "/captain/messages": {
@@ -4331,7 +4353,8 @@
         },
         "x-scopes": [
           "captain:use"
-        ]
+        ],
+        "description": "Requires scope `captain:use`."
       }
     },
     "/captain/conversations": {
@@ -4399,7 +4422,8 @@
         },
         "x-scopes": [
           "captain:use"
-        ]
+        ],
+        "description": "Requires scope `captain:use`."
       }
     },
     "/captain/conversations/{conversation_id}": {
@@ -4459,7 +4483,8 @@
         },
         "x-scopes": [
           "captain:use"
-        ]
+        ],
+        "description": "Requires scope `captain:use`."
       }
     },
     "/chatbots": {
@@ -4534,7 +4559,8 @@
         },
         "x-scopes": [
           "chatbot:use"
-        ]
+        ],
+        "description": "Requires scope `chatbot:use`."
       },
       "get": {
         "summary": "List chatbots",
@@ -4603,7 +4629,8 @@
         },
         "x-scopes": [
           "chatbot:use"
-        ]
+        ],
+        "description": "Requires scope `chatbot:use`."
       }
     },
     "/chatbots/{id}": {
@@ -4657,7 +4684,8 @@
         },
         "x-scopes": [
           "chatbot:use"
-        ]
+        ],
+        "description": "Requires scope `chatbot:use`."
       },
       "patch": {
         "summary": "Update chatbot",
@@ -4732,7 +4760,8 @@
         },
         "x-scopes": [
           "chatbot:use"
-        ]
+        ],
+        "description": "Requires scope `chatbot:use`."
       },
       "delete": {
         "summary": "Delete chatbot",
@@ -4764,13 +4793,14 @@
         },
         "x-scopes": [
           "chatbot:use"
-        ]
+        ],
+        "description": "Requires scope `chatbot:use`."
       }
     },
     "/chatbots/{id}/train": {
       "post": {
         "summary": "Start chatbot training",
-        "description": "Triggers training using the chatbot's existing training data (training_text, training_url, and FAQs). No request body required. Poll GET /chatbots/{id}/train-status for completion.",
+        "description": "Triggers training using the chatbot's existing training data (training_text, training_url, and FAQs). No request body required. Poll GET /chatbots/{id}/train-status for completion. Requires scope `chatbot:use`.",
         "operationId": "trainChatbot",
         "tags": [
           "Chatbot"
@@ -4876,7 +4906,8 @@
         },
         "x-scopes": [
           "chatbot:use"
-        ]
+        ],
+        "description": "Requires scope `chatbot:use`."
       }
     },
     "/chatbots/{id}/messages": {
@@ -4964,7 +4995,8 @@
         },
         "x-scopes": [
           "chatbot:use"
-        ]
+        ],
+        "description": "Requires scope `chatbot:use`."
       }
     },
     "/chatbots/{id}/conversations": {
@@ -5027,7 +5059,8 @@
         },
         "x-scopes": [
           "chatbot:use"
-        ]
+        ],
+        "description": "Requires scope `chatbot:use`."
       }
     },
     "/chatbots/{id}/conversations/{conv_id}/messages": {
@@ -5087,7 +5120,8 @@
         },
         "x-scopes": [
           "chatbot:use"
-        ]
+        ],
+        "description": "Requires scope `chatbot:use`."
       }
     },
     "/media": {
@@ -5174,7 +5208,8 @@
         },
         "x-scopes": [
           "media:read"
-        ]
+        ],
+        "description": "Requires scope `media:read`."
       }
     },
     "/media/{media_id}": {
@@ -5230,7 +5265,8 @@
         },
         "x-scopes": [
           "media:read"
-        ]
+        ],
+        "description": "Requires scope `media:read`."
       },
       "delete": {
         "summary": "Delete media",
@@ -5262,14 +5298,15 @@
         },
         "x-scopes": [
           "media:write"
-        ]
+        ],
+        "description": "Requires scope `media:write`."
       }
     },
     "/media/upload-url": {
       "post": {
         "summary": "Get presigned upload URL",
         "operationId": "getMediaUploadUrl",
-        "description": "Returns a presigned URL - PUT your file's bytes directly there (Content-Type must match what you declared here). The returned media_id has file_size=0 until you call POST /media/{media_id}/confirm afterward; there's no other way this API learns the upload completed. For most callers POST /media/upload-direct is simpler (one request, no separate confirm step) - use presign for large files or when you want the client to upload directly to storage instead of through this API.",
+        "description": "Returns a presigned URL - PUT your file's bytes directly there (Content-Type must match what you declared here). The returned media_id has file_size=0 until you call POST /media/{media_id}/confirm afterward; there's no other way this API learns the upload completed. For most callers POST /media/upload-direct is simpler (one request, no separate confirm step) - use presign for large files or when you want the client to upload directly to storage instead of through this API. Requires scope `media:write`.",
         "tags": [
           "Media"
         ],
@@ -5330,7 +5367,7 @@
       "post": {
         "summary": "Confirm a presigned upload",
         "operationId": "confirmMediaUpload",
-        "description": "Call this after PUTting your file to the presigned URL from POST /media/upload-url. HEADs the object in storage and backfills the real file_size (and mime_type, if the client's PUT Content-Type disagreed with what was declared at presign time) - the presign flow has no other completion signal. 422 NOT_UPLOADED if nothing has landed at the key yet.",
+        "description": "Call this after PUTting your file to the presigned URL from POST /media/upload-url. HEADs the object in storage and backfills the real file_size (and mime_type, if the client's PUT Content-Type disagreed with what was declared at presign time) - the presign flow has no other completion signal. 422 NOT_UPLOADED if nothing has landed at the key yet. Requires scope `media:write`.",
         "tags": [
           "Media"
         ],
@@ -5449,7 +5486,8 @@
         },
         "x-scopes": [
           "analytics:read"
-        ]
+        ],
+        "description": "Requires scope `analytics:read`."
       }
     },
     "/analytics/posts": {
@@ -5529,7 +5567,8 @@
         },
         "x-scopes": [
           "analytics:read"
-        ]
+        ],
+        "description": "Requires scope `analytics:read`."
       }
     },
     "/analytics/accounts/{account_id}": {
@@ -5598,7 +5637,8 @@
         },
         "x-scopes": [
           "analytics:read"
-        ]
+        ],
+        "description": "Requires scope `analytics:read`."
       }
     },
     "/jobs": {
@@ -5685,7 +5725,8 @@
         },
         "x-scopes": [
           "jobs:read"
-        ]
+        ],
+        "description": "Requires scope `jobs:read`."
       }
     },
     "/jobs/{job_id}": {
@@ -5742,7 +5783,8 @@
         },
         "x-scopes": [
           "jobs:read"
-        ]
+        ],
+        "description": "Requires scope `jobs:read`."
       }
     },
     "/jobs/{job_id}/cancel": {
@@ -5752,7 +5794,7 @@
         "tags": [
           "Jobs"
         ],
-        "description": "Cancels a queued or processing job. The request body may be empty, but `Content-Type: application/json` **must** still be set — omitting it returns a 400 error.",
+        "description": "Cancels a queued or processing job. The request body may be empty, but `Content-Type: application/json` **must** still be set — omitting it returns a 400 error. Requires scope `jobs:read`.",
         "parameters": [
           {
             "$ref": "#/components/parameters/JobIdParam"
@@ -5858,7 +5900,8 @@
             "$ref": "#/components/responses/ServerError"
           }
         },
-        "x-scopes": []
+        "x-scopes": [],
+        "description": "Requires any valid API key (no scope needed)."
       }
     },
     "/me/usage": {
@@ -5915,7 +5958,8 @@
             "$ref": "#/components/responses/ServerError"
           }
         },
-        "x-scopes": []
+        "x-scopes": [],
+        "description": "Requires any valid API key (no scope needed)."
       }
     },
     "/me/balance": {
@@ -5957,7 +6001,8 @@
             "$ref": "#/components/responses/ServerError"
           }
         },
-        "x-scopes": []
+        "x-scopes": [],
+        "description": "Requires any valid API key (no scope needed)."
       }
     },
     "/social/accounts/{account_id}": {
@@ -6128,7 +6173,8 @@
         },
         "x-scopes": [
           "social:write"
-        ]
+        ],
+        "description": "Requires scope `social:write`."
       }
     },
     "/social/accounts/{account_id}/health": {
@@ -6226,7 +6272,8 @@
         },
         "x-scopes": [
           "social:read"
-        ]
+        ],
+        "description": "Requires scope `social:read`."
       }
     },
     "/social/accounts/{account_id}/reconnect-url": {
@@ -6303,7 +6350,8 @@
         },
         "x-scopes": [
           "social:read"
-        ]
+        ],
+        "description": "Requires scope `social:read`."
       }
     },
     "/social/accounts/{account_id}/pause": {
@@ -6386,7 +6434,8 @@
         },
         "x-scopes": [
           "social:write"
-        ]
+        ],
+        "description": "Requires scope `social:write`."
       }
     },
     "/social/accounts/{account_id}/resume": {
@@ -6469,7 +6518,8 @@
         },
         "x-scopes": [
           "social:write"
-        ]
+        ],
+        "description": "Requires scope `social:write`."
       }
     },
     "/social/posts/{post_id}/retry": {
@@ -6607,7 +6657,8 @@
         },
         "x-scopes": [
           "social:write"
-        ]
+        ],
+        "description": "Requires scope `social:write`."
       }
     },
     "/social/comments": {
@@ -6834,7 +6885,8 @@
         },
         "x-scopes": [
           "social:read"
-        ]
+        ],
+        "description": "Requires scope `social:read`."
       }
     },
     "/social/comments/{comment_id}/reply": {
@@ -6933,7 +6985,8 @@
         },
         "x-scopes": [
           "social:write"
-        ]
+        ],
+        "description": "Requires scope `social:write`."
       }
     },
     "/social/comments/{comment_id}/hide": {
@@ -7016,7 +7069,8 @@
         },
         "x-scopes": [
           "social:write"
-        ]
+        ],
+        "description": "Requires scope `social:write`."
       }
     },
     "/social/comments/{comment_id}/moderate": {
@@ -7365,7 +7419,8 @@
         },
         "x-scopes": [
           "social:write"
-        ]
+        ],
+        "description": "Requires scope `social:write`."
       }
     },
     "/social/conversations": {
@@ -7548,7 +7603,8 @@
         },
         "x-scopes": [
           "social:read"
-        ]
+        ],
+        "description": "Requires scope `social:read`."
       }
     },
     "/social/conversations/{conversation_id}/messages": {
@@ -7719,7 +7775,8 @@
         },
         "x-scopes": [
           "social:read"
-        ]
+        ],
+        "description": "Requires scope `social:read`."
       },
       "post": {
         "summary": "Send a direct message",
@@ -7913,7 +7970,7 @@
             "$ref": "#/components/responses/ServerError"
           }
         },
-        "description": " Supports structured payloads: buttons (Facebook) and quick_replies (Facebook + Instagram).",
+        "description": "Supports structured payloads: buttons (Facebook) and quick_replies (Facebook + Instagram). Requires scope `social:write`.",
         "x-scopes": [
           "social:write"
         ]
@@ -7999,7 +8056,8 @@
         },
         "x-scopes": [
           "social:write"
-        ]
+        ],
+        "description": "Requires scope `social:write`."
       }
     },
     "/webhooks": {
@@ -8805,7 +8863,7 @@
     "/videos/hook": {
       "post": {
         "summary": "Generate a viral hook line",
-        "description": "Writes ONE scroll-stopping hook line (<=8 words) to overlay on a short's first seconds. Provide `script` or `transcript_words`. Billed per request from your API wallet; refunded on failure.",
+        "description": "Writes ONE scroll-stopping hook line (<=8 words) to overlay on a short's first seconds. Provide `script` or `transcript_words`. Billed per request from your API wallet; refunded on failure. Requires scope `videos:write`.",
         "operationId": "generateVideoHook",
         "tags": [
           "Videos"
@@ -8895,7 +8953,7 @@
     "/videos/broll-suggest": {
       "post": {
         "summary": "Suggest B-roll moments",
-        "description": "Suggests B-roll moments (with timings) for a word-level transcript. Billed per request; refunded on failure.",
+        "description": "Suggests B-roll moments (with timings) for a word-level transcript. Billed per request; refunded on failure. Requires scope `videos:write`.",
         "operationId": "suggestBroll",
         "tags": [
           "Videos"
@@ -9037,7 +9095,7 @@
     "/videos/emphasis": {
       "post": {
         "summary": "Suggest on-screen emphasis",
-        "description": "Picks on-screen emphasis moments (punchy full-screen text with timings) from a word-level transcript. Billed per request; refunded on failure.",
+        "description": "Picks on-screen emphasis moments (punchy full-screen text with timings) from a word-level transcript. Billed per request; refunded on failure. Requires scope `videos:write`.",
         "operationId": "suggestEmphasis",
         "tags": [
           "Videos"
@@ -9173,7 +9231,7 @@
     "/videos/viral-thumbnail": {
       "post": {
         "summary": "Generate a viral thumbnail",
-        "description": "Generates a viral, click-optimized thumbnail from a video title (optionally guided by a reference image) and returns a hosted `image_url`. Billed per request; refunded on failure.",
+        "description": "Generates a viral, click-optimized thumbnail from a video title (optionally guided by a reference image) and returns a hosted `image_url`. Billed per request; refunded on failure. Requires scope `videos:write`.",
         "operationId": "generateViralThumbnail",
         "tags": [
           "Videos"
@@ -9272,7 +9330,7 @@
     "/content/caption": {
       "post": {
         "summary": "Generate a social caption",
-        "description": "Writes ONE platform-tuned social caption (with hashtags) for a short-form video. Billed per request; refunded on failure.",
+        "description": "Writes ONE platform-tuned social caption (with hashtags) for a short-form video. Billed per request; refunded on failure. Requires scope `social:write`.",
         "operationId": "generateCaption",
         "tags": [
           "Content"
@@ -9382,7 +9440,7 @@
     "/shorts/generate": {
       "post": {
         "summary": "Generate viral shorts from a long video",
-        "description": "Turns one long video into ranked, ready-to-post vertical (9:16) clips with hooks + virality scores. Provide `video_url` (direct media) OR `source_url` (a YouTube/Vimeo/TikTok link). Returns `202 Accepted` with a `job_uid`; poll `GET /v1/shorts/{uid}`. Billed per REQUESTED clip from your API wallet; a wholly-failed job is refunded automatically.",
+        "description": "Turns one long video into ranked, ready-to-post vertical (9:16) clips with hooks + virality scores. Provide `video_url` (direct media) OR `source_url` (a YouTube/Vimeo/TikTok link). Returns `202 Accepted` with a `job_uid`; poll `GET /v1/shorts/{uid}`. Billed per REQUESTED clip from your API wallet; a wholly-failed job is refunded automatically. Requires scope `videos:write`.",
         "operationId": "generateShorts",
         "tags": [
           "Shorts"
@@ -9489,7 +9547,7 @@
     "/shorts": {
       "get": {
         "summary": "List shorts jobs",
-        "description": "Lists your workspace's Magic Shorts jobs.",
+        "description": "Lists your workspace's Magic Shorts jobs. Requires scope `videos:read`.",
         "operationId": "listShorts",
         "tags": [
           "Shorts"
@@ -9651,7 +9709,7 @@
     "/shorts/{uid}": {
       "get": {
         "summary": "Get shorts job + clips",
-        "description": "Gets a Magic Shorts job's status and its ranked clips (hooks, scores, clip URLs). Poll after `generateShorts` until `status` is `completed`.",
+        "description": "Gets a Magic Shorts job's status and its ranked clips (hooks, scores, clip URLs). Poll after `generateShorts` until `status` is `completed`. Requires scope `videos:read`.",
         "operationId": "getShorts",
         "tags": [
           "Shorts"
@@ -9887,7 +9945,7 @@
     "/contacts": {
       "post": {
         "summary": "Create or upsert a contact",
-        "description": "Create a CRM contact. With no `id` and a matching `email`, the existing contact is updated instead of duplicated (upsert). Fires the contact_created / contact_updated automation events.",
+        "description": "Create a CRM contact. With no `id` and a matching `email`, the existing contact is updated instead of duplicated (upsert). Fires the contact_created / contact_updated automation events. Requires scope `contacts:write`.",
         "operationId": "createContact",
         "tags": [
           "CRM Contacts"
@@ -10211,7 +10269,7 @@
       },
       "get": {
         "summary": "List contacts",
-        "description": "List CRM contacts in the workspace. Supports `search`, `tag` and `status` filters plus pagination.",
+        "description": "List CRM contacts in the workspace. Supports `search`, `tag` and `status` filters plus pagination. Requires scope `contacts:read`.",
         "operationId": "listContacts",
         "tags": [
           "CRM Contacts"
@@ -10550,11 +10608,12 @@
         },
         "x-scopes": [
           "contacts:read"
-        ]
+        ],
+        "description": "Requires scope `contacts:read`."
       },
       "patch": {
         "summary": "Update a contact",
-        "description": "Update a contact by id. Fires the contact_updated automation event (plus tag_added / tag_removed for tag changes).",
+        "description": "Update a contact by id. Fires the contact_updated automation event (plus tag_added / tag_removed for tag changes). Requires scope `contacts:write`.",
         "operationId": "updateContact",
         "tags": [
           "CRM Contacts"
@@ -10825,7 +10884,7 @@
     "/contacts/{id}/tags": {
       "post": {
         "summary": "Add tags to a contact",
-        "description": "Add one or more tags (idempotent union). Each newly added tag fires the tag_added automation event.",
+        "description": "Add one or more tags (idempotent union). Each newly added tag fires the tag_added automation event. Requires scope `contacts:write`.",
         "operationId": "addContactTags",
         "tags": [
           "CRM Contacts"
@@ -10927,7 +10986,7 @@
       },
       "delete": {
         "summary": "Remove tags from a contact",
-        "description": "Remove one or more tags. Each removed tag fires the tag_removed automation event.",
+        "description": "Remove one or more tags. Each removed tag fires the tag_removed automation event. Requires scope `contacts:write`.",
         "operationId": "removeContactTags",
         "tags": [
           "CRM Contacts"
@@ -11110,7 +11169,8 @@
         },
         "x-scopes": [
           "contacts:read"
-        ]
+        ],
+        "description": "Requires scope `contacts:read`."
       },
       "post": {
         "summary": "Add a note to a contact",
@@ -11204,13 +11264,14 @@
         },
         "x-scopes": [
           "contacts:write"
-        ]
+        ],
+        "description": "Requires scope `contacts:write`."
       }
     },
     "/pipelines": {
       "get": {
         "summary": "List pipelines",
-        "description": "List sales pipelines in the workspace, each with its ordered stages.",
+        "description": "List sales pipelines in the workspace, each with its ordered stages. Requires scope `opportunities:read`.",
         "operationId": "listPipelines",
         "tags": [
           "CRM Opportunities"
@@ -11470,13 +11531,14 @@
         },
         "x-scopes": [
           "opportunities:write"
-        ]
+        ],
+        "description": "Requires scope `opportunities:write`."
       }
     },
     "/opportunities": {
       "get": {
         "summary": "List opportunities",
-        "description": "List deals/opportunities. Filter by `pipeline_id`, `status`, `stage` or `assigned_user_id`.",
+        "description": "List deals/opportunities. Filter by `pipeline_id`, `status`, `stage` or `assigned_user_id`. Requires scope `opportunities:read`.",
         "operationId": "listOpportunities",
         "tags": [
           "CRM Opportunities"
@@ -11642,7 +11704,7 @@
       },
       "post": {
         "summary": "Create an opportunity",
-        "description": "Create a deal/opportunity. Fires deal_created (and deal_won / deal_lost when created with a terminal status). Falls back to the default pipeline when `pipeline_id` is omitted.",
+        "description": "Create a deal/opportunity. Fires deal_created (and deal_won / deal_lost when created with a terminal status). Falls back to the default pipeline when `pipeline_id` is omitted. Requires scope `opportunities:write`.",
         "operationId": "createOpportunity",
         "tags": [
           "CRM Opportunities"
@@ -11910,11 +11972,12 @@
         },
         "x-scopes": [
           "opportunities:read"
-        ]
+        ],
+        "description": "Requires scope `opportunities:read`."
       },
       "patch": {
         "summary": "Update an opportunity",
-        "description": "Update a deal. Moving `stage` follows won/lost stage semantics into `status` unless `status` is set explicitly. Fires deal_stage_changed / deal_won / deal_lost as applicable.",
+        "description": "Update a deal. Moving `stage` follows won/lost stage semantics into `status` unless `status` is set explicitly. Fires deal_stage_changed / deal_won / deal_lost as applicable. Requires scope `opportunities:write`.",
         "operationId": "updateOpportunity",
         "tags": [
           "CRM Opportunities"
@@ -12129,13 +12192,14 @@
         },
         "x-scopes": [
           "opportunities:write"
-        ]
+        ],
+        "description": "Requires scope `opportunities:write`."
       }
     },
     "/opportunities/{id}/status": {
       "post": {
         "summary": "Update opportunity status",
-        "description": "Set the opportunity outcome. Transitioning into won/lost fires deal_won / deal_lost.",
+        "description": "Set the opportunity outcome. Transitioning into won/lost fires deal_won / deal_lost. Requires scope `opportunities:write`.",
         "operationId": "updateOpportunityStatus",
         "tags": [
           "CRM Opportunities"
@@ -13554,7 +13618,7 @@
     "/contacts/{id}/enroll": {
       "post": {
         "summary": "Enroll a contact in an automation",
-        "description": "Enrol a contact into an active automation. Queues a run for that automation carrying the contact's context.",
+        "description": "Enrol a contact into an active automation. Queues a run for that automation carrying the contact's context. Requires scope `contacts:write`.",
         "operationId": "enrollContact",
         "tags": [
           "CRM Contacts"
@@ -13657,7 +13721,7 @@
     "/contacts/{id}/messages": {
       "post": {
         "summary": "Log a message on a contact's timeline",
-        "description": "Record an inbound/outbound message in the contact's conversation timeline (feeds the Inbox). Does NOT deliver email/SMS — channel delivery goes through automations/campaigns, which carry billing + compliance.",
+        "description": "Record an inbound/outbound message in the contact's conversation timeline (feeds the Inbox). Does NOT deliver email/SMS — channel delivery goes through automations/campaigns, which carry billing + compliance. Requires scope `contacts:write`.",
         "operationId": "addContactMessage",
         "tags": [
           "CRM Contacts"
@@ -13776,7 +13840,7 @@
     "/custom-fields": {
       "get": {
         "summary": "List custom fields",
-        "description": "List CRM custom field (custom attribute) definitions — the schema behind {{attributes.<key>}}.",
+        "description": "List CRM custom field (custom attribute) definitions — the schema behind {{attributes.<key>}}. Requires scope `contacts:read`.",
         "operationId": "listCustomFields",
         "tags": [
           "CRM Custom Fields"
@@ -13858,7 +13922,7 @@
       },
       "post": {
         "summary": "Create a custom field",
-        "description": "Define a new CRM custom field. Its attr_key is derived from the label and is used to set values via the contact's `attributes` object.",
+        "description": "Define a new CRM custom field. Its attr_key is derived from the label and is used to set values via the contact's `attributes` object. Requires scope `contacts:write`.",
         "operationId": "createCustomField",
         "tags": [
           "CRM Custom Fields"
@@ -14029,7 +14093,8 @@
         },
         "x-scopes": [
           "contacts:write"
-        ]
+        ],
+        "description": "Requires scope `contacts:write`."
       },
       "patch": {
         "summary": "Update custom field",
@@ -14534,7 +14599,8 @@
         },
         "x-scopes": [
           "profiles:read"
-        ]
+        ],
+        "description": "Requires scope `profiles:read`."
       },
       "delete": {
         "summary": "Delete a profile",
@@ -17978,7 +18044,8 @@
         },
         "x-scopes": [
           "social:read"
-        ]
+        ],
+        "description": "Requires scope `social:read`."
       },
       "put": {
         "summary": "Update account group",
@@ -27973,7 +28040,8 @@
         },
         "x-scopes": [
           "social:write"
-        ]
+        ],
+        "description": "Requires scope `social:write`."
       }
     },
     "/social/accounts/{account_id}/instagram/ice-breakers": {
@@ -28371,7 +28439,8 @@
         },
         "x-scopes": [
           "social:write"
-        ]
+        ],
+        "description": "Requires scope `social:write`."
       }
     },
     "/social/accounts/{account_id}/facebook/page-insights": {
@@ -29268,7 +29337,7 @@
       "get": {
         "summary": "Billing overview",
         "operationId": "getBilling",
-        "description": "A read-only superset of GET /me/balance: the wallet balance breakdown, the monthly cycle reset, auto-recharge configuration, and whether a card is on file. Use payment.status to know if the next billable call is at risk.",
+        "description": "A read-only superset of GET /me/balance: the wallet balance breakdown, the monthly cycle reset, auto-recharge configuration, and whether a card is on file. Use payment.status to know if the next billable call is at risk. Requires any valid API key (no scope needed).",
         "tags": [
           "Account"
         ],
@@ -33946,7 +34015,7 @@
             }
           }
         },
-        "description": "Metric fields (`spent`, `impressions`, `clicks`, `conversions`, `leads`, `purchase_value`, `ctr`, `cpa`, `roas`) cover the **last 28 days**, on every platform. That is the window the ad networks give us daily figures for, so it is the longest total we can report without inventing the missing days - it is NOT the campaign's lifetime. For any other date range, or a per-campaign breakdown of one, use `GET /ads/analytics`.",
+        "description": "Metric fields (`spent`, `impressions`, `clicks`, `conversions`, `leads`, `purchase_value`, `ctr`, `cpa`, `roas`) cover the **last 28 days**, on every platform. That is the window the ad networks give us daily figures for, so it is the longest total we can report without inventing the missing days - it is NOT the campaign's lifetime. For any other date range, or a per-campaign breakdown of one, use `GET /ads/analytics`. Requires scope `ads:read`.",
         "x-scopes": [
           "ads:read"
         ]
@@ -33957,7 +34026,7 @@
         "tags": [
           "Ads"
         ],
-        "description": "For `platform: meta` with a `page_id`, launches a real campaign on Meta (same path the in-app wizard uses). Every other platform/shape creates a local draft - only Meta has live launch wiring today.",
+        "description": "For `platform: meta` with a `page_id`, launches a real campaign on Meta (same path the in-app wizard uses). Every other platform/shape creates a local draft - only Meta has live launch wiring today. Requires scope `ads:write`.",
         "requestBody": {
           "required": true,
           "content": {
@@ -34323,7 +34392,7 @@
             "$ref": "#/components/responses/NotFound"
           }
         },
-        "description": "Metric fields (`spent`, `impressions`, `clicks`, `conversions`, `leads`, `purchase_value`, `ctr`, `cpa`, `roas`) cover the **last 28 days**, on every platform. That is the window the ad networks give us daily figures for, so it is the longest total we can report without inventing the missing days - it is NOT the campaign's lifetime. For any other date range, or a per-campaign breakdown of one, use `GET /ads/analytics`.",
+        "description": "Metric fields (`spent`, `impressions`, `clicks`, `conversions`, `leads`, `purchase_value`, `ctr`, `cpa`, `roas`) cover the **last 28 days**, on every platform. That is the window the ad networks give us daily figures for, so it is the longest total we can report without inventing the missing days - it is NOT the campaign's lifetime. For any other date range, or a per-campaign breakdown of one, use `GET /ads/analytics`. Requires scope `ads:read`.",
         "x-scopes": [
           "ads:read"
         ]
@@ -34334,7 +34403,7 @@
         "tags": [
           "Ads"
         ],
-        "description": "Update name and/or budget. Subject to the same anti-ban edit-cooldown as the in-app wizard - a budget change within Meta's 72h learning-phase window may be blocked (429) or need `confirm_cooldown`.",
+        "description": "Update name and/or budget. Subject to the same anti-ban edit-cooldown as the in-app wizard - a budget change within Meta's 72h learning-phase window may be blocked (429) or need `confirm_cooldown`. Requires scope `ads:write`.",
         "parameters": [
           {
             "name": "id",
@@ -34419,7 +34488,7 @@
         "tags": [
           "Ads"
         ],
-        "description": "Deletes on the live platform first (falls back to pausing if the platform delete fails, so nothing keeps spending), then removes it locally along with its ad sets and ads.",
+        "description": "Deletes on the live platform first (falls back to pausing if the platform delete fails, so nothing keeps spending), then removes it locally along with its ad sets and ads. Requires scope `ads:write`.",
         "parameters": [
           {
             "name": "id",
@@ -34539,7 +34608,8 @@
         },
         "x-scopes": [
           "ads:write"
-        ]
+        ],
+        "description": "Requires scope `ads:write`."
       }
     },
     "/ads/campaigns/{id}/resume": {
@@ -34605,7 +34675,8 @@
         },
         "x-scopes": [
           "ads:write"
-        ]
+        ],
+        "description": "Requires scope `ads:write`."
       }
     },
     "/ads/campaigns/{id}/duplicate": {
@@ -34669,7 +34740,8 @@
         },
         "x-scopes": [
           "ads:write"
-        ]
+        ],
+        "description": "Requires scope `ads:write`."
       }
     },
     "/ads/campaigns/{id}/archive": {
@@ -34735,7 +34807,8 @@
         },
         "x-scopes": [
           "ads:write"
-        ]
+        ],
+        "description": "Requires scope `ads:write`."
       }
     },
     "/ads/campaigns/bulk-status": {
@@ -34745,7 +34818,7 @@
         "tags": [
           "Ads"
         ],
-        "description": "Up to 50 campaign IDs per call. Never all-or-nothing - each id gets its own result, so a partial failure doesn't block the rest. Returns 200 when every id succeeded and 207 when at least one failed, so a client can branch on the status code without parsing the body.",
+        "description": "Up to 50 campaign IDs per call. Never all-or-nothing - each id gets its own result, so a partial failure doesn't block the rest. Returns 200 when every id succeeded and 207 when at least one failed, so a client can branch on the status code without parsing the body. Requires scope `ads:write`.",
         "requestBody": {
           "required": true,
           "content": {
@@ -35046,7 +35119,7 @@
             }
           }
         },
-        "description": "Metric fields (`spent`, `impressions`, `clicks`, `conversions`, `leads`, `purchase_value`, `ctr`, `cpa`, `roas`) cover the **last 28 days**, on every platform. That is the window the ad networks give us daily figures for, so it is the longest total we can report without inventing the missing days - it is NOT the campaign's lifetime. For any other date range, or a per-campaign breakdown of one, use `GET /ads/analytics`.",
+        "description": "Metric fields (`spent`, `impressions`, `clicks`, `conversions`, `leads`, `purchase_value`, `ctr`, `cpa`, `roas`) cover the **last 28 days**, on every platform. That is the window the ad networks give us daily figures for, so it is the longest total we can report without inventing the missing days - it is NOT the campaign's lifetime. For any other date range, or a per-campaign breakdown of one, use `GET /ads/analytics`. Requires scope `ads:read`.",
         "x-scopes": [
           "ads:read"
         ]
@@ -35155,7 +35228,8 @@
         },
         "x-scopes": [
           "ads:read"
-        ]
+        ],
+        "description": "Requires scope `ads:read`."
       },
       "delete": {
         "summary": "Delete an ad set",
@@ -35216,7 +35290,8 @@
         },
         "x-scopes": [
           "ads:write"
-        ]
+        ],
+        "description": "Requires scope `ads:write`."
       }
     },
     "/ads/ad-sets/{id}/pause": {
@@ -35279,7 +35354,8 @@
         },
         "x-scopes": [
           "ads:write"
-        ]
+        ],
+        "description": "Requires scope `ads:write`."
       }
     },
     "/ads/ad-sets/{id}/resume": {
@@ -35342,7 +35418,8 @@
         },
         "x-scopes": [
           "ads:write"
-        ]
+        ],
+        "description": "Requires scope `ads:write`."
       }
     },
     "/ads/ad-sets/{id}/duplicate": {
@@ -35403,7 +35480,8 @@
         },
         "x-scopes": [
           "ads:write"
-        ]
+        ],
+        "description": "Requires scope `ads:write`."
       }
     },
     "/ads/ad-sets/{id}/archive": {
@@ -35466,7 +35544,8 @@
         },
         "x-scopes": [
           "ads:write"
-        ]
+        ],
+        "description": "Requires scope `ads:write`."
       }
     },
     "/ads/ads": {
@@ -35643,7 +35722,7 @@
             }
           }
         },
-        "description": "Metric fields (`spent`, `impressions`, `clicks`, `conversions`, `leads`, `purchase_value`, `ctr`, `cpa`, `roas`) cover the **last 28 days**, on every platform. That is the window the ad networks give us daily figures for, so it is the longest total we can report without inventing the missing days - it is NOT the campaign's lifetime. For any other date range, or a per-campaign breakdown of one, use `GET /ads/analytics`.",
+        "description": "Metric fields (`spent`, `impressions`, `clicks`, `conversions`, `leads`, `purchase_value`, `ctr`, `cpa`, `roas`) cover the **last 28 days**, on every platform. That is the window the ad networks give us daily figures for, so it is the longest total we can report without inventing the missing days - it is NOT the campaign's lifetime. For any other date range, or a per-campaign breakdown of one, use `GET /ads/analytics`. Requires scope `ads:read`.",
         "x-scopes": [
           "ads:read"
         ]
@@ -35770,7 +35849,8 @@
         },
         "x-scopes": [
           "ads:read"
-        ]
+        ],
+        "description": "Requires scope `ads:read`."
       },
       "delete": {
         "summary": "Delete an ad",
@@ -35831,7 +35911,8 @@
         },
         "x-scopes": [
           "ads:write"
-        ]
+        ],
+        "description": "Requires scope `ads:write`."
       }
     },
     "/ads/ads/{id}/pause": {
@@ -35894,7 +35975,8 @@
         },
         "x-scopes": [
           "ads:write"
-        ]
+        ],
+        "description": "Requires scope `ads:write`."
       }
     },
     "/ads/ads/{id}/resume": {
@@ -35957,7 +36039,8 @@
         },
         "x-scopes": [
           "ads:write"
-        ]
+        ],
+        "description": "Requires scope `ads:write`."
       }
     },
     "/ads/ads/{id}/duplicate": {
@@ -36018,7 +36101,8 @@
         },
         "x-scopes": [
           "ads:write"
-        ]
+        ],
+        "description": "Requires scope `ads:write`."
       }
     },
     "/ads/ads/{id}/archive": {
@@ -36081,7 +36165,8 @@
         },
         "x-scopes": [
           "ads:write"
-        ]
+        ],
+        "description": "Requires scope `ads:write`."
       }
     },
     "/ads/audiences": {
@@ -36207,7 +36292,8 @@
         },
         "x-scopes": [
           "ads:read"
-        ]
+        ],
+        "description": "Requires scope `ads:read`."
       },
       "post": {
         "summary": "Create an audience",
@@ -36215,7 +36301,7 @@
         "tags": [
           "Ads"
         ],
-        "description": "Meta (Custom/Lookalike) or Google (remarketing/CRM user list). Requires a connected ad account on the chosen platform.",
+        "description": "Meta (Custom/Lookalike) or Google (remarketing/CRM user list). Requires a connected ad account on the chosen platform. Requires scope `ads:write`.",
         "requestBody": {
           "required": true,
           "content": {
@@ -36343,7 +36429,7 @@
         "tags": [
           "Ads"
         ],
-        "description": "Local mirror of each connected platform's pixels/conversion actions (Meta, Google, TikTok), kept fresh by the account sync. Read-only - pixels are created in each platform's own tools, not through this API.",
+        "description": "Local mirror of each connected platform's pixels/conversion actions (Meta, Google, TikTok), kept fresh by the account sync. Read-only - pixels are created in each platform's own tools, not through this API. Requires scope `ads:read`.",
         "parameters": [
           {
             "name": "page",
@@ -36443,7 +36529,7 @@
         "tags": [
           "Ads"
         ],
-        "description": "Meta Lead Ads forms (local mirror, synced from connected Pages).",
+        "description": "Meta Lead Ads forms (local mirror, synced from connected Pages). Requires scope `ads:read`.",
         "parameters": [
           {
             "name": "page",
@@ -36537,7 +36623,7 @@
         "tags": [
           "Ads"
         ],
-        "description": "Meta only. Standard question fields only (no custom multi-choice/date-picker types).",
+        "description": "Meta only. Standard question fields only (no custom multi-choice/date-picker types). Requires scope `ads:write`.",
         "requestBody": {
           "required": true,
           "content": {
@@ -36771,7 +36857,8 @@
         },
         "x-scopes": [
           "ads:read"
-        ]
+        ],
+        "description": "Requires scope `ads:read`."
       },
       "post": {
         "summary": "Create a creative",
@@ -36779,7 +36866,7 @@
         "tags": [
           "Ads"
         ],
-        "description": "Standalone asset library entry, independent of any ad. Upload the file bytes via `POST /media/upload-direct` first and pass the resulting URL as `file_url` - this endpoint never handles raw file uploads.",
+        "description": "Standalone asset library entry, independent of any ad. Upload the file bytes via `POST /media/upload-direct` first and pass the resulting URL as `file_url` - this endpoint never handles raw file uploads. Requires scope `ads:write`.",
         "requestBody": {
           "required": true,
           "content": {
@@ -36966,7 +37053,8 @@
         },
         "x-scopes": [
           "ads:write"
-        ]
+        ],
+        "description": "Requires scope `ads:write`."
       },
       "delete": {
         "summary": "Delete a creative",
@@ -37024,7 +37112,8 @@
         },
         "x-scopes": [
           "ads:write"
-        ]
+        ],
+        "description": "Requires scope `ads:write`."
       }
     },
     "/ads/accounts": {
@@ -37034,7 +37123,7 @@
         "tags": [
           "Ads"
         ],
-        "description": "Connected accounts across Meta, Google, TikTok and LinkedIn Ads.",
+        "description": "Connected accounts across Meta, Google, TikTok and LinkedIn Ads. Requires scope `ads:read`.",
         "responses": {
           "200": {
             "description": "Accounts",
@@ -37123,7 +37212,7 @@
         "tags": [
           "Ads"
         ],
-        "description": "Per platform, per tracked account: connection status, last sync time/error, and live API rate-limit usage.",
+        "description": "Per platform, per tracked account: connection status, last sync time/error, and live API rate-limit usage. Requires scope `ads:read`.",
         "responses": {
           "200": {
             "description": "Diagnostics",
@@ -37223,7 +37312,7 @@
         "tags": [
           "Ads"
         ],
-        "description": "Pass `campaign_id` to scope the log to one campaign and everything under it (its ad sets and ads).",
+        "description": "Pass `campaign_id` to scope the log to one campaign and everything under it (its ad sets and ads). Requires scope `ads:read`.",
         "parameters": [
           {
             "name": "action",
@@ -37358,7 +37447,7 @@
         "tags": [
           "Ads"
         ],
-        "description": "Meta only today - returns `available: false` (not an error) for every other platform so callers can branch cleanly rather than treating it as a failure. Uses the same targeting-resolution logic as a real campaign launch, so the estimate reflects exactly what would be sent to Meta.",
+        "description": "Meta only today - returns `available: false` (not an error) for every other platform so callers can branch cleanly rather than treating it as a failure. Uses the same targeting-resolution logic as a real campaign launch, so the estimate reflects exactly what would be sent to Meta. Requires scope `ads:read`.",
         "requestBody": {
           "required": true,
           "content": {
@@ -37502,7 +37591,7 @@
         "tags": [
           "Ads"
         ],
-        "description": "Fire-and-forget - queues a full sync of campaigns/ad sets/ads/insights across every connected platform. Returns immediately; poll the list endpoints afterward.",
+        "description": "Fire-and-forget - queues a full sync of campaigns/ad sets/ads/insights across every connected platform. Returns immediately; poll the list endpoints afterward. Requires scope `ads:write`.",
         "responses": {
           "202": {
             "description": "Queued",
@@ -37547,7 +37636,7 @@
         "tags": [
           "Ads"
         ],
-        "description": "Summary + by-platform breakdown + daily spend chart + period-over-period trends. Date range defaults to the last 30 days. Every block here is scoped to that range, including `by_campaign` - unlike the campaign rows from `GET /ads/campaigns`, which carry a fixed 28-day total.",
+        "description": "Summary + by-platform breakdown + daily spend chart + period-over-period trends. Date range defaults to the last 30 days. Every block here is scoped to that range, including `by_campaign` - unlike the campaign rows from `GET /ads/campaigns`, which carry a fixed 28-day total. Requires scope `ads:read`.",
         "parameters": [
           {
             "name": "date_from",
@@ -37814,7 +37903,7 @@
         "tags": [
           "Ads"
         ],
-        "description": "Type-ahead interest lookup for building a campaign's targeting.interests array. Meta only. Minimum 3 characters.",
+        "description": "Type-ahead interest lookup for building a campaign's targeting.interests array. Meta only. Minimum 3 characters. Requires scope `ads:read`.",
         "parameters": [
           {
             "name": "q",
@@ -37894,7 +37983,7 @@
         "tags": [
           "Ads"
         ],
-        "description": "Recent organic posts on a connected Meta Page, for picking one to Boost (POST /ads/campaigns with creative.object_story_id).",
+        "description": "Recent organic posts on a connected Meta Page, for picking one to Boost (POST /ads/campaigns with creative.object_story_id). Requires scope `ads:read`.",
         "parameters": [
           {
             "name": "page_id",
@@ -37983,7 +38072,7 @@
         "tags": [
           "CRM Companies"
         ],
-        "description": "List companies / organisations with their contact counts. Use this to find the `company_id` that the Contacts API accepts.",
+        "description": "List companies / organisations with their contact counts. Use this to find the `company_id` that the Contacts API accepts. Requires scope `companies:read`.",
         "parameters": [
           {
             "name": "search",
@@ -38055,7 +38144,7 @@
         "tags": [
           "CRM Companies"
         ],
-        "description": "Create a company. Only `name` is required.",
+        "description": "Create a company. Only `name` is required. Requires scope `companies:write`.",
         "requestBody": {
           "required": true,
           "content": {
@@ -38146,7 +38235,7 @@
         "tags": [
           "CRM Companies"
         ],
-        "description": "The company with every contact linked to it, its deals, and the open/won value rollup across those deals. The rollup is computed from the deals, not stored.",
+        "description": "The company with every contact linked to it, its deals, and the open/won value rollup across those deals. The rollup is computed from the deals, not stored. Requires scope `companies:read`.",
         "parameters": [
           {
             "name": "id",
@@ -38194,7 +38283,7 @@
         "tags": [
           "CRM Companies"
         ],
-        "description": "Only the fields you send change.",
+        "description": "Only the fields you send change. Requires scope `companies:write`.",
         "parameters": [
           {
             "name": "id",
@@ -38291,7 +38380,7 @@
         "tags": [
           "CRM Companies"
         ],
-        "description": "Deletes the company. Its contacts are **not** deleted - they are unlinked and stay in the CRM.",
+        "description": "Deletes the company. Its contacts are **not** deleted - they are unlinked and stay in the CRM. Requires scope `companies:write`.",
         "parameters": [
           {
             "name": "id",
@@ -38327,7 +38416,7 @@
         "tags": [
           "CRM Companies"
         ],
-        "description": "A contact belongs to at most one company, so this replaces any previous link.",
+        "description": "A contact belongs to at most one company, so this replaces any previous link. Requires scopes `companies:write` and `contacts:write`.",
         "parameters": [
           {
             "name": "id",
@@ -38380,7 +38469,7 @@
         "tags": [
           "CRM Companies"
         ],
-        "description": "Detaches the contact, leaving the contact itself untouched. Returns 404 if the contact is linked to a different company, rather than silently detaching them from that one.",
+        "description": "Detaches the contact, leaving the contact itself untouched. Returns 404 if the contact is linked to a different company, rather than silently detaching them from that one. Requires scopes `companies:write` and `contacts:write`.",
         "parameters": [
           {
             "name": "id",
@@ -38435,7 +38524,7 @@
         "tags": [
           "CRM Tasks"
         ],
-        "description": "List CRM tasks and activities. Combine `status=todo` with `due_before=<today>` to get what is overdue.",
+        "description": "List CRM tasks and activities. Combine `status=todo` with `due_before=<today>` to get what is overdue. Requires scope `tasks:read`.",
         "parameters": [
           {
             "name": "status",
@@ -38561,7 +38650,7 @@
         "tags": [
           "CRM Tasks"
         ],
-        "description": "Creates a task and fires the `task_created` automation event. Set `linked_contact_id` to show it on a contact's record.",
+        "description": "Creates a task and fires the `task_created` automation event. Set `linked_contact_id` to show it on a contact's record. Requires scope `tasks:write`.",
         "requestBody": {
           "required": true,
           "content": {
@@ -38733,7 +38822,8 @@
         },
         "x-scopes": [
           "tasks:read"
-        ]
+        ],
+        "description": "Requires scope `tasks:read`."
       },
       "patch": {
         "summary": "Update a task",
@@ -38741,7 +38831,7 @@
         "tags": [
           "CRM Tasks"
         ],
-        "description": "Moving a task to `done` for the first time fires the `task_completed` automation event. Mark work done here rather than deleting the task, or that event never fires.",
+        "description": "Moving a task to `done` for the first time fires the `task_completed` automation event. Mark work done here rather than deleting the task, or that event never fires. Requires scope `tasks:write`.",
         "parameters": [
           {
             "name": "id",
@@ -38905,7 +38995,8 @@
         },
         "x-scopes": [
           "tasks:write"
-        ]
+        ],
+        "description": "Requires scope `tasks:write`."
       }
     },
     "/tasks/{id}/time": {
@@ -38915,7 +39006,7 @@
         "tags": [
           "CRM Tasks"
         ],
-        "description": "Adds to the task's running tracked total rather than replacing it.",
+        "description": "Adds to the task's running tracked total rather than replacing it. Requires scope `tasks:write`.",
         "parameters": [
           {
             "name": "id",
@@ -38971,7 +39062,7 @@
         "tags": [
           "CRM Tags"
         ],
-        "description": "Every contact tag in the workspace with its contact count. Read this before applying tags: tags are free text, so a near-miss creates a second tag that looks identical to a person but matches nothing in an automation or segment.",
+        "description": "Every contact tag in the workspace with its contact count. Read this before applying tags: tags are free text, so a near-miss creates a second tag that looks identical to a person but matches nothing in an automation or segment. Requires scope `contacts:read`.",
         "responses": {
           "200": {
             "description": "Tags",
@@ -39014,7 +39105,7 @@
         "tags": [
           "CRM Tags"
         ],
-        "description": "Creates a tag attached to no contacts, so it exists to be picked. Not needed in order to tag someone - `POST /contacts/{id}/tags` creates a tag on the fly.",
+        "description": "Creates a tag attached to no contacts, so it exists to be picked. Not needed in order to tag someone - `POST /contacts/{id}/tags` creates a tag on the fly. Requires scope `contacts:write`.",
         "requestBody": {
           "required": true,
           "content": {
@@ -39071,7 +39162,7 @@
         "tags": [
           "CRM Tags"
         ],
-        "description": "Renames the tag across every contact carrying it, and follows the rename into the automation steps and segments that reference it by name - otherwise the next automation run puts the old name straight back. Tags applied automatically by the calendar (`calendar:*`) cannot be renamed, only removed.",
+        "description": "Renames the tag across every contact carrying it, and follows the rename into the automation steps and segments that reference it by name - otherwise the next automation run puts the old name straight back. Tags applied automatically by the calendar (`calendar:*`) cannot be renamed, only removed. Requires scope `contacts:write`.",
         "requestBody": {
           "required": true,
           "content": {
@@ -39149,7 +39240,7 @@
         "tags": [
           "CRM Tags"
         ],
-        "description": "Folds several tags into one across every contact. Including the target in `from` is a no-op, not an error.",
+        "description": "Folds several tags into one across every contact. Including the target in `from` is a no-op, not an error. Requires scope `contacts:write`.",
         "requestBody": {
           "required": true,
           "content": {
@@ -39199,7 +39290,7 @@
         "tags": [
           "CRM Tags"
         ],
-        "description": "Removes the tag from every contact carrying it. A body operation rather than `DELETE /tags/{name}` because a tag is free text and may contain a slash, which no path segment can carry.\n\nThe response reports how many automations and segments still reference the tag by name. Those are **not** edited - stripping the last tag from a tag action would leave it failing at runtime - so fix them yourself, or the tag comes back on the next run.",
+        "description": "Removes the tag from every contact carrying it. A body operation rather than `DELETE /tags/{name}` because a tag is free text and may contain a slash, which no path segment can carry.\n\nThe response reports how many automations and segments still reference the tag by name. Those are **not** edited - stripping the last tag from a tag action would leave it failing at runtime - so fix them yourself, or the tag comes back on the next run. Requires scope `contacts:write`.",
         "requestBody": {
           "required": true,
           "content": {
@@ -39270,7 +39361,7 @@
         "tags": [
           "Calendar"
         ],
-        "description": "The booking pages this account can take bookings for. Call this first - every other calendar endpoint needs an `event_type_id`. `host_found: false` means there is no calendar account yet, which is different from having no event types.",
+        "description": "The booking pages this account can take bookings for. Call this first - every other calendar endpoint needs an `event_type_id`. `host_found: false` means there is no calendar account yet, which is different from having no event types. Requires scope `calendar:read`.",
         "responses": {
           "200": {
             "description": "Event types",
@@ -39340,7 +39431,7 @@
         "tags": [
           "Calendar"
         ],
-        "description": "The times that are actually free, grouped by day. Worked out from working hours, buffers, existing bookings and any connected Google or Outlook calendar - never offer a time this did not return.",
+        "description": "The times that are actually free, grouped by day. Worked out from working hours, buffers, existing bookings and any connected Google or Outlook calendar - never offer a time this did not return. Requires scope `calendar:read`.",
         "parameters": [
           {
             "name": "event_type_id",
@@ -39431,7 +39522,7 @@
         "tags": [
           "Calendar"
         ],
-        "description": "Books a specific time. The calendar holds the slot, emails the attendee and the host, and creates the connected calendar event - exactly as if the attendee had booked it themselves. Use a start time from the slots endpoint; if the slot has gone since, the calendar's own message says so and you should offer another.",
+        "description": "Books a specific time. The calendar holds the slot, emails the attendee and the host, and creates the connected calendar event - exactly as if the attendee had booked it themselves. Use a start time from the slots endpoint; if the slot has gone since, the calendar's own message says so and you should offer another. Requires scope `calendar:write`.",
         "requestBody": {
           "required": true,
           "content": {
@@ -39527,7 +39618,7 @@
         "tags": [
           "Calendar"
         ],
-        "description": "Releases the slot, removes the calendar event, tells the attendee and fires webhooks. This is not a bookkeeping change, so only do it when the meeting really is off. Cancelling an already-cancelled booking succeeds rather than erroring.",
+        "description": "Releases the slot, removes the calendar event, tells the attendee and fires webhooks. This is not a bookkeeping change, so only do it when the meeting really is off. Cancelling an already-cancelled booking succeeds rather than erroring. Requires scope `calendar:write`.",
         "parameters": [
           {
             "name": "id",
