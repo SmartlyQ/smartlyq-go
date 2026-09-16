@@ -8,3 +8,10 @@ coverage.out
 .DS_Store
 .idea/
 .vscode/
+
+# Never commit credentials. This is a public repository.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
