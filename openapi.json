@@ -33343,9 +33343,6 @@
           },
           "422": {
             "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "$ref": "#/components/responses/BadRequest"
           }
         },
         "x-scopes": [
@@ -33447,9 +33444,6 @@
           },
           "422": {
             "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "$ref": "#/components/responses/BadRequest"
           }
         },
         "x-scopes": [
@@ -33543,9 +33537,6 @@
           },
           "422": {
             "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "$ref": "#/components/responses/BadRequest"
           }
         },
         "x-scopes": [
@@ -33647,9 +33638,6 @@
           },
           "422": {
             "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "$ref": "#/components/responses/BadRequest"
           }
         },
         "x-scopes": [
