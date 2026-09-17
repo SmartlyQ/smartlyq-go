@@ -40613,7 +40613,7 @@
             "example": {
               "success": false,
               "error": {
-                "code": "RATE_LIMITED",
+                "code": "RATE_LIMIT_EXCEEDED",
                 "message": "Rate limit exceeded. Retry after 12 seconds.",
                 "details": {
                   "retry_after": 12
