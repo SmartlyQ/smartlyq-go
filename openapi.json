@@ -16454,10 +16454,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "One or more native deletes failed; the post is unchanged. The error details carry per-platform results.",
+            "description": "Invalid input, or the connected platform refused the request: one or more native deletes failed; the post is unchanged. The error details carry per-platform results.",
             "content": {
               "application/json": {
                 "schema": {
@@ -17602,42 +17599,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "TikTok rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -19534,42 +19496,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Google rejected the reply",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -19635,51 +19562,8 @@
           "409": {
             "$ref": "#/components/responses/Conflict"
           },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "The platform rejected the request."
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+          "422": {
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -21765,42 +21649,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -21907,10 +21756,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "$ref": "#/components/responses/BadRequest"
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -22012,42 +21858,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -22133,42 +21944,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -22246,42 +22022,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -22374,42 +22115,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -22566,42 +22272,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -22749,42 +22420,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -22886,42 +22522,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -23027,42 +22628,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -23141,42 +22707,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -23305,42 +22836,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -23441,53 +22937,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "The platform rejected the request."
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -23588,53 +23038,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "The platform rejected the request."
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -23721,53 +23125,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "The platform rejected the request."
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -23898,53 +23256,7 @@
             "$ref": "#/components/responses/Conflict"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "The platform rejected the request."
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -24075,53 +23387,7 @@
             "$ref": "#/components/responses/Conflict"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "The platform rejected the request."
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -24224,53 +23490,7 @@
             "$ref": "#/components/responses/Conflict"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "The platform rejected the request."
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -24370,53 +23590,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "The platform rejected the request."
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -24507,65 +23681,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Google rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "details": {
-                          "type": "object",
-                          "properties": {
-                            "google_status": {
-                              "type": "string",
-                              "nullable": true
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "Google Business rejected the request: Invalid attribute mask.",
-                    "details": {
-                      "google_status": "INVALID_ARGUMENT"
-                    }
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -24660,65 +23776,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Google rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "details": {
-                          "type": "object",
-                          "properties": {
-                            "google_status": {
-                              "type": "string",
-                              "nullable": true
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "Google Business rejected the request: Invalid attribute mask.",
-                    "details": {
-                      "google_status": "INVALID_ARGUMENT"
-                    }
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -24818,65 +23876,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Google rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "details": {
-                          "type": "object",
-                          "properties": {
-                            "google_status": {
-                              "type": "string",
-                              "nullable": true
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "Google Business rejected the request: Invalid attribute mask.",
-                    "details": {
-                      "google_status": "INVALID_ARGUMENT"
-                    }
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -24955,65 +23955,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Google rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "details": {
-                          "type": "object",
-                          "properties": {
-                            "google_status": {
-                              "type": "string",
-                              "nullable": true
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "Google Business rejected the request: Invalid attribute mask.",
-                    "details": {
-                      "google_status": "INVALID_ARGUMENT"
-                    }
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -25128,65 +24070,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Google rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "details": {
-                          "type": "object",
-                          "properties": {
-                            "google_status": {
-                              "type": "string",
-                              "nullable": true
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "Google Business rejected the request: Invalid attribute mask.",
-                    "details": {
-                      "google_status": "INVALID_ARGUMENT"
-                    }
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -25270,65 +24154,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Google rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "details": {
-                          "type": "object",
-                          "properties": {
-                            "google_status": {
-                              "type": "string",
-                              "nullable": true
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "Google Business rejected the request: Invalid attribute mask.",
-                    "details": {
-                      "google_status": "INVALID_ARGUMENT"
-                    }
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -25415,65 +24241,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Google rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "details": {
-                          "type": "object",
-                          "properties": {
-                            "google_status": {
-                              "type": "string",
-                              "nullable": true
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "Google Business rejected the request: Invalid attribute mask.",
-                    "details": {
-                      "google_status": "INVALID_ARGUMENT"
-                    }
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -25570,65 +24338,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Google rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "details": {
-                          "type": "object",
-                          "properties": {
-                            "google_status": {
-                              "type": "string",
-                              "nullable": true
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "Google Business rejected the request: Invalid attribute mask.",
-                    "details": {
-                      "google_status": "INVALID_ARGUMENT"
-                    }
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -25715,65 +24425,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Google rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "details": {
-                          "type": "object",
-                          "properties": {
-                            "google_status": {
-                              "type": "string",
-                              "nullable": true
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "Google Business rejected the request: Invalid attribute mask.",
-                    "details": {
-                      "google_status": "INVALID_ARGUMENT"
-                    }
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -25788,7 +24440,7 @@
         "tags": [
           "Social"
         ],
-        "description": "The location's structured food menus (sections, items, prices). ONLY available for food-serving business categories (restaurants, cafes, bakeries...) - Google returns a precondition error for other business types, which we pass through as a clear 502. Requires a connected Google Business account; bodies/responses are honest passthroughs of Google's resource shapes, so every Google field works. Requires scope `social:read`.",
+        "description": "The location's structured food menus (sections, items, prices). ONLY available for food-serving business categories (restaurants, cafes, bakeries...) - Google returns a precondition error for other business types, which we pass through as a clear 422. Requires a connected Google Business account; bodies/responses are honest passthroughs of Google's resource shapes, so every Google field works. Requires scope `social:read`.",
         "parameters": [
           {
             "name": "account_id",
@@ -25852,65 +24504,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Google rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "details": {
-                          "type": "object",
-                          "properties": {
-                            "google_status": {
-                              "type": "string",
-                              "nullable": true
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "Google Business rejected the request: Invalid attribute mask.",
-                    "details": {
-                      "google_status": "INVALID_ARGUMENT"
-                    }
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -26011,65 +24605,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Google rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "details": {
-                          "type": "object",
-                          "properties": {
-                            "google_status": {
-                              "type": "string",
-                              "nullable": true
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "Google Business rejected the request: Invalid attribute mask.",
-                    "details": {
-                      "google_status": "INVALID_ARGUMENT"
-                    }
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -26152,65 +24688,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Google rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "details": {
-                          "type": "object",
-                          "properties": {
-                            "google_status": {
-                              "type": "string",
-                              "nullable": true
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "Google Business rejected the request: Invalid attribute mask.",
-                    "details": {
-                      "google_status": "INVALID_ARGUMENT"
-                    }
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -26308,65 +24786,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Google rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "details": {
-                          "type": "object",
-                          "properties": {
-                            "google_status": {
-                              "type": "string",
-                              "nullable": true
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "Google Business rejected the request: Invalid attribute mask.",
-                    "details": {
-                      "google_status": "INVALID_ARGUMENT"
-                    }
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -26452,65 +24872,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Google rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "details": {
-                          "type": "object",
-                          "properties": {
-                            "google_status": {
-                              "type": "string",
-                              "nullable": true
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "Google Business rejected the request: Invalid attribute mask.",
-                    "details": {
-                      "google_status": "INVALID_ARGUMENT"
-                    }
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -26606,53 +24968,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "The platform rejected the request."
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -26735,65 +25051,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Google rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "details": {
-                          "type": "object",
-                          "properties": {
-                            "google_status": {
-                              "type": "string",
-                              "nullable": true
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "Google Business rejected the request: Invalid attribute mask.",
-                    "details": {
-                      "google_status": "INVALID_ARGUMENT"
-                    }
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -26891,65 +25149,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Google rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        },
-                        "details": {
-                          "type": "object",
-                          "properties": {
-                            "google_status": {
-                              "type": "string",
-                              "nullable": true
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "Google Business rejected the request: Invalid attribute mask.",
-                    "details": {
-                      "google_status": "INVALID_ARGUMENT"
-                    }
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -27076,53 +25276,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "The platform rejected the request."
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -27220,53 +25374,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "The platform rejected the request."
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -27441,53 +25549,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "The platform rejected the request."
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -27589,53 +25651,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "The platform rejected the request."
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -27722,53 +25738,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "The platform rejected the request."
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -27880,53 +25850,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "The platform rejected the request."
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -27989,53 +25913,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "The platform rejected the request."
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -28122,53 +26000,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "The platform rejected the request."
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -28279,53 +26111,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "The platform rejected the request."
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -28388,53 +26174,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "The platform rejected the request."
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -28560,53 +26300,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "The platform rejected the request."
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -28712,53 +26406,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "The platform rejected the request."
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -28862,53 +26510,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "The platform rejected the request."
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -29014,53 +26616,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "Platform rejected the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "object",
-                      "properties": {
-                        "code": {
-                          "type": "string",
-                          "enum": [
-                            "PLATFORM_ERROR"
-                          ]
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "meta": {
-                      "$ref": "#/components/schemas/RequestMeta"
-                    }
-                  }
-                },
-                "example": {
-                  "success": false,
-                  "error": {
-                    "code": "PLATFORM_ERROR",
-                    "message": "The platform rejected the request."
-                  },
-                  "meta": {
-                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
-                    "timestamp": "2026-07-26T09:41:22Z"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -29847,13 +27403,52 @@
             }
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
+            "description": "Invalid input, or the connected platform refused the request: whatsApp rejected the message (e.g. outside the 24h window with no template).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "platform_refused": {
+                    "summary": "The platform refused the request",
+                    "value": {
+                      "success": false,
+                      "error": {
+                        "code": "PLATFORM_ERROR",
+                        "message": "Facebook rejected the request: Error validating access token: Session has expired on Tuesday, 15-Sep-26 10:00:00 PDT."
+                      },
+                      "meta": {
+                        "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                        "timestamp": "2026-09-17T09:41:22Z"
+                      }
+                    }
+                  },
+                  "validation": {
+                    "summary": "Invalid input",
+                    "value": {
+                      "success": false,
+                      "error": {
+                        "code": "VALIDATION_ERROR",
+                        "message": "Missing required fields: name.",
+                        "details": {
+                          "fields": [
+                            "name"
+                          ]
+                        }
+                      },
+                      "meta": {
+                        "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                        "timestamp": "2026-09-17T09:41:22Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
-          },
-          "502": {
-            "description": "WhatsApp rejected the message (e.g. outside the 24h window with no template)."
           }
         },
         "x-scopes": [
@@ -30515,10 +28110,49 @@
             }
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "WhatsApp rejected the upload."
+            "description": "Invalid input, or the connected platform refused the request: whatsApp rejected the upload.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "platform_refused": {
+                    "summary": "The platform refused the request",
+                    "value": {
+                      "success": false,
+                      "error": {
+                        "code": "PLATFORM_ERROR",
+                        "message": "Facebook rejected the request: Error validating access token: Session has expired on Tuesday, 15-Sep-26 10:00:00 PDT."
+                      },
+                      "meta": {
+                        "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                        "timestamp": "2026-09-17T09:41:22Z"
+                      }
+                    }
+                  },
+                  "validation": {
+                    "summary": "Invalid input",
+                    "value": {
+                      "success": false,
+                      "error": {
+                        "code": "VALIDATION_ERROR",
+                        "message": "Missing required fields: name.",
+                        "details": {
+                          "fields": [
+                            "name"
+                          ]
+                        }
+                      },
+                      "meta": {
+                        "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                        "timestamp": "2026-09-17T09:41:22Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "x-scopes": [
@@ -30689,8 +28323,50 @@
           "200": {
             "description": "Published"
           },
-          "502": {
-            "description": "The flow failed Meta's publish validation."
+          "422": {
+            "description": "Invalid input, or the connected platform refused the request: the flow failed Meta's publish validation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "platform_refused": {
+                    "summary": "The platform refused the request",
+                    "value": {
+                      "success": false,
+                      "error": {
+                        "code": "PLATFORM_ERROR",
+                        "message": "Facebook rejected the request: Error validating access token: Session has expired on Tuesday, 15-Sep-26 10:00:00 PDT."
+                      },
+                      "meta": {
+                        "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                        "timestamp": "2026-09-17T09:41:22Z"
+                      }
+                    }
+                  },
+                  "validation": {
+                    "summary": "Invalid input",
+                    "value": {
+                      "success": false,
+                      "error": {
+                        "code": "VALIDATION_ERROR",
+                        "message": "Missing required fields: name.",
+                        "details": {
+                          "fields": [
+                            "name"
+                          ]
+                        }
+                      },
+                      "meta": {
+                        "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                        "timestamp": "2026-09-17T09:41:22Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "x-scopes": [
@@ -30851,10 +28527,7 @@
             }
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "description": "WhatsApp rejected the request."
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -32141,10 +29814,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "$ref": "#/components/responses/BadRequest"
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -32252,10 +29922,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "$ref": "#/components/responses/BadRequest"
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -32312,10 +29979,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "$ref": "#/components/responses/BadRequest"
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -32392,10 +30056,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "$ref": "#/components/responses/BadRequest"
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -32478,10 +30139,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "$ref": "#/components/responses/BadRequest"
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -32562,10 +30220,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "$ref": "#/components/responses/BadRequest"
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -32664,10 +30319,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "$ref": "#/components/responses/BadRequest"
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -32766,10 +30418,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "$ref": "#/components/responses/BadRequest"
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -32877,10 +30526,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "$ref": "#/components/responses/BadRequest"
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -32988,10 +30634,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "$ref": "#/components/responses/BadRequest"
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -33149,10 +30792,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "$ref": "#/components/responses/BadRequest"
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -33165,7 +30805,7 @@
         "tags": [
           "Social"
         ],
-        "description": "Edit the page's public details. Send only the fields you want to change.\n\nNeeds the page-metadata permission on the connection. Pages connected through an older flow that never requested it get `reconnect_required` rather than a silent no-op.\n\nRequires scope `social:write`.",
+        "description": "Edit the page's public details. Send only the fields you want to change.\n\nEach field is saved on Facebook separately, in the order about, description, phone, website, emails, hours. If Facebook refuses one, the request stops there and returns `422 PLATFORM_ERROR`: `details.field` names the refused field and `details.saved_fields` lists the fields already saved. Fields after the refused one are not sent.\n\nNeeds the page-metadata permission on the connection. Pages connected through an older flow that never requested it get `reconnect_required` rather than a silent no-op.\n\nRequires scope `social:write`.",
         "parameters": [
           {
             "name": "account_id",
@@ -33239,7 +30879,7 @@
                           "items": {
                             "type": "string"
                           },
-                          "description": "Fields that were sent."
+                          "description": "Fields that were saved."
                         }
                       }
                     }
@@ -33258,10 +30898,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "$ref": "#/components/responses/BadRequest"
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -33842,10 +31479,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "$ref": "#/components/responses/BadRequest"
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -33949,10 +31583,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "$ref": "#/components/responses/BadRequest"
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -34050,10 +31681,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "$ref": "#/components/responses/BadRequest"
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -34154,10 +31782,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "$ref": "#/components/responses/BadRequest"
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -34262,10 +31887,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "$ref": "#/components/responses/BadRequest"
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -34379,10 +32001,7 @@
             "$ref": "#/components/responses/NotFound"
           },
           "422": {
-            "$ref": "#/components/responses/ValidationError"
-          },
-          "502": {
-            "$ref": "#/components/responses/BadRequest"
+            "$ref": "#/components/responses/PlatformRejected"
           }
         },
         "x-scopes": [
@@ -40644,6 +38263,51 @@
               "meta": {
                 "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
                 "timestamp": "2026-07-26T09:41:22Z"
+              }
+            }
+          }
+        }
+      },
+      "PlatformRejected": {
+        "description": "Invalid input, or the connected platform refused the request. `error.message` carries the platform's own reason, for example an expired token or a value it does not accept.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "examples": {
+              "platform_refused": {
+                "summary": "The platform refused the request",
+                "value": {
+                  "success": false,
+                  "error": {
+                    "code": "PLATFORM_ERROR",
+                    "message": "Facebook rejected the request: Error validating access token: Session has expired on Tuesday, 15-Sep-26 10:00:00 PDT."
+                  },
+                  "meta": {
+                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                    "timestamp": "2026-09-17T09:41:22Z"
+                  }
+                }
+              },
+              "validation": {
+                "summary": "Invalid input",
+                "value": {
+                  "success": false,
+                  "error": {
+                    "code": "VALIDATION_ERROR",
+                    "message": "Missing required fields: name.",
+                    "details": {
+                      "fields": [
+                        "name"
+                      ]
+                    }
+                  },
+                  "meta": {
+                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                    "timestamp": "2026-09-17T09:41:22Z"
+                  }
+                }
               }
             }
           }
