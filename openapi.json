@@ -9997,6 +9997,46 @@
                   "source": {
                     "type": "string"
                   },
+                  "address1": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "description": "Street line.",
+                    "example": "12 Ermou St"
+                  },
+                  "city": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "example": "Athens"
+                  },
+                  "state": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "description": "State, region or province.",
+                    "example": "Attica"
+                  },
+                  "postal_code": {
+                    "type": "string",
+                    "maxLength": 20,
+                    "description": "Text, not a number - leading zeros and letters are kept (\"02134\", \"SW1A 1AA\").",
+                    "example": "10563"
+                  },
+                  "country": {
+                    "type": "string",
+                    "description": "ISO 3166-1 alpha-2 code (\"GR\") or an English country name (\"Greece\"); stored and returned as the code. An unknown country is a 422.",
+                    "example": "GR"
+                  },
+                  "date_of_birth": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "YYYY-MM-DD (DD/MM/YYYY also accepted). A real past date after 1900; anything else is a 422.",
+                    "example": "1985-03-14"
+                  },
+                  "website": {
+                    "type": "string",
+                    "maxLength": 500,
+                    "description": "A bare domain gets https:// added.",
+                    "example": "https://example.com"
+                  },
                   "tags": {
                     "type": "array",
                     "items": {
@@ -10085,6 +10125,57 @@
                         "source": {
                           "type": "string",
                           "example": "api"
+                        },
+                        "address1": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "example": "12 Ermou St"
+                        },
+                        "city": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "example": "Athens"
+                        },
+                        "state": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "example": "Attica"
+                        },
+                        "postal_code": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "example": "10563"
+                        },
+                        "country": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "description": "ISO 3166-1 alpha-2.",
+                          "example": "GR"
+                        },
+                        "date_of_birth": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "format": "date",
+                          "example": "1985-03-14"
+                        },
+                        "website": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "example": "https://example.com"
                         },
                         "created_at": {
                           "type": "string",
@@ -10205,6 +10296,57 @@
                         "source": {
                           "type": "string",
                           "example": "api"
+                        },
+                        "address1": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "example": "12 Ermou St"
+                        },
+                        "city": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "example": "Athens"
+                        },
+                        "state": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "example": "Attica"
+                        },
+                        "postal_code": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "example": "10563"
+                        },
+                        "country": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "description": "ISO 3166-1 alpha-2.",
+                          "example": "GR"
+                        },
+                        "date_of_birth": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "format": "date",
+                          "example": "1985-03-14"
+                        },
+                        "website": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "example": "https://example.com"
                         },
                         "created_at": {
                           "type": "string",
@@ -10396,6 +10538,57 @@
                             "type": "string",
                             "example": "api"
                           },
+                          "address1": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "example": "12 Ermou St"
+                          },
+                          "city": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "example": "Athens"
+                          },
+                          "state": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "example": "Attica"
+                          },
+                          "postal_code": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "example": "10563"
+                          },
+                          "country": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "description": "ISO 3166-1 alpha-2.",
+                            "example": "GR"
+                          },
+                          "date_of_birth": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "format": "date",
+                            "example": "1985-03-14"
+                          },
+                          "website": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "example": "https://example.com"
+                          },
                           "created_at": {
                             "type": "string",
                             "example": "2026-07-01T10:15:00Z"
@@ -10556,6 +10749,57 @@
                           "type": "string",
                           "example": "api"
                         },
+                        "address1": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "example": "12 Ermou St"
+                        },
+                        "city": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "example": "Athens"
+                        },
+                        "state": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "example": "Attica"
+                        },
+                        "postal_code": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "example": "10563"
+                        },
+                        "country": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "description": "ISO 3166-1 alpha-2.",
+                          "example": "GR"
+                        },
+                        "date_of_birth": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "format": "date",
+                          "example": "1985-03-14"
+                        },
+                        "website": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "example": "https://example.com"
+                        },
                         "created_at": {
                           "type": "string",
                           "example": "2026-07-01T10:15:00Z"
@@ -10674,6 +10918,46 @@
                   "source": {
                     "type": "string"
                   },
+                  "address1": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "description": "Street line.",
+                    "example": "12 Ermou St"
+                  },
+                  "city": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "example": "Athens"
+                  },
+                  "state": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "description": "State, region or province.",
+                    "example": "Attica"
+                  },
+                  "postal_code": {
+                    "type": "string",
+                    "maxLength": 20,
+                    "description": "Text, not a number - leading zeros and letters are kept (\"02134\", \"SW1A 1AA\").",
+                    "example": "10563"
+                  },
+                  "country": {
+                    "type": "string",
+                    "description": "ISO 3166-1 alpha-2 code (\"GR\") or an English country name (\"Greece\"); stored and returned as the code. An unknown country is a 422.",
+                    "example": "GR"
+                  },
+                  "date_of_birth": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "YYYY-MM-DD (DD/MM/YYYY also accepted). A real past date after 1900; anything else is a 422.",
+                    "example": "1985-03-14"
+                  },
+                  "website": {
+                    "type": "string",
+                    "maxLength": 500,
+                    "description": "A bare domain gets https:// added.",
+                    "example": "https://example.com"
+                  },
                   "tags": {
                     "type": "array",
                     "items": {
@@ -10761,6 +11045,57 @@
                         "source": {
                           "type": "string",
                           "example": "api"
+                        },
+                        "address1": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "example": "12 Ermou St"
+                        },
+                        "city": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "example": "Athens"
+                        },
+                        "state": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "example": "Attica"
+                        },
+                        "postal_code": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "example": "10563"
+                        },
+                        "country": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "description": "ISO 3166-1 alpha-2.",
+                          "example": "GR"
+                        },
+                        "date_of_birth": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "format": "date",
+                          "example": "1985-03-14"
+                        },
+                        "website": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "example": "https://example.com"
                         },
                         "created_at": {
                           "type": "string",
