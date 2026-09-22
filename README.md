@@ -350,6 +350,8 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Contacts.RemoveTags(ctx, id, body)` | `DELETE /contacts/{id}/tags` | Remove tags from a contact |
 | `client.Contacts.ListNotes(ctx, id)` | `GET /contacts/{id}/notes` | List contact notes |
 | `client.Contacts.AddNote(ctx, id, body)` | `POST /contacts/{id}/notes` | Add a note to a contact |
+| `client.Contacts.UpdateNote(ctx, id, noteId, body)` | `PATCH /contacts/{id}/notes/{note_id}` | Edit a contact note |
+| `client.Contacts.DeleteNote(ctx, id, noteId)` | `DELETE /contacts/{id}/notes/{note_id}` | Delete a contact note |
 | `client.Contacts.Enroll(ctx, id, body)` | `POST /contacts/{id}/enroll` | Enroll a contact in an automation |
 | `client.Contacts.AddMessage(ctx, id, body)` | `POST /contacts/{id}/messages` | Log a message on a contact's timeline |
 | `client.Contacts.SetField(ctx, id, slug, body)` | `PUT /contacts/{id}/fields/{slug}` | Set one custom field |

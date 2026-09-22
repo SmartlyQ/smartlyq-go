@@ -11433,7 +11433,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Notes for the contact, newest first",
+            "description": "Notes for the contact: pinned first, then newest first",
             "content": {
               "application/json": {
                 "schema": {
@@ -11454,17 +11454,89 @@
                             "type": "integer",
                             "example": 771
                           },
+                          "contact_id": {
+                            "type": "integer",
+                            "example": 1204
+                          },
+                          "title": {
+                            "type": "string",
+                            "example": "Annual quote",
+                            "description": "Empty string when the note has no title."
+                          },
                           "body": {
                             "type": "string",
-                            "example": "Asked for an annual quote - follow up Friday."
+                            "example": "Asked for an annual quote - follow up Friday.",
+                            "description": "Plain text, always present."
+                          },
+                          "body_html": {
+                            "type": "string",
+                            "example": "<p>Asked for an <strong>annual quote</strong> - follow up Friday.</p>",
+                            "description": "Formatted version, empty when the note was written as plain text."
+                          },
+                          "color": {
+                            "type": "string",
+                            "enum": [
+                              "",
+                              "yellow",
+                              "green",
+                              "blue",
+                              "gray",
+                              "teal",
+                              "purple",
+                              "orange",
+                              "pink",
+                              "violet",
+                              "cyan"
+                            ],
+                            "example": "yellow"
+                          },
+                          "pinned": {
+                            "type": "boolean",
+                            "example": false
                           },
                           "author_name": {
                             "type": "string",
                             "example": "API"
                           },
+                          "attachments": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 55
+                                },
+                                "file_name": {
+                                  "type": "string",
+                                  "example": "quote.pdf"
+                                },
+                                "file_url": {
+                                  "type": "string",
+                                  "example": "https://cdn.example.com/crm-files/quote.pdf"
+                                },
+                                "mime_type": {
+                                  "type": "string",
+                                  "example": "application/pdf"
+                                },
+                                "file_size": {
+                                  "type": "integer",
+                                  "example": 48213
+                                }
+                              }
+                            }
+                          },
                           "created_at": {
                             "type": "string",
-                            "example": "2026-07-26T09:41:22Z"
+                            "example": "2026-07-26 09:41:22"
+                          },
+                          "updated_at": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "example": null,
+                            "description": "Set when the note was edited."
                           }
                         }
                       }
@@ -11482,9 +11554,16 @@
                   "data": [
                     {
                       "id": 771,
+                      "contact_id": 1204,
+                      "title": "Annual quote",
                       "body": "Asked for an annual quote - follow up Friday.",
+                      "body_html": "<p>Asked for an <strong>annual quote</strong> - follow up Friday.</p>",
+                      "color": "yellow",
+                      "pinned": false,
                       "author_name": "API",
-                      "created_at": "2026-07-26T09:41:22Z"
+                      "attachments": [],
+                      "created_at": "2026-07-26 09:41:22",
+                      "updated_at": null
                     }
                   ],
                   "pagination": {
@@ -11529,12 +11608,45 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "body"
-                ],
                 "properties": {
+                  "title": {
+                    "type": "string",
+                    "maxLength": 120
+                  },
                   "body": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 65000,
+                    "description": "Plain text. Use body or body_html."
+                  },
+                  "body_html": {
+                    "type": "string",
+                    "description": "Formatted text: bold, italic, underline, strike, lists, quotes and http(s)/mailto/tel links. Anything else is removed; body is derived from it."
+                  },
+                  "color": {
+                    "type": "string",
+                    "enum": [
+                      "yellow",
+                      "green",
+                      "blue",
+                      "gray",
+                      "teal",
+                      "purple",
+                      "orange",
+                      "pink",
+                      "violet",
+                      "cyan"
+                    ]
+                  },
+                  "pinned": {
+                    "type": "boolean"
+                  },
+                  "attachment_file_ids": {
+                    "type": "array",
+                    "maxItems": 5,
+                    "items": {
+                      "type": "integer"
+                    },
+                    "description": "Ids of files already on the contact (max 5)."
                   },
                   "author_name": {
                     "type": "string"
@@ -11565,9 +11677,89 @@
                           "type": "integer",
                           "example": 771
                         },
+                        "contact_id": {
+                          "type": "integer",
+                          "example": 1204
+                        },
+                        "title": {
+                          "type": "string",
+                          "example": "Annual quote",
+                          "description": "Empty string when the note has no title."
+                        },
                         "body": {
                           "type": "string",
-                          "example": "Asked for an annual quote - follow up Friday."
+                          "example": "Asked for an annual quote - follow up Friday.",
+                          "description": "Plain text, always present."
+                        },
+                        "body_html": {
+                          "type": "string",
+                          "example": "<p>Asked for an <strong>annual quote</strong> - follow up Friday.</p>",
+                          "description": "Formatted version, empty when the note was written as plain text."
+                        },
+                        "color": {
+                          "type": "string",
+                          "enum": [
+                            "",
+                            "yellow",
+                            "green",
+                            "blue",
+                            "gray",
+                            "teal",
+                            "purple",
+                            "orange",
+                            "pink",
+                            "violet",
+                            "cyan"
+                          ],
+                          "example": "yellow"
+                        },
+                        "pinned": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "author_name": {
+                          "type": "string",
+                          "example": "API"
+                        },
+                        "attachments": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 55
+                              },
+                              "file_name": {
+                                "type": "string",
+                                "example": "quote.pdf"
+                              },
+                              "file_url": {
+                                "type": "string",
+                                "example": "https://cdn.example.com/crm-files/quote.pdf"
+                              },
+                              "mime_type": {
+                                "type": "string",
+                                "example": "application/pdf"
+                              },
+                              "file_size": {
+                                "type": "integer",
+                                "example": 48213
+                              }
+                            }
+                          }
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "example": "2026-07-26 09:41:22"
+                        },
+                        "updated_at": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "example": null,
+                          "description": "Set when the note was edited."
                         }
                       }
                     },
@@ -11580,7 +11772,16 @@
                   "success": true,
                   "data": {
                     "id": 771,
-                    "body": "Asked for an annual quote - follow up Friday."
+                    "contact_id": 1204,
+                    "title": "Annual quote",
+                    "body": "Asked for an annual quote - follow up Friday.",
+                    "body_html": "<p>Asked for an <strong>annual quote</strong> - follow up Friday.</p>",
+                    "color": "yellow",
+                    "pinned": false,
+                    "author_name": "API",
+                    "attachments": [],
+                    "created_at": "2026-07-26 09:41:22",
+                    "updated_at": null
                   },
                   "meta": {
                     "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
@@ -11595,6 +11796,281 @@
           },
           "422": {
             "$ref": "#/components/responses/ValidationError"
+          }
+        },
+        "x-scopes": [
+          "contacts:write"
+        ],
+        "description": "Requires scope `contacts:write`. Raises the \"Note added\" automation trigger (added_by = api). A note needs text, a title or an attachment."
+      }
+    },
+    "/contacts/{id}/notes/{note_id}": {
+      "patch": {
+        "summary": "Edit a contact note",
+        "operationId": "updateContactNote",
+        "tags": [
+          "CRM Contacts"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "note_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "maxLength": 120
+                  },
+                  "body": {
+                    "type": "string",
+                    "maxLength": 65000,
+                    "description": "Plain text. Use body or body_html."
+                  },
+                  "body_html": {
+                    "type": "string",
+                    "description": "Formatted text: bold, italic, underline, strike, lists, quotes and http(s)/mailto/tel links. Anything else is removed; body is derived from it."
+                  },
+                  "color": {
+                    "type": "string",
+                    "enum": [
+                      "yellow",
+                      "green",
+                      "blue",
+                      "gray",
+                      "teal",
+                      "purple",
+                      "orange",
+                      "pink",
+                      "violet",
+                      "cyan"
+                    ]
+                  },
+                  "pinned": {
+                    "type": "boolean"
+                  },
+                  "attachment_file_ids": {
+                    "type": "array",
+                    "maxItems": 5,
+                    "items": {
+                      "type": "integer"
+                    },
+                    "description": "Ids of files already on the contact (max 5)."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The note after the edit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 771
+                        },
+                        "contact_id": {
+                          "type": "integer",
+                          "example": 1204
+                        },
+                        "title": {
+                          "type": "string",
+                          "example": "Annual quote",
+                          "description": "Empty string when the note has no title."
+                        },
+                        "body": {
+                          "type": "string",
+                          "example": "Asked for an annual quote - follow up Friday.",
+                          "description": "Plain text, always present."
+                        },
+                        "body_html": {
+                          "type": "string",
+                          "example": "<p>Asked for an <strong>annual quote</strong> - follow up Friday.</p>",
+                          "description": "Formatted version, empty when the note was written as plain text."
+                        },
+                        "color": {
+                          "type": "string",
+                          "enum": [
+                            "",
+                            "yellow",
+                            "green",
+                            "blue",
+                            "gray",
+                            "teal",
+                            "purple",
+                            "orange",
+                            "pink",
+                            "violet",
+                            "cyan"
+                          ],
+                          "example": "yellow"
+                        },
+                        "pinned": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "author_name": {
+                          "type": "string",
+                          "example": "API"
+                        },
+                        "attachments": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 55
+                              },
+                              "file_name": {
+                                "type": "string",
+                                "example": "quote.pdf"
+                              },
+                              "file_url": {
+                                "type": "string",
+                                "example": "https://cdn.example.com/crm-files/quote.pdf"
+                              },
+                              "mime_type": {
+                                "type": "string",
+                                "example": "application/pdf"
+                              },
+                              "file_size": {
+                                "type": "integer",
+                                "example": 48213
+                              }
+                            }
+                          }
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "example": "2026-07-26 09:41:22"
+                        },
+                        "updated_at": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "example": null,
+                          "description": "Set when the note was edited."
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "id": 771,
+                    "contact_id": 1204,
+                    "title": "Annual quote",
+                    "body": "Asked for an annual quote - follow up Friday.",
+                    "body_html": "<p>Asked for an <strong>annual quote</strong> - follow up Friday.</p>",
+                    "color": "yellow",
+                    "pinned": false,
+                    "author_name": "API",
+                    "attachments": [],
+                    "created_at": "2026-07-26 09:41:22",
+                    "updated_at": "2026-07-27 10:02:11"
+                  },
+                  "meta": {
+                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                    "timestamp": "2026-07-26T09:41:22Z"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Contact or note not found"
+          },
+          "422": {
+            "description": "Invalid field (title too long, unknown colour, more than 5 attachments, a file of another contact)"
+          }
+        },
+        "x-scopes": [
+          "contacts:write"
+        ],
+        "description": "Requires scope `contacts:write`. Only the fields sent change. Editing the title, text, colour or attachments raises the \"Note changed\" automation trigger; pinning does not. An API key acts for the whole workspace and may edit any note."
+      },
+      "delete": {
+        "summary": "Delete a contact note",
+        "operationId": "deleteContactNote",
+        "tags": [
+          "CRM Contacts"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "note_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "data": {
+                    "deleted": true
+                  },
+                  "meta": {
+                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                    "timestamp": "2026-07-26T09:41:22Z"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Contact or note not found"
           }
         },
         "x-scopes": [

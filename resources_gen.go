@@ -1020,6 +1020,20 @@ func (r *ContactsResource) AddNote(ctx context.Context, id string, body map[stri
 	return r.client.do(ctx, "POST", "/contacts/"+url.PathEscape(id)+"/notes", nil, body, opts)
 }
 
+// UpdateNote - Edit a contact note.
+//
+// PATCH /contacts/{id}/notes/{note_id}
+func (r *ContactsResource) UpdateNote(ctx context.Context, id string, noteId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "PATCH", "/contacts/"+url.PathEscape(id)+"/notes/"+url.PathEscape(noteId), nil, body, opts)
+}
+
+// DeleteNote - Delete a contact note.
+//
+// DELETE /contacts/{id}/notes/{note_id}
+func (r *ContactsResource) DeleteNote(ctx context.Context, id string, noteId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "DELETE", "/contacts/"+url.PathEscape(id)+"/notes/"+url.PathEscape(noteId), nil, nil, opts)
+}
+
 // Enroll - Enroll a contact in an automation.
 //
 // POST /contacts/{id}/enroll

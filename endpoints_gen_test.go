@@ -928,6 +928,20 @@ func TestContactsAddNote(t *testing.T) {
 	})
 }
 
+func TestContactsUpdateNote(t *testing.T) {
+	assertEndpoint(t, "PATCH", "/contacts/test-id/notes/test-noteId", func(c *Client) error {
+		_, err := c.Contacts.UpdateNote(context.Background(), "test-id", "test-noteId", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestContactsDeleteNote(t *testing.T) {
+	assertEndpoint(t, "DELETE", "/contacts/test-id/notes/test-noteId", func(c *Client) error {
+		_, err := c.Contacts.DeleteNote(context.Background(), "test-id", "test-noteId", nil)
+		return err
+	})
+}
+
 func TestContactsEnroll(t *testing.T) {
 	assertEndpoint(t, "POST", "/contacts/test-id/enroll", func(c *Client) error {
 		_, err := c.Contacts.Enroll(context.Background(), "test-id", map[string]any{}, nil)
