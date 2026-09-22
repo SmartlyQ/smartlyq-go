@@ -11970,6 +11970,11 @@
                             "type": "string",
                             "example": "Acme Corp"
                           },
+                          "source": {
+                            "type": "string",
+                            "nullable": true,
+                            "example": "Website form"
+                          },
                           "value": {
                             "type": "number",
                             "example": 2500.0
@@ -12065,6 +12070,10 @@
                   "company": {
                     "type": "string"
                   },
+                  "source": {
+                    "type": "string",
+                    "description": "Where the deal came from (a form, a campaign, an ad, typed by hand). Max 100 characters. Omit it on create and the contact's own source is used."
+                  },
                   "value": {
                     "type": "number",
                     "description": "Monetary value."
@@ -12137,6 +12146,11 @@
                         "company": {
                           "type": "string",
                           "example": "Acme Corp"
+                        },
+                        "source": {
+                          "type": "string",
+                          "nullable": true,
+                          "example": "Website form"
                         },
                         "value": {
                           "type": "number",
@@ -12251,6 +12265,11 @@
                           "type": "string",
                           "example": "Acme Corp"
                         },
+                        "source": {
+                          "type": "string",
+                          "nullable": true,
+                          "example": "Website form"
+                        },
                         "value": {
                           "type": "number",
                           "example": 2500.0
@@ -12344,6 +12363,10 @@
                   "company": {
                     "type": "string"
                   },
+                  "source": {
+                    "type": "string",
+                    "description": "Where the deal came from (a form, a campaign, an ad, typed by hand). Max 100 characters. Omit it on create and the contact's own source is used."
+                  },
                   "value": {
                     "type": "number"
                   },
@@ -12413,6 +12436,11 @@
                         "company": {
                           "type": "string",
                           "example": "Acme Corp"
+                        },
+                        "source": {
+                          "type": "string",
+                          "nullable": true,
+                          "example": "Website form"
                         },
                         "value": {
                           "type": "number",
@@ -12609,6 +12637,11 @@
                         "company": {
                           "type": "string",
                           "example": "Acme Corp"
+                        },
+                        "source": {
+                          "type": "string",
+                          "nullable": true,
+                          "example": "Website form"
                         },
                         "value": {
                           "type": "number",
