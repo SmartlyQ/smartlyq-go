@@ -37202,6 +37202,23 @@
                   "address": {
                     "type": "string"
                   },
+                  "city": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string",
+                    "description": "State or region."
+                  },
+                  "postal_code": {
+                    "type": "string"
+                  },
+                  "country": {
+                    "type": "string",
+                    "description": "ISO 3166-1 alpha-2 code, e.g. GR. On create or update an English country name is accepted too."
+                  },
+                  "email": {
+                    "type": "string"
+                  },
                   "notes": {
                     "type": "string"
                   },
@@ -37347,6 +37364,23 @@
                     "type": "string"
                   },
                   "address": {
+                    "type": "string"
+                  },
+                  "city": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string",
+                    "description": "State or region."
+                  },
+                  "postal_code": {
+                    "type": "string"
+                  },
+                  "country": {
+                    "type": "string",
+                    "description": "ISO 3166-1 alpha-2 code, e.g. GR. On create or update an English country name is accepted too."
+                  },
+                  "email": {
                     "type": "string"
                   },
                   "notes": {
@@ -41056,6 +41090,23 @@
             "type": "string"
           },
           "address": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string",
+            "description": "State or region."
+          },
+          "postal_code": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string",
+            "description": "ISO 3166-1 alpha-2 code, e.g. GR. On create or update an English country name is accepted too."
+          },
+          "email": {
             "type": "string"
           },
           "notes": {
