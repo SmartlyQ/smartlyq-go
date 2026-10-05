@@ -17761,10 +17761,16 @@
                         },
                         "platform_options": {
                           "type": "object",
-                          "description": "Per-platform composer options - the same payload the web composer stores; publish handlers read it as-is (unknown keys are ignored, max 20KB). Keyed by platform, e.g. {\"tiktok\": {\"privacy_level\": \"SELF_ONLY\"}, \"instagram\": {\"content\": \"IG-specific caption\"}, \"_thumbnail\": {\"timestamp_ms\": 3000}}. Common keys: per-platform `content` override; tiktok privacy/duet/stitch options; `_thumbnail` custom video cover.",
+                          "additionalProperties": true,
+                          "properties": {
+                            "tiktok": {
+                              "$ref": "#/components/schemas/TikTokPlatformOptions"
+                            }
+                          },
+                          "description": "Per-platform composer options - the same payload the web composer stores; publish handlers read it as-is (unknown keys are ignored, max 20KB). Keyed by platform, e.g. {\"tiktok\": {\"visibility\": \"private\"}, \"instagram\": {\"content\": \"IG-specific caption\"}, \"_thumbnail\": {\"timestamp_ms\": 3000}}. Common keys: per-platform `content` override; tiktok `visibility` (REQUIRED for every TikTok post: public | friends | private - a TikTok post without it is refused with VALIDATION_ERROR; `branded_content` cannot be combined with private), `type` (video | photo), allow_comments/allow_duet/allow_stitch, disclose_content + your_brand/branded_content; `_thumbnail` custom video cover.",
                           "example": {
                             "tiktok": {
-                              "privacy_level": "PUBLIC_TO_EVERYONE"
+                              "visibility": "public"
                             },
                             "instagram": {
                               "content": "IG-flavored caption ✨"
@@ -17980,10 +17986,16 @@
                         },
                         "platform_options": {
                           "type": "object",
-                          "description": "Per-platform composer options - the same payload the web composer stores; publish handlers read it as-is (unknown keys are ignored, max 20KB). Keyed by platform, e.g. {\"tiktok\": {\"privacy_level\": \"SELF_ONLY\"}, \"instagram\": {\"content\": \"IG-specific caption\"}, \"_thumbnail\": {\"timestamp_ms\": 3000}}. Common keys: per-platform `content` override; tiktok privacy/duet/stitch options; `_thumbnail` custom video cover.",
+                          "additionalProperties": true,
+                          "properties": {
+                            "tiktok": {
+                              "$ref": "#/components/schemas/TikTokPlatformOptions"
+                            }
+                          },
+                          "description": "Per-platform composer options - the same payload the web composer stores; publish handlers read it as-is (unknown keys are ignored, max 20KB). Keyed by platform, e.g. {\"tiktok\": {\"visibility\": \"private\"}, \"instagram\": {\"content\": \"IG-specific caption\"}, \"_thumbnail\": {\"timestamp_ms\": 3000}}. Common keys: per-platform `content` override; tiktok `visibility` (REQUIRED for every TikTok post: public | friends | private - a TikTok post without it is refused with VALIDATION_ERROR; `branded_content` cannot be combined with private), `type` (video | photo), allow_comments/allow_duet/allow_stitch, disclose_content + your_brand/branded_content; `_thumbnail` custom video cover.",
                           "example": {
                             "tiktok": {
-                              "privacy_level": "PUBLIC_TO_EVERYONE"
+                              "visibility": "public"
                             },
                             "instagram": {
                               "content": "IG-flavored caption ✨"
@@ -40040,10 +40052,16 @@
           },
           "platform_options": {
             "type": "object",
-            "description": "Per-platform composer options - the same payload the web composer stores; publish handlers read it as-is (unknown keys are ignored, max 20KB). Keyed by platform, e.g. {\"tiktok\": {\"privacy_level\": \"SELF_ONLY\"}, \"instagram\": {\"content\": \"IG-specific caption\"}, \"_thumbnail\": {\"timestamp_ms\": 3000}}. Common keys: per-platform `content` override; tiktok privacy/duet/stitch options; `_thumbnail` custom video cover. See the Platform options guide for every key each platform accepts (privacy, flair, first comments, formatting, AI-disclosure flags, thumbnails and more).",
+            "additionalProperties": true,
+            "properties": {
+              "tiktok": {
+                "$ref": "#/components/schemas/TikTokPlatformOptions"
+              }
+            },
+            "description": "Per-platform composer options - the same payload the web composer stores; publish handlers read it as-is (unknown keys are ignored, max 20KB). Keyed by platform, e.g. {\"tiktok\": {\"visibility\": \"private\"}, \"instagram\": {\"content\": \"IG-specific caption\"}, \"_thumbnail\": {\"timestamp_ms\": 3000}}. Common keys: per-platform `content` override; tiktok `visibility` (REQUIRED for every TikTok post: public | friends | private - a TikTok post without it is refused with VALIDATION_ERROR; `branded_content` cannot be combined with private), `type` (video | photo), allow_comments/allow_duet/allow_stitch, disclose_content + your_brand/branded_content; `_thumbnail` custom video cover. See the Platform options guide for every key each platform accepts (privacy, flair, first comments, formatting, AI-disclosure flags, thumbnails and more).",
             "example": {
               "tiktok": {
-                "privacy_level": "PUBLIC_TO_EVERYONE"
+                "visibility": "public"
               },
               "instagram": {
                 "content": "IG-flavored caption ✨"
@@ -40147,10 +40165,16 @@
           },
           "platform_options": {
             "type": "object",
-            "description": "Per-platform composer options - the same payload the web composer stores; publish handlers read it as-is (unknown keys are ignored, max 20KB). Keyed by platform, e.g. {\"tiktok\": {\"privacy_level\": \"SELF_ONLY\"}, \"instagram\": {\"content\": \"IG-specific caption\"}, \"_thumbnail\": {\"timestamp_ms\": 3000}}. Common keys: per-platform `content` override; tiktok privacy/duet/stitch options; `_thumbnail` custom video cover. Per-platform STAGGER: give any platform its own `scheduled_time` here (interpreted in the request `timezone`) and it publishes at that moment - platforms without one use the request-level scheduled_time. One call, one post per distinct time (response carries `staggered[]` with the created legs). Not combinable with queue_id or recycle.",
+            "additionalProperties": true,
+            "properties": {
+              "tiktok": {
+                "$ref": "#/components/schemas/TikTokPlatformOptions"
+              }
+            },
+            "description": "Per-platform composer options - the same payload the web composer stores; publish handlers read it as-is (unknown keys are ignored, max 20KB). Keyed by platform, e.g. {\"tiktok\": {\"visibility\": \"private\"}, \"instagram\": {\"content\": \"IG-specific caption\"}, \"_thumbnail\": {\"timestamp_ms\": 3000}}. Common keys: per-platform `content` override; tiktok `visibility` (REQUIRED for every TikTok post: public | friends | private - a TikTok post without it is refused with VALIDATION_ERROR; `branded_content` cannot be combined with private), `type` (video | photo), allow_comments/allow_duet/allow_stitch, disclose_content + your_brand/branded_content; `_thumbnail` custom video cover. Per-platform STAGGER: give any platform its own `scheduled_time` here (interpreted in the request `timezone`) and it publishes at that moment - platforms without one use the request-level scheduled_time. One call, one post per distinct time (response carries `staggered[]` with the created legs). Not combinable with queue_id or recycle.",
             "example": {
               "tiktok": {
-                "privacy_level": "PUBLIC_TO_EVERYONE"
+                "visibility": "public"
               },
               "instagram": {
                 "content": "IG-flavored caption ✨"
@@ -40160,10 +40184,85 @@
         },
         "description": "Schedule request. Provide scheduled_time (with optional timezone) OR queue_id (next open slot), not both."
       },
+      "TikTokPlatformOptions": {
+        "type": "object",
+        "description": "TikTok options. TikTok requires the person posting to choose who can see the post, so `visibility` is required for every post that includes TikTok; without it the post is refused with VALIDATION_ERROR. `branded_content` cannot be combined with `visibility: private`.",
+        "required": [
+          "visibility"
+        ],
+        "properties": {
+          "visibility": {
+            "type": "string",
+            "enum": [
+              "public",
+              "friends",
+              "private"
+            ],
+            "description": "Who can view: everyone, friends, or only the account (private)."
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "video",
+              "photo"
+            ],
+            "description": "video (default) or photo for a photo post."
+          },
+          "allow_comments": {
+            "type": "boolean",
+            "description": "Allow comments. Off unless true."
+          },
+          "allow_duet": {
+            "type": "boolean",
+            "description": "Allow duet (video). Off unless true."
+          },
+          "allow_stitch": {
+            "type": "boolean",
+            "description": "Allow stitch (video). Off unless true."
+          },
+          "disclose_content": {
+            "type": "boolean",
+            "description": "The post promotes goods or services. Then set your_brand, branded_content, or both."
+          },
+          "your_brand": {
+            "type": "boolean",
+            "description": "Promotes yourself or your own business (labeled 'Promotional content')."
+          },
+          "branded_content": {
+            "type": "boolean",
+            "description": "Paid partnership promoting a third party (labeled 'Paid partnership'). Not allowed with visibility private."
+          },
+          "photo_title": {
+            "type": "string",
+            "maxLength": 90,
+            "description": "Photo posts: title (the caption is used when empty)."
+          },
+          "photo_cover_index": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Photo posts: 0-based index of the cover image."
+          },
+          "auto_add_music": {
+            "type": "boolean",
+            "description": "Photo posts: let TikTok add recommended music."
+          }
+        },
+        "additionalProperties": true
+      },
       "SocialPostUpdateRequest": {
         "type": "object",
         "description": "At least one field must be provided.",
         "properties": {
+          "platform_options": {
+            "type": "object",
+            "description": "Per-platform options, MERGED over the post's stored options (send null for a key to clear it). Same keys as on create. A post that will be scheduled after the edit is checked against each platform's rules - e.g. a TikTok post without platform_options.tiktok.visibility is refused with VALIDATION_ERROR.",
+            "properties": {
+              "tiktok": {
+                "$ref": "#/components/schemas/TikTokPlatformOptions"
+              }
+            },
+            "additionalProperties": true
+          },
           "content": {
             "type": "string"
           },
