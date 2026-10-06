@@ -17782,7 +17782,7 @@
                   },
                   "csv": {
                     "type": "string",
-                    "description": "Alternative to posts: inline CSV with a header line. Columns: content, platforms, account_ids, scheduled_time, media_urls, link (list cells split on | or ,). Provide posts OR csv, not both."
+                    "description": "Alternative to posts: inline CSV with a header line. Basic columns: content, platforms, account_ids, scheduled_time, media_urls, link, first_comment (list cells split on | or ,; a quoted cell may span lines). Platform options go in `<platform>.<field>` columns, e.g. tiktok.visibility, tiktok.type, youtube.title, pinterest.board_id, instagram.type, gmb.post_type - see the Bulk scheduling guide. Provide posts OR csv, not both."
                   },
                   "timezone": {
                     "type": "string",
@@ -17931,7 +17931,7 @@
         "tags": [
           "Social"
         ],
-        "description": "Free dry-run of the same batch body as POST /social/posts/bulk: per-row structural checks, per-platform caption/media limits, and the 24h duplicate-content check. Nothing is created or billed. Requires scope `social:read`.",
+        "description": "Free dry-run of the same batch body as POST /social/posts/bulk: per-row structural checks, per-platform caption/media limits, the platform rules create enforces (e.g. TikTok `visibility`), and the 24h duplicate-content check. Nothing is created or billed. Requires scope `social:read`.",
         "requestBody": {
           "required": true,
           "content": {
@@ -18007,7 +18007,7 @@
                   },
                   "csv": {
                     "type": "string",
-                    "description": "Alternative to posts: inline CSV with a header line. Columns: content, platforms, account_ids, scheduled_time, media_urls, link (list cells split on | or ,). Provide posts OR csv, not both."
+                    "description": "Alternative to posts: inline CSV with a header line. Basic columns: content, platforms, account_ids, scheduled_time, media_urls, link, first_comment (list cells split on | or ,; a quoted cell may span lines). Platform options go in `<platform>.<field>` columns, e.g. tiktok.visibility, tiktok.type, youtube.title, pinterest.board_id, instagram.type, gmb.post_type - see the Bulk scheduling guide. Provide posts OR csv, not both."
                   },
                   "timezone": {
                     "type": "string",
