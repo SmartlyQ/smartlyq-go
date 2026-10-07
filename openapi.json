@@ -9630,7 +9630,7 @@
                         "webhook_secret": {
                           "type": "string",
                           "nullable": true,
-                          "example": "whsec_3f9c0a6e2b7d4185a0c9e1f2d3b4a5c6",
+                          "example": "whsec_********",
                           "description": "Only when you sent webhook_url. Shown once: verify X-SmartlyQ-Signature on this job's deliveries with it."
                         }
                       }
@@ -9656,7 +9656,7 @@
                     },
                     "language": "en",
                     "webhook_url": "https://example.com/hooks/smartlyq",
-                    "webhook_secret": "whsec_3f9c0a6e2b7d4185a0c9e1f2d3b4a5c6"
+                    "webhook_secret": "whsec_********"
                   },
                   "meta": {
                     "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
