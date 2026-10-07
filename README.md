@@ -411,6 +411,17 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Messages.ReactTo(ctx, conversationId, messageId, body)` | `POST /social/conversations/{conversation_id}/messages/{message_id}/reactions` | React to a message |
 | `client.Messages.RemoveReaction(ctx, conversationId, messageId)` | `DELETE /social/conversations/{conversation_id}/messages/{message_id}/reactions` | Remove a message reaction |
 
+### Edits
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `client.Edits.List(ctx, query)` | `GET /edits` | List video edits |
+| `client.Edits.Create(ctx, body)` | `POST /edits` | Create a video edit |
+| `client.Edits.ListOptions(ctx)` | `GET /edits/options` | List edit options |
+| `client.Edits.Get(ctx, uid)` | `GET /edits/{uid}` | Get a video edit |
+| `client.Edits.Update(ctx, uid, body)` | `PATCH /edits/{uid}` | Update a video edit |
+| `client.Edits.Export(ctx, uid)` | `POST /edits/{uid}/export` | Export a video edit |
+
 ### Images
 
 | Method | Endpoint | Description |

@@ -131,6 +131,10 @@
       "description": "Magic Shorts: turn long videos into ranked viral clips"
     },
     {
+      "name": "Edits",
+      "description": "Edit a whole video by API: captions, zooms, b-roll, silence and filler removal, clean audio, hook, music. Open the result in the editor or export it."
+    },
+    {
       "name": "Presentations",
       "description": "AI presentation (slide deck) generation from a prompt"
     },
@@ -8312,7 +8316,7 @@
                       "post.published"
                     ],
                     "status": "active",
-                    "secret": "whsec_a1b2c3d4e5f6"
+                    "secret": "whsec_********"
                   },
                   "meta": {
                     "request_id": "req_abc123",
@@ -39172,6 +39176,799 @@
           "videos:read"
         ]
       }
+    },
+    "/edits": {
+      "post": {
+        "summary": "Create a video edit",
+        "description": "Edits one video (any aspect ratio, up to 60 minutes): word-by-word captions, magic zooms, stock b-roll, silence and filler removal, clean audio, hook title, music and your brand template. Every field is checked before any charge (422 naming it). Returns `202 Accepted` with an `edit_uid`; the edit becomes `ready` (open it with `editor_url`) and can then be exported with POST /v1/edits/{uid}/export, or set `auto_export` to export straight away. Pass `webhook_url` to be told when it is ready and when it is exported. Billed per source minute (rounded up): 1 minute up front, the rest once the length is known; clean audio and exports are billed per minute too. A failed edit is refunded. Requires scope `videos:write`.",
+        "operationId": "createEdit",
+        "tags": [
+          "Edits"
+        ],
+        "x-scopes": [
+          "videos:write"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "video_url"
+                ],
+                "properties": {
+                  "video_url": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "Direct https media URL of the video (MP4/MOV/WebM)."
+                  },
+                  "title": {
+                    "type": "string",
+                    "maxLength": 255
+                  },
+                  "language": {
+                    "type": "string",
+                    "default": "auto",
+                    "description": "Spoken language: a code from GET /v1/languages, or \"auto\"."
+                  },
+                  "settings": {
+                    "$ref": "#/components/schemas/EditSettings"
+                  },
+                  "webhook_url": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "Public https URL told when the edit is ready, exported or failed (job.completed / job.failed), signed with this edit's webhook_secret."
+                  },
+                  "auto_export": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Export as soon as the edit is ready (export minutes are billed then)."
+                  }
+                }
+              },
+              "example": {
+                "video_url": "https://cdn.example.com/videos/launch.mp4",
+                "title": "Product launch",
+                "settings": {
+                  "caption_style": "word-pop",
+                  "magic_zooms": true,
+                  "magic_broll": true,
+                  "remove_silence": "natural",
+                  "remove_fillers": true
+                },
+                "webhook_url": "https://example.com/hooks/smartlyq"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted: the edit is queued.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "edit_uid": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string",
+                          "example": "queued"
+                        },
+                        "title": {
+                          "type": "string"
+                        },
+                        "language": {
+                          "type": "string"
+                        },
+                        "settings": {
+                          "$ref": "#/components/schemas/EditSettings"
+                        },
+                        "auto_export": {
+                          "type": "boolean"
+                        },
+                        "webhook_url": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "webhook_secret": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "Only when you sent webhook_url. Shown once."
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "edit_uid": "4f1c9a2e7b3d4c5e8f9a0b1c2d3e4f5a",
+                    "status": "queued",
+                    "title": "Product launch",
+                    "language": "auto",
+                    "settings": {
+                      "captions": true,
+                      "caption_style": "word-pop",
+                      "caption_position": "bottom",
+                      "magic_zooms": true,
+                      "magic_broll": true,
+                      "broll_percentage": 40,
+                      "remove_silence": "natural",
+                      "remove_fillers": true,
+                      "clean_audio": false
+                    },
+                    "auto_export": false,
+                    "webhook_url": "https://example.com/hooks/smartlyq",
+                    "webhook_secret": "whsec_********"
+                  },
+                  "meta": {
+                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                    "timestamp": "2026-10-07T09:41:22Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/InsufficientBalance"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        }
+      },
+      "get": {
+        "summary": "List video edits",
+        "description": "Your edits, newest first. Requires scope `videos:read`.",
+        "operationId": "listEdits",
+        "tags": [
+          "Edits"
+        ],
+        "x-scopes": [
+          "videos:read"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "edits": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "edit_uid": {
+                                "type": "string"
+                              },
+                              "title": {
+                                "type": "string"
+                              },
+                              "status": {
+                                "type": "string"
+                              },
+                              "progress": {
+                                "type": "integer"
+                              },
+                              "duration_ms": {
+                                "type": "integer"
+                              },
+                              "output_url": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "created_at": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        },
+                        "page": {
+                          "type": "integer"
+                        },
+                        "per_page": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "edits": [
+                      {
+                        "edit_uid": "4f1c9a2e7b3d4c5e8f9a0b1c2d3e4f5a",
+                        "title": "Product launch",
+                        "status": "ready",
+                        "progress": 100,
+                        "duration_ms": 184000,
+                        "output_url": null,
+                        "created_at": "2026-10-07 09:41:22"
+                      }
+                    ],
+                    "page": 1,
+                    "per_page": 20
+                  },
+                  "meta": {
+                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                    "timestamp": "2026-10-07T09:41:22Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/edits/options": {
+      "get": {
+        "summary": "List edit options",
+        "description": "Every edit setting with its type, default and allowed values, the caption styles, and the limits. Requires scope `videos:read`.",
+        "operationId": "listEditOptions",
+        "tags": [
+          "Edits"
+        ],
+        "x-scopes": [
+          "videos:read"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "settings": {
+                          "type": "object"
+                        },
+                        "caption_styles": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "label": {
+                                "type": "string"
+                              },
+                              "font": {
+                                "type": "string"
+                              },
+                              "light_bold": {
+                                "type": "boolean"
+                              }
+                            }
+                          }
+                        },
+                        "languages": {
+                          "type": "string"
+                        },
+                        "limits": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "settings": {
+                      "remove_silence": {
+                        "type": "string",
+                        "default": "off",
+                        "values": [
+                          "off",
+                          "natural",
+                          "fast",
+                          "extra_fast"
+                        ]
+                      }
+                    },
+                    "caption_styles": [
+                      {
+                        "id": "word-pop",
+                        "label": "Word Pop",
+                        "font": "Montserrat",
+                        "light_bold": true
+                      }
+                    ],
+                    "languages": "GET /v1/languages",
+                    "limits": {
+                      "max_source_minutes": 60,
+                      "billing_unit": "minute, rounded up"
+                    }
+                  },
+                  "meta": {
+                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                    "timestamp": "2026-10-07T09:41:22Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/edits/{uid}": {
+      "get": {
+        "summary": "Get a video edit",
+        "description": "An edit's status, its editor link once ready and its MP4 once exported. Requires scope `videos:read`.",
+        "operationId": "getEdit",
+        "tags": [
+          "Edits"
+        ],
+        "x-scopes": [
+          "videos:read"
+        ],
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The edit_uid returned by POST /v1/edits."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Edit"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "edit_uid": "4f1c9a2e7b3d4c5e8f9a0b1c2d3e4f5a",
+                    "title": "Product launch",
+                    "status": "ready",
+                    "stage": "",
+                    "progress": 100,
+                    "language": "auto",
+                    "duration_ms": 184000,
+                    "width": 1920,
+                    "height": 1080,
+                    "settings": {
+                      "captions": true,
+                      "caption_style": "word-pop",
+                      "caption_position": "bottom",
+                      "magic_zooms": true,
+                      "magic_broll": true,
+                      "broll_percentage": 40,
+                      "remove_silence": "natural",
+                      "remove_fillers": true,
+                      "clean_audio": false
+                    },
+                    "auto_export": false,
+                    "editor_url": "https://app.smartlyq.com/edit/9d2b7c4e1f0a3b5c6d7e8f9a0b1c2d3e",
+                    "output_url": null,
+                    "export_minutes": 0,
+                    "error": "",
+                    "error_code": "",
+                    "webhook_url": "https://example.com/hooks/smartlyq",
+                    "created_at": "2026-10-07 09:41:22",
+                    "updated_at": "2026-10-07 09:44:05"
+                  },
+                  "meta": {
+                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                    "timestamp": "2026-10-07T09:41:22Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update a video edit",
+        "description": "Change the title (any time, nothing is rebuilt) or the settings (when the edit is ready, completed, or failed after it was ready; otherwise 409). Settings merge over the current ones and are checked again; the edit is rebuilt (status rebuilding, then ready) as a new editor project, so changes made by hand in the editor are kept in the old one. Free, except turning clean_audio on, which bills its minutes. Requires scope `videos:write`. After 30 days the edit's working files are deleted and settings can no longer be changed (410 EDIT_EXPIRED).",
+        "operationId": "updateEdit",
+        "tags": [
+          "Edits"
+        ],
+        "x-scopes": [
+          "videos:write"
+        ],
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The edit_uid returned by POST /v1/edits."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "maxLength": 255
+                  },
+                  "settings": {
+                    "$ref": "#/components/schemas/EditSettings"
+                  }
+                }
+              },
+              "example": {
+                "settings": {
+                  "caption_position": "middle",
+                  "remove_silence": "fast"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Title changed (nothing rebuilt).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Edit"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "edit_uid": "4f1c9a2e7b3d4c5e8f9a0b1c2d3e4f5a",
+                    "title": "Launch v2",
+                    "status": "ready",
+                    "stage": "",
+                    "progress": 100,
+                    "language": "auto",
+                    "duration_ms": 184000,
+                    "width": 1920,
+                    "height": 1080,
+                    "settings": {
+                      "captions": true,
+                      "caption_style": "word-pop",
+                      "caption_position": "bottom",
+                      "magic_zooms": true,
+                      "magic_broll": true,
+                      "broll_percentage": 40,
+                      "remove_silence": "natural",
+                      "remove_fillers": true,
+                      "clean_audio": false
+                    },
+                    "auto_export": false,
+                    "editor_url": "https://app.smartlyq.com/edit/9d2b7c4e1f0a3b5c6d7e8f9a0b1c2d3e",
+                    "output_url": null,
+                    "export_minutes": 0,
+                    "error": "",
+                    "error_code": "",
+                    "webhook_url": "https://example.com/hooks/smartlyq",
+                    "created_at": "2026-10-07 09:41:22",
+                    "updated_at": "2026-10-07 09:44:05"
+                  },
+                  "meta": {
+                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                    "timestamp": "2026-10-07T09:41:22Z"
+                  }
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted: the edit is rebuilding.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Edit"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "edit_uid": "4f1c9a2e7b3d4c5e8f9a0b1c2d3e4f5a",
+                    "title": "Product launch",
+                    "status": "rebuilding",
+                    "stage": "rebuild",
+                    "progress": 0,
+                    "language": "auto",
+                    "duration_ms": 184000,
+                    "width": 1920,
+                    "height": 1080,
+                    "settings": {
+                      "captions": true,
+                      "caption_style": "word-pop",
+                      "caption_position": "bottom",
+                      "magic_zooms": true,
+                      "magic_broll": true,
+                      "broll_percentage": 40,
+                      "remove_silence": "natural",
+                      "remove_fillers": true,
+                      "clean_audio": false
+                    },
+                    "auto_export": false,
+                    "editor_url": "https://app.smartlyq.com/edit/9d2b7c4e1f0a3b5c6d7e8f9a0b1c2d3e",
+                    "output_url": null,
+                    "export_minutes": 0,
+                    "error": "",
+                    "error_code": "",
+                    "webhook_url": "https://example.com/hooks/smartlyq",
+                    "created_at": "2026-10-07 09:41:22",
+                    "updated_at": "2026-10-07 09:44:05"
+                  },
+                  "meta": {
+                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                    "timestamp": "2026-10-07T09:41:22Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/InsufficientBalance"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "410": {
+            "description": "EDIT_EXPIRED: the edit's working files were deleted 30 days after it finished; create a new edit to change it.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/edits/{uid}/export": {
+      "post": {
+        "summary": "Export a video edit",
+        "description": "Renders the edit to an MP4 (when it is ready or completed; otherwise 409, also while another export runs). Billed per output minute, rounded up, before the render starts; a failed render is refunded and the edit goes back to ready. The result arrives as output_url on GET /v1/edits/{uid} and in the job.completed webhook (stage exported). Requires scope `videos:write`. Each export is also saved to your workspace Media Library. After 30 days the edit's working files are deleted and it can no longer be exported again (410 EDIT_EXPIRED); earlier exports stay.",
+        "operationId": "exportEdit",
+        "tags": [
+          "Edits"
+        ],
+        "x-scopes": [
+          "videos:write"
+        ],
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The edit_uid returned by POST /v1/edits."
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted: the export is rendering.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "edit_uid": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string",
+                          "example": "exporting"
+                        },
+                        "export_minutes": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "edit_uid": "4f1c9a2e7b3d4c5e8f9a0b1c2d3e4f5a",
+                    "status": "exporting",
+                    "export_minutes": 3
+                  },
+                  "meta": {
+                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                    "timestamp": "2026-10-07T09:41:22Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/InsufficientBalance"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "410": {
+            "description": "EDIT_EXPIRED: the edit's working files were deleted 30 days after it finished; create a new edit to change it.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -41930,6 +42727,205 @@
             }
           }
         }
+      },
+      "EditSettings": {
+        "type": "object",
+        "description": "How the edit looks. Every key is optional; GET /v1/edits/options lists them with their defaults and allowed values. An unknown key or value is a 422 naming it (e.g. settings.caption_style).",
+        "additionalProperties": false,
+        "properties": {
+          "captions": {
+            "type": "boolean",
+            "default": true,
+            "description": "Burn word-by-word captions into the video."
+          },
+          "caption_style": {
+            "type": "string",
+            "nullable": true,
+            "description": "Caption style id (GET /v1/edits/options). Not sent: your brand template's style."
+          },
+          "caption_format": {
+            "type": "object",
+            "description": "Text formatting switches.",
+            "properties": {
+              "italic": {
+                "type": "boolean"
+              },
+              "underline": {
+                "type": "boolean"
+              },
+              "strikethrough": {
+                "type": "boolean"
+              },
+              "uppercase": {
+                "type": "boolean"
+              },
+              "light_bold": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false
+          },
+          "caption_position": {
+            "type": "string",
+            "enum": [
+              "bottom",
+              "middle",
+              "top"
+            ],
+            "default": "bottom"
+          },
+          "magic_zooms": {
+            "type": "boolean",
+            "default": false,
+            "description": "Punch-in zooms on key moments."
+          },
+          "magic_broll": {
+            "type": "boolean",
+            "default": false,
+            "description": "Stock b-roll cutaways over the speaker."
+          },
+          "broll_percentage": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "default": 50,
+            "description": "Share of the eligible moments that get b-roll (with magic_broll)."
+          },
+          "remove_silence": {
+            "type": "string",
+            "enum": [
+              "off",
+              "natural",
+              "fast",
+              "extra_fast"
+            ],
+            "default": "off",
+            "description": "Shorten pauses between phrases to 0.6 s (natural), 0.2 s (fast) or 0.1 s (extra_fast)."
+          },
+          "remove_fillers": {
+            "type": "boolean",
+            "default": false,
+            "description": "Cut filler sounds such as \"um\" and \"uh\"."
+          },
+          "clean_audio": {
+            "type": "boolean",
+            "default": false,
+            "description": "Voice-only cleaned soundtrack. Billed separately (edits/clean-audio, per source minute)."
+          },
+          "hook_title": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 120,
+            "description": "Headline shown for the first 3 seconds."
+          },
+          "music_url": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri",
+            "description": "Background music (public https URL)."
+          },
+          "music_volume": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "default": 0.15,
+            "description": "Music volume under the voice."
+          },
+          "apply_brand_template": {
+            "type": "boolean",
+            "default": true,
+            "description": "Use the workspace brand template (logo, caption styling, hook style, music)."
+          }
+        }
+      },
+      "Edit": {
+        "type": "object",
+        "properties": {
+          "edit_uid": {
+            "type": "string",
+            "example": "4f1c9a2e7b3d4c5e8f9a0b1c2d3e4f5a"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "queued",
+              "processing",
+              "ready",
+              "rebuilding",
+              "exporting",
+              "completed",
+              "failed"
+            ],
+            "description": "ready = edited and open in the editor (editor_url); completed = exported (output_url)."
+          },
+          "stage": {
+            "type": "string",
+            "description": "The step while processing: source, measure, prepare, billing, clean, words, design, rebuild."
+          },
+          "progress": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "language": {
+            "type": "string",
+            "example": "auto"
+          },
+          "duration_ms": {
+            "type": "integer",
+            "description": "Source length."
+          },
+          "width": {
+            "type": "integer"
+          },
+          "height": {
+            "type": "integer"
+          },
+          "settings": {
+            "$ref": "#/components/schemas/EditSettings"
+          },
+          "auto_export": {
+            "type": "boolean"
+          },
+          "editor_url": {
+            "type": "string",
+            "nullable": true,
+            "description": "Open and fine-tune the edit in the SmartlyQ video editor."
+          },
+          "output_url": {
+            "type": "string",
+            "nullable": true,
+            "description": "The exported MP4 (after POST /v1/edits/{uid}/export). Also saved to your workspace Media Library and never deleted automatically."
+          },
+          "export_minutes": {
+            "type": "integer",
+            "description": "Minutes the last export was billed for."
+          },
+          "error": {
+            "type": "string"
+          },
+          "error_code": {
+            "type": "string",
+            "description": "insufficient_balance, source_too_long, source_unreadable, working_copy_failed, transcription_failed, clean_audio_failed, design_failed, render_failed, timed_out, billing_unavailable, billing_error."
+          },
+          "webhook_url": {
+            "type": "string",
+            "nullable": true
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "files_expired": {
+            "type": "boolean",
+            "description": "true once the edit's working files (source copy, b-roll) were deleted, 30 days after it finished. Its exports stay; it can no longer be changed or exported again (410 EDIT_EXPIRED)."
+          }
+        }
       }
     }
   },
@@ -42616,7 +43612,7 @@
                       },
                       "type": {
                         "type": "string",
-                        "description": "The job kind, e.g. \"shorts\" for POST /v1/shorts/generate."
+                        "description": "The job kind: \"shorts\" (POST /v1/shorts/generate) or \"edit\" (POST /v1/edits)."
                       },
                       "status": {
                         "type": "string",
@@ -42638,6 +43634,26 @@
                           "$ref": "#/components/schemas/ShortsClip"
                         },
                         "description": "type \"shorts\": the delivered clips, best first (empty on job.failed)."
+                      },
+                      "stage": {
+                        "type": "string",
+                        "description": "type \"edit\": ready (edited, editor_url) or exported (output_url) on job.completed; edit or export on job.failed."
+                      },
+                      "editor_url": {
+                        "type": "string",
+                        "description": "type \"edit\", stage ready."
+                      },
+                      "output_url": {
+                        "type": "string",
+                        "description": "type \"edit\", stage exported: the MP4."
+                      },
+                      "duration_ms": {
+                        "type": "integer",
+                        "description": "type \"edit\": source length."
+                      },
+                      "error_code": {
+                        "type": "string",
+                        "description": "job.failed for type \"edit\": see Edit.error_code."
                       }
                     },
                     "required": [
@@ -42697,7 +43713,7 @@
                       },
                       "type": {
                         "type": "string",
-                        "description": "The job kind, e.g. \"shorts\" for POST /v1/shorts/generate."
+                        "description": "The job kind: \"shorts\" (POST /v1/shorts/generate) or \"edit\" (POST /v1/edits)."
                       },
                       "status": {
                         "type": "string",
@@ -42722,6 +43738,26 @@
                           "$ref": "#/components/schemas/ShortsClip"
                         },
                         "description": "type \"shorts\": the delivered clips, best first (empty on job.failed)."
+                      },
+                      "stage": {
+                        "type": "string",
+                        "description": "type \"edit\": ready (edited, editor_url) or exported (output_url) on job.completed; edit or export on job.failed."
+                      },
+                      "editor_url": {
+                        "type": "string",
+                        "description": "type \"edit\", stage ready."
+                      },
+                      "output_url": {
+                        "type": "string",
+                        "description": "type \"edit\", stage exported: the MP4."
+                      },
+                      "duration_ms": {
+                        "type": "integer",
+                        "description": "type \"edit\": source length."
+                      },
+                      "error_code": {
+                        "type": "string",
+                        "description": "job.failed for type \"edit\": see Edit.error_code."
                       }
                     },
                     "required": [

@@ -28,6 +28,7 @@ type resources struct {
 	CRMTags       *CRMTagsResource
 	CRMTasks      *CRMTasksResource
 	Messages      *MessagesResource
+	Edits         *EditsResource
 	Images        *ImagesResource
 	Jobs          *JobsResource
 	Logs          *LogsResource
@@ -65,6 +66,7 @@ func (c *Client) initResources() {
 	c.CRMTags = &CRMTagsResource{client: c}
 	c.CRMTasks = &CRMTasksResource{client: c}
 	c.Messages = &MessagesResource{client: c}
+	c.Edits = &EditsResource{client: c}
 	c.Images = &ImagesResource{client: c}
 	c.Jobs = &JobsResource{client: c}
 	c.Logs = &LogsResource{client: c}
@@ -1278,6 +1280,51 @@ func (r *MessagesResource) ReactTo(ctx context.Context, conversationId string, m
 // DELETE /social/conversations/{conversation_id}/messages/{message_id}/reactions
 func (r *MessagesResource) RemoveReaction(ctx context.Context, conversationId string, messageId string, opts *RequestOptions) (*Envelope, error) {
 	return r.client.do(ctx, "DELETE", "/social/conversations/"+url.PathEscape(conversationId)+"/messages/"+url.PathEscape(messageId)+"/reactions", nil, nil, opts)
+}
+
+// EditsResource groups the Edits endpoints.
+type EditsResource struct{ client *Client }
+
+// List - List video edits.
+//
+// GET /edits
+func (r *EditsResource) List(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/edits", query, nil, opts)
+}
+
+// Create - Create a video edit.
+//
+// POST /edits
+func (r *EditsResource) Create(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/edits", nil, body, opts)
+}
+
+// ListOptions - List edit options.
+//
+// GET /edits/options
+func (r *EditsResource) ListOptions(ctx context.Context, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/edits/options", nil, nil, opts)
+}
+
+// Get - Get a video edit.
+//
+// GET /edits/{uid}
+func (r *EditsResource) Get(ctx context.Context, uid string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/edits/"+url.PathEscape(uid), nil, nil, opts)
+}
+
+// Update - Update a video edit.
+//
+// PATCH /edits/{uid}
+func (r *EditsResource) Update(ctx context.Context, uid string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "PATCH", "/edits/"+url.PathEscape(uid), nil, body, opts)
+}
+
+// Export - Export a video edit.
+//
+// POST /edits/{uid}/export
+func (r *EditsResource) Export(ctx context.Context, uid string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/edits/"+url.PathEscape(uid)+"/export", nil, nil, opts)
 }
 
 // ImagesResource groups the Images endpoints.

@@ -1173,6 +1173,48 @@ func TestMessagesRemoveReaction(t *testing.T) {
 	})
 }
 
+func TestEditsList(t *testing.T) {
+	assertEndpoint(t, "GET", "/edits", func(c *Client) error {
+		_, err := c.Edits.List(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestEditsCreate(t *testing.T) {
+	assertEndpoint(t, "POST", "/edits", func(c *Client) error {
+		_, err := c.Edits.Create(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestEditsListOptions(t *testing.T) {
+	assertEndpoint(t, "GET", "/edits/options", func(c *Client) error {
+		_, err := c.Edits.ListOptions(context.Background(), nil)
+		return err
+	})
+}
+
+func TestEditsGet(t *testing.T) {
+	assertEndpoint(t, "GET", "/edits/test-uid", func(c *Client) error {
+		_, err := c.Edits.Get(context.Background(), "test-uid", nil)
+		return err
+	})
+}
+
+func TestEditsUpdate(t *testing.T) {
+	assertEndpoint(t, "PATCH", "/edits/test-uid", func(c *Client) error {
+		_, err := c.Edits.Update(context.Background(), "test-uid", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestEditsExport(t *testing.T) {
+	assertEndpoint(t, "POST", "/edits/test-uid/export", func(c *Client) error {
+		_, err := c.Edits.Export(context.Background(), "test-uid", nil)
+		return err
+	})
+}
+
 func TestImagesGenerate(t *testing.T) {
 	assertEndpoint(t, "POST", "/images/generate", func(c *Client) error {
 		_, err := c.Images.Generate(context.Background(), map[string]any{}, nil)
