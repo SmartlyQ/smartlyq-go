@@ -39180,7 +39180,7 @@
     "/edits": {
       "post": {
         "summary": "Create a video edit",
-        "description": "Edits one video (any aspect ratio, up to 60 minutes): word-by-word captions, magic zooms, stock b-roll, silence and filler removal, clean audio, hook title, music and your brand template. Every field is checked before any charge (422 naming it). Returns `202 Accepted` with an `edit_uid`; the edit becomes `ready` (open it with `editor_url`) and can then be exported with POST /v1/edits/{uid}/export, or set `auto_export` to export straight away. Pass `webhook_url` to be told when it is ready and when it is exported. Billed per source minute (rounded up): 1 minute up front, the rest once the length is known; clean audio and exports are billed per minute too. A failed edit is refunded. Requires scope `videos:write`.",
+        "description": "Edits one video (any aspect ratio, up to 60 minutes): word-by-word captions, magic zooms, stock b-roll, silence and filler removal, clean audio, hook title, music and your brand template. Every field is checked before any charge (422 naming it). Returns `202 Accepted` with an `edit_uid`; the edit becomes `ready` (open it with `editor_url`) and can then be exported with POST /v1/edits/{uid}/export, or set `auto_export` to export straight away. Pass `webhook_url` to be told when it is ready and when it is exported. Billed per source minute (rounded up): 1 minute up front, the rest once the length is known; clean audio and exports are billed per minute too. A failed edit is refunded, except when the video is over 60 minutes or your wallet cannot pay the rest: then the first minute is kept for the download and checks already done. Requires scope `videos:write`.",
         "operationId": "createEdit",
         "tags": [
           "Edits"
@@ -39280,12 +39280,11 @@
                         },
                         "webhook_url": {
                           "type": "string",
-                          "nullable": true
+                          "description": "Only present when you sent webhook_url."
                         },
                         "webhook_secret": {
                           "type": "string",
-                          "nullable": true,
-                          "description": "Only when you sent webhook_url. Shown once."
+                          "description": "Only present when you sent webhook_url. Shown once: verify X-SmartlyQ-Signature with it."
                         }
                       }
                     },
@@ -39842,9 +39841,6 @@
           },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
-          },
-          "402": {
-            "$ref": "#/components/responses/InsufficientBalance"
           },
           "403": {
             "$ref": "#/components/responses/Forbidden"
@@ -42822,7 +42818,7 @@
             "type": "string",
             "nullable": true,
             "format": "uri",
-            "description": "Background music (public https URL)."
+            "description": "Background music: a public https URL (a private or internal host is refused with a 422)."
           },
           "music_volume": {
             "type": "number",
@@ -42863,7 +42859,8 @@
           },
           "stage": {
             "type": "string",
-            "description": "The step while processing: source, measure, prepare, billing, clean, words, design, rebuild."
+            "description": "The step while processing: source, measure, prepare, billing, clean, words, design, rebuild.",
+            "nullable": true
           },
           "progress": {
             "type": "integer",
@@ -42905,11 +42902,13 @@
             "description": "Minutes the last export was billed for."
           },
           "error": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "error_code": {
             "type": "string",
-            "description": "insufficient_balance, source_too_long, source_unreadable, working_copy_failed, transcription_failed, clean_audio_failed, design_failed, render_failed, timed_out, billing_unavailable, billing_error."
+            "description": "insufficient_balance, source_too_long, source_unreadable, working_copy_failed, transcription_failed, clean_audio_failed, design_failed, render_failed, timed_out, billing_unavailable, billing_error.",
+            "nullable": true
           },
           "webhook_url": {
             "type": "string",
