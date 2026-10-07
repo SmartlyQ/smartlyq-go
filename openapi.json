@@ -6658,7 +6658,7 @@
         "x-scopes": [
           "social:write"
         ],
-        "description": "Requires scope `social:write`."
+        "description": "Re-publishes the platforms of a post that failed. Only platforms without a published post are retried; a platform that already published is never posted again (asking only for those answers 422 NOTHING_TO_RETRY). One retry runs at a time per post: while one is publishing, another answers 409 RETRY_IN_PROGRESS and publishes nothing - wait for the first to finish, then read the post. Requires scope `social:write`."
       }
     },
     "/social/comments": {
