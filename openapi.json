@@ -9547,8 +9547,7 @@
                   },
                   "magic_broll": {
                     "type": "boolean",
-                    "default": false,
-                    "description": "Add a stock b-roll cutaway to each clip (6 s or longer, not in split screen)."
+                    "description": "Stock b-roll cutaways (clips of 6 s or longer, not in split screen): true = on, false = off even if the brand template has it on, omit = brand template."
                   },
                   "apply_brand_template": {
                     "type": "boolean",
@@ -10084,7 +10083,8 @@
                               "nullable": true
                             },
                             "magic_broll": {
-                              "type": "boolean"
+                              "type": "boolean",
+                              "description": "Whether the clips got stock b-roll: asked for, or the brand template's (false when the job turned it off)."
                             }
                           }
                         }
