@@ -509,6 +509,7 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Shorts.List(ctx, query)` | `GET /shorts` | List shorts jobs |
 | `client.Shorts.ListCaptionStyles(ctx)` | `GET /shorts/caption-styles` | List caption styles for shorts |
 | `client.Shorts.Get(ctx, uid)` | `GET /shorts/{uid}` | Get shorts job + clips |
+| `client.Shorts.ListLanguages(ctx)` | `GET /languages` | List speech languages |
 
 ### Social
 

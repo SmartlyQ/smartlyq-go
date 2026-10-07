@@ -1551,6 +1551,13 @@ func TestShortsGet(t *testing.T) {
 	})
 }
 
+func TestShortsListLanguages(t *testing.T) {
+	assertEndpoint(t, "GET", "/languages", func(c *Client) error {
+		_, err := c.Shorts.ListLanguages(context.Background(), nil)
+		return err
+	})
+}
+
 func TestSocialListAccounts(t *testing.T) {
 	assertEndpoint(t, "GET", "/social/accounts", func(c *Client) error {
 		_, err := c.Social.ListAccounts(context.Background(), nil)

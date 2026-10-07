@@ -1685,6 +1685,13 @@ func (r *ShortsResource) Get(ctx context.Context, uid string, opts *RequestOptio
 	return r.client.do(ctx, "GET", "/shorts/"+url.PathEscape(uid), nil, nil, opts)
 }
 
+// ListLanguages - List speech languages.
+//
+// GET /languages
+func (r *ShortsResource) ListLanguages(ctx context.Context, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/languages", nil, nil, opts)
+}
+
 // SocialResource groups the Social endpoints.
 type SocialResource struct{ client *Client }
 
