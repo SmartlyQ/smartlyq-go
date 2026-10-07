@@ -1537,6 +1537,13 @@ func TestShortsList(t *testing.T) {
 	})
 }
 
+func TestShortsListCaptionStyles(t *testing.T) {
+	assertEndpoint(t, "GET", "/shorts/caption-styles", func(c *Client) error {
+		_, err := c.Shorts.ListCaptionStyles(context.Background(), nil)
+		return err
+	})
+}
+
 func TestShortsGet(t *testing.T) {
 	assertEndpoint(t, "GET", "/shorts/test-uid", func(c *Client) error {
 		_, err := c.Shorts.Get(context.Background(), "test-uid", nil)

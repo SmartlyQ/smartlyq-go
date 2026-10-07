@@ -507,6 +507,7 @@ All methods below are available on the client. Every method also accepts a trail
 | --- | --- | --- |
 | `client.Shorts.Generate(ctx, body)` | `POST /shorts/generate` | Generate viral shorts from a long video |
 | `client.Shorts.List(ctx, query)` | `GET /shorts` | List shorts jobs |
+| `client.Shorts.ListCaptionStyles(ctx)` | `GET /shorts/caption-styles` | List caption styles for shorts |
 | `client.Shorts.Get(ctx, uid)` | `GET /shorts/{uid}` | Get shorts job + clips |
 
 ### Social

@@ -9440,7 +9440,7 @@
     "/shorts/generate": {
       "post": {
         "summary": "Generate viral shorts from a long video",
-        "description": "Turns one long video into ranked, ready-to-post vertical (9:16) clips with hooks + virality scores. Provide `video_url` (direct media) OR `source_url` (a YouTube/Vimeo/TikTok link). Returns `202 Accepted` with a `job_uid`; poll `GET /v1/shorts/{uid}`. Billed per REQUESTED clip from your API wallet; a wholly-failed job is refunded automatically. Requires scope `videos:write`.",
+        "description": "Turns one long video into ranked, ready-to-post vertical (9:16) clips with hooks + virality scores. Provide `video_url` (direct media) OR `source_url` (a YouTube/Vimeo/TikTok link). Optional per-job choices: caption style and formatting (italic, underline, strikethrough, uppercase, Light to Bold), clip length, genre, a focus prompt, a timeframe, b-roll and branding; anything left out follows your brand template. Every option is checked before the job is charged: an unknown value is a 422 naming the field. Returns `202 Accepted` with a `job_uid`; poll `GET /v1/shorts/{uid}`. Billed per REQUESTED clip from your API wallet; a wholly-failed job is refunded automatically. Requires scope `videos:write`.",
         "operationId": "generateShorts",
         "tags": [
           "Shorts"
@@ -9469,7 +9469,108 @@
                     "type": "string",
                     "default": "en",
                     "description": "Spoken language code."
+                  },
+                  "caption_style": {
+                    "type": "string",
+                    "description": "Caption style id for this job (default: your brand template's style). List them with GET /v1/shorts/caption-styles.",
+                    "example": "word-pop"
+                  },
+                  "caption_format": {
+                    "type": "object",
+                    "description": "Text formatting on top of the caption style, for this job only. Each switch is optional; leave one out to keep the style's own look.",
+                    "properties": {
+                      "italic": {
+                        "type": "boolean"
+                      },
+                      "underline": {
+                        "type": "boolean"
+                      },
+                      "strikethrough": {
+                        "type": "boolean"
+                      },
+                      "uppercase": {
+                        "type": "boolean",
+                        "description": "true = all caps, false = as spoken. Left out = the style's own casing."
+                      },
+                      "light_bold": {
+                        "type": "boolean",
+                        "description": "Light to Bold: words start light and turn bold as they are spoken. Applies only to styles whose font has both weights (light_bold: true in GET /v1/shorts/caption-styles); ignored otherwise."
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "clip_length": {
+                    "type": "string",
+                    "enum": [
+                      "auto",
+                      "30",
+                      "60",
+                      "90"
+                    ],
+                    "default": "auto",
+                    "description": "Target clip length: auto (20-90 s), 30 (12-30 s), 60 (30-60 s) or 90 (60-90 s). Clips always start and end on whole sentences."
+                  },
+                  "genre": {
+                    "type": "string",
+                    "enum": [
+                      "podcast",
+                      "lifestyle",
+                      "sports",
+                      "marketing",
+                      "entertainment",
+                      "news",
+                      "education"
+                    ],
+                    "description": "What kind of video it is, so the AI knows what makes a good moment. Left out = detected."
+                  },
+                  "focus": {
+                    "type": "string",
+                    "maxLength": 300,
+                    "description": "What to look for, in plain words, e.g. 'the moments about pricing' or 'only when the guest is speaking'.",
+                    "example": "the funniest moments"
+                  },
+                  "timeframe": {
+                    "type": "object",
+                    "description": "Only pick clips from this part of the video. Leave end_s out for 'to the end'. Must be at least as long as the shortest clip for clip_length.",
+                    "properties": {
+                      "start_s": {
+                        "type": "number",
+                        "minimum": 0,
+                        "example": 30
+                      },
+                      "end_s": {
+                        "type": "number",
+                        "minimum": 0,
+                        "example": 600
+                      }
+                    }
+                  },
+                  "magic_broll": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Add a stock b-roll cutaway to each clip (6 s or longer, not in split screen)."
+                  },
+                  "apply_brand_template": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "false = clean clips with no captions, hook, logo or music (caption_style and caption_format cannot be used then)."
                   }
+                }
+              },
+              "example": {
+                "source_url": "https://www.youtube.com/watch?v=VIDEO_ID",
+                "clip_count": 5,
+                "language": "en",
+                "caption_style": "word-pop",
+                "caption_format": {
+                  "uppercase": true,
+                  "light_bold": true
+                },
+                "clip_length": "60",
+                "focus": "the funniest moments",
+                "timeframe": {
+                  "start_s": 30,
+                  "end_s": 900
                 }
               }
             }
@@ -9503,6 +9604,10 @@
                         "clip_count": {
                           "type": "integer",
                           "example": 3
+                        },
+                        "options": {
+                          "type": "object",
+                          "description": "The optional choices you sent, as applied."
                         }
                       }
                     },
@@ -9516,7 +9621,15 @@
                   "data": {
                     "job_uid": "shorts_8f21c04a",
                     "status": "queued",
-                    "clip_count": 3
+                    "clip_count": 3,
+                    "options": {
+                      "caption_style": "word-pop",
+                      "caption_format": {
+                        "uppercase": true,
+                        "light_bold": true
+                      },
+                      "clip_length": "60"
+                    }
                   },
                   "meta": {
                     "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
@@ -9706,6 +9819,152 @@
         ]
       }
     },
+    "/shorts/caption-styles": {
+      "get": {
+        "summary": "List caption styles for shorts",
+        "description": "The caption styles a `generateShorts` request can name in `caption_style`, whether `caption_format.light_bold` applies to each, and the other allowed option values. Requires scope `videos:read`.",
+        "operationId": "listShortsCaptionStyles",
+        "tags": [
+          "Shorts"
+        ],
+        "responses": {
+          "200": {
+            "description": "Caption styles and option values.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "caption_styles": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "example": "word-pop"
+                              },
+                              "label": {
+                                "type": "string",
+                                "example": "Word Pop"
+                              },
+                              "font": {
+                                "type": "string",
+                                "example": "Montserrat"
+                              },
+                              "light_bold": {
+                                "type": "boolean",
+                                "description": "Whether caption_format.light_bold applies to this style."
+                              }
+                            }
+                          }
+                        },
+                        "caption_format": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "clip_lengths": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "genres": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "caption_styles": [
+                      {
+                        "id": "karaoke",
+                        "label": "Classic",
+                        "font": "Montserrat",
+                        "light_bold": true
+                      },
+                      {
+                        "id": "beasty",
+                        "label": "Big Bold",
+                        "font": "Anton",
+                        "light_bold": false
+                      },
+                      {
+                        "id": "word-pop",
+                        "label": "Word Pop",
+                        "font": "Montserrat",
+                        "light_bold": true
+                      },
+                      {
+                        "id": "light-bold",
+                        "label": "Light to Bold",
+                        "font": "Inter",
+                        "light_bold": true
+                      }
+                    ],
+                    "caption_format": [
+                      "italic",
+                      "underline",
+                      "strikethrough",
+                      "uppercase",
+                      "light_bold"
+                    ],
+                    "clip_lengths": [
+                      "auto",
+                      "30",
+                      "60",
+                      "90"
+                    ],
+                    "genres": [
+                      "podcast",
+                      "lifestyle",
+                      "sports",
+                      "marketing",
+                      "entertainment",
+                      "news",
+                      "education"
+                    ]
+                  },
+                  "meta": {
+                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                    "timestamp": "2026-10-06T09:41:22Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        },
+        "x-scopes": [
+          "videos:read"
+        ]
+      }
+    },
     "/shorts/{uid}": {
       "get": {
         "summary": "Get shorts job + clips",
@@ -9794,6 +10053,40 @@
                         "created_at": {
                           "type": "string",
                           "example": "2026-07-26T09:41:22Z"
+                        },
+                        "options": {
+                          "type": "object",
+                          "description": "The optional choices the job was made with.",
+                          "properties": {
+                            "apply_brand_template": {
+                              "type": "boolean"
+                            },
+                            "caption_style": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "caption_format": {
+                              "type": "object"
+                            },
+                            "clip_length": {
+                              "type": "string"
+                            },
+                            "genre": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "focus": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "timeframe": {
+                              "type": "object",
+                              "nullable": true
+                            },
+                            "magic_broll": {
+                              "type": "boolean"
+                            }
+                          }
                         }
                       }
                     },

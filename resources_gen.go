@@ -1671,6 +1671,13 @@ func (r *ShortsResource) List(ctx context.Context, query map[string]string, opts
 	return r.client.do(ctx, "GET", "/shorts", query, nil, opts)
 }
 
+// ListCaptionStyles - List caption styles for shorts.
+//
+// GET /shorts/caption-styles
+func (r *ShortsResource) ListCaptionStyles(ctx context.Context, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/shorts/caption-styles", nil, nil, opts)
+}
+
 // Get - Get shorts job + clips.
 //
 // GET /shorts/{uid}
