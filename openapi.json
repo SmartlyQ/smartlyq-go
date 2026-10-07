@@ -18010,13 +18010,12 @@
                   "posts": {
                     "type": "array",
                     "maxItems": 50,
-                    "description": "Up to 50 posts. Each row needs content, platforms, account_ids and scheduled_time.",
+                    "description": "Up to 50 posts. Each row needs content, platforms, account_ids or account_group_ids, and scheduled_time.",
                     "items": {
                       "type": "object",
                       "required": [
                         "content",
                         "platforms",
-                        "account_ids",
                         "scheduled_time"
                       ],
                       "properties": {
@@ -18034,6 +18033,13 @@
                           "items": {
                             "type": "integer"
                           }
+                        },
+                        "account_group_ids": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer"
+                          },
+                          "description": "Account group ids; their connected accounts are added to account_ids. A row needs account_ids, account_group_ids or both. An unknown or empty group fails that row by name (the whole batch is rejected and refunded before anything is created)."
                         },
                         "scheduled_time": {
                           "type": "string",
@@ -18075,7 +18081,7 @@
                   },
                   "csv": {
                     "type": "string",
-                    "description": "Alternative to posts: inline CSV with a header line. Basic columns: content, platforms, account_ids, scheduled_time, media_urls, link, first_comment (list cells split on | or ,; a quoted cell may span lines). Platform options go in `<platform>.<field>` columns, e.g. tiktok.visibility, tiktok.type, youtube.title, pinterest.board_id, instagram.type, gmb.post_type - see the Bulk scheduling guide. Provide posts OR csv, not both."
+                    "description": "Alternative to posts: inline CSV with a header line. Basic columns: content, platforms, account_ids, account_group_ids, scheduled_time, media_urls, link, first_comment (list cells split on | or ,; a quoted cell may span lines). Platform options go in `<platform>.<field>` columns, e.g. tiktok.visibility, tiktok.type, youtube.title, pinterest.board_id, instagram.type, gmb.post_type - see the Bulk scheduling guide. Provide posts OR csv, not both."
                   },
                   "timezone": {
                     "type": "string",
@@ -18235,13 +18241,12 @@
                   "posts": {
                     "type": "array",
                     "maxItems": 50,
-                    "description": "Up to 50 posts. Each row needs content, platforms, account_ids and scheduled_time.",
+                    "description": "Up to 50 posts. Each row needs content, platforms, account_ids or account_group_ids, and scheduled_time.",
                     "items": {
                       "type": "object",
                       "required": [
                         "content",
                         "platforms",
-                        "account_ids",
                         "scheduled_time"
                       ],
                       "properties": {
@@ -18259,6 +18264,13 @@
                           "items": {
                             "type": "integer"
                           }
+                        },
+                        "account_group_ids": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer"
+                          },
+                          "description": "Account group ids; their connected accounts are added to account_ids. A row needs account_ids, account_group_ids or both. An unknown or empty group fails that row by name (dry run: nothing is created or charged)."
                         },
                         "scheduled_time": {
                           "type": "string",
@@ -18300,7 +18312,7 @@
                   },
                   "csv": {
                     "type": "string",
-                    "description": "Alternative to posts: inline CSV with a header line. Basic columns: content, platforms, account_ids, scheduled_time, media_urls, link, first_comment (list cells split on | or ,; a quoted cell may span lines). Platform options go in `<platform>.<field>` columns, e.g. tiktok.visibility, tiktok.type, youtube.title, pinterest.board_id, instagram.type, gmb.post_type - see the Bulk scheduling guide. Provide posts OR csv, not both."
+                    "description": "Alternative to posts: inline CSV with a header line. Basic columns: content, platforms, account_ids, account_group_ids, scheduled_time, media_urls, link, first_comment (list cells split on | or ,; a quoted cell may span lines). Platform options go in `<platform>.<field>` columns, e.g. tiktok.visibility, tiktok.type, youtube.title, pinterest.board_id, instagram.type, gmb.post_type - see the Bulk scheduling guide. Provide posts OR csv, not both."
                   },
                   "timezone": {
                     "type": "string",
@@ -18956,7 +18968,7 @@
         "tags": [
           "Social"
         ],
-        "description": "Create a group (max 50 per workspace, 100 accounts per group). Every account id must be a connected account of this workspace. Requires scope `social:write`.",
+        "description": "Create a group (max 50 per workspace, 100 accounts per group). Every account id must be a connected account of this workspace. Names are unique per workspace (any letter case). An account may be in several groups. Use the group id as account_group_ids when you create or schedule posts. Requires scope `social:write`.",
         "requestBody": {
           "required": true,
           "content": {
@@ -40292,8 +40304,7 @@
         "type": "object",
         "required": [
           "content",
-          "platforms",
-          "account_ids"
+          "platforms"
         ],
         "properties": {
           "content": {
@@ -40326,7 +40337,14 @@
             "items": {
               "type": "integer"
             },
-            "description": "IDs of connected social accounts to post to"
+            "description": "IDs of connected social accounts to post to. Optional when account_group_ids is sent; at least one of the two is required."
+          },
+          "account_group_ids": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "IDs of account groups (GET /social/account-groups). Their connected accounts are added to account_ids, each account once. Send account_ids, account_group_ids or both. An unknown group id answers 404 RESOURCE_NOT_FOUND naming it; a group with no connected accounts left answers 422 VALIDATION_ERROR naming it."
           },
           "media_urls": {
             "type": "array",
@@ -40367,8 +40385,7 @@
         "type": "object",
         "required": [
           "content",
-          "platforms",
-          "account_ids"
+          "platforms"
         ],
         "properties": {
           "content": {
@@ -40401,7 +40418,14 @@
             "items": {
               "type": "integer"
             },
-            "description": "IDs of connected social accounts"
+            "description": "IDs of connected social accounts to post to. Optional when account_group_ids is sent; at least one of the two is required."
+          },
+          "account_group_ids": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "IDs of account groups (GET /social/account-groups). Their connected accounts are added to account_ids, each account once. Send account_ids, account_group_ids or both. An unknown group id answers 404 RESOURCE_NOT_FOUND naming it; a group with no connected accounts left answers 422 VALIDATION_ERROR naming it."
           },
           "scheduled_time": {
             "type": "string",
@@ -40584,7 +40608,15 @@
             "type": "array",
             "items": {
               "type": "integer"
-            }
+            },
+            "description": "Replaces the accounts the post goes to."
+          },
+          "account_group_ids": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "IDs of account groups; their connected accounts are added to account_ids (each once) and the result replaces the post's accounts. Unknown or empty groups are refused by name."
           },
           "scheduled_time": {
             "type": "string",
