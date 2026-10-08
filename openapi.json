@@ -1553,7 +1553,7 @@
         "x-scopes": [
           "social:write"
         ],
-        "description": "Update a draft or scheduled post. Send only the fields you want to change.\n\nIf the post will be a scheduled Facebook Reel after the update (`platform_options.facebook.type` set to `reel`), it is checked against Facebook's limit of 30 Reels per Page in 24 hours at its publish time, counting other published and scheduled Reels but not this post itself. A Page that would be over the limit is refused with `422 PLATFORM_DAILY_LIMIT_REACHED` and `details` carrying `account_id`, `limit`, `used` and `next_available_at`; nothing is changed.\n\nRequires scope `social:write`."
+        "description": "Update a draft or scheduled post, or a post that failed on every platform (nothing of it is live; saving it makes it a draft again, or scheduled when you send a `scheduled_time`, and stops its automatic retries). Send only the fields you want to change.\n\nA partly published post cannot be updated - it would post its published platforms again - and answers `422 NOT_EDITABLE` saying so. A failed post that is being retried right now answers `409 RETRY_IN_PROGRESS`; nothing is changed.\n\nIf the post will be a scheduled Facebook Reel after the update (`platform_options.facebook.type` set to `reel`), it is checked against Facebook's limit of 30 Reels per Page in 24 hours at its publish time, counting other published and scheduled Reels but not this post itself. A Page that would be over the limit is refused with `422 PLATFORM_DAILY_LIMIT_REACHED` and `details` carrying `account_id`, `limit`, `used` and `next_available_at`; nothing is changed.\n\nRequires scope `social:write`."
       },
       "delete": {
         "summary": "Delete social post",
