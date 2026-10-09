@@ -17662,7 +17662,7 @@
         "tags": [
           "Social"
         ],
-        "description": "Dry-run the same declarative checks the create path uses, WITHOUT creating anything: per-platform caption limits (each limit grounded in the platform handler or the platform's documented maximum), required-media rules (e.g. Instagram), and media extension screening. Free and unbilled. Platforms with no honestly-documented ceiling (Snapchat stories carry no caption; Tumblr documents no body cap) report limit: null. Requires scope `social:read`.",
+        "description": "Dry-run exactly the checks create runs, WITHOUT creating anything, so valid: true means create would accept the post: per-platform caption limits (each limit grounded in the platform handler or the platform's documented maximum, counted the way the platform counts), platform text rules (Instagram hashtags and @mentions, Threads links), required media (Instagram, Pinterest, TikTok), media that suits the post type (an Instagram or Facebook Reel and a YouTube video need a video; a TikTok photo post takes images only), media counts and formats, file types, and the platform's post fields (e.g. TikTok who can view). Each platform is checked against its own text and media when platform_overrides are sent. Free and unbilled. Platforms with no honestly-documented ceiling (Snapchat stories carry no caption; Tumblr documents no body cap) report limit: null. Requires scope `social:read`.",
         "requestBody": {
           "required": true,
           "content": {
@@ -17690,6 +17690,18 @@
                       "type": "string"
                     },
                     "description": "Media URLs the post would carry (used for required-media and extension checks)."
+                  },
+                  "platform_options": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "object"
+                    },
+                    "description": "Optional. Per-platform options as on create (post type, TikTok privacy, ...). The post type decides which media a platform needs."
+                  },
+                  "platform_overrides": {
+                    "type": "object",
+                    "additionalProperties": {},
+                    "description": "Optional. Per-platform text and media as on create; each platform is checked against its own."
                   }
                 }
               },
@@ -17733,6 +17745,16 @@
                             "type": "string"
                           },
                           "description": "Human-readable, actionable problems (empty when valid)."
+                        },
+                        "warnings": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "description": "Non-blocking advisories per platform (e.g. aspect ratio); they do not make the post invalid."
                         },
                         "platforms": {
                           "type": "object",
@@ -18254,7 +18276,7 @@
         "tags": [
           "Social"
         ],
-        "description": "Free dry-run of the same batch body as POST /social/posts/bulk: per-row structural checks, per-platform caption/media limits, the platform rules create enforces (e.g. TikTok `visibility`), and the 24h duplicate-content check. Nothing is created or billed. Requires scope `social:read`.",
+        "description": "Free dry-run of the same batch body as POST /social/posts/bulk: per-row structural checks, then exactly the checks create runs on each row (captions, platform text rules, required media, media per post type, media counts and formats, post fields such as TikTok `visibility`), and the 24h duplicate-content check. The media files themselves are not read here; their size and length are checked when each post is created. Nothing is created or billed. Requires scope `social:read`.",
         "requestBody": {
           "required": true,
           "content": {
