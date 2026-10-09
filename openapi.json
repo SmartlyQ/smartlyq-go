@@ -9444,7 +9444,7 @@
     "/shorts/generate": {
       "post": {
         "summary": "Generate viral shorts from a long video",
-        "description": "Turns one long video into ranked, ready-to-post vertical (9:16) clips with hooks + virality scores. Provide `video_url` (direct media) OR `source_url` (a YouTube/Vimeo/TikTok link). Optional per-job choices: caption style and formatting (italic, underline, strikethrough, uppercase, Light to Bold), clip length, genre, a focus prompt, a timeframe, b-roll and branding; anything left out follows your brand template. Every option is checked before the job is charged: an unknown value is a 422 naming the field. Returns `202 Accepted` with a `job_uid`; poll `GET /v1/shorts/{uid}`, or pass `webhook_url` to be told when it is done (`job.completed` / `job.failed`, also sent to your registered webhooks). Billed per REQUESTED clip from your API wallet; a wholly-failed job is refunded automatically. Requires scope `videos:write`.",
+        "description": "Turns one long video into ranked, ready-to-post clips with hooks + virality scores, 9:16 by default (`format` picks 4:5, 1:1 or 16:9). Provide `video_url` (direct media) OR `source_url` (a YouTube/Vimeo/TikTok link). Optional per-job choices: output format, caption style and formatting (italic, underline, strikethrough, uppercase, Light to Bold), clip length, genre, a focus prompt, a timeframe, b-roll and branding; anything left out follows your brand template. Every option is checked before the job is charged: an unknown value is a 422 naming the field. Returns `202 Accepted` with a `job_uid`; poll `GET /v1/shorts/{uid}`, or pass `webhook_url` to be told when it is done (`job.completed` / `job.failed`, also sent to your registered webhooks). Billed per REQUESTED clip from your API wallet; a wholly-failed job is refunded automatically. Requires scope `videos:write`.",
         "operationId": "generateShorts",
         "tags": [
           "Shorts"
@@ -9558,6 +9558,17 @@
                     "type": "boolean",
                     "default": true,
                     "description": "false = clean clips with no captions, hook, logo or music (caption_style and caption_format cannot be used then)."
+                  },
+                  "format": {
+                    "type": "string",
+                    "enum": [
+                      "9:16",
+                      "4:5",
+                      "1:1",
+                      "16:9"
+                    ],
+                    "default": "9:16",
+                    "description": "Output format (aspect ratio) of every clip: 9:16 vertical (TikTok, Reels, Shorts), 4:5 portrait (Instagram feed), 1:1 square or 16:9 landscape (YouTube, LinkedIn). The speaker is followed and the captions, hook, logo and CTA are placed for that canvas. GET /v1/shorts/caption-styles lists them with their pixel size."
                   },
                   "webhook_url": {
                     "type": "string",
@@ -10087,6 +10098,16 @@
                             "magic_broll": {
                               "type": "boolean",
                               "description": "Whether the clips got stock b-roll: asked for, or the brand template's (false when the job turned it off)."
+                            },
+                            "format": {
+                              "type": "string",
+                              "enum": [
+                                "9:16",
+                                "4:5",
+                                "1:1",
+                                "16:9"
+                              ],
+                              "description": "The clips' aspect ratio (9:16 for jobs made before formats existed)."
                             }
                           }
                         },
@@ -42693,6 +42714,16 @@
           },
           "transcript": {
             "type": "string"
+          },
+          "format": {
+            "type": "string",
+            "enum": [
+              "9:16",
+              "4:5",
+              "1:1",
+              "16:9"
+            ],
+            "description": "The clip's aspect ratio."
           },
           "clip_url": {
             "type": "string",
