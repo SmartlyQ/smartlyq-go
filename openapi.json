@@ -6235,6 +6235,17 @@
                         "validity_days": {
                           "type": "integer",
                           "description": "Days until the token expires."
+                        },
+                        "needs_reconnect": {
+                          "type": "boolean",
+                          "description": "Whether the account must be reconnected before it can post again (stored verdict of the token check or a refused publish)."
+                        },
+                        "reconnect_reason": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "description": "Why it must be reconnected, in words for the user, when known (e.g. the password was changed, the role on the Page was removed, a permission is missing). null otherwise."
                         }
                       }
                     },
@@ -6251,7 +6262,9 @@
                     "account_name": "My Business Page",
                     "status": "connected",
                     "token_expired": false,
-                    "validity_days": 45
+                    "validity_days": 45,
+                    "needs_reconnect": false,
+                    "reconnect_reason": null
                   },
                   "meta": {
                     "request_id": "req_abc123",
@@ -18541,6 +18554,17 @@
                               },
                               "validity_days": {
                                 "type": "integer"
+                              },
+                              "needs_reconnect": {
+                                "type": "boolean",
+                                "description": "Whether the account must be reconnected before it can post again (stored verdict of the token check or a refused publish)."
+                              },
+                              "reconnect_reason": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "description": "Why it must be reconnected, in words for the user, when known (e.g. the password was changed, the role on the Page was removed, a permission is missing). null otherwise."
                               }
                             }
                           }
@@ -18567,7 +18591,9 @@
                         "is_active": true,
                         "status": "published",
                         "token_expired": true,
-                        "validity_days": 30
+                        "validity_days": 30,
+                        "needs_reconnect": true,
+                        "reconnect_reason": "The Meta login expired. Reconnect the account."
                       }
                     ]
                   },
@@ -41391,7 +41417,7 @@
           },
           "timezone": {
             "type": "string",
-            "description": "IANA timezone scheduled_time is expressed in (default UTC). Ignored with queue_id (the queue's own timezone applies)."
+            "description": "IANA timezone scheduled_time is expressed in when it carries no offset, e.g. Europe/Athens (default UTC). A scheduled_time ending in Z or an offset such as +03:00 is taken as given. Also applies to platform_options.{platform}.scheduled_time. Ignored with queue_id (the queue's own timezone applies)."
           },
           "recycle": {
             "type": "object",
