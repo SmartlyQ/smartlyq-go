@@ -8652,6 +8652,10 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "accept_x_charges": {
+                    "type": "boolean",
+                    "description": "X (twitter) only: X is charged per action (posts, replies, DMs, fetched items) at X's price, unlike the other networks. Send true to agree for this workspace; without an agreement (here or in the app) connecting X returns 422 X_CHARGES_NOT_ACCEPTED."
+                  },
                   "return_url": {
                     "type": "string",
                     "format": "uri",
@@ -16194,6 +16198,10 @@
                     },
                     "description": "Subset of platforms to offer (default: all 13)"
                   },
+                  "accept_x_charges": {
+                    "type": "boolean",
+                    "description": "X (twitter) only: X is charged per action (posts, replies, DMs, fetched items) at X's price, unlike the other networks. Send true to agree for this workspace; without an agreement (here or in the app) connecting X returns 422 X_CHARGES_NOT_ACCEPTED."
+                  },
                   "return_url": {
                     "type": "string",
                     "description": "Where the customer lands after each connect (default: back on the hosted page)"
@@ -16285,6 +16293,10 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "accept_x_charges": {
+                    "type": "boolean",
+                    "description": "X (twitter) only: X is charged per action (posts, replies, DMs, fetched items) at X's price, unlike the other networks. Send true to agree for this workspace; without an agreement (here or in the app) connecting X returns 422 X_CHARGES_NOT_ACCEPTED."
+                  },
                   "return_url": {
                     "type": "string"
                   }
