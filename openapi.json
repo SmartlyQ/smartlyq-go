@@ -10340,7 +10340,8 @@
                     "enum": [
                       "active",
                       "prospect",
-                      "inactive"
+                      "in_progress",
+                      "lost"
                     ]
                   },
                   "timezone": {
@@ -10796,7 +10797,8 @@
               "enum": [
                 "active",
                 "prospect",
-                "inactive"
+                "in_progress",
+                "lost"
               ]
             }
           },
@@ -11261,7 +11263,8 @@
                     "enum": [
                       "active",
                       "prospect",
-                      "inactive"
+                      "in_progress",
+                      "lost"
                     ]
                   },
                   "timezone": {
