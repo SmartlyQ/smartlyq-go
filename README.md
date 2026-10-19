@@ -371,6 +371,7 @@ All methods below are available on the client. Every method also accepts a trail
 | --- | --- | --- |
 | `client.Opportunities.ListPipelines(ctx)` | `GET /pipelines` | List pipelines |
 | `client.Opportunities.CreatePipeline(ctx, body)` | `POST /pipelines` | Create a pipeline |
+| `client.Opportunities.ListPipelineStages(ctx, id)` | `GET /pipelines/{id}/stages` | List a pipeline's stages |
 | `client.Opportunities.List(ctx, query)` | `GET /opportunities` | List opportunities |
 | `client.Opportunities.Create(ctx, body)` | `POST /opportunities` | Create an opportunity |
 | `client.Opportunities.Get(ctx, id)` | `GET /opportunities/{id}` | Get an opportunity |

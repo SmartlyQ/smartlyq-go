@@ -1005,6 +1005,13 @@ func TestOpportunitiesCreatePipeline(t *testing.T) {
 	})
 }
 
+func TestOpportunitiesListPipelineStages(t *testing.T) {
+	assertEndpoint(t, "GET", "/pipelines/test-id/stages", func(c *Client) error {
+		_, err := c.Opportunities.ListPipelineStages(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
 func TestOpportunitiesList(t *testing.T) {
 	assertEndpoint(t, "GET", "/opportunities", func(c *Client) error {
 		_, err := c.Opportunities.List(context.Background(), nil, nil)

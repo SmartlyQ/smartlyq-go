@@ -12701,6 +12701,99 @@
         "description": "Requires scope `opportunities:write`."
       }
     },
+    "/pipelines/{id}/stages": {
+      "get": {
+        "summary": "List a pipeline's stages",
+        "description": "List the ordered stages of one sales pipeline - for a stage picker that follows the chosen pipeline (the same stages GET /pipelines nests in each pipeline). 404 `NOT_FOUND` when the pipeline is not in this workspace. Requires scope `opportunities:read`.",
+        "operationId": "listPipelineStages",
+        "tags": [
+          "CRM Opportunities"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Pipeline id from GET /pipelines",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stages of the pipeline, in board order",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 51
+                          },
+                          "pipeline_id": {
+                            "type": "integer",
+                            "example": 3121
+                          },
+                          "stage_key": {
+                            "type": "string",
+                            "example": "proposal",
+                            "description": "Use this value as an opportunity's `stage`."
+                          },
+                          "label": {
+                            "type": "string",
+                            "example": "Proposal Sent"
+                          },
+                          "color": {
+                            "type": "string",
+                            "example": "#3b82f6"
+                          },
+                          "sort_order": {
+                            "type": "integer",
+                            "example": 2
+                          },
+                          "probability": {
+                            "type": "integer",
+                            "nullable": true,
+                            "example": 40
+                          },
+                          "is_won": {
+                            "type": "boolean",
+                            "example": false
+                          },
+                          "is_lost": {
+                            "type": "boolean",
+                            "example": false
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "x-scopes": [
+          "opportunities:read"
+        ]
+      }
+    },
     "/opportunities": {
       "get": {
         "summary": "List opportunities",

@@ -1105,6 +1105,13 @@ func (r *OpportunitiesResource) CreatePipeline(ctx context.Context, body map[str
 	return r.client.do(ctx, "POST", "/pipelines", nil, body, opts)
 }
 
+// ListPipelineStages - List a pipeline's stages.
+//
+// GET /pipelines/{id}/stages
+func (r *OpportunitiesResource) ListPipelineStages(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/pipelines/"+url.PathEscape(id)+"/stages", nil, nil, opts)
+}
+
 // List - List opportunities.
 //
 // GET /opportunities
