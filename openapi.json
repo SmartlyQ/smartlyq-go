@@ -8207,7 +8207,7 @@
         "tags": [
           "Webhooks"
         ],
-        "description": "Subscribe a public HTTPS URL to events. The signing `secret` is returned once at creation. Requires scope `webhooks:write`. Max 10 active webhooks per workspace. Events: post.published, post.failed, post.partial, account.connected, account.disconnected, account.token_expired, comment.received, message.received, job.completed, job.failed.",
+        "description": "Subscribe a public HTTPS URL to events. The signing `secret` is returned once at creation. Requires scope `webhooks:write`. Max 10 active webhooks per workspace, plus 50 created by connected apps (Zapier, Pabbly Connect, Make). Events: post.published, post.failed, post.partial, account.connected, account.disconnected, account.token_expired, comment.received, message.received, job.completed, job.failed.",
         "requestBody": {
           "required": true,
           "content": {
