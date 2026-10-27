@@ -43018,6 +43018,20 @@
             "type": "boolean",
             "default": true,
             "description": "Use the workspace brand template (logo, caption styling, hook style, music)."
+          },
+          "vocabulary": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 60
+            },
+            "maxItems": 50,
+            "default": [],
+            "example": [
+              "SmartlyQ",
+              "smartly cue => SmartlyQ"
+            ],
+            "description": "Names, brand and foreign words spoken in this video, spelled the way the captions must show them. An entry `heard => Right` fixes a known mishearing. Used together with the brand template's custom vocabulary. One word or name per entry, no commas. Changing it with PATCH respells the existing transcript at no extra charge."
           }
         }
       },
