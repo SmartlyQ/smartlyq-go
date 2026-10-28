@@ -13878,7 +13878,7 @@
                   "cancel_subscription": {
                     "type": "boolean",
                     "default": false,
-                    "description": "For disable_saas only: also cancel each client's Stripe subscription."
+                    "description": "Deprecated and ignored: disable_saas always cancels each client's subscription."
                   },
                   "confirm": {
                     "type": "string",
@@ -14168,7 +14168,7 @@
     "/workspaces/{id}/disable-saas": {
       "post": {
         "summary": "Disable SaaS mode for a workspace",
-        "description": "Disable SaaS mode for a sub-account: switch it back to agency billing, turn off rebilling, and refund any remaining sub-wallet balance to the agency wallet. Optionally cancels the client's subscription. Required before a SaaS sub-account can be deleted. Requires the workspaces:write scope. **SaaS-member only**: this is a SaaS-mode action, so your agency must be on an active SaaS plan; otherwise it returns 403 SAAS_PLAN_REQUIRED.",
+        "description": "Disable SaaS mode for a sub-account: the client's subscription is cancelled, its wallet is closed and it goes back to agency billing with rebilling off. A balance your agency funded returns to your agency wallet; for a balance the client paid you, the agency owner and admins are emailed the amount to refund. If the subscription cannot be cancelled, the call fails and nothing changes. Required before a SaaS sub-account can be deleted. Requires the workspaces:write scope. **SaaS-member only**: this is a SaaS-mode action, so your agency must be on an active SaaS plan; otherwise it returns 403 SAAS_PLAN_REQUIRED.",
         "operationId": "disableWorkspaceSaas",
         "tags": [
           "Workspaces"
@@ -14194,7 +14194,7 @@
                   "cancel_subscription": {
                     "type": "boolean",
                     "default": false,
-                    "description": "Also cancel the client's Stripe subscription."
+                    "description": "Deprecated and ignored: the client's subscription is always cancelled."
                   }
                 }
               }
