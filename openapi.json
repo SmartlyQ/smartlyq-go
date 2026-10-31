@@ -10300,7 +10300,7 @@
     "/contacts": {
       "post": {
         "summary": "Create or upsert a contact",
-        "description": "Create a CRM contact. With no `id` and a matching `email`, the existing contact is updated instead of duplicated (upsert). Fires the contact_created / contact_updated automation events. Requires scope `contacts:write`.",
+        "description": "Create a CRM contact. With no `id` and a matching `email`, the existing contact is updated instead of duplicated (upsert). Fires the contact_created / contact_updated automation events. Requires scope `contacts:write`. Send `list_source` to say where the contact came from: it marks a new contact and runs a free email check on it.",
         "operationId": "createContact",
         "tags": [
           "CRM Contacts"
@@ -10403,6 +10403,21 @@
                     "type": "object",
                     "description": "Custom attribute values keyed by attribute key.",
                     "additionalProperties": true
+                  },
+                  "list_source": {
+                    "type": "string",
+                    "enum": [
+                      "own_customers",
+                      "events",
+                      "bought",
+                      "found_online",
+                      "lead_finder"
+                    ],
+                    "description": "Optional. Where these contacts came from. Leave it out and the contact is not marked (as before). `bought`, `found_online` and `lead_finder` make the contact outreach only: it is never emailed through the built-in email service, only through your own mail server. `own_customers` and `events` need `list_consent: true`. Every email also gets a free check (format, throwaway domains, domains that accept no mail, your suppression list); an invalid address is never emailed."
+                  },
+                  "list_consent": {
+                    "type": "boolean",
+                    "description": "Required as `true` when `list_source` is `own_customers` or `events`: these people agreed to receive email from you. Ignored for the other sources."
                   }
                 }
               }
@@ -10540,6 +10555,42 @@
                         "updated_at": {
                           "type": "string",
                           "example": "2026-07-26T09:41:22Z"
+                        },
+                        "list_source": {
+                          "type": "string",
+                          "nullable": true,
+                          "enum": [
+                            "own_customers",
+                            "events",
+                            "bought",
+                            "found_online",
+                            "lead_finder"
+                          ],
+                          "description": "Where the contact's list came from, as given on import or with `list_source`. Null when it was never given."
+                        },
+                        "list_consent": {
+                          "type": "boolean",
+                          "nullable": true,
+                          "description": "The importer confirmed consent (own customers or events). Null when no source was given."
+                        },
+                        "email_check": {
+                          "type": "string",
+                          "nullable": true,
+                          "enum": [
+                            "ok",
+                            "risky",
+                            "invalid"
+                          ],
+                          "description": "Result of the free email check. `risky` = a role address such as info@. Null when not checked."
+                        },
+                        "email_send_block": {
+                          "type": "string",
+                          "nullable": true,
+                          "enum": [
+                            "outreach_only",
+                            "invalid"
+                          ],
+                          "description": "`outreach_only`: never emailed through the built-in email service (campaigns and automation emails skip it), only through your own mail server. `invalid`: never emailed. Null: sent as normal."
                         }
                       },
                       "description": "The created (or upserted) contact; matched_by is set when an existing contact was matched by email/phone."
@@ -10711,6 +10762,42 @@
                         "updated_at": {
                           "type": "string",
                           "example": "2026-07-26T09:41:22Z"
+                        },
+                        "list_source": {
+                          "type": "string",
+                          "nullable": true,
+                          "enum": [
+                            "own_customers",
+                            "events",
+                            "bought",
+                            "found_online",
+                            "lead_finder"
+                          ],
+                          "description": "Where the contact's list came from, as given on import or with `list_source`. Null when it was never given."
+                        },
+                        "list_consent": {
+                          "type": "boolean",
+                          "nullable": true,
+                          "description": "The importer confirmed consent (own customers or events). Null when no source was given."
+                        },
+                        "email_check": {
+                          "type": "string",
+                          "nullable": true,
+                          "enum": [
+                            "ok",
+                            "risky",
+                            "invalid"
+                          ],
+                          "description": "Result of the free email check. `risky` = a role address such as info@. Null when not checked."
+                        },
+                        "email_send_block": {
+                          "type": "string",
+                          "nullable": true,
+                          "enum": [
+                            "outreach_only",
+                            "invalid"
+                          ],
+                          "description": "`outreach_only`: never emailed through the built-in email service (campaigns and automation emails skip it), only through your own mail server. `invalid`: never emailed. Null: sent as normal."
                         }
                       }
                     },
@@ -10953,6 +11040,42 @@
                           "updated_at": {
                             "type": "string",
                             "example": "2026-07-26T09:41:22Z"
+                          },
+                          "list_source": {
+                            "type": "string",
+                            "nullable": true,
+                            "enum": [
+                              "own_customers",
+                              "events",
+                              "bought",
+                              "found_online",
+                              "lead_finder"
+                            ],
+                            "description": "Where the contact's list came from, as given on import or with `list_source`. Null when it was never given."
+                          },
+                          "list_consent": {
+                            "type": "boolean",
+                            "nullable": true,
+                            "description": "The importer confirmed consent (own customers or events). Null when no source was given."
+                          },
+                          "email_check": {
+                            "type": "string",
+                            "nullable": true,
+                            "enum": [
+                              "ok",
+                              "risky",
+                              "invalid"
+                            ],
+                            "description": "Result of the free email check. `risky` = a role address such as info@. Null when not checked."
+                          },
+                          "email_send_block": {
+                            "type": "string",
+                            "nullable": true,
+                            "enum": [
+                              "outreach_only",
+                              "invalid"
+                            ],
+                            "description": "`outreach_only`: never emailed through the built-in email service (campaigns and automation emails skip it), only through your own mail server. `invalid`: never emailed. Null: sent as normal."
                           }
                         }
                       }
@@ -11164,6 +11287,42 @@
                         "updated_at": {
                           "type": "string",
                           "example": "2026-07-26T09:41:22Z"
+                        },
+                        "list_source": {
+                          "type": "string",
+                          "nullable": true,
+                          "enum": [
+                            "own_customers",
+                            "events",
+                            "bought",
+                            "found_online",
+                            "lead_finder"
+                          ],
+                          "description": "Where the contact's list came from, as given on import or with `list_source`. Null when it was never given."
+                        },
+                        "list_consent": {
+                          "type": "boolean",
+                          "nullable": true,
+                          "description": "The importer confirmed consent (own customers or events). Null when no source was given."
+                        },
+                        "email_check": {
+                          "type": "string",
+                          "nullable": true,
+                          "enum": [
+                            "ok",
+                            "risky",
+                            "invalid"
+                          ],
+                          "description": "Result of the free email check. `risky` = a role address such as info@. Null when not checked."
+                        },
+                        "email_send_block": {
+                          "type": "string",
+                          "nullable": true,
+                          "enum": [
+                            "outreach_only",
+                            "invalid"
+                          ],
+                          "description": "`outreach_only`: never emailed through the built-in email service (campaigns and automation emails skip it), only through your own mail server. `invalid`: never emailed. Null: sent as normal."
                         }
                       }
                     },
@@ -11462,6 +11621,42 @@
                         "updated_at": {
                           "type": "string",
                           "example": "2026-07-26T09:41:22Z"
+                        },
+                        "list_source": {
+                          "type": "string",
+                          "nullable": true,
+                          "enum": [
+                            "own_customers",
+                            "events",
+                            "bought",
+                            "found_online",
+                            "lead_finder"
+                          ],
+                          "description": "Where the contact's list came from, as given on import or with `list_source`. Null when it was never given."
+                        },
+                        "list_consent": {
+                          "type": "boolean",
+                          "nullable": true,
+                          "description": "The importer confirmed consent (own customers or events). Null when no source was given."
+                        },
+                        "email_check": {
+                          "type": "string",
+                          "nullable": true,
+                          "enum": [
+                            "ok",
+                            "risky",
+                            "invalid"
+                          ],
+                          "description": "Result of the free email check. `risky` = a role address such as info@. Null when not checked."
+                        },
+                        "email_send_block": {
+                          "type": "string",
+                          "nullable": true,
+                          "enum": [
+                            "outreach_only",
+                            "invalid"
+                          ],
+                          "description": "`outreach_only`: never emailed through the built-in email service (campaigns and automation emails skip it), only through your own mail server. `invalid`: never emailed. Null: sent as normal."
                         }
                       }
                     },
@@ -22804,7 +22999,7 @@
         "tags": [
           "CRM"
         ],
-        "description": "Import up to 100 contacts in one call. Each row goes through the same email/phone upsert as POST /contacts, so re-importing the same file is idempotent. Per-row results report created / updated / failed. Requires scope `contacts:write`.",
+        "description": "Import up to 100 contacts in one call. Each row goes through the same email/phone upsert as POST /contacts, so re-importing the same file is idempotent. Per-row results report created / updated / failed. Requires scope `contacts:write`. Send `list_source` (and `list_consent` where needed) to say where the list came from; the answer applies to every row.",
         "requestBody": {
           "required": true,
           "content": {
@@ -22822,6 +23017,21 @@
                       "type": "object",
                       "description": "Same fields as POST /contacts (name, email, phone, company, tags, attributes...)."
                     }
+                  },
+                  "list_source": {
+                    "type": "string",
+                    "enum": [
+                      "own_customers",
+                      "events",
+                      "bought",
+                      "found_online",
+                      "lead_finder"
+                    ],
+                    "description": "Optional. One answer for every row in the call; the batch is checked as one list. Where these contacts came from. Leave it out and the contact is not marked (as before). `bought`, `found_online` and `lead_finder` make the contact outreach only: it is never emailed through the built-in email service, only through your own mail server. `own_customers` and `events` need `list_consent: true`. Every email also gets a free check (format, throwaway domains, domains that accept no mail, your suppression list); an invalid address is never emailed."
+                  },
+                  "list_consent": {
+                    "type": "boolean",
+                    "description": "Required as `true` when `list_source` is `own_customers` or `events`: these people agreed to receive email from you. Ignored for the other sources."
                   }
                 }
               },
@@ -22890,6 +23100,47 @@
                               "error": {
                                 "type": "string"
                               }
+                            }
+                          }
+                        },
+                        "list_check": {
+                          "type": "object",
+                          "description": "Present when `list_source` was sent: the free check over this call's emails and the decision for the batch.",
+                          "properties": {
+                            "source": {
+                              "type": "string",
+                              "enum": [
+                                "own_customers",
+                                "events",
+                                "bought",
+                                "found_online",
+                                "lead_finder"
+                              ]
+                            },
+                            "decision": {
+                              "type": "string",
+                              "enum": [
+                                "campaign_ready",
+                                "outreach_only"
+                              ],
+                              "description": "`outreach_only` when the source is bought, found online or Lead Finder, or when at least 20 emails were checked and risky + invalid ones are more than `risky_pct` percent of them."
+                            },
+                            "ok": {
+                              "type": "integer"
+                            },
+                            "risky": {
+                              "type": "integer"
+                            },
+                            "invalid": {
+                              "type": "integer"
+                            },
+                            "dns_unreliable": {
+                              "type": "boolean",
+                              "description": "Most domain lookups failed, so no address was marked invalid for its domain."
+                            },
+                            "risky_pct": {
+                              "type": "integer",
+                              "example": 10
                             }
                           }
                         }
