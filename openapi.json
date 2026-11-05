@@ -25015,7 +25015,7 @@
         "tags": [
           "Social"
         ],
-        "description": "On-demand import of posts published natively on the platform (outside SmartlyQ) for one account - facebook, instagram, threads, youtube or tiktok. Imported posts appear in GET /social/posts with status 'external', with analytics snapshots. Discovery is a per-account opt-in: pass enable: true the first time, or the call returns 409. Requires scope `social:write`.",
+        "description": "On-demand import of posts published natively on the platform (outside SmartlyQ) for one account - facebook, instagram, threads, youtube, tiktok, or a linkedin company page (LinkedIn does not let apps list the posts of a personal profile; those return 422). Imported posts appear in GET /social/posts with status 'external', with analytics snapshots. Discovery is a per-account opt-in: pass enable: true the first time, or the call returns 409. Requires scope `social:write`.",
         "requestBody": {
           "required": true,
           "content": {
