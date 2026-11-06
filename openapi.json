@@ -8262,6 +8262,9 @@
                         "booking.rejected",
                         "booking.no_show",
                         "booking.completed",
+                        "booking.paid",
+                        "booking.started",
+                        "booking.ended",
                         "post.scheduled",
                         "post.cancelled",
                         "post.recycled",
@@ -8498,6 +8501,9 @@
                         "booking.rejected",
                         "booking.no_show",
                         "booking.completed",
+                        "booking.paid",
+                        "booking.started",
+                        "booking.ended",
                         "post.scheduled",
                         "post.cancelled",
                         "post.recycled",
@@ -45538,6 +45544,14 @@
                             },
                             "description": "Extra guest emails"
                           },
+                          "topic": {
+                            "type": ["string", "null"],
+                            "description": "The answer to the calendar's built-in question \"What is this meeting about?\""
+                          },
+                          "guest_notes": {
+                            "type": ["string", "null"],
+                            "description": "What the guest wrote in the booking form's notes field"
+                          },
                           "answers": {
                             "type": "object",
                             "description": "The booker's answers to the event type's questions, keyed by question name"
@@ -45758,6 +45772,14 @@
                               "type": "string"
                             },
                             "description": "Extra guest emails"
+                          },
+                          "topic": {
+                            "type": ["string", "null"],
+                            "description": "The answer to the calendar's built-in question \"What is this meeting about?\""
+                          },
+                          "guest_notes": {
+                            "type": ["string", "null"],
+                            "description": "What the guest wrote in the booking form's notes field"
                           },
                           "answers": {
                             "type": "object",
@@ -45980,6 +46002,14 @@
                             },
                             "description": "Extra guest emails"
                           },
+                          "topic": {
+                            "type": ["string", "null"],
+                            "description": "The answer to the calendar's built-in question \"What is this meeting about?\""
+                          },
+                          "guest_notes": {
+                            "type": ["string", "null"],
+                            "description": "What the guest wrote in the booking form's notes field"
+                          },
                           "answers": {
                             "type": "object",
                             "description": "The booker's answers to the event type's questions, keyed by question name"
@@ -46200,6 +46230,14 @@
                               "type": "string"
                             },
                             "description": "Extra guest emails"
+                          },
+                          "topic": {
+                            "type": ["string", "null"],
+                            "description": "The answer to the calendar's built-in question \"What is this meeting about?\""
+                          },
+                          "guest_notes": {
+                            "type": ["string", "null"],
+                            "description": "What the guest wrote in the booking form's notes field"
                           },
                           "answers": {
                             "type": "object",
@@ -46422,6 +46460,14 @@
                             },
                             "description": "Extra guest emails"
                           },
+                          "topic": {
+                            "type": ["string", "null"],
+                            "description": "The answer to the calendar's built-in question \"What is this meeting about?\""
+                          },
+                          "guest_notes": {
+                            "type": ["string", "null"],
+                            "description": "What the guest wrote in the booking form's notes field"
+                          },
                           "answers": {
                             "type": "object",
                             "description": "The booker's answers to the event type's questions, keyed by question name"
@@ -46642,6 +46688,14 @@
                               "type": "string"
                             },
                             "description": "Extra guest emails"
+                          },
+                          "topic": {
+                            "type": ["string", "null"],
+                            "description": "The answer to the calendar's built-in question \"What is this meeting about?\""
+                          },
+                          "guest_notes": {
+                            "type": ["string", "null"],
+                            "description": "What the guest wrote in the booking form's notes field"
                           },
                           "answers": {
                             "type": "object",
@@ -46864,6 +46918,14 @@
                             },
                             "description": "Extra guest emails"
                           },
+                          "topic": {
+                            "type": ["string", "null"],
+                            "description": "The answer to the calendar's built-in question \"What is this meeting about?\""
+                          },
+                          "guest_notes": {
+                            "type": ["string", "null"],
+                            "description": "What the guest wrote in the booking form's notes field"
+                          },
                           "answers": {
                             "type": "object",
                             "description": "The booker's answers to the event type's questions, keyed by question name"
@@ -47084,6 +47146,711 @@
                               "type": "string"
                             },
                             "description": "Extra guest emails"
+                          },
+                          "topic": {
+                            "type": ["string", "null"],
+                            "description": "The answer to the calendar's built-in question \"What is this meeting about?\""
+                          },
+                          "guest_notes": {
+                            "type": ["string", "null"],
+                            "description": "What the guest wrote in the booking form's notes field"
+                          },
+                          "answers": {
+                            "type": "object",
+                            "description": "The booker's answers to the event type's questions, keyed by question name"
+                          },
+                          "is_recurring": {
+                            "type": "boolean"
+                          },
+                          "rescheduled_from_uid": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "cancellation_reason": {
+                            "type": "string",
+                            "description": "Only on booking.cancelled / booking.rejected, when a reason was given"
+                          },
+                          "created_at": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "required": [
+                      "booking"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "event",
+                  "created_at",
+                  "data"
+                ],
+                "description": "Delivery envelope. Signed via X-SmartlyQ-Signature (t=<ts>,v1=HMAC-SHA256(ts + '.' + raw body)). When the event originated inside a profile workspace, data additionally carries profile_id and profile_workspace_id."
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Acknowledged. Any 2xx status is treated as delivered."
+          }
+        }
+      }
+    },
+    "booking.paid": {
+      "post": {
+        "operationId": "webhookBookingPaid",
+        "summary": "booking.paid",
+        "description": "A payment for a booking went through - the deposit, or a later charge such as a no-show fee. `booking.payment` carries `amount_minor` (in the currency's smallest unit, e.g. cents), `currency`, `payment_intent` and `test_mode`. Sent once per payment. Delivered as a signed HTTP POST; respond with any 2xx to acknowledge. Retries: 5 attempts, exponential backoff, Retry-After honored on 429.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Stable event id (evt_...). Identical across fan-out and retries; also sent as X-SmartlyQ-Event-Id. Use for deduplication."
+                  },
+                  "event": {
+                    "type": "string",
+                    "const": "booking.paid"
+                  },
+                  "created_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "email": {
+                        "type": "string"
+                      },
+                      "contact": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "first_name": {
+                            "type": "string"
+                          },
+                          "last_name": {
+                            "type": "string"
+                          },
+                          "company": {
+                            "type": "string"
+                          },
+                          "phone": {
+                            "type": "string"
+                          },
+                          "tags": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "attributes": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "booking": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "uid": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "new",
+                              "confirmed",
+                              "cancelled",
+                              "completed",
+                              "no_show",
+                              "rescheduled"
+                            ]
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "start_time": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "UTC"
+                          },
+                          "end_time": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "UTC"
+                          },
+                          "timezone": {
+                            "type": "string",
+                            "description": "The guest's IANA time zone"
+                          },
+                          "location": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "cal_video",
+                                  "zoom",
+                                  "gmeet",
+                                  "ms_teams",
+                                  "phone",
+                                  "address",
+                                  "custom"
+                                ]
+                              },
+                              "meeting_url": {
+                                "type": "string"
+                              },
+                              "address": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "event_type": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ]
+                              },
+                              "slug": {
+                                "type": "string"
+                              },
+                              "title": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "host": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "email": {
+                                "type": "string"
+                              },
+                              "user_id": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ]
+                              }
+                            }
+                          },
+                          "guests": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "description": "Extra guest emails"
+                          },
+                          "topic": {
+                            "type": ["string", "null"],
+                            "description": "The answer to the calendar's built-in question \"What is this meeting about?\""
+                          },
+                          "guest_notes": {
+                            "type": ["string", "null"],
+                            "description": "What the guest wrote in the booking form's notes field"
+                          },
+                          "payment": {
+                            "type": "object",
+                            "description": "Only on booking.paid",
+                            "properties": {
+                              "amount_minor": { "type": "integer" },
+                              "currency": { "type": "string" },
+                              "payment_intent": { "type": "string" },
+                              "test_mode": { "type": "boolean" }
+                            }
+                          },
+                          "answers": {
+                            "type": "object",
+                            "description": "The booker's answers to the event type's questions, keyed by question name"
+                          },
+                          "is_recurring": {
+                            "type": "boolean"
+                          },
+                          "rescheduled_from_uid": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "cancellation_reason": {
+                            "type": "string",
+                            "description": "Only on booking.cancelled / booking.rejected, when a reason was given"
+                          },
+                          "created_at": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "required": [
+                      "booking"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "event",
+                  "created_at",
+                  "data"
+                ],
+                "description": "Delivery envelope. Signed via X-SmartlyQ-Signature (t=<ts>,v1=HMAC-SHA256(ts + '.' + raw body)). When the event originated inside a profile workspace, data additionally carries profile_id and profile_workspace_id."
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Acknowledged. Any 2xx status is treated as delivered."
+          }
+        }
+      }
+    },
+    "booking.started": {
+      "post": {
+        "operationId": "webhookBookingStarted",
+        "summary": "booking.started",
+        "description": "A confirmed booking's start time arrived. Sent once, within about a minute of the start. Delivered as a signed HTTP POST; respond with any 2xx to acknowledge. Retries: 5 attempts, exponential backoff, Retry-After honored on 429.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Stable event id (evt_...). Identical across fan-out and retries; also sent as X-SmartlyQ-Event-Id. Use for deduplication."
+                  },
+                  "event": {
+                    "type": "string",
+                    "const": "booking.started"
+                  },
+                  "created_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "email": {
+                        "type": "string"
+                      },
+                      "contact": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "first_name": {
+                            "type": "string"
+                          },
+                          "last_name": {
+                            "type": "string"
+                          },
+                          "company": {
+                            "type": "string"
+                          },
+                          "phone": {
+                            "type": "string"
+                          },
+                          "tags": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "attributes": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "booking": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "uid": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "new",
+                              "confirmed",
+                              "cancelled",
+                              "completed",
+                              "no_show",
+                              "rescheduled"
+                            ]
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "start_time": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "UTC"
+                          },
+                          "end_time": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "UTC"
+                          },
+                          "timezone": {
+                            "type": "string",
+                            "description": "The guest's IANA time zone"
+                          },
+                          "location": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "cal_video",
+                                  "zoom",
+                                  "gmeet",
+                                  "ms_teams",
+                                  "phone",
+                                  "address",
+                                  "custom"
+                                ]
+                              },
+                              "meeting_url": {
+                                "type": "string"
+                              },
+                              "address": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "event_type": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ]
+                              },
+                              "slug": {
+                                "type": "string"
+                              },
+                              "title": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "host": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "email": {
+                                "type": "string"
+                              },
+                              "user_id": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ]
+                              }
+                            }
+                          },
+                          "guests": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "description": "Extra guest emails"
+                          },
+                          "topic": {
+                            "type": ["string", "null"],
+                            "description": "The answer to the calendar's built-in question \"What is this meeting about?\""
+                          },
+                          "guest_notes": {
+                            "type": ["string", "null"],
+                            "description": "What the guest wrote in the booking form's notes field"
+                          },
+                          "answers": {
+                            "type": "object",
+                            "description": "The booker's answers to the event type's questions, keyed by question name"
+                          },
+                          "is_recurring": {
+                            "type": "boolean"
+                          },
+                          "rescheduled_from_uid": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "cancellation_reason": {
+                            "type": "string",
+                            "description": "Only on booking.cancelled / booking.rejected, when a reason was given"
+                          },
+                          "created_at": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "required": [
+                      "booking"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "event",
+                  "created_at",
+                  "data"
+                ],
+                "description": "Delivery envelope. Signed via X-SmartlyQ-Signature (t=<ts>,v1=HMAC-SHA256(ts + '.' + raw body)). When the event originated inside a profile workspace, data additionally carries profile_id and profile_workspace_id."
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Acknowledged. Any 2xx status is treated as delivered."
+          }
+        }
+      }
+    },
+    "booking.ended": {
+      "post": {
+        "operationId": "webhookBookingEnded",
+        "summary": "booking.ended",
+        "description": "A booking's end time passed (not for cancelled or moved bookings). Sent once, within about a minute of the end. Delivered as a signed HTTP POST; respond with any 2xx to acknowledge. Retries: 5 attempts, exponential backoff, Retry-After honored on 429.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Stable event id (evt_...). Identical across fan-out and retries; also sent as X-SmartlyQ-Event-Id. Use for deduplication."
+                  },
+                  "event": {
+                    "type": "string",
+                    "const": "booking.ended"
+                  },
+                  "created_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "email": {
+                        "type": "string"
+                      },
+                      "contact": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "first_name": {
+                            "type": "string"
+                          },
+                          "last_name": {
+                            "type": "string"
+                          },
+                          "company": {
+                            "type": "string"
+                          },
+                          "phone": {
+                            "type": "string"
+                          },
+                          "tags": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "attributes": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "booking": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "uid": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "new",
+                              "confirmed",
+                              "cancelled",
+                              "completed",
+                              "no_show",
+                              "rescheduled"
+                            ]
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "start_time": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "UTC"
+                          },
+                          "end_time": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "UTC"
+                          },
+                          "timezone": {
+                            "type": "string",
+                            "description": "The guest's IANA time zone"
+                          },
+                          "location": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "cal_video",
+                                  "zoom",
+                                  "gmeet",
+                                  "ms_teams",
+                                  "phone",
+                                  "address",
+                                  "custom"
+                                ]
+                              },
+                              "meeting_url": {
+                                "type": "string"
+                              },
+                              "address": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "event_type": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ]
+                              },
+                              "slug": {
+                                "type": "string"
+                              },
+                              "title": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "host": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "email": {
+                                "type": "string"
+                              },
+                              "user_id": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ]
+                              }
+                            }
+                          },
+                          "guests": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "description": "Extra guest emails"
+                          },
+                          "topic": {
+                            "type": ["string", "null"],
+                            "description": "The answer to the calendar's built-in question \"What is this meeting about?\""
+                          },
+                          "guest_notes": {
+                            "type": ["string", "null"],
+                            "description": "What the guest wrote in the booking form's notes field"
                           },
                           "answers": {
                             "type": "object",
