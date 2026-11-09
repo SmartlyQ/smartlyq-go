@@ -8285,7 +8285,8 @@
                         "message.failed",
                         "order.paid",
                         "order.payment_failed",
-                        "subscription.canceled"
+                        "subscription.canceled",
+                        "invoice.overdue"
                       ]
                     },
                     "description": "Events to subscribe to. Must be from the event catalog (see the webhooks object in this spec and the Webhooks guide)."
@@ -8527,7 +8528,8 @@
                         "message.failed",
                         "order.paid",
                         "order.payment_failed",
-                        "subscription.canceled"
+                        "subscription.canceled",
+                        "invoice.overdue"
                       ]
                     },
                     "description": "Full replacement list of subscribed events."
@@ -50215,6 +50217,131 @@
                     },
                     "required": [
                       "subscription"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "event",
+                  "created_at",
+                  "data"
+                ],
+                "description": "Delivery envelope. Signed via X-SmartlyQ-Signature (t=<ts>,v1=HMAC-SHA256(ts + '.' + raw body)). When the event originated inside a profile workspace, data additionally carries profile_id and profile_workspace_id."
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Acknowledged. Any 2xx status is treated as delivered."
+          }
+        }
+      }
+    },
+    "invoice.overdue": {
+      "post": {
+        "operationId": "webhookInvoiceOverdue",
+        "summary": "invoice.overdue",
+        "description": "An invoice you sent has reached its due date and is still unpaid (sent or viewed). Checked every hour: the event goes out on the day the invoice falls due, and invoices that fell due in the 7 days before are caught up too (for example right after you subscribe), but older ones are not. When the workspace has an Invoice overdue automation, the event can also go out with that automation's run. Sent once per invoice. An invoice with no customer email is skipped. Received only by webhooks whose creator may use payments and is not limited to the contacts assigned to them. Delivered as a signed HTTP POST; respond with any 2xx to acknowledge. Retries: 5 attempts, exponential backoff, Retry-After honored on 429.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Stable event id (evt_...). Identical across fan-out and retries; also sent as X-SmartlyQ-Event-Id. Use for deduplication."
+                  },
+                  "event": {
+                    "type": "string",
+                    "const": "invoice.overdue"
+                  },
+                  "created_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "email": {
+                        "type": "string",
+                        "description": "The linked contact's email; the invoice's customer email when there is no contact."
+                      },
+                      "contact": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "first_name": {
+                            "type": "string"
+                          },
+                          "last_name": {
+                            "type": "string"
+                          },
+                          "company": {
+                            "type": "string"
+                          },
+                          "phone": {
+                            "type": "string"
+                          },
+                          "tags": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "attributes": {
+                            "type": "object",
+                            "additionalProperties": true
+                          }
+                        },
+                        "description": "The customer's CRM contact, when the invoice is linked to one."
+                      },
+                      "invoice": {
+                        "type": "object",
+                        "properties": {
+                          "invoice_id": {
+                            "type": "integer"
+                          },
+                          "number": {
+                            "type": "integer",
+                            "description": "The invoice number."
+                          },
+                          "amount": {
+                            "type": "number",
+                            "description": "The invoice total in major units, e.g. 49.5."
+                          },
+                          "currency": {
+                            "type": "string",
+                            "description": "Three-letter currency code."
+                          },
+                          "email": {
+                            "type": "string",
+                            "description": "The customer email on the invoice."
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "The customer name on the invoice."
+                          },
+                          "due_date": {
+                            "type": "string",
+                            "format": "date",
+                            "description": "YYYY-MM-DD."
+                          }
+                        }
+                      }
+                    },
+                    "required": [
+                      "invoice"
                     ]
                   }
                 },
