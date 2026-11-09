@@ -5585,21 +5585,6 @@
         "parameters": [
           {
             "$ref": "#/components/parameters/AccountIdParam"
-          },
-          {
-            "name": "period",
-            "in": "query",
-            "description": "Time period for analytics",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "today",
-                "7d",
-                "30d",
-                "90d"
-              ],
-              "default": "30d"
-            }
           }
         ],
         "responses": {
@@ -6703,6 +6688,26 @@
               "type": "integer"
             },
             "description": ""
+          },
+          {
+            "name": "date_from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "description": "Only comments made on or after this day (YYYY-MM-DD)."
+          },
+          {
+            "name": "date_to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "description": "Only comments made on or before this day (YYYY-MM-DD)."
           },
           {
             "name": "search",
@@ -8277,10 +8282,13 @@
                         "review.updated",
                         "message.delivered",
                         "message.read",
-                        "message.failed"
+                        "message.failed",
+                        "order.paid",
+                        "order.payment_failed",
+                        "subscription.canceled"
                       ]
                     },
-                    "description": "Events to subscribe to. Must be from the 25-event catalog (see the webhooks object in this spec and the Webhooks guide)."
+                    "description": "Events to subscribe to. Must be from the event catalog (see the webhooks object in this spec and the Webhooks guide)."
                   }
                 }
               }
@@ -8438,7 +8446,7 @@
         "tags": [
           "Webhooks"
         ],
-        "description": "Update a webhook's `url`, `events`, or `status`. Only supplied fields change. `url` is re-validated (public HTTPS, SSRF-guarded); `events` must all come from the 25-event catalog (unknown names are rejected); setting `status` to `active` also recovers an endpoint auto-paused as `failing`. Requires scope `webhooks:write`. Not available under X-Profile-Id delegation - webhooks live on your developer workspace and receive profile events automatically (with profile_id attached).",
+        "description": "Update a webhook's `url`, `events`, or `status`. Only supplied fields change. `url` is re-validated (public HTTPS, SSRF-guarded); `events` must all come from the event catalog (unknown names are rejected); setting `status` to `active` also recovers an endpoint auto-paused as `failing`. Requires scope `webhooks:write`. Not available under X-Profile-Id delegation - webhooks live on your developer workspace and receive profile events automatically (with profile_id attached).",
         "parameters": [
           {
             "name": "id",
@@ -8516,7 +8524,10 @@
                         "review.updated",
                         "message.delivered",
                         "message.read",
-                        "message.failed"
+                        "message.failed",
+                        "order.paid",
+                        "order.payment_failed",
+                        "subscription.canceled"
                       ]
                     },
                     "description": "Full replacement list of subscribed events."
@@ -15275,6 +15286,18 @@
                   },
                   "subject": {
                     "type": "string"
+                  },
+                  "from_addr": {
+                    "type": "string",
+                    "description": "Sender address shown on the timeline, such as an email address or phone number. Up to 255 characters are kept."
+                  },
+                  "to_addr": {
+                    "type": "string",
+                    "description": "Recipient address shown on the timeline. Up to 255 characters are kept."
+                  },
+                  "body": {
+                    "type": "string",
+                    "description": "Alias of `body_text`, read only when `body_text` is not sent."
                   }
                 }
               }
@@ -18635,7 +18658,7 @@
         "tags": [
           "Social"
         ],
-        "description": "Free dry-run of the same batch body as POST /social/posts/bulk: per-row structural checks, then exactly the checks create runs on each row (captions, platform text rules, required media, media per post type, media counts and formats, post fields such as TikTok `visibility`), and the 24h duplicate-content check. The media files themselves are not read here; their size and length are checked when each post is created. Nothing is created or billed. Requires scope `social:read`.",
+        "description": "Free dry-run of the same batch body as POST /social/posts/bulk: per-row structural checks, then exactly the checks create runs on each row (captions, platform text rules, required media, media per post type, media counts and formats, post fields such as TikTok `visibility`), and the 24h duplicate-content check, which always runs here (`allow_duplicates` applies only when the batch is created). The media files themselves are not read here; their size and length are checked when each post is created. Nothing is created or billed. Requires scope `social:read`.",
         "requestBody": {
           "required": true,
           "content": {
@@ -18718,14 +18741,6 @@
                   "csv": {
                     "type": "string",
                     "description": "Alternative to posts: inline CSV with a header line. Basic columns: content, platforms, account_ids, account_group_ids, scheduled_time, media_urls, link, first_comment (list cells split on | or ,; a quoted cell may span lines). Platform options go in `<platform>.<field>` columns, e.g. tiktok.visibility, tiktok.type, youtube.title, pinterest.board_id, instagram.type, gmb.post_type - see the Bulk scheduling guide. Provide posts OR csv, not both."
-                  },
-                  "timezone": {
-                    "type": "string",
-                    "description": "Default timezone for rows without their own (IANA name, default UTC)."
-                  },
-                  "allow_duplicates": {
-                    "type": "boolean",
-                    "description": "Skip the 24h duplicate-content guard for this batch."
                   }
                 }
               }
@@ -34219,7 +34234,7 @@
         "tags": [
           "Ads"
         ],
-        "description": "Update name and/or budget. Subject to the same anti-ban edit-cooldown as the in-app wizard - a budget change within Meta's 72h learning-phase window may be blocked (429) or need `confirm_cooldown`. Requires scope `ads:write`.",
+        "description": "Update name and/or budget. At most 4 budget changes per hour per campaign (a Meta limit): past that, a budget change answers 429 `EDIT_COOLDOWN`. Requires scope `ads:write`.",
         "parameters": [
           {
             "name": "id",
@@ -34244,10 +34259,6 @@
                   "budget_amount": {
                     "type": "number",
                     "example": 75
-                  },
-                  "confirm_cooldown": {
-                    "type": "boolean",
-                    "example": false
                   }
                 }
               }
@@ -34379,6 +34390,23 @@
             "description": "Campaign ID"
           }
         ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "confirm_cooldown": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Go ahead even though the campaign was edited in the last 72 hours."
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Pause a campaign",
@@ -34425,7 +34453,7 @@
         "x-scopes": [
           "ads:write"
         ],
-        "description": "Requires scope `ads:write`."
+        "description": "A campaign edited in the last 72 hours is in its learning phase, which pausing or resuming restarts, so the call answers 429 `EDIT_COOLDOWN` (with `error.details.hours_remaining`) unless `confirm_cooldown` is true. Requires scope `ads:write`."
       }
     },
     "/ads/campaigns/{id}/resume": {
@@ -34446,6 +34474,23 @@
             "description": "Campaign ID"
           }
         ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "confirm_cooldown": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Go ahead even though the campaign was edited in the last 72 hours."
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Resume a campaign",
@@ -34492,7 +34537,7 @@
         "x-scopes": [
           "ads:write"
         ],
-        "description": "Requires scope `ads:write`."
+        "description": "A campaign edited in the last 72 hours is in its learning phase, which pausing or resuming restarts, so the call answers 429 `EDIT_COOLDOWN` (with `error.details.hours_remaining`) unless `confirm_cooldown` is true. Requires scope `ads:write`."
       }
     },
     "/ads/campaigns/{id}/duplicate": {
@@ -35128,6 +35173,23 @@
             "description": "Ad set ID"
           }
         ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "confirm_cooldown": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Go ahead even though the ad set was edited in the last 72 hours."
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Pause an ad set",
@@ -35166,12 +35228,15 @@
           },
           "422": {
             "$ref": "#/components/responses/ValidationError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         },
         "x-scopes": [
           "ads:write"
         ],
-        "description": "Requires scope `ads:write`."
+        "description": "An ad set edited in the last 72 hours is in its learning phase, which pausing or resuming restarts, so the call answers 429 `EDIT_COOLDOWN` (with `error.details.hours_remaining`) unless `confirm_cooldown` is true. Requires scope `ads:write`."
       }
     },
     "/ads/ad-sets/{id}/resume": {
@@ -35192,6 +35257,23 @@
             "description": "Ad set ID"
           }
         ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "confirm_cooldown": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Go ahead even though the ad set was edited in the last 72 hours."
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Resume an ad set",
@@ -35230,12 +35312,15 @@
           },
           "422": {
             "$ref": "#/components/responses/ValidationError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         },
         "x-scopes": [
           "ads:write"
         ],
-        "description": "Requires scope `ads:write`."
+        "description": "An ad set edited in the last 72 hours is in its learning phase, which pausing or resuming restarts, so the call answers 429 `EDIT_COOLDOWN` (with `error.details.hours_remaining`) unless `confirm_cooldown` is true. Requires scope `ads:write`."
       }
     },
     "/ads/ad-sets/{id}/duplicate": {
@@ -35749,6 +35834,23 @@
             "description": "Ad ID"
           }
         ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "confirm_cooldown": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Go ahead even though the ad was edited in the last 72 hours."
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Pause an ad",
@@ -35787,12 +35889,15 @@
           },
           "422": {
             "$ref": "#/components/responses/ValidationError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         },
         "x-scopes": [
           "ads:write"
         ],
-        "description": "Requires scope `ads:write`."
+        "description": "An ad edited in the last 72 hours is in its learning phase, which pausing or resuming restarts, so the call answers 429 `EDIT_COOLDOWN` (with `error.details.hours_remaining`) unless `confirm_cooldown` is true. Requires scope `ads:write`."
       }
     },
     "/ads/ads/{id}/resume": {
@@ -35813,6 +35918,23 @@
             "description": "Ad ID"
           }
         ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "confirm_cooldown": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Go ahead even though the ad was edited in the last 72 hours."
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Resume an ad",
@@ -35851,12 +35973,15 @@
           },
           "422": {
             "$ref": "#/components/responses/ValidationError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         },
         "x-scopes": [
           "ads:write"
         ],
-        "description": "Requires scope `ads:write`."
+        "description": "An ad edited in the last 72 hours is in its learning phase, which pausing or resuming restarts, so the call answers 429 `EDIT_COOLDOWN` (with `error.details.hours_remaining`) unless `confirm_cooldown` is true. Requires scope `ads:write`."
       }
     },
     "/ads/ads/{id}/duplicate": {
@@ -39518,6 +39643,20 @@
                   "contact_id": {
                     "type": "integer",
                     "description": "CRM contact to link the booking to."
+                  },
+                  "guests": {
+                    "oneOf": [
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      {
+                        "type": "string"
+                      }
+                    ],
+                    "description": "People to copy on the invitation and the calendar event: an array of email addresses, or one string with the addresses separated by commas, semicolons or spaces. The attendee's own email and repeats are skipped, and only the first 20 are kept. An address that is not a valid email rejects the booking with 422."
                   }
                 }
               }
@@ -39780,7 +39919,7 @@
         "tags": [
           "Calendar"
         ],
-        "description": "Moves a confirmed booking to a new time, keeping its length and its guests and never charging again. The calendar checks availability, makes the new meeting link, tells the attendee and updates connected calendars. The booking keeps its `id` but gets a new `uid`, and `booking.rescheduled` fires. Answers 409 when the time is not available (pick another from the slots endpoint), when the booking is waiting for approval or payment, or when the booking page has shared seats. Requires scope `calendar:write`.",
+        "description": "Moves a confirmed booking to a new time, keeping its length and its guests and never charging again. The calendar checks availability, makes the new meeting link, tells the attendee and updates connected calendars. The booking keeps its `id` but gets a new `uid`, and `booking.rescheduled` fires. Answers 422 when the booking cannot be moved as it stands (it is cancelled, waiting for approval, not confirmed, or an appointment copied from a connected calendar) or when `start` is missing, not ISO 8601 or already past; 409 when the calendar refuses the move: the time is not available (pick another from the slots endpoint), the booking is still waiting for its payment, or the booking page has shared seats or now requires an answer this booking does not have; 403 when the key's user is not the host of the booking or on its team; 429 after too many changes in a short time; 502 when the calendar did not answer in time, in which case the booking may or may not have moved, so read it before trying again. Requires scope `calendar:write`.",
         "parameters": [
           {
             "name": "id",
@@ -39839,6 +39978,24 @@
                 }
               }
             }
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "502": {
+            "description": "The calendar did not answer in time (`UPSTREAM_UNAVAILABLE`). The booking may or may not have moved: read it before trying again."
           }
         },
         "x-scopes": [
@@ -49659,6 +49816,422 @@
         "responses": {
           "200": {
             "description": "Acknowledged."
+          }
+        }
+      }
+    },
+    "order.paid": {
+      "post": {
+        "operationId": "webhookOrderPaid",
+        "summary": "order.paid",
+        "description": "A payment went through: an order was paid (sent once per order), a form took a payment, or a client bought a SaaS package (sent to the agency's workspace). Received only by webhooks whose creator may use payments and is not limited to the contacts assigned to them. Delivered as a signed HTTP POST; respond with any 2xx to acknowledge. Retries: 5 attempts, exponential backoff, Retry-After honored on 429.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Stable event id (evt_...). Identical across fan-out and retries; also sent as X-SmartlyQ-Event-Id. Use for deduplication."
+                  },
+                  "event": {
+                    "type": "string",
+                    "const": "order.paid"
+                  },
+                  "created_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "email": {
+                        "type": "string",
+                        "description": "The buyer's email."
+                      },
+                      "contact": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "first_name": {
+                            "type": "string"
+                          },
+                          "last_name": {
+                            "type": "string"
+                          },
+                          "company": {
+                            "type": "string"
+                          },
+                          "phone": {
+                            "type": "string"
+                          },
+                          "tags": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "attributes": {
+                            "type": "object",
+                            "additionalProperties": true
+                          }
+                        },
+                        "description": "The buyer's CRM contact, when the order or payment is linked to one."
+                      },
+                      "payment": {
+                        "type": "object",
+                        "properties": {
+                          "order_id": {
+                            "type": "integer",
+                            "description": "The order. 0 for a SaaS package sale; absent for a form payment."
+                          },
+                          "payment_intent": {
+                            "type": "string",
+                            "description": "Form payments only."
+                          },
+                          "amount": {
+                            "type": "number",
+                            "description": "In major units, e.g. 49.5."
+                          },
+                          "currency": {
+                            "type": "string"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "type": "string",
+                            "description": "Where the sale came from: the order's source, `form`, or `saas_package`."
+                          },
+                          "test": {
+                            "type": "boolean",
+                            "description": "A test-mode payment. Not sent for a SaaS package sale."
+                          },
+                          "subscription": {
+                            "type": "string",
+                            "enum": [
+                              "yes",
+                              "no"
+                            ],
+                            "description": "Whether the order starts a subscription. Not sent for a SaaS package sale."
+                          },
+                          "package_id": {
+                            "type": "integer",
+                            "description": "SaaS package sales only."
+                          },
+                          "package_name": {
+                            "type": "string",
+                            "description": "SaaS package sales only."
+                          },
+                          "client_workspace_id": {
+                            "type": "integer",
+                            "description": "SaaS package sales only: the client's workspace."
+                          }
+                        }
+                      },
+                      "form": {
+                        "type": "object",
+                        "description": "Form payments only: `{id, submission_id, name}`.",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "submission_id": {
+                            "type": "integer"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "fields": {
+                        "type": "object",
+                        "additionalProperties": true,
+                        "description": "Form payments only: the submitted form fields."
+                      }
+                    },
+                    "required": [
+                      "payment"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "event",
+                  "created_at",
+                  "data"
+                ],
+                "description": "Delivery envelope. Signed via X-SmartlyQ-Signature (t=<ts>,v1=HMAC-SHA256(ts + '.' + raw body)). When the event originated inside a profile workspace, data additionally carries profile_id and profile_workspace_id."
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Acknowledged. Any 2xx status is treated as delivered."
+          }
+        }
+      }
+    },
+    "order.payment_failed": {
+      "post": {
+        "operationId": "webhookOrderPaymentFailed",
+        "summary": "order.payment_failed",
+        "description": "A payment failed: a checkout was declined (`payment.reason` `declined`) or a subscription renewal charge failed (`rebill_failed`). Received only by webhooks whose creator may use payments and is not limited to the contacts assigned to them. Delivered as a signed HTTP POST; respond with any 2xx to acknowledge. Retries: 5 attempts, exponential backoff, Retry-After honored on 429.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Stable event id (evt_...). Identical across fan-out and retries; also sent as X-SmartlyQ-Event-Id. Use for deduplication."
+                  },
+                  "event": {
+                    "type": "string",
+                    "const": "order.payment_failed"
+                  },
+                  "created_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "email": {
+                        "type": "string",
+                        "description": "The buyer's email."
+                      },
+                      "contact": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "first_name": {
+                            "type": "string"
+                          },
+                          "last_name": {
+                            "type": "string"
+                          },
+                          "company": {
+                            "type": "string"
+                          },
+                          "phone": {
+                            "type": "string"
+                          },
+                          "tags": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "attributes": {
+                            "type": "object",
+                            "additionalProperties": true
+                          }
+                        },
+                        "description": "The buyer's CRM contact, when the order or payment is linked to one."
+                      },
+                      "payment": {
+                        "type": "object",
+                        "properties": {
+                          "order_id": {
+                            "type": "integer"
+                          },
+                          "amount": {
+                            "type": "number",
+                            "description": "In major units, e.g. 49.5."
+                          },
+                          "currency": {
+                            "type": "string"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "type": "string",
+                            "description": "The order's source."
+                          },
+                          "reason": {
+                            "type": "string",
+                            "enum": [
+                              "declined",
+                              "rebill_failed"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "required": [
+                      "payment"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "event",
+                  "created_at",
+                  "data"
+                ],
+                "description": "Delivery envelope. Signed via X-SmartlyQ-Signature (t=<ts>,v1=HMAC-SHA256(ts + '.' + raw body)). When the event originated inside a profile workspace, data additionally carries profile_id and profile_workspace_id."
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Acknowledged. Any 2xx status is treated as delivered."
+          }
+        }
+      }
+    },
+    "subscription.canceled": {
+      "post": {
+        "operationId": "webhookSubscriptionCanceled",
+        "summary": "subscription.canceled",
+        "description": "A subscription ended: cancelled at once, or at the end of the period it was set to cancel at. Also sent to the agency's workspace when a client's SaaS package subscription ends. Received only by webhooks whose creator may use payments and is not limited to the contacts assigned to them. Delivered as a signed HTTP POST; respond with any 2xx to acknowledge. Retries: 5 attempts, exponential backoff, Retry-After honored on 429.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Stable event id (evt_...). Identical across fan-out and retries; also sent as X-SmartlyQ-Event-Id. Use for deduplication."
+                  },
+                  "event": {
+                    "type": "string",
+                    "const": "subscription.canceled"
+                  },
+                  "created_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "email": {
+                        "type": "string",
+                        "description": "The buyer's email."
+                      },
+                      "contact": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "first_name": {
+                            "type": "string"
+                          },
+                          "last_name": {
+                            "type": "string"
+                          },
+                          "company": {
+                            "type": "string"
+                          },
+                          "phone": {
+                            "type": "string"
+                          },
+                          "tags": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "attributes": {
+                            "type": "object",
+                            "additionalProperties": true
+                          }
+                        },
+                        "description": "The buyer's CRM contact, when the order or payment is linked to one."
+                      },
+                      "subscription": {
+                        "type": "object",
+                        "properties": {
+                          "order_id": {
+                            "type": "integer",
+                            "description": "The order that started it. 0 for a SaaS package."
+                          },
+                          "subscription_id": {
+                            "type": "string"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "type": "string",
+                            "description": "The order's source, or `saas_package`."
+                          },
+                          "package_id": {
+                            "type": "integer",
+                            "description": "SaaS packages only."
+                          },
+                          "package_name": {
+                            "type": "string",
+                            "description": "SaaS packages only."
+                          },
+                          "client_workspace_id": {
+                            "type": "integer",
+                            "description": "SaaS packages only: the client's workspace."
+                          }
+                        }
+                      }
+                    },
+                    "required": [
+                      "subscription"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "event",
+                  "created_at",
+                  "data"
+                ],
+                "description": "Delivery envelope. Signed via X-SmartlyQ-Signature (t=<ts>,v1=HMAC-SHA256(ts + '.' + raw body)). When the event originated inside a profile workspace, data additionally carries profile_id and profile_workspace_id."
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Acknowledged. Any 2xx status is treated as delivered."
           }
         }
       }

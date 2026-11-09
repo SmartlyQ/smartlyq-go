@@ -97,14 +97,14 @@ func TestAdsDeleteCampaign(t *testing.T) {
 
 func TestAdsPauseCampaign(t *testing.T) {
 	assertEndpoint(t, "POST", "/ads/campaigns/test-id/pause", func(c *Client) error {
-		_, err := c.Ads.PauseCampaign(context.Background(), "test-id", nil)
+		_, err := c.Ads.PauseCampaign(context.Background(), "test-id", map[string]any{}, nil)
 		return err
 	})
 }
 
 func TestAdsResumeCampaign(t *testing.T) {
 	assertEndpoint(t, "POST", "/ads/campaigns/test-id/resume", func(c *Client) error {
-		_, err := c.Ads.ResumeCampaign(context.Background(), "test-id", nil)
+		_, err := c.Ads.ResumeCampaign(context.Background(), "test-id", map[string]any{}, nil)
 		return err
 	})
 }
@@ -153,14 +153,14 @@ func TestAdsDeleteSet(t *testing.T) {
 
 func TestAdsPauseSet(t *testing.T) {
 	assertEndpoint(t, "POST", "/ads/ad-sets/test-id/pause", func(c *Client) error {
-		_, err := c.Ads.PauseSet(context.Background(), "test-id", nil)
+		_, err := c.Ads.PauseSet(context.Background(), "test-id", map[string]any{}, nil)
 		return err
 	})
 }
 
 func TestAdsResumeSet(t *testing.T) {
 	assertEndpoint(t, "POST", "/ads/ad-sets/test-id/resume", func(c *Client) error {
-		_, err := c.Ads.ResumeSet(context.Background(), "test-id", nil)
+		_, err := c.Ads.ResumeSet(context.Background(), "test-id", map[string]any{}, nil)
 		return err
 	})
 }
@@ -202,14 +202,14 @@ func TestAdsDelete(t *testing.T) {
 
 func TestAdsPause(t *testing.T) {
 	assertEndpoint(t, "POST", "/ads/ads/test-id/pause", func(c *Client) error {
-		_, err := c.Ads.Pause(context.Background(), "test-id", nil)
+		_, err := c.Ads.Pause(context.Background(), "test-id", map[string]any{}, nil)
 		return err
 	})
 }
 
 func TestAdsResume(t *testing.T) {
 	assertEndpoint(t, "POST", "/ads/ads/test-id/resume", func(c *Client) error {
-		_, err := c.Ads.Resume(context.Background(), "test-id", nil)
+		_, err := c.Ads.Resume(context.Background(), "test-id", map[string]any{}, nil)
 		return err
 	})
 }
@@ -384,7 +384,7 @@ func TestAnalyticsGetPosts(t *testing.T) {
 
 func TestAnalyticsGetAccount(t *testing.T) {
 	assertEndpoint(t, "GET", "/analytics/accounts/test-accountId", func(c *Client) error {
-		_, err := c.Analytics.GetAccount(context.Background(), "test-accountId", nil, nil)
+		_, err := c.Analytics.GetAccount(context.Background(), "test-accountId", nil)
 		return err
 	})
 }

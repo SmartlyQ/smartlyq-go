@@ -171,23 +171,23 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Ads.GetCampaign(ctx, id)` | `GET /ads/campaigns/{id}` | Get a campaign |
 | `client.Ads.UpdateCampaign(ctx, id, body)` | `PATCH /ads/campaigns/{id}` | Update a campaign |
 | `client.Ads.DeleteCampaign(ctx, id)` | `DELETE /ads/campaigns/{id}` | Delete a campaign |
-| `client.Ads.PauseCampaign(ctx, id)` | `POST /ads/campaigns/{id}/pause` | Pause a campaign |
-| `client.Ads.ResumeCampaign(ctx, id)` | `POST /ads/campaigns/{id}/resume` | Resume a campaign |
+| `client.Ads.PauseCampaign(ctx, id, body)` | `POST /ads/campaigns/{id}/pause` | Pause a campaign |
+| `client.Ads.ResumeCampaign(ctx, id, body)` | `POST /ads/campaigns/{id}/resume` | Resume a campaign |
 | `client.Ads.DuplicateCampaign(ctx, id)` | `POST /ads/campaigns/{id}/duplicate` | Duplicate a campaign |
 | `client.Ads.ArchiveCampaign(ctx, id)` | `POST /ads/campaigns/{id}/archive` | Archive a campaign |
 | `client.Ads.BulkCampaignStatus(ctx, body)` | `POST /ads/campaigns/bulk-status` | Bulk pause/resume campaigns |
 | `client.Ads.ListSets(ctx, query)` | `GET /ads/ad-sets` | List ad sets |
 | `client.Ads.GetSet(ctx, id)` | `GET /ads/ad-sets/{id}` | Get an ad set |
 | `client.Ads.DeleteSet(ctx, id)` | `DELETE /ads/ad-sets/{id}` | Delete an ad set |
-| `client.Ads.PauseSet(ctx, id)` | `POST /ads/ad-sets/{id}/pause` | Pause an ad set |
-| `client.Ads.ResumeSet(ctx, id)` | `POST /ads/ad-sets/{id}/resume` | Resume an ad set |
+| `client.Ads.PauseSet(ctx, id, body)` | `POST /ads/ad-sets/{id}/pause` | Pause an ad set |
+| `client.Ads.ResumeSet(ctx, id, body)` | `POST /ads/ad-sets/{id}/resume` | Resume an ad set |
 | `client.Ads.DuplicateSet(ctx, id)` | `POST /ads/ad-sets/{id}/duplicate` | Duplicate an ad set |
 | `client.Ads.ArchiveSet(ctx, id)` | `POST /ads/ad-sets/{id}/archive` | Archive an ad set |
 | `client.Ads.List(ctx, query)` | `GET /ads/ads` | List ads |
 | `client.Ads.Get(ctx, id)` | `GET /ads/ads/{id}` | Get an ad |
 | `client.Ads.Delete(ctx, id)` | `DELETE /ads/ads/{id}` | Delete an ad |
-| `client.Ads.Pause(ctx, id)` | `POST /ads/ads/{id}/pause` | Pause an ad |
-| `client.Ads.Resume(ctx, id)` | `POST /ads/ads/{id}/resume` | Resume an ad |
+| `client.Ads.Pause(ctx, id, body)` | `POST /ads/ads/{id}/pause` | Pause an ad |
+| `client.Ads.Resume(ctx, id, body)` | `POST /ads/ads/{id}/resume` | Resume an ad |
 | `client.Ads.Duplicate(ctx, id)` | `POST /ads/ads/{id}/duplicate` | Duplicate an ad |
 | `client.Ads.Archive(ctx, id)` | `POST /ads/ads/{id}/archive` | Archive an ad |
 | `client.Ads.ListAudiences(ctx, query)` | `GET /ads/audiences` | List audiences |
@@ -222,7 +222,7 @@ All methods below are available on the client. Every method also accepts a trail
 | --- | --- | --- |
 | `client.Analytics.GetOverview(ctx, query)` | `GET /analytics/overview` | Get analytics overview |
 | `client.Analytics.GetPosts(ctx, query)` | `GET /analytics/posts` | Get post analytics |
-| `client.Analytics.GetAccount(ctx, accountId, query)` | `GET /analytics/accounts/{account_id}` | Get account analytics |
+| `client.Analytics.GetAccount(ctx, accountId)` | `GET /analytics/accounts/{account_id}` | Get account analytics |
 | `client.Analytics.DailyMetrics(ctx, query)` | `GET /analytics/daily-metrics` | Daily metrics |
 | `client.Analytics.BestTime(ctx, query)` | `GET /analytics/best-time` | Best time to post |
 | `client.Analytics.ContentDecay(ctx, query)` | `GET /analytics/content-decay` | Content decay |

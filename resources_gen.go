@@ -156,15 +156,15 @@ func (r *AdsResource) DeleteCampaign(ctx context.Context, id string, opts *Reque
 // PauseCampaign - Pause a campaign.
 //
 // POST /ads/campaigns/{id}/pause
-func (r *AdsResource) PauseCampaign(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
-	return r.client.do(ctx, "POST", "/ads/campaigns/"+url.PathEscape(id)+"/pause", nil, nil, opts)
+func (r *AdsResource) PauseCampaign(ctx context.Context, id string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/ads/campaigns/"+url.PathEscape(id)+"/pause", nil, body, opts)
 }
 
 // ResumeCampaign - Resume a campaign.
 //
 // POST /ads/campaigns/{id}/resume
-func (r *AdsResource) ResumeCampaign(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
-	return r.client.do(ctx, "POST", "/ads/campaigns/"+url.PathEscape(id)+"/resume", nil, nil, opts)
+func (r *AdsResource) ResumeCampaign(ctx context.Context, id string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/ads/campaigns/"+url.PathEscape(id)+"/resume", nil, body, opts)
 }
 
 // DuplicateCampaign - Duplicate a campaign.
@@ -212,15 +212,15 @@ func (r *AdsResource) DeleteSet(ctx context.Context, id string, opts *RequestOpt
 // PauseSet - Pause an ad set.
 //
 // POST /ads/ad-sets/{id}/pause
-func (r *AdsResource) PauseSet(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
-	return r.client.do(ctx, "POST", "/ads/ad-sets/"+url.PathEscape(id)+"/pause", nil, nil, opts)
+func (r *AdsResource) PauseSet(ctx context.Context, id string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/ads/ad-sets/"+url.PathEscape(id)+"/pause", nil, body, opts)
 }
 
 // ResumeSet - Resume an ad set.
 //
 // POST /ads/ad-sets/{id}/resume
-func (r *AdsResource) ResumeSet(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
-	return r.client.do(ctx, "POST", "/ads/ad-sets/"+url.PathEscape(id)+"/resume", nil, nil, opts)
+func (r *AdsResource) ResumeSet(ctx context.Context, id string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/ads/ad-sets/"+url.PathEscape(id)+"/resume", nil, body, opts)
 }
 
 // DuplicateSet - Duplicate an ad set.
@@ -261,15 +261,15 @@ func (r *AdsResource) Delete(ctx context.Context, id string, opts *RequestOption
 // Pause - Pause an ad.
 //
 // POST /ads/ads/{id}/pause
-func (r *AdsResource) Pause(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
-	return r.client.do(ctx, "POST", "/ads/ads/"+url.PathEscape(id)+"/pause", nil, nil, opts)
+func (r *AdsResource) Pause(ctx context.Context, id string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/ads/ads/"+url.PathEscape(id)+"/pause", nil, body, opts)
 }
 
 // Resume - Resume an ad.
 //
 // POST /ads/ads/{id}/resume
-func (r *AdsResource) Resume(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
-	return r.client.do(ctx, "POST", "/ads/ads/"+url.PathEscape(id)+"/resume", nil, nil, opts)
+func (r *AdsResource) Resume(ctx context.Context, id string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/ads/ads/"+url.PathEscape(id)+"/resume", nil, body, opts)
 }
 
 // Duplicate - Duplicate an ad.
@@ -449,8 +449,8 @@ func (r *AnalyticsResource) GetPosts(ctx context.Context, query map[string]strin
 // GetAccount - Get account analytics.
 //
 // GET /analytics/accounts/{account_id}
-func (r *AnalyticsResource) GetAccount(ctx context.Context, accountId string, query map[string]string, opts *RequestOptions) (*Envelope, error) {
-	return r.client.do(ctx, "GET", "/analytics/accounts/"+url.PathEscape(accountId), query, nil, opts)
+func (r *AnalyticsResource) GetAccount(ctx context.Context, accountId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/analytics/accounts/"+url.PathEscape(accountId), nil, nil, opts)
 }
 
 // DailyMetrics - Daily metrics.
