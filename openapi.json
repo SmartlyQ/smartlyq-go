@@ -39366,6 +39366,114 @@
       }
     },
     "/calendar/bookings": {
+      "get": {
+        "summary": "List bookings",
+        "operationId": "listBookings",
+        "tags": [
+          "Calendar"
+        ],
+        "description": "Bookings soonest first, each in the same shape as the `booking` object in booking webhooks, plus `contact_id`. Appointments copied from Google or imported from another CRM are left out. A key whose creator is limited to assigned data sees only their own bookings and their contacts' bookings. Requires scope `calendar:read`.",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "description": "ISO 8601 start of the window, by booking start time. Defaults to now, or to 30 days before `to`.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "description": "ISO 8601 end of the window. Defaults to 30 days after `from`. At most 370 days after `from`.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "description": "Comma-separated: new, confirmed, cancelled, completed, no_show, rescheduled.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "contact_id",
+            "in": "query",
+            "required": false,
+            "description": "Only this CRM contact's bookings.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "event_type_id",
+            "in": "query",
+            "required": false,
+            "description": "Only bookings of this booking page.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "Page number, from 1.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "description": "Results per page. Default 20, maximum 100.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/PaginationMeta"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-scopes": [
+          "calendar:read"
+        ]
+      },
       "post": {
         "summary": "Take a booking",
         "operationId": "createBooking",
@@ -39538,6 +39646,848 @@
         },
         "x-scopes": [
           "calendar:write"
+        ]
+      }
+    },
+    "/calendar/bookings/{id}": {
+      "get": {
+        "summary": "Get a booking",
+        "operationId": "getBooking",
+        "tags": [
+          "Calendar"
+        ],
+        "description": "One booking: `booking` as in booking webhooks, `contact` (null without CRM access), and `details` with what only the calendar holds: attendees, booking form answers, payment and cancellation reason. `details` is null when the calendar cannot answer or the appointment was copied from another calendar. Requires scope `calendar:read`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Booking id, as it appears on the CRM contact's bookings and in booking webhooks.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-scopes": [
+          "calendar:read"
+        ]
+      }
+    },
+    "/calendar/bookings/{id}/status": {
+      "post": {
+        "summary": "Set a booking's status",
+        "operationId": "setBookingStatus",
+        "tags": [
+          "Calendar"
+        ],
+        "description": "Records the outcome: `completed` or `no_show`, or `confirmed` to approve a booking waiting for approval (the calendar then runs its own approval, emails and meeting link). Fires the matching booking webhook and automations. To cancel, use the cancel endpoint. Requires scope `calendar:write`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Booking id, as it appears on the CRM contact's bookings and in booking webhooks.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "description": "confirmed, completed or no_show.",
+                    "enum": [
+                      "confirmed",
+                      "completed",
+                      "no_show"
+                    ]
+                  }
+                },
+                "required": [
+                  "status"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-scopes": [
+          "calendar:write"
+        ]
+      }
+    },
+    "/calendar/bookings/{id}/reschedule": {
+      "post": {
+        "summary": "Reschedule a booking",
+        "operationId": "rescheduleBooking",
+        "tags": [
+          "Calendar"
+        ],
+        "description": "Moves a confirmed booking to a new time, keeping its length and its guests and never charging again. The calendar checks availability, makes the new meeting link, tells the attendee and updates connected calendars. The booking keeps its `id` but gets a new `uid`, and `booking.rescheduled` fires. Answers 409 when the time is not available (pick another from the slots endpoint), when the booking is waiting for approval or payment, or when the booking page has shared seats. Requires scope `calendar:write`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Booking id, as it appears on the CRM contact's bookings and in booking webhooks.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "start": {
+                    "type": "string",
+                    "description": "New ISO 8601 start time, from the slots endpoint."
+                  },
+                  "reason": {
+                    "type": "string",
+                    "description": "Shown to the attendee. At most 500 characters."
+                  }
+                },
+                "required": [
+                  "start"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-scopes": [
+          "calendar:write"
+        ]
+      }
+    },
+    "/calendar/bookings/{id}/notes": {
+      "get": {
+        "summary": "List booking notes",
+        "operationId": "listBookingNotes",
+        "tags": [
+          "Calendar"
+        ],
+        "description": "The team's internal notes on a booking, newest first. Never shown to the guest. Requires scope `calendar:read`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Booking id, as it appears on the CRM contact's bookings and in booking webhooks.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-scopes": [
+          "calendar:read"
+        ]
+      },
+      "post": {
+        "summary": "Add a booking note",
+        "operationId": "addBookingNote",
+        "tags": [
+          "Calendar"
+        ],
+        "description": "Adds an internal note to a booking, authored by the person who created the API key. Requires scope `calendar:write`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Booking id, as it appears on the CRM contact's bookings and in booking webhooks.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "body": {
+                    "type": "string",
+                    "description": "Note text, at most 5000 characters."
+                  }
+                },
+                "required": [
+                  "body"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-scopes": [
+          "calendar:write"
+        ]
+      }
+    },
+    "/calendar/bookings/{id}/notes/{note_id}": {
+      "delete": {
+        "summary": "Delete a booking note",
+        "operationId": "deleteBookingNote",
+        "tags": [
+          "Calendar"
+        ],
+        "description": "Deletes an internal note. Answers 404 when the note is not on this booking. Requires scope `calendar:write`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Booking id, as it appears on the CRM contact's bookings and in booking webhooks.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "note_id",
+            "in": "path",
+            "required": true,
+            "description": "Note id, from the notes list.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-scopes": [
+          "calendar:write"
+        ]
+      }
+    },
+    "/calendar/blocked-times": {
+      "get": {
+        "summary": "List blocked time",
+        "operationId": "listBlockedTimes",
+        "tags": [
+          "Calendar"
+        ],
+        "description": "Time the API key's creator has blocked off between two instants. Requires scope `calendar:read`.",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "required": true,
+            "description": "ISO 8601 start of the window, at most 70 days before `to`.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": true,
+            "description": "ISO 8601 end of the window.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-scopes": [
+          "calendar:read"
+        ]
+      },
+      "post": {
+        "summary": "Block off time",
+        "operationId": "createBlockedTime",
+        "tags": [
+          "Calendar"
+        ],
+        "description": "Blocks off time on the API key's creator's calendar, so booking pages stop offering it. At most two weeks at once. Requires scope `calendar:write`.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "start": {
+                    "type": "string",
+                    "description": "ISO 8601 start."
+                  },
+                  "end": {
+                    "type": "string",
+                    "description": "ISO 8601 end, after start."
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "Label, at most 80 characters."
+                  }
+                },
+                "required": [
+                  "start",
+                  "end"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-scopes": [
+          "calendar:write"
+        ]
+      }
+    },
+    "/calendar/blocked-times/{id}": {
+      "delete": {
+        "summary": "Free blocked time",
+        "operationId": "deleteBlockedTime",
+        "tags": [
+          "Calendar"
+        ],
+        "description": "Removes a block, so the time can be booked again. Requires scope `calendar:write`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Block id, from the blocked time list.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-scopes": [
+          "calendar:write"
+        ]
+      }
+    },
+    "/calendar/availability": {
+      "get": {
+        "summary": "List availability schedules",
+        "operationId": "listAvailabilitySchedules",
+        "tags": [
+          "Calendar"
+        ],
+        "description": "The weekly hours and date overrides of the API key's creator. `weekly` has 7 days, Sunday first, each a list of `{start, end}` ranges in HH:MM. Requires scope `calendar:read`.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-scopes": [
+          "calendar:read"
+        ]
+      },
+      "post": {
+        "summary": "Create an availability schedule",
+        "operationId": "createAvailabilitySchedule",
+        "tags": [
+          "Calendar"
+        ],
+        "description": "Creates a schedule with the default hours and returns its `id`. Set its hours with the update endpoint. Requires scope `calendar:write`.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Schedule name, at most 120 characters."
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-scopes": [
+          "calendar:write"
+        ]
+      }
+    },
+    "/calendar/availability/{id}": {
+      "patch": {
+        "summary": "Update an availability schedule",
+        "operationId": "updateAvailabilitySchedule",
+        "tags": [
+          "Calendar"
+        ],
+        "description": "Changes any of a schedule's name, time zone, hours or date overrides. Fields you leave out stay as they are. An unknown field is refused. Requires scope `calendar:write`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Schedule id, from the availability list.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Schedule name."
+                  },
+                  "time_zone": {
+                    "type": "string",
+                    "description": "IANA timezone identifier, e.g. Europe/Athens."
+                  },
+                  "is_default": {
+                    "type": "boolean",
+                    "description": "Make this the default schedule."
+                  },
+                  "weekly": {
+                    "type": "array",
+                    "description": "7 days, Sunday first, each a list of {start, end} ranges in HH:MM. An empty list = closed.",
+                    "items": {}
+                  },
+                  "overrides": {
+                    "type": "array",
+                    "description": "List of {date: YYYY-MM-DD, ranges: [{start, end}]}, replacing the existing overrides.",
+                    "items": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-scopes": [
+          "calendar:write"
+        ]
+      },
+      "delete": {
+        "summary": "Delete an availability schedule",
+        "operationId": "deleteAvailabilitySchedule",
+        "tags": [
+          "Calendar"
+        ],
+        "description": "Deletes a schedule. Requires scope `calendar:write`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Schedule id, from the availability list.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-scopes": [
+          "calendar:write"
+        ]
+      }
+    },
+    "/calendar/busy-times": {
+      "get": {
+        "summary": "List busy times",
+        "operationId": "listBusyTimes",
+        "tags": [
+          "Calendar"
+        ],
+        "description": "Busy ranges from the connected calendars of the API key's creator and, optionally, teammates who share their busy time. `available` is false when the workspace's plan has no Google Calendar. Requires scope `calendar:read`.",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "required": true,
+            "description": "ISO 8601 start of the window, at most 70 days before `to`.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": true,
+            "description": "ISO 8601 end of the window.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "user_ids",
+            "in": "query",
+            "required": false,
+            "description": "Comma-separated user ids of up to 9 active members of this workspace. Not available to keys limited to assigned data.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-scopes": [
+          "calendar:read"
         ]
       }
     },

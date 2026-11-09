@@ -641,6 +641,13 @@ func TestCalendarListSlots(t *testing.T) {
 	})
 }
 
+func TestCalendarListBookings(t *testing.T) {
+	assertEndpoint(t, "GET", "/calendar/bookings", func(c *Client) error {
+		_, err := c.Calendar.ListBookings(context.Background(), nil, nil)
+		return err
+	})
+}
+
 func TestCalendarCreateBooking(t *testing.T) {
 	assertEndpoint(t, "POST", "/calendar/bookings", func(c *Client) error {
 		_, err := c.Calendar.CreateBooking(context.Background(), map[string]any{}, nil)
@@ -651,6 +658,104 @@ func TestCalendarCreateBooking(t *testing.T) {
 func TestCalendarCancelBooking(t *testing.T) {
 	assertEndpoint(t, "POST", "/calendar/bookings/test-id/cancel", func(c *Client) error {
 		_, err := c.Calendar.CancelBooking(context.Background(), "test-id", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestCalendarGetBooking(t *testing.T) {
+	assertEndpoint(t, "GET", "/calendar/bookings/test-id", func(c *Client) error {
+		_, err := c.Calendar.GetBooking(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
+func TestCalendarSetBookingStatus(t *testing.T) {
+	assertEndpoint(t, "POST", "/calendar/bookings/test-id/status", func(c *Client) error {
+		_, err := c.Calendar.SetBookingStatus(context.Background(), "test-id", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestCalendarRescheduleBooking(t *testing.T) {
+	assertEndpoint(t, "POST", "/calendar/bookings/test-id/reschedule", func(c *Client) error {
+		_, err := c.Calendar.RescheduleBooking(context.Background(), "test-id", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestCalendarListBookingNotes(t *testing.T) {
+	assertEndpoint(t, "GET", "/calendar/bookings/test-id/notes", func(c *Client) error {
+		_, err := c.Calendar.ListBookingNotes(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
+func TestCalendarAddBookingNote(t *testing.T) {
+	assertEndpoint(t, "POST", "/calendar/bookings/test-id/notes", func(c *Client) error {
+		_, err := c.Calendar.AddBookingNote(context.Background(), "test-id", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestCalendarDeleteBookingNote(t *testing.T) {
+	assertEndpoint(t, "DELETE", "/calendar/bookings/test-id/notes/test-noteId", func(c *Client) error {
+		_, err := c.Calendar.DeleteBookingNote(context.Background(), "test-id", "test-noteId", nil)
+		return err
+	})
+}
+
+func TestCalendarListBlockedTimes(t *testing.T) {
+	assertEndpoint(t, "GET", "/calendar/blocked-times", func(c *Client) error {
+		_, err := c.Calendar.ListBlockedTimes(context.Background(), nil, nil)
+		return err
+	})
+}
+
+func TestCalendarCreateBlockedTime(t *testing.T) {
+	assertEndpoint(t, "POST", "/calendar/blocked-times", func(c *Client) error {
+		_, err := c.Calendar.CreateBlockedTime(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestCalendarDeleteBlockedTime(t *testing.T) {
+	assertEndpoint(t, "DELETE", "/calendar/blocked-times/test-id", func(c *Client) error {
+		_, err := c.Calendar.DeleteBlockedTime(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
+func TestCalendarListAvailabilitySchedules(t *testing.T) {
+	assertEndpoint(t, "GET", "/calendar/availability", func(c *Client) error {
+		_, err := c.Calendar.ListAvailabilitySchedules(context.Background(), nil)
+		return err
+	})
+}
+
+func TestCalendarCreateAvailabilitySchedule(t *testing.T) {
+	assertEndpoint(t, "POST", "/calendar/availability", func(c *Client) error {
+		_, err := c.Calendar.CreateAvailabilitySchedule(context.Background(), map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestCalendarUpdateAvailabilitySchedule(t *testing.T) {
+	assertEndpoint(t, "PATCH", "/calendar/availability/test-id", func(c *Client) error {
+		_, err := c.Calendar.UpdateAvailabilitySchedule(context.Background(), "test-id", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestCalendarDeleteAvailabilitySchedule(t *testing.T) {
+	assertEndpoint(t, "DELETE", "/calendar/availability/test-id", func(c *Client) error {
+		_, err := c.Calendar.DeleteAvailabilitySchedule(context.Background(), "test-id", nil)
+		return err
+	})
+}
+
+func TestCalendarListBusyTimes(t *testing.T) {
+	assertEndpoint(t, "GET", "/calendar/busy-times", func(c *Client) error {
+		_, err := c.Calendar.ListBusyTimes(context.Background(), nil, nil)
 		return err
 	})
 }

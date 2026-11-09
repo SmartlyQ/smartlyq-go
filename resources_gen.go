@@ -717,6 +717,13 @@ func (r *CalendarResource) ListSlots(ctx context.Context, query map[string]strin
 	return r.client.do(ctx, "GET", "/calendar/slots", query, nil, opts)
 }
 
+// ListBookings - List bookings.
+//
+// GET /calendar/bookings
+func (r *CalendarResource) ListBookings(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/calendar/bookings", query, nil, opts)
+}
+
 // CreateBooking - Take a booking.
 //
 // POST /calendar/bookings
@@ -729,6 +736,104 @@ func (r *CalendarResource) CreateBooking(ctx context.Context, body map[string]an
 // POST /calendar/bookings/{id}/cancel
 func (r *CalendarResource) CancelBooking(ctx context.Context, id string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
 	return r.client.do(ctx, "POST", "/calendar/bookings/"+url.PathEscape(id)+"/cancel", nil, body, opts)
+}
+
+// GetBooking - Get a booking.
+//
+// GET /calendar/bookings/{id}
+func (r *CalendarResource) GetBooking(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/calendar/bookings/"+url.PathEscape(id), nil, nil, opts)
+}
+
+// SetBookingStatus - Set a booking's status.
+//
+// POST /calendar/bookings/{id}/status
+func (r *CalendarResource) SetBookingStatus(ctx context.Context, id string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/calendar/bookings/"+url.PathEscape(id)+"/status", nil, body, opts)
+}
+
+// RescheduleBooking - Reschedule a booking.
+//
+// POST /calendar/bookings/{id}/reschedule
+func (r *CalendarResource) RescheduleBooking(ctx context.Context, id string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/calendar/bookings/"+url.PathEscape(id)+"/reschedule", nil, body, opts)
+}
+
+// ListBookingNotes - List booking notes.
+//
+// GET /calendar/bookings/{id}/notes
+func (r *CalendarResource) ListBookingNotes(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/calendar/bookings/"+url.PathEscape(id)+"/notes", nil, nil, opts)
+}
+
+// AddBookingNote - Add a booking note.
+//
+// POST /calendar/bookings/{id}/notes
+func (r *CalendarResource) AddBookingNote(ctx context.Context, id string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/calendar/bookings/"+url.PathEscape(id)+"/notes", nil, body, opts)
+}
+
+// DeleteBookingNote - Delete a booking note.
+//
+// DELETE /calendar/bookings/{id}/notes/{note_id}
+func (r *CalendarResource) DeleteBookingNote(ctx context.Context, id string, noteId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "DELETE", "/calendar/bookings/"+url.PathEscape(id)+"/notes/"+url.PathEscape(noteId), nil, nil, opts)
+}
+
+// ListBlockedTimes - List blocked time.
+//
+// GET /calendar/blocked-times
+func (r *CalendarResource) ListBlockedTimes(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/calendar/blocked-times", query, nil, opts)
+}
+
+// CreateBlockedTime - Block off time.
+//
+// POST /calendar/blocked-times
+func (r *CalendarResource) CreateBlockedTime(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/calendar/blocked-times", nil, body, opts)
+}
+
+// DeleteBlockedTime - Free blocked time.
+//
+// DELETE /calendar/blocked-times/{id}
+func (r *CalendarResource) DeleteBlockedTime(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "DELETE", "/calendar/blocked-times/"+url.PathEscape(id), nil, nil, opts)
+}
+
+// ListAvailabilitySchedules - List availability schedules.
+//
+// GET /calendar/availability
+func (r *CalendarResource) ListAvailabilitySchedules(ctx context.Context, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/calendar/availability", nil, nil, opts)
+}
+
+// CreateAvailabilitySchedule - Create an availability schedule.
+//
+// POST /calendar/availability
+func (r *CalendarResource) CreateAvailabilitySchedule(ctx context.Context, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/calendar/availability", nil, body, opts)
+}
+
+// UpdateAvailabilitySchedule - Update an availability schedule.
+//
+// PATCH /calendar/availability/{id}
+func (r *CalendarResource) UpdateAvailabilitySchedule(ctx context.Context, id string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "PATCH", "/calendar/availability/"+url.PathEscape(id), nil, body, opts)
+}
+
+// DeleteAvailabilitySchedule - Delete an availability schedule.
+//
+// DELETE /calendar/availability/{id}
+func (r *CalendarResource) DeleteAvailabilitySchedule(ctx context.Context, id string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "DELETE", "/calendar/availability/"+url.PathEscape(id), nil, nil, opts)
+}
+
+// ListBusyTimes - List busy times.
+//
+// GET /calendar/busy-times
+func (r *CalendarResource) ListBusyTimes(ctx context.Context, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/calendar/busy-times", query, nil, opts)
 }
 
 // ChatbotsResource groups the Chatbot endpoints.

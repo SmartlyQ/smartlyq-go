@@ -279,8 +279,23 @@ All methods below are available on the client. Every method also accepts a trail
 | --- | --- | --- |
 | `client.Calendar.ListEventTypes(ctx)` | `GET /calendar/event-types` | List booking pages |
 | `client.Calendar.ListSlots(ctx, query)` | `GET /calendar/slots` | List open slots |
+| `client.Calendar.ListBookings(ctx, query)` | `GET /calendar/bookings` | List bookings |
 | `client.Calendar.CreateBooking(ctx, body)` | `POST /calendar/bookings` | Take a booking |
 | `client.Calendar.CancelBooking(ctx, id, body)` | `POST /calendar/bookings/{id}/cancel` | Cancel a booking |
+| `client.Calendar.GetBooking(ctx, id)` | `GET /calendar/bookings/{id}` | Get a booking |
+| `client.Calendar.SetBookingStatus(ctx, id, body)` | `POST /calendar/bookings/{id}/status` | Set a booking's status |
+| `client.Calendar.RescheduleBooking(ctx, id, body)` | `POST /calendar/bookings/{id}/reschedule` | Reschedule a booking |
+| `client.Calendar.ListBookingNotes(ctx, id)` | `GET /calendar/bookings/{id}/notes` | List booking notes |
+| `client.Calendar.AddBookingNote(ctx, id, body)` | `POST /calendar/bookings/{id}/notes` | Add a booking note |
+| `client.Calendar.DeleteBookingNote(ctx, id, noteId)` | `DELETE /calendar/bookings/{id}/notes/{note_id}` | Delete a booking note |
+| `client.Calendar.ListBlockedTimes(ctx, query)` | `GET /calendar/blocked-times` | List blocked time |
+| `client.Calendar.CreateBlockedTime(ctx, body)` | `POST /calendar/blocked-times` | Block off time |
+| `client.Calendar.DeleteBlockedTime(ctx, id)` | `DELETE /calendar/blocked-times/{id}` | Free blocked time |
+| `client.Calendar.ListAvailabilitySchedules(ctx)` | `GET /calendar/availability` | List availability schedules |
+| `client.Calendar.CreateAvailabilitySchedule(ctx, body)` | `POST /calendar/availability` | Create an availability schedule |
+| `client.Calendar.UpdateAvailabilitySchedule(ctx, id, body)` | `PATCH /calendar/availability/{id}` | Update an availability schedule |
+| `client.Calendar.DeleteAvailabilitySchedule(ctx, id)` | `DELETE /calendar/availability/{id}` | Delete an availability schedule |
+| `client.Calendar.ListBusyTimes(ctx, query)` | `GET /calendar/busy-times` | List busy times |
 
 ### Chatbot
 
