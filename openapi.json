@@ -1086,15 +1086,39 @@
                 "example": {
                   "success": true,
                   "data": {
-                    "id": 128,
-                    "content": "Big news - our summer collection is live! ☀️",
-                    "platforms": [
-                      "twitter"
-                    ],
-                    "status": "published",
-                    "scheduled_time": "2026-07-26T09:41:22Z",
-                    "published_at": "2026-07-26T09:41:22Z",
-                    "created_at": "2026-07-26T09:41:22Z"
+                    "post_id": 128,
+                    "status": "partially_published",
+                    "results": [
+                      {
+                        "platform": "facebook",
+                        "account": "Acme Coffee",
+                        "account_id": 747,
+                        "account_username": null,
+                        "status": "success",
+                        "platform_post_id": "808445262352386_122153762673053247",
+                        "url": "https://www.facebook.com/808445262352386/posts/122153762673053247",
+                        "published_at": "2026-11-12T10:00:01Z",
+                        "error": null
+                      },
+                      {
+                        "platform": "instagram",
+                        "account": "acmecoffee",
+                        "account_id": 750,
+                        "account_username": "acmecoffee",
+                        "status": "failed",
+                        "platform_post_id": null,
+                        "url": null,
+                        "published_at": null,
+                        "error": {
+                          "code": "MEDIA_FETCH_FAILED",
+                          "message": "The remote media URL could not be reached or timed out while the platform fetched it.",
+                          "fix": "Ensure the media URL is publicly reachable, returns a direct file, and responds quickly.",
+                          "retryable": true,
+                          "docs_url": null,
+                          "detail": null
+                        }
+                      }
+                    ]
                   },
                   "usage": {
                     "units": 1,
@@ -1313,15 +1337,21 @@
                 "example": {
                   "success": true,
                   "data": {
-                    "id": 128,
-                    "content": "Big news - our summer collection is live! ☀️",
-                    "platforms": [
-                      "twitter"
-                    ],
-                    "status": "published",
-                    "scheduled_time": "2026-07-26T09:41:22Z",
-                    "published_at": "2026-07-26T09:41:22Z",
-                    "created_at": "2026-07-26T09:41:22Z"
+                    "post_id": 129,
+                    "status": "scheduled",
+                    "results": [
+                      {
+                        "platform": "facebook",
+                        "account": "Acme Coffee",
+                        "account_id": 747,
+                        "account_username": null,
+                        "status": "scheduled",
+                        "platform_post_id": null,
+                        "url": null,
+                        "published_at": null,
+                        "error": null
+                      }
+                    ]
                   },
                   "usage": {
                     "units": 1,
@@ -6577,6 +6607,13 @@
                     "data": {
                       "type": "object",
                       "properties": {
+                        "post_id": {
+                          "type": "integer"
+                        },
+                        "status": {
+                          "type": "string",
+                          "description": "The post's overall status after the retry (same as final_status)."
+                        },
                         "success": {
                           "type": "boolean"
                         },
@@ -6589,11 +6626,12 @@
                         },
                         "final_status": {
                           "type": "string",
-                          "description": "published | partial | failed"
+                          "description": "published | partially_published | failed"
                         },
                         "platform_results": {
-                          "type": "array",
-                          "items": {
+                          "type": "object",
+                          "description": "Keyed by platform: {success, error, error_code}. error is our catalog wording (never the platform's raw text).",
+                          "additionalProperties": {
                             "type": "object",
                             "properties": {
                               "success": {
@@ -6602,9 +6640,20 @@
                               "error": {
                                 "type": "string",
                                 "nullable": true
+                              },
+                              "error_code": {
+                                "type": "string",
+                                "nullable": true
                               }
                             }
                           }
+                        },
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/PostResult"
+                          },
+                          "description": "Per account, for the platforms that were retried."
                         }
                       }
                     },
@@ -6616,19 +6665,29 @@
                 "example": {
                   "success": true,
                   "data": {
+                    "post_id": 128,
+                    "status": "published",
                     "success": true,
                     "retried": [
-                      "facebook",
                       "instagram"
                     ],
                     "final_status": "published",
-                    "platform_results": [
-                      {
+                    "platform_results": {
+                      "instagram": {
                         "success": true,
                         "error": null
-                      },
+                      }
+                    },
+                    "results": [
                       {
-                        "success": true,
+                        "platform": "instagram",
+                        "account": "acmecoffee",
+                        "account_id": 750,
+                        "account_username": "acmecoffee",
+                        "status": "success",
+                        "platform_post_id": "18122306330050894",
+                        "url": "https://www.instagram.com/p/DfmBzzwEq9x/",
+                        "published_at": "2026-11-12T10:05:00Z",
                         "error": null
                       }
                     ]
@@ -43091,6 +43150,89 @@
           }
         }
       },
+      "PostResult": {
+        "type": "object",
+        "description": "What happened to the post on ONE social account. Every key is always present (null when empty).",
+        "properties": {
+          "platform": {
+            "type": "string",
+            "example": "facebook"
+          },
+          "account": {
+            "type": "string",
+            "nullable": true,
+            "description": "The account's display name.",
+            "example": "Stav Test page"
+          },
+          "account_id": {
+            "type": "integer",
+            "nullable": true,
+            "description": "Social account id (null only for very old posts with no account on record)."
+          },
+          "account_username": {
+            "type": "string",
+            "nullable": true,
+            "description": "The handle, when the platform has one."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "failed",
+              "scheduled",
+              "pending",
+              "cancelled",
+              "removed"
+            ],
+            "description": "success: live on this account. failed: not published (see error). scheduled: waiting for its time. pending: draft, waiting for approval or publishing now. cancelled: the post was cancelled. removed: unpublished from the platforms."
+          },
+          "platform_post_id": {
+            "type": "string",
+            "nullable": true,
+            "description": "The platform's id for this account's post."
+          },
+          "url": {
+            "type": "string",
+            "nullable": true,
+            "description": "Public link to this account's post."
+          },
+          "published_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "error": {
+            "type": "object",
+            "nullable": true,
+            "description": "Why this account failed, worded by our error catalog (never the platform's raw text); null unless status is failed.",
+            "properties": {
+              "code": {
+                "type": "string",
+                "example": "MEDIA_FETCH_FAILED"
+              },
+              "message": {
+                "type": "string"
+              },
+              "fix": {
+                "type": "string",
+                "nullable": true
+              },
+              "retryable": {
+                "type": "boolean"
+              },
+              "docs_url": {
+                "type": "string",
+                "nullable": true
+              },
+              "detail": {
+                "type": "string",
+                "nullable": true,
+                "description": "The reason in full when we wrote it ourselves (a validation rule, a post stopped mid-publish), else null."
+              }
+            }
+          }
+        }
+      },
       "SocialPost": {
         "type": "object",
         "properties": {
@@ -43107,7 +43249,8 @@
             }
           },
           "status": {
-            "type": "string"
+            "type": "string",
+            "description": "draft | scheduled | processing | published | partially_published | failed | external (synced from the platform) | cancelled | unpublished"
           },
           "scheduled_time": {
             "type": "string",
@@ -43133,13 +43276,50 @@
           },
           "post_urls": {
             "type": "object",
-            "description": "Per-platform permalinks of the published posts, keyed by platform (arrays of URLs). Three reserved keys: _errors holds per-platform failure reasons (plus _post for a whole-post failure), _transcodes lists what auto-transcode fixed per platform (e.g. 'Frame rate was 15fps (below the 23fps minimum); raised to 30fps.'), and _publish_notes holds the raw form of publish_notes - read publish_notes instead.",
+            "description": "Per-platform permalinks of the published posts: an object keyed by platform name, each an array of URLs. Platform keys only; an empty object {} until something is published. Why a platform failed is in errors; extra steps that did not go as asked are in publish_notes.",
             "additionalProperties": true
           },
           "post_ids": {
             "type": "object",
-            "description": "Per-platform remote post IDs assigned by each platform, keyed by platform.",
+            "description": "Per-platform remote post IDs assigned by each platform: an object keyed by platform name, each an array of IDs (a single ID comes as a one-item array). Platform keys only; an empty object {} until something is published.",
             "additionalProperties": true
+          },
+          "errors": {
+            "type": "array",
+            "description": "Why the post failed, per platform, worded by our error catalog (never the platform's raw text). Present on failed and partially_published posts, an empty list otherwise. platform is null when the whole post failed (for example before any platform was tried). detail holds the reason in full when we wrote it ourselves (a validation rule, a post stopped mid-publish, a Google Business rejection after review), else null. Returned by GET and PATCH /social/posts/{post_id}.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "platform": {
+                  "type": "string",
+                  "nullable": true,
+                  "example": "instagram"
+                },
+                "code": {
+                  "type": "string",
+                  "example": "ACCOUNT_TOKEN_INVALID"
+                },
+                "message": {
+                  "type": "string",
+                  "example": "The connection token for this platform account has expired or been revoked."
+                },
+                "retryable": {
+                  "type": "boolean"
+                },
+                "detail": {
+                  "type": "string",
+                  "nullable": true,
+                  "example": "Publishing stopped before it finished. Some accounts may already have this post - check them before retrying."
+                }
+              }
+            }
+          },
+          "results": {
+            "type": "array",
+            "description": "Per-account results: one entry per social account the post goes to (GET and PATCH /social/posts/{post_id}, each row of GET /social/posts, and the post webhooks).",
+            "items": {
+              "$ref": "#/components/schemas/PostResult"
+            }
           },
           "publish_notes": {
             "type": "array",
@@ -43172,6 +43352,48 @@
           }
         }
       },
+      "SocialPostCreateResult": {
+        "type": "object",
+        "properties": {
+          "post_id": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "string",
+            "description": "published | partially_published | failed for publish-now; scheduled for a scheduled post."
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PostResult"
+            },
+            "description": "Per account. Publish-now entries also carry details (extra data about a failure). On a staggered schedule: every account of every post created; each `staggered` entry also has its own `results`."
+          },
+          "warnings": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Non-blocking notes, e.g. an aspect ratio outside the platform's range."
+          },
+          "scheduled_time": {
+            "type": "string",
+            "nullable": true,
+            "description": "Only when the post was put in a queue (`queue_id`): the slot it was given."
+          },
+          "queue_id": {
+            "type": "integer",
+            "nullable": true
+          },
+          "staggered": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "description": "One entry per post when a staggered schedule created several: `post_id`, `platforms`, `scheduled_time`, `replayed` and that post's `results`."
+          }
+        }
+      },
       "SocialPostResponse": {
         "type": "object",
         "properties": {
@@ -43182,7 +43404,7 @@
             ]
           },
           "data": {
-            "$ref": "#/components/schemas/SocialPost"
+            "$ref": "#/components/schemas/SocialPostCreateResult"
           },
           "usage": {
             "$ref": "#/components/schemas/UsageMeta"
