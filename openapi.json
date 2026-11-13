@@ -17967,7 +17967,7 @@
         "tags": [
           "Social"
         ],
-        "description": "Delete a PUBLISHED post from its native platforms while keeping the SmartlyQ record - its status flips to `unpublished`. Optional `platforms` restricts which networks are removed. Supported for deletion: Threads, Facebook, LinkedIn, YouTube, X/Twitter, Pinterest, Tumblr, Bluesky, Google Business (Instagram, TikTok and Snapchat expose no delete API - those targets are reported as skipped). If any attempted native delete fails, nothing changes on our side and per-platform errors are returned so you can retry. Drafts and scheduled posts should use `DELETE /social/posts/{post_id}` instead. Requires scope `social:write`.",
+        "description": "Delete a PUBLISHED post from its native platforms while keeping the SmartlyQ record. The post becomes `unpublished` only when no copy of it is left live on any platform; until then it keeps its status, and `results` and `still_live` say exactly which copies were removed and which are still up, and why. Optional `platforms` restricts which networks are removed. Supported for deletion: Threads, Facebook, LinkedIn, YouTube, X/Twitter, Pinterest, Tumblr, Bluesky, Google Business (Instagram, TikTok and Snapchat expose no delete API - those targets are reported as skipped). Every copy that is gone (deleted, or already gone on the platform) is recorded, even when another delete fails: its link leaves `post_urls` and its account shows `removed` in `results`. A failed delete answers `PLATFORM_DELETE_FAILED` with the same `status`, `results` and `still_live` in `details`; call unpublish again to remove the rest. A copy already gone on the platform counts as removed (Facebook, LinkedIn, YouTube, Google Business). A copy we never received an id for (some Facebook Reels report no id) cannot be removed through the API and is not listed. Drafts and scheduled posts should use `DELETE /social/posts/{post_id}` instead. Requires scope `social:write`.",
         "parameters": [
           {
             "name": "post_id",
@@ -18000,7 +18000,7 @@
         },
         "responses": {
           "200": {
-            "description": "Unpublished",
+            "description": "Removed from every platform it could be (see `status` and `still_live`)",
             "content": {
               "application/json": {
                 "schema": {
@@ -18021,13 +18021,63 @@
                         "status": {
                           "type": "string",
                           "enum": [
-                            "unpublished"
-                          ]
+                            "unpublished",
+                            "published",
+                            "partially_published",
+                            "partial"
+                          ],
+                          "description": "`unpublished` once no copy is left live; otherwise the post keeps its status (copies are still up, see `still_live`)."
                         },
                         "platforms": {
                           "type": "object",
                           "additionalProperties": true,
                           "description": "Per-platform deletion results."
+                        },
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/PostResult"
+                          },
+                          "description": "Per account after this call: `removed` for a copy that is gone, `success` for one still live."
+                        },
+                        "still_live": {
+                          "type": "array",
+                          "description": "Every copy still on a platform, and why. Empty when the post is fully unpublished.",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "platform": {
+                                "type": "string"
+                              },
+                              "account": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "account_id": {
+                                "type": "integer",
+                                "nullable": true
+                              },
+                              "url": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "reason": {
+                                "type": "string",
+                                "enum": [
+                                  "no_delete_api",
+                                  "not_requested",
+                                  "delete_not_enabled",
+                                  "reconnect_needed",
+                                  "delete_failed"
+                                ],
+                                "description": "no_delete_api: the platform lets no app delete posts (Instagram, TikTok, Snapchat) - delete it there. not_requested: left out by `platforms`. delete_not_enabled: deleting from this platform is switched off. reconnect_needed: the account is not connected - reconnect it, then unpublish again. delete_failed: retry."
+                              },
+                              "message": {
+                                "type": "string",
+                                "example": "Instagram does not let apps delete posts. Delete it in the Instagram app."
+                              }
+                            }
+                          }
                         }
                       }
                     },
@@ -18040,8 +18090,53 @@
                   "success": true,
                   "data": {
                     "post_id": 128,
-                    "status": "unpublished",
-                    "platforms": {}
+                    "status": "published",
+                    "platforms": {
+                      "facebook": [
+                        {
+                          "ok": true,
+                          "deleted_id": "808445262352386_122155725963053247"
+                        }
+                      ],
+                      "instagram": {
+                        "ok": false,
+                        "skipped": "unsupported"
+                      }
+                    },
+                    "results": [
+                      {
+                        "platform": "facebook",
+                        "account": "Acme Coffee",
+                        "account_id": 747,
+                        "account_username": null,
+                        "status": "removed",
+                        "platform_post_id": "808445262352386_122155725963053247",
+                        "url": null,
+                        "published_at": null,
+                        "error": null
+                      },
+                      {
+                        "platform": "instagram",
+                        "account": "acmecoffee",
+                        "account_id": 750,
+                        "account_username": "acmecoffee",
+                        "status": "success",
+                        "platform_post_id": "18118224935031398",
+                        "url": "https://www.instagram.com/p/DfpKPg2Cj2n/",
+                        "published_at": "2026-11-12T13:26:37Z",
+                        "error": null
+                      }
+                    ],
+                    "still_live": [
+                      {
+                        "platform": "instagram",
+                        "account": "acmecoffee",
+                        "account_id": 750,
+                        "url": "https://www.instagram.com/p/DfpKPg2Cj2n/",
+                        "reason": "no_delete_api",
+                        "message": "Instagram does not let apps delete posts. Delete it in the Instagram app."
+                      }
+                    ]
                   },
                   "meta": {
                     "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
