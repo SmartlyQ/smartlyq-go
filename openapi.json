@@ -1303,7 +1303,7 @@
             "$ref": "#/components/responses/ServerError"
           }
         },
-        "description": "Posts imported by external sync carry status 'external' - filter with ?status=external. Requires scope `social:read`.",
+        "description": "Lists the posts of the person who created the API key; keys of a workspace owner, admin or approver (with \"Approve posts\") list the whole team's posts, as in the app. Each post says who wrote it (author_name) and whether this key may change it (can_manage). Posts imported by external sync carry status 'external' - filter with ?status=external. Requires scope `social:read`.",
         "x-scopes": [
           "social:read"
         ]
@@ -1510,7 +1510,7 @@
         "x-scopes": [
           "social:read"
         ],
-        "description": "Requires scope `social:read`."
+        "description": "Your own post, or a teammate's when the key's creator is the workspace owner, an admin or an approver (same rule as the app); else 404. Requires scope `social:read`."
       },
       "patch": {
         "summary": "Update social post",
@@ -1583,7 +1583,7 @@
         "x-scopes": [
           "social:write"
         ],
-        "description": "Update a draft or scheduled post, or a post that failed on every platform (nothing of it is live; saving it makes it a draft again, or scheduled when you send a `scheduled_time`, and stops its automatic retries). Send only the fields you want to change.\n\nA partly published post cannot be updated - it would post its published platforms again - and answers `422 NOT_EDITABLE` saying so. A failed post that is being retried right now answers `409 RETRY_IN_PROGRESS`; nothing is changed.\n\nIf the post will be a scheduled Facebook Reel after the update (`platform_options.facebook.type` set to `reel`), it is checked against Facebook's limit of 30 Reels per Page in 24 hours at its publish time, counting other published and scheduled Reels but not this post itself. A Page that would be over the limit is refused with `422 PLATFORM_DAILY_LIMIT_REACHED` and `details` carrying `account_id`, `limit`, `used` and `next_available_at`; nothing is changed.\n\nRequires scope `social:write`."
+        "description": "Your own post, or any post in the workspace when the key's creator is the owner or an admin; a post you can see but not change answers 403 NOT_YOUR_POST, one you cannot see 404. Update a draft or scheduled post, or a post that failed on every platform (nothing of it is live; saving it makes it a draft again, or scheduled when you send a `scheduled_time`, and stops its automatic retries). Send only the fields you want to change.\n\nA partly published post cannot be updated - it would post its published platforms again - and answers `422 NOT_EDITABLE` saying so. A failed post that is being retried right now answers `409 RETRY_IN_PROGRESS`; nothing is changed.\n\nIf the post will be a scheduled Facebook Reel after the update (`platform_options.facebook.type` set to `reel`), it is checked against Facebook's limit of 30 Reels per Page in 24 hours at its publish time, counting other published and scheduled Reels but not this post itself. A Page that would be over the limit is refused with `422 PLATFORM_DAILY_LIMIT_REACHED` and `details` carrying `account_id`, `limit`, `used` and `next_available_at`; nothing is changed.\n\nRequires scope `social:write`."
       },
       "delete": {
         "summary": "Delete social post",
@@ -1616,7 +1616,7 @@
         "x-scopes": [
           "social:write"
         ],
-        "description": "Requires scope `social:write`."
+        "description": "Your own post, or any post in the workspace when the key's creator is the owner or an admin; a post you can see but not change answers 403 NOT_YOUR_POST, one you cannot see 404. Requires scope `social:write`."
       }
     },
     "/content/rewrite": {
@@ -6719,7 +6719,7 @@
         "x-scopes": [
           "social:write"
         ],
-        "description": "Re-publishes the platforms of a post that failed. Only platforms without a published post are retried; a platform that already published is never posted again (asking only for those answers 422 NOTHING_TO_RETRY). One retry runs at a time per post: while one is publishing, another answers 409 RETRY_IN_PROGRESS and publishes nothing - wait for the first to finish, then read the post. Requires scope `social:write`."
+        "description": "Your own post, or a teammate's when the key's creator is the workspace owner, an admin or an approver (the app lets an approver retry a teammate's post); else 404. Re-publishes the platforms of a post that failed. Only platforms without a published post are retried; a platform that already published is never posted again (asking only for those answers 422 NOTHING_TO_RETRY). One retry runs at a time per post: while one is publishing, another answers 409 RETRY_IN_PROGRESS and publishes nothing - wait for the first to finish, then read the post. Requires scope `social:write`."
       }
     },
     "/social/comments": {
@@ -17967,7 +17967,7 @@
         "tags": [
           "Social"
         ],
-        "description": "Delete a PUBLISHED post from its native platforms while keeping the SmartlyQ record. The post becomes `unpublished` only when no copy of it is left live on any platform; until then it keeps its status, and `results` and `still_live` say exactly which copies were removed and which are still up, and why. Optional `platforms` restricts which networks are removed. Supported for deletion: Threads, Facebook, LinkedIn, YouTube, X/Twitter, Pinterest, Tumblr, Bluesky, Google Business (Instagram, TikTok and Snapchat expose no delete API - those targets are reported as skipped). Every copy that is gone (deleted, or already gone on the platform) is recorded, even when another delete fails: its link leaves `post_urls` and its account shows `removed` in `results`. A failed delete answers `PLATFORM_DELETE_FAILED` with the same `status`, `results` and `still_live` in `details`; call unpublish again to remove the rest. A copy already gone on the platform counts as removed (Facebook, LinkedIn, YouTube, Google Business). A copy we never received an id for (some Facebook Reels report no id) cannot be removed through the API and is not listed. Drafts and scheduled posts should use `DELETE /social/posts/{post_id}` instead. Requires scope `social:write`.",
+        "description": "Your own post, or any post in the workspace when the key's creator is the owner or an admin; a post you can see but not change answers 403 NOT_YOUR_POST, one you cannot see 404. Delete a PUBLISHED post from its native platforms while keeping the SmartlyQ record. The post becomes `unpublished` only when no copy of it is left live on any platform; until then it keeps its status, and `results` and `still_live` say exactly which copies were removed and which are still up, and why. Optional `platforms` restricts which networks are removed. Supported for deletion: Threads, Facebook, LinkedIn, YouTube, X/Twitter, Pinterest, Tumblr, Bluesky, Google Business (Instagram, TikTok and Snapchat expose no delete API - those targets are reported as skipped). Every copy that is gone (deleted, or already gone on the platform) is recorded, even when another delete fails: its link leaves `post_urls` and its account shows `removed` in `results`. A failed delete answers `PLATFORM_DELETE_FAILED` with the same `status`, `results` and `still_live` in `details`; call unpublish again to remove the rest. A copy already gone on the platform counts as removed (Facebook, LinkedIn, YouTube, Google Business). A copy we never received an id for (some Facebook Reels report no id) cannot be removed through the API and is not listed. Drafts and scheduled posts should use `DELETE /social/posts/{post_id}` instead. Requires scope `social:write`.",
         "parameters": [
           {
             "name": "post_id",
@@ -18148,6 +18148,9 @@
           },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
@@ -18472,7 +18475,7 @@
         "tags": [
           "Social"
         ],
-        "description": "Stops an evergreen recycling chain: clears the recycle config on every post in the chain and cancels any not-yet-published auto-spawned occurrences back to draft. Works on any post in the chain (original or an occurrence). Unbilled. Requires scope `social:write`.",
+        "description": "Your own post, or any post in the workspace when the key's creator is the owner or an admin; a post you can see but not change answers 403 NOT_YOUR_POST, one you cannot see 404. Stops an evergreen recycling chain: clears the recycle config on every post in the chain and cancels any not-yet-published auto-spawned occurrences back to draft. Works on any post in the chain (original or an occurrence). Unbilled. Requires scope `social:write`.",
         "parameters": [
           {
             "name": "post_id",
@@ -18531,6 +18534,9 @@
           },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
@@ -24946,7 +24952,7 @@
         "tags": [
           "Social"
         ],
-        "description": "Edits a post that has ALREADY been published, natively on the platform. Honest per-platform support: Facebook page posts work today; X's edit API is paid-tier-only and Reddit's needs a re-auth scope - those report unsupported per platform instead of failing the call. The SmartlyQ record keeps its original text for multi-platform posts. Requires scope `social:write`.",
+        "description": "Your own post, or any post in the workspace when the key's creator is the owner or an admin; a post you can see but not change answers 403 NOT_YOUR_POST, one you cannot see 404. Edits a post that has ALREADY been published, natively on the platform. Honest per-platform support: Facebook page posts work today; X's edit API is paid-tier-only and Reddit's needs a re-auth scope - those report unsupported per platform instead of failing the call. The SmartlyQ record keeps its original text for multi-platform posts. Requires scope `social:write`.",
         "parameters": [
           {
             "name": "post_id",
@@ -25055,6 +25061,9 @@
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
           "404": {
             "$ref": "#/components/responses/NotFound"
           },
@@ -25077,7 +25086,7 @@
         "tags": [
           "Social"
         ],
-        "description": "Post-publish updates for the post's YouTube leg: title, description, tags (snippet is fetched and merged so nothing else changes), add to a playlist, and/or set a custom thumbnail from a public URL (max 2MB). Requires scope `social:write`.",
+        "description": "Your own post, or any post in the workspace when the key's creator is the owner or an admin; a post you can see but not change answers 403 NOT_YOUR_POST, one you cannot see 404. Post-publish updates for the post's YouTube leg: title, description, tags (snippet is fetched and merged so nothing else changes), add to a playlist, and/or set a custom thumbnail from a public URL (max 2MB). Requires scope `social:write`.",
         "parameters": [
           {
             "name": "post_id",
@@ -25185,6 +25194,9 @@
           },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
@@ -43358,6 +43370,92 @@
           "created_at": {
             "type": "string",
             "format": "date-time"
+          },
+          "account_ids": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "The social accounts the post goes to (the account_ids you sent, account groups expanded)."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the post last changed."
+          },
+          "media_urls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The media attached to the post."
+          },
+          "platform_options": {
+            "type": "object",
+            "nullable": true,
+            "additionalProperties": true,
+            "description": "Per-platform options as stored (the same keys you send). The top-level link you sent lives here, under the platform that has a link field (e.g. facebook.link)."
+          },
+          "platform_overrides": {
+            "type": "object",
+            "nullable": true,
+            "additionalProperties": true,
+            "description": "Per-platform text or media set in the app (\"Customize channel\"), keyed by platform; null when every platform got the same content. Read only."
+          },
+          "queue_id": {
+            "type": "integer",
+            "nullable": true,
+            "description": "The posting queue the post was placed in, or null."
+          },
+          "recycle": {
+            "type": "object",
+            "nullable": true,
+            "description": "Evergreen recycling settings, or null when the post does not recycle.",
+            "properties": {
+              "interval_hours": {
+                "type": "integer"
+              },
+              "until": {
+                "type": "string",
+                "nullable": true
+              },
+              "max": {
+                "type": "integer",
+                "nullable": true
+              },
+              "count": {
+                "type": "integer",
+                "description": "Occurrences published so far."
+              }
+            }
+          },
+          "approval_status": {
+            "type": "string",
+            "description": "none (no approval needed) | pending | approved | rejected."
+          },
+          "rejection_reason": {
+            "type": "string",
+            "nullable": true,
+            "description": "Why an approver rejected the post."
+          },
+          "approved_at": {
+            "type": "string",
+            "nullable": true,
+            "format": "date-time"
+          },
+          "created_via": {
+            "type": "string",
+            "nullable": true,
+            "description": "Where the post was made: api, app, mcp and so on."
+          },
+          "author_name": {
+            "type": "string",
+            "nullable": true,
+            "description": "Who wrote the post. Keys of an owner, admin or approver also see teammates' posts (same rule as the app)."
+          },
+          "can_manage": {
+            "type": "boolean",
+            "description": "Whether this key may change the post (update, delete, unpublish, edit): its own posts, or any post for an owner or admin key."
           },
           "publish_stage": {
             "type": "string",
