@@ -40905,7 +40905,7 @@
     "/edits": {
       "post": {
         "summary": "Create a video edit",
-        "description": "Edits one video (any aspect ratio, up to 60 minutes): word-by-word captions, magic zooms, stock b-roll, silence and filler removal, clean audio, hook title, music and your brand template. Every field is checked before any charge (422 naming it). Returns `202 Accepted` with an `edit_uid`; the edit becomes `ready` (open it with `editor_url`) and can then be exported with POST /v1/edits/{uid}/export, or set `auto_export` to export straight away. Pass `webhook_url` to be told when it is ready and when it is exported. Billed per source minute (rounded up): 1 minute up front, the rest once the length is known; clean audio and exports are billed per minute too. A failed edit is refunded, except when the video is over 60 minutes or your wallet cannot pay the rest: then the first minute is kept for the download and checks already done. Requires scope `videos:write`.",
+        "description": "Edits one video (any aspect ratio in, the format you choose out: `settings.aspect`, by default 9:16 for a portrait video and 16:9 for a landscape one; up to 60 minutes): word-by-word captions, magic zooms, stock b-roll, silence and filler removal, clean audio, hook title, music and your brand template. Every field is checked before any charge (422 naming it). Returns `202 Accepted` with an `edit_uid`; the edit becomes `ready` (open it with `editor_url`) and can then be exported with POST /v1/edits/{uid}/export, or set `auto_export` to export straight away. Pass `webhook_url` to be told when it is ready and when it is exported. Billed per source minute (rounded up): 1 minute up front, the rest once the length is known; clean audio and exports are billed per minute too. A failed edit is refunded, except when the video is over 60 minutes or your wallet cannot pay the rest: then the first minute is kept for the download and checks already done. Requires scope `videos:write`.",
         "operationId": "createEdit",
         "tags": [
           "Edits"
@@ -44844,6 +44844,19 @@
             "type": "boolean",
             "default": true,
             "description": "Use the workspace brand template (logo, caption styling, hook style, music)."
+          },
+          "aspect": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "source",
+              "9:16",
+              "16:9",
+              "1:1",
+              "4:5"
+            ],
+            "default": "auto",
+            "description": "The format of the edited video. `auto` (default): a portrait video (height more than 5% over the width) becomes 9:16 (1080x1920), a landscape one (width more than 5% over the height) 16:9 (1920x1080), anything in between 1:1 (1080x1080). `9:16`, `16:9`, `1:1` or `4:5` (1080x1350): that format, whatever the source. In every format the video fills the frame, centred, and what does not fit is cropped; captions, hook, logo and b-roll are placed for that frame. `source`: the video's own aspect ratio with the short side 1080 px (every edit made before 17 November 2026 keeps this format when you change it with PATCH)."
           },
           "vocabulary": {
             "type": "array",
