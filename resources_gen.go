@@ -759,6 +759,27 @@ func (r *CalendarResource) RescheduleBooking(ctx context.Context, id string, bod
 	return r.client.do(ctx, "POST", "/calendar/bookings/"+url.PathEscape(id)+"/reschedule", nil, body, opts)
 }
 
+// DeclineBooking - Decline a booking.
+//
+// POST /calendar/bookings/{id}/decline
+func (r *CalendarResource) DeclineBooking(ctx context.Context, id string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/calendar/bookings/"+url.PathEscape(id)+"/decline", nil, body, opts)
+}
+
+// MarkBookingNoShow - Mark who did not come.
+//
+// POST /calendar/bookings/{id}/no-show
+func (r *CalendarResource) MarkBookingNoShow(ctx context.Context, id string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/calendar/bookings/"+url.PathEscape(id)+"/no-show", nil, body, opts)
+}
+
+// AddBookingGuests - Add guests to a booking.
+//
+// POST /calendar/bookings/{id}/guests
+func (r *CalendarResource) AddBookingGuests(ctx context.Context, id string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "POST", "/calendar/bookings/"+url.PathEscape(id)+"/guests", nil, body, opts)
+}
+
 // ListBookingNotes - List booking notes.
 //
 // GET /calendar/bookings/{id}/notes

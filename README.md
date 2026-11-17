@@ -285,6 +285,9 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Calendar.GetBooking(ctx, id)` | `GET /calendar/bookings/{id}` | Get a booking |
 | `client.Calendar.SetBookingStatus(ctx, id, body)` | `POST /calendar/bookings/{id}/status` | Set a booking's status |
 | `client.Calendar.RescheduleBooking(ctx, id, body)` | `POST /calendar/bookings/{id}/reschedule` | Reschedule a booking |
+| `client.Calendar.DeclineBooking(ctx, id, body)` | `POST /calendar/bookings/{id}/decline` | Decline a booking |
+| `client.Calendar.MarkBookingNoShow(ctx, id, body)` | `POST /calendar/bookings/{id}/no-show` | Mark who did not come |
+| `client.Calendar.AddBookingGuests(ctx, id, body)` | `POST /calendar/bookings/{id}/guests` | Add guests to a booking |
 | `client.Calendar.ListBookingNotes(ctx, id)` | `GET /calendar/bookings/{id}/notes` | List booking notes |
 | `client.Calendar.AddBookingNote(ctx, id, body)` | `POST /calendar/bookings/{id}/notes` | Add a booking note |
 | `client.Calendar.DeleteBookingNote(ctx, id, noteId)` | `DELETE /calendar/bookings/{id}/notes/{note_id}` | Delete a booking note |

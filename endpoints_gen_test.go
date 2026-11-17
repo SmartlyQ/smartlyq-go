@@ -683,6 +683,27 @@ func TestCalendarRescheduleBooking(t *testing.T) {
 	})
 }
 
+func TestCalendarDeclineBooking(t *testing.T) {
+	assertEndpoint(t, "POST", "/calendar/bookings/test-id/decline", func(c *Client) error {
+		_, err := c.Calendar.DeclineBooking(context.Background(), "test-id", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestCalendarMarkBookingNoShow(t *testing.T) {
+	assertEndpoint(t, "POST", "/calendar/bookings/test-id/no-show", func(c *Client) error {
+		_, err := c.Calendar.MarkBookingNoShow(context.Background(), "test-id", map[string]any{}, nil)
+		return err
+	})
+}
+
+func TestCalendarAddBookingGuests(t *testing.T) {
+	assertEndpoint(t, "POST", "/calendar/bookings/test-id/guests", func(c *Client) error {
+		_, err := c.Calendar.AddBookingGuests(context.Background(), "test-id", map[string]any{}, nil)
+		return err
+	})
+}
+
 func TestCalendarListBookingNotes(t *testing.T) {
 	assertEndpoint(t, "GET", "/calendar/bookings/test-id/notes", func(c *Client) error {
 		_, err := c.Calendar.ListBookingNotes(context.Background(), "test-id", nil)
