@@ -1008,7 +1008,7 @@
     "/social/accounts": {
       "get": {
         "summary": "List social accounts",
-        "description": "Returns all connected social media accounts for the authenticated user. Requires scope `social:read`.",
+        "description": "Returns every connected social media account of the key's workspace, whoever connected it, as in the app. Any member's key can list, read and post to them. Renaming, pausing, resuming, disconnecting or reconnecting an account, every other change made through it, and reading its Facebook Page settings need a key of the workspace owner, an admin or the person who connected it; other keys get `403 NOT_YOUR_ACCOUNT`. Requires scope `social:read`.",
         "operationId": "listSocialAccounts",
         "tags": [
           "Social"
