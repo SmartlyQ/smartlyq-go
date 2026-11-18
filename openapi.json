@@ -40249,7 +40249,10 @@
           "502": {
             "description": "The calendar did not answer in time (`UPSTREAM_UNAVAILABLE`). The booking may or may not have been declined. Read the booking before trying again."
           }
-        }
+        },
+        "x-scopes": [
+          "calendar:write"
+        ]
       }
     },
     "/calendar/bookings/{id}/no-show": {
@@ -40350,7 +40353,10 @@
           "502": {
             "description": "The calendar did not answer in time (`UPSTREAM_UNAVAILABLE`). The marks may or may not have been saved. Read the booking before trying again."
           }
-        }
+        },
+        "x-scopes": [
+          "calendar:write"
+        ]
       }
     },
     "/calendar/bookings/{id}/guests": {
@@ -40437,7 +40443,10 @@
           "502": {
             "description": "The calendar did not answer in time (`UPSTREAM_UNAVAILABLE`). The guests may or may not have been added. Read the booking before trying again."
           }
-        }
+        },
+        "x-scopes": [
+          "calendar:write"
+        ]
       }
     },
     "/calendar/bookings/{id}/notes": {
