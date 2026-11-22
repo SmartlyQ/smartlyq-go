@@ -1027,7 +1027,8 @@
                     {
                       "id": 128,
                       "platform": "twitter",
-                      "name": "Acme Corp"
+                      "name": "Acme Corp",
+                      "inbox_enabled": false
                     }
                   ],
                   "meta": {
@@ -6026,12 +6027,12 @@
     },
     "/social/accounts/{account_id}": {
       "patch": {
-        "summary": "Rename account",
+        "summary": "Update account",
         "operationId": "updateSocialAccount",
         "tags": [
           "Social"
         ],
-        "description": "Rename a connected social account (display name inside SmartlyQ - does not change anything on the platform). Requires scope `social:write`.",
+        "description": "Rename a connected social account (its display name inside SmartlyQ - nothing changes on the platform) and/or turn its Inbox switch on or off. `inbox_enabled: true` brings the account's messages into the inbox (`GET /social/conversations`), its history first, with the next inbox sync (within about 10 minutes); `false` stops new ones, and conversations already there stay. Only Facebook, Instagram, X and Bluesky accounts have the switch; on any other network `inbox_enabled` answers `422 VALIDATION_ERROR`. Send `account_name`, `inbox_enabled` or both. Requires scope `social:write` and a key of the workspace owner, an admin or the person who connected the account.",
         "parameters": [
           {
             "name": "account_id",
@@ -6048,13 +6049,16 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "account_name"
-                ],
+                "minProperties": 1,
                 "properties": {
                   "account_name": {
                     "type": "string",
-                    "maxLength": 255
+                    "maxLength": 255,
+                    "description": "New display name, 1-255 characters."
+                  },
+                  "inbox_enabled": {
+                    "type": "boolean",
+                    "description": "On: the account's messages come into the inbox. Off: no new ones come in."
                   }
                 }
               }
@@ -6063,7 +6067,7 @@
         },
         "responses": {
           "200": {
-            "description": "Renamed",
+            "description": "Updated",
             "content": {
               "application/json": {
                 "schema": {
@@ -6086,6 +6090,10 @@
                         },
                         "account_name": {
                           "type": "string"
+                        },
+                        "inbox_enabled": {
+                          "type": "boolean",
+                          "description": "Present for Facebook, Instagram, X and Bluesky accounts."
                         }
                       }
                     },
@@ -6099,7 +6107,8 @@
                   "data": {
                     "id": 128,
                     "platform": "twitter",
-                    "account_name": "Acme Corp Main"
+                    "account_name": "Acme Corp Main",
+                    "inbox_enabled": true
                   },
                   "meta": {
                     "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
@@ -6111,6 +6120,9 @@
           },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
@@ -43179,6 +43191,12 @@
           },
           "name": {
             "type": "string"
+          },
+          "inbox_enabled": {
+            "type": "boolean",
+            "nullable": true,
+            "description": "Whether this account's messages come into the inbox (`GET /social/conversations`). Off until someone turns it on in the app or with `PATCH /social/accounts/{account_id}`; accounts connected before 22 Nov 2026 were turned on. `null` for networks whose messages are not behind this switch (only Facebook, Instagram, X and Bluesky are).",
+            "example": false
           }
         }
       },

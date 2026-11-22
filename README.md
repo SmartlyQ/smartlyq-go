@@ -552,7 +552,7 @@ All methods below are available on the client. Every method also accepts a trail
 | `client.Social.GetPost(ctx, postId)` | `GET /social/posts/{post_id}` | Get social post |
 | `client.Social.UpdatePost(ctx, postId, body)` | `PATCH /social/posts/{post_id}` | Update social post |
 | `client.Social.DeletePost(ctx, postId)` | `DELETE /social/posts/{post_id}` | Delete social post |
-| `client.Social.UpdateAccount(ctx, accountId, body)` | `PATCH /social/accounts/{account_id}` | Rename account |
+| `client.Social.UpdateAccount(ctx, accountId, body)` | `PATCH /social/accounts/{account_id}` | Update account |
 | `client.Social.DisconnectAccount(ctx, accountId)` | `DELETE /social/accounts/{account_id}` | Disconnect a social account |
 | `client.Social.GetAccountHealth(ctx, accountId)` | `GET /social/accounts/{account_id}/health` | Account health |
 | `client.Social.GetAccountReconnectUrl(ctx, accountId)` | `GET /social/accounts/{account_id}/reconnect-url` | Account reconnect URL |

@@ -1924,7 +1924,7 @@ func (r *SocialResource) DeletePost(ctx context.Context, postId string, opts *Re
 	return r.client.do(ctx, "DELETE", "/social/posts/"+url.PathEscape(postId), nil, nil, opts)
 }
 
-// UpdateAccount - Rename account.
+// UpdateAccount - Update account.
 //
 // PATCH /social/accounts/{account_id}
 func (r *SocialResource) UpdateAccount(ctx context.Context, accountId string, body map[string]any, opts *RequestOptions) (*Envelope, error) {
