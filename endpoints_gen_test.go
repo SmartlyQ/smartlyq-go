@@ -2412,6 +2412,20 @@ func TestSocialSetFacebookPageCover(t *testing.T) {
 	})
 }
 
+func TestSocialListCommunityAuthors(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/community/authors", func(c *Client) error {
+		_, err := c.Social.ListCommunityAuthors(context.Background(), "test-accountId", nil, nil)
+		return err
+	})
+}
+
+func TestSocialGetCommunityLimits(t *testing.T) {
+	assertEndpoint(t, "GET", "/social/accounts/test-accountId/community/limits", func(c *Client) error {
+		_, err := c.Social.GetCommunityLimits(context.Background(), "test-accountId", nil)
+		return err
+	})
+}
+
 func TestSocialGetFacebookReelLimit(t *testing.T) {
 	assertEndpoint(t, "GET", "/social/accounts/test-accountId/facebook/reel-limit", func(c *Client) error {
 		_, err := c.Social.GetFacebookReelLimit(context.Background(), "test-accountId", nil)

@@ -2554,6 +2554,20 @@ func (r *SocialResource) SetFacebookPageCover(ctx context.Context, accountId str
 	return r.client.do(ctx, "POST", "/social/accounts/"+url.PathEscape(accountId)+"/facebook/page/cover", nil, body, opts)
 }
 
+// ListCommunityAuthors - Community authors.
+//
+// GET /social/accounts/{account_id}/community/authors
+func (r *SocialResource) ListCommunityAuthors(ctx context.Context, accountId string, query map[string]string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/community/authors", query, nil, opts)
+}
+
+// GetCommunityLimits - Community planner limits.
+//
+// GET /social/accounts/{account_id}/community/limits
+func (r *SocialResource) GetCommunityLimits(ctx context.Context, accountId string, opts *RequestOptions) (*Envelope, error) {
+	return r.client.do(ctx, "GET", "/social/accounts/"+url.PathEscape(accountId)+"/community/limits", nil, nil, opts)
+}
+
 // GetFacebookReelLimit - Get Facebook Reel limit.
 //
 // GET /social/accounts/{account_id}/facebook/reel-limit

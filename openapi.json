@@ -1218,7 +1218,7 @@
         "x-scopes": [
           "social:write"
         ],
-        "description": "Facebook allows 30 API-published Reels per Page in a moving 24-hour window. A post whose `platform_options.facebook.type` is `reel` is refused when a selected Page is already at that limit (Reels published in the last 24 hours plus Reels already scheduled inside that window): `422 PLATFORM_DAILY_LIMIT_REACHED`, with `details` carrying `account_id`, `limit`, `used` and `next_available_at`. Nothing is created. Check first with `GET /social/accounts/{account_id}/facebook/reel-limit`.\n\nRequires scope `social:write`."
+        "description": "Facebook allows 30 API-published Reels per Page in a moving 24-hour window. A post whose `platform_options.facebook.type` is `reel` is refused when a selected Page is already at that limit (Reels published in the last 24 hours plus Reels already scheduled inside that window): `422 PLATFORM_DAILY_LIMIT_REACHED`, with `details` carrying `account_id`, `limit`, `used` and `next_available_at`. Nothing is created. Check first with `GET /social/accounts/{account_id}/facebook/reel-limit`.\n\nCommunity channels (`community`, the workspace's own community groups) are checked when the post is created: Communities must be on for the workspace (`403 COMMUNITY_POSTING_OFF`), `platform_options.community` must be well formed (`422 VALIDATION_ERROR`), the post must be allowed to appear from the person in `post_as_user_id` (`422 COMMUNITY_AUTHOR_NOT_ALLOWED`; only the workspace owner and admins may name someone else - see `GET /social/accounts/{account_id}/community/authors`) and each channel and its group must still exist (`422 COMMUNITY_CHANNEL_UNAVAILABLE`, `details.account_id`). Nothing is created. The planner limits are checked when the post goes out (`GET /social/accounts/{account_id}/community/limits`): an account over one fails with `COMMUNITY_LIMIT_REACHED` or `COMMUNITY_DUPLICATE_POST` and is not retried automatically.\n\nRequires scope `social:write`."
       },
       "get": {
         "summary": "List social posts",
@@ -1448,7 +1448,7 @@
             "description": "Client idempotency key (X-Request-Id accepted as an alias). Send a fresh key per logical post and REUSE it when retrying that exact call after a timeout / 5xx / connection reset: the retry returns the original post with HTTP 200 and `idempotent_replay: true` instead of creating a duplicate. A key permanently identifies its post in the workspace (deleting the post frees the key). See the Idempotency guide."
           }
         ],
-        "description": "Pass queue_id (instead of scheduled_time) to drop the post into a posting queue's next open slot. Supports evergreen recycling via the optional `recycle` object: each published occurrence automatically schedules the next one until the chain hits its bound.\n\nFacebook allows 30 API-published Reels per Page in a moving 24-hour window. A post whose `platform_options.facebook.type` is `reel` is refused when a selected Page would be at that limit at the post's publish time (Reels published plus Reels already scheduled in the 24 hours before it): `422 PLATFORM_DAILY_LIMIT_REACHED`, with `details` carrying `account_id`, `limit`, `used` and `next_available_at`. Nothing is created. If a scheduled Reel still hits the limit when it publishes, that account's result fails with `PLATFORM_DAILY_LIMIT_REACHED` and is not retried automatically.\n\nRequires scope `social:write`.",
+        "description": "Pass queue_id (instead of scheduled_time) to drop the post into a posting queue's next open slot. Supports evergreen recycling via the optional `recycle` object: each published occurrence automatically schedules the next one until the chain hits its bound.\n\nFacebook allows 30 API-published Reels per Page in a moving 24-hour window. A post whose `platform_options.facebook.type` is `reel` is refused when a selected Page would be at that limit at the post's publish time (Reels published plus Reels already scheduled in the 24 hours before it): `422 PLATFORM_DAILY_LIMIT_REACHED`, with `details` carrying `account_id`, `limit`, `used` and `next_available_at`. Nothing is created. If a scheduled Reel still hits the limit when it publishes, that account's result fails with `PLATFORM_DAILY_LIMIT_REACHED` and is not retried automatically.\n\nCommunity channels (`community`, the workspace's own community groups) are checked when the post is created: Communities must be on for the workspace (`403 COMMUNITY_POSTING_OFF`), `platform_options.community` must be well formed (`422 VALIDATION_ERROR`), the post must be allowed to appear from the person in `post_as_user_id` (`422 COMMUNITY_AUTHOR_NOT_ALLOWED`; only the workspace owner and admins may name someone else - see `GET /social/accounts/{account_id}/community/authors`) and each channel and its group must still exist (`422 COMMUNITY_CHANNEL_UNAVAILABLE`, `details.account_id`). Nothing is created. The planner limits are checked when the post goes out (`GET /social/accounts/{account_id}/community/limits`): an account over one fails with `COMMUNITY_LIMIT_REACHED` or `COMMUNITY_DUPLICATE_POST` and is not retried automatically.\n\nRequires scope `social:write`.",
         "x-scopes": [
           "social:write"
         ]
@@ -1584,7 +1584,7 @@
         "x-scopes": [
           "social:write"
         ],
-        "description": "Your own post, or any post in the workspace when the key's creator is the owner or an admin; a post you can see but not change answers 403 NOT_YOUR_POST, one you cannot see 404. Update a draft or scheduled post, or a post that failed on every platform (nothing of it is live; saving it makes it a draft again, or scheduled when you send a `scheduled_time`, and stops its automatic retries). Send only the fields you want to change.\n\nA partly published post cannot be updated - it would post its published platforms again - and answers `422 NOT_EDITABLE` saying so. A failed post that is being retried right now answers `409 RETRY_IN_PROGRESS`; nothing is changed.\n\nIf the post will be a scheduled Facebook Reel after the update (`platform_options.facebook.type` set to `reel`), it is checked against Facebook's limit of 30 Reels per Page in 24 hours at its publish time, counting other published and scheduled Reels but not this post itself. A Page that would be over the limit is refused with `422 PLATFORM_DAILY_LIMIT_REACHED` and `details` carrying `account_id`, `limit`, `used` and `next_available_at`; nothing is changed.\n\nRequires scope `social:write`."
+        "description": "Your own post, or any post in the workspace when the key's creator is the owner or an admin; a post you can see but not change answers 403 NOT_YOUR_POST, one you cannot see 404. Update a draft or scheduled post, or a post that failed on every platform (nothing of it is live; saving it makes it a draft again, or scheduled when you send a `scheduled_time`, and stops its automatic retries). Send only the fields you want to change.\n\nA partly published post cannot be updated - it would post its published platforms again - and answers `422 NOT_EDITABLE` saying so. A failed post that is being retried right now answers `409 RETRY_IN_PROGRESS`; nothing is changed.\n\nIf the post will be a scheduled Facebook Reel after the update (`platform_options.facebook.type` set to `reel`), it is checked against Facebook's limit of 30 Reels per Page in 24 hours at its publish time, counting other published and scheduled Reels but not this post itself. A Page that would be over the limit is refused with `422 PLATFORM_DAILY_LIMIT_REACHED` and `details` carrying `account_id`, `limit`, `used` and `next_available_at`; nothing is changed.\n\nA post into community channels that will be scheduled after the edit is checked as on create (`COMMUNITY_POSTING_OFF`, `VALIDATION_ERROR`, `COMMUNITY_AUTHOR_NOT_ALLOWED`, `COMMUNITY_CHANNEL_UNAVAILABLE`); nothing is changed. The post keeps its author, so it may appear from someone else only when its author is the workspace owner or an admin.\n\nRequires scope `social:write`."
       },
       "delete": {
         "summary": "Delete social post",
@@ -18666,6 +18666,9 @@
                           "properties": {
                             "tiktok": {
                               "$ref": "#/components/schemas/TikTokPlatformOptions"
+                            },
+                            "community": {
+                              "$ref": "#/components/schemas/CommunityPlatformOptions"
                             }
                           },
                           "description": "Per-platform composer options - the same payload the web composer stores; publish handlers read it as-is (unknown keys are ignored, max 20KB). Keyed by platform, e.g. {\"tiktok\": {\"visibility\": \"private\"}, \"instagram\": {\"content\": \"IG-specific caption\"}, \"_thumbnail\": {\"timestamp_ms\": 3000}}. Common keys: per-platform `content` override; tiktok `visibility` (REQUIRED for every TikTok post: public | friends | private - a TikTok post without it is refused with VALIDATION_ERROR; `branded_content` cannot be combined with private), `type` (video | photo), allow_comments/allow_duet/allow_stitch, disclose_content + your_brand/branded_content; `_thumbnail` custom video cover.",
@@ -18897,6 +18900,9 @@
                           "properties": {
                             "tiktok": {
                               "$ref": "#/components/schemas/TikTokPlatformOptions"
+                            },
+                            "community": {
+                              "$ref": "#/components/schemas/CommunityPlatformOptions"
                             }
                           },
                           "description": "Per-platform composer options - the same payload the web composer stores; publish handlers read it as-is (unknown keys are ignored, max 20KB). Keyed by platform, e.g. {\"tiktok\": {\"visibility\": \"private\"}, \"instagram\": {\"content\": \"IG-specific caption\"}, \"_thumbnail\": {\"timestamp_ms\": 3000}}. Common keys: per-platform `content` override; tiktok `visibility` (REQUIRED for every TikTok post: public | friends | private - a TikTok post without it is refused with VALIDATION_ERROR; `branded_content` cannot be combined with private), `type` (video | photo), allow_comments/allow_duet/allow_stitch, disclose_content + your_brand/branded_content; `_thumbnail` custom video cover.",
@@ -33112,6 +33118,278 @@
         ]
       }
     },
+    "/social/accounts/{account_id}/community/authors": {
+      "get": {
+        "summary": "Community authors",
+        "operationId": "listCommunityAuthors",
+        "tags": [
+          "Social"
+        ],
+        "description": "Who a post into this community channel may appear from (`platform_options.community.post_as_user_id`): the group's owner, admins and moderators on the workspace's team, with their role. When the key's creator is not the workspace owner or an admin, `can_pick_others` is false and the list holds only the creator (if they may post in this group at all - `me.allowed`). Email addresses are not returned. `422 VALIDATION_ERROR` for an account that is not a community channel, `422 COMMUNITY_CHANNEL_UNAVAILABLE` when its group was deleted.\n\nRequires scope `social:read`.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Community channel account id (platform `community`)."
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 80
+            },
+            "description": "Part of a name or email to filter by (owners and admins only)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Community authors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "account_id": {
+                          "type": "integer"
+                        },
+                        "group": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer"
+                            },
+                            "name": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "can_pick_others": {
+                          "type": "boolean",
+                          "description": "True when the key's creator is the workspace owner or an admin."
+                        },
+                        "me": {
+                          "type": "object",
+                          "properties": {
+                            "user_id": {
+                              "type": "integer"
+                            },
+                            "allowed": {
+                              "type": "boolean",
+                              "description": "May the key's creator post in this group."
+                            }
+                          }
+                        },
+                        "authors": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "user_id": {
+                                "type": "integer"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "role": {
+                                "type": "string",
+                                "enum": [
+                                  "owner",
+                                  "admin",
+                                  "moderator"
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "account_id": 787,
+                    "group": {
+                      "id": 30,
+                      "name": "Members Club"
+                    },
+                    "can_pick_others": true,
+                    "me": {
+                      "user_id": 12,
+                      "allowed": true
+                    },
+                    "authors": [
+                      {
+                        "user_id": 12,
+                        "name": "Alex Owner",
+                        "role": "owner"
+                      },
+                      {
+                        "user_id": 45,
+                        "name": "Sam Moderator",
+                        "role": "moderator"
+                      }
+                    ]
+                  },
+                  "meta": {
+                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                    "timestamp": "2026-11-25T09:41:22Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
+      }
+    },
+    "/social/accounts/{account_id}/community/limits": {
+      "get": {
+        "summary": "Community planner limits",
+        "operationId": "getCommunityLimits",
+        "tags": [
+          "Social"
+        ],
+        "description": "The limits in force for posts into the workspace's community channels from the planner and the API. They are checked when a post goes out: an account over one fails with `COMMUNITY_LIMIT_REACHED` (or `COMMUNITY_DUPLICATE_POST` for the same title and text within `duplicate_days`) and is not retried automatically. The workspace owner and admins change the numbers in the app (Social accounts > Community > Limits for planner posts), up to `maximums`; a workspace in its first 14 days gets half. `posting_blocked` true means the platform team switched planner posting off for this workspace.\n\nRequires scope `social:read`.",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Community channel account id (platform `community`)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Community planner limits",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "account_id": {
+                          "type": "integer"
+                        },
+                        "posting_blocked": {
+                          "type": "boolean"
+                        },
+                        "per_channel_day": {
+                          "type": "integer",
+                          "description": "Posts per channel in 24 hours."
+                        },
+                        "per_group_day": {
+                          "type": "integer",
+                          "description": "Posts per group (all its channels) in 24 hours."
+                        },
+                        "notify_per_group_day": {
+                          "type": "integer",
+                          "description": "Posts with notify_all per group in 24 hours."
+                        },
+                        "gap_minutes": {
+                          "type": "integer",
+                          "description": "Minutes between two planner posts in one channel."
+                        },
+                        "duplicate_days": {
+                          "type": "integer",
+                          "description": "Days the same title and text is refused again in a channel."
+                        },
+                        "new_workspace_halved": {
+                          "type": "boolean"
+                        },
+                        "maximums": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/RequestMeta"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "account_id": 787,
+                    "posting_blocked": false,
+                    "per_channel_day": 5,
+                    "per_group_day": 10,
+                    "notify_per_group_day": 1,
+                    "gap_minutes": 15,
+                    "duplicate_days": 7,
+                    "new_workspace_halved": false,
+                    "maximums": {
+                      "per_channel_day": 20,
+                      "per_group_day": 30,
+                      "notify_per_group_day": 2
+                    }
+                  },
+                  "meta": {
+                    "request_id": "req_9f3a2b1c-7d4e-4a08-b2c6-5e1f8a9d0c34",
+                    "timestamp": "2026-11-25T09:41:22Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          }
+        },
+        "x-scopes": [
+          "social:read"
+        ]
+      }
+    },
     "/social/accounts/{account_id}/facebook/reel-limit": {
       "get": {
         "summary": "Get Facebook Reel limit",
@@ -43247,7 +43525,8 @@
                 "bluesky",
                 "tumblr",
                 "telegram",
-                "discord"
+                "discord",
+                "community"
               ]
             },
             "description": "Target platforms. Use `twitter` for X and `gmb` for Google Business. `telegram` posts via the workspace's connected bot (created with @BotFather); `discord` posts via the connected server webhook. Both are connected in the dashboard's Social Accounts page."
@@ -43287,6 +43566,9 @@
             "properties": {
               "tiktok": {
                 "$ref": "#/components/schemas/TikTokPlatformOptions"
+              },
+              "community": {
+                "$ref": "#/components/schemas/CommunityPlatformOptions"
               }
             },
             "description": "Per-platform composer options - the same payload the web composer stores; publish handlers read it as-is (unknown keys are ignored, max 20KB). Keyed by platform, e.g. {\"tiktok\": {\"visibility\": \"private\"}, \"instagram\": {\"content\": \"IG-specific caption\"}, \"_thumbnail\": {\"timestamp_ms\": 3000}}. Common keys: per-platform `content` override; tiktok `visibility` (REQUIRED for every TikTok post: public | friends | private - a TikTok post without it is refused with VALIDATION_ERROR; `branded_content` cannot be combined with private), `type` (video | photo), allow_comments/allow_duet/allow_stitch, disclose_content + your_brand/branded_content; `_thumbnail` custom video cover. See the Platform options guide for every key each platform accepts (privacy, flair, first comments, formatting, AI-disclosure flags, thumbnails and more).",
@@ -43328,7 +43610,8 @@
                 "bluesky",
                 "tumblr",
                 "telegram",
-                "discord"
+                "discord",
+                "community"
               ]
             },
             "description": "Target platforms. Use `twitter` for X and `gmb` for Google Business. `telegram` posts via the workspace's connected bot (created with @BotFather); `discord` posts via the connected server webhook. Both are connected in the dashboard's Social Accounts page."
@@ -43406,6 +43689,9 @@
             "properties": {
               "tiktok": {
                 "$ref": "#/components/schemas/TikTokPlatformOptions"
+              },
+              "community": {
+                "$ref": "#/components/schemas/CommunityPlatformOptions"
               }
             },
             "description": "Per-platform composer options - the same payload the web composer stores; publish handlers read it as-is (unknown keys are ignored, max 20KB). Keyed by platform, e.g. {\"tiktok\": {\"visibility\": \"private\"}, \"instagram\": {\"content\": \"IG-specific caption\"}, \"_thumbnail\": {\"timestamp_ms\": 3000}}. Common keys: per-platform `content` override; tiktok `visibility` (REQUIRED for every TikTok post: public | friends | private - a TikTok post without it is refused with VALIDATION_ERROR; `branded_content` cannot be combined with private), `type` (video | photo), allow_comments/allow_duet/allow_stitch, disclose_content + your_brand/branded_content; `_thumbnail` custom video cover. Per-platform STAGGER: give any platform its own `scheduled_time` here (interpreted in the request `timezone`) and it publishes at that moment - platforms without one use the request-level scheduled_time. One call, one post per distinct time (response carries `staggered[]` with the created legs). Not combinable with queue_id or recycle.",
@@ -43420,6 +43706,49 @@
           }
         },
         "description": "Schedule request. Provide scheduled_time (with optional timezone) OR queue_id (next open slot), not both."
+      },
+      "CommunityPlatformOptions": {
+        "type": "object",
+        "description": "Options for community channels (platform `community`, the workspace's own community groups; each channel is a connected account, see `GET /social/accounts`). All optional. A community post has up to 10,000 characters of text and up to 4 images (10 MB each) and 1 video (MP4, MOV or WebM, 100 MB); images and video may be mixed.",
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "The post's title in the community. Default: the post's title, else its first line (that line is then not repeated in the text)."
+          },
+          "notify_all": {
+            "type": "boolean",
+            "description": "Tell every member of the channel: a bell notice and a push, plus an email when the workspace has its own sending domain. Default false. Limited per group per day (`GET /social/accounts/{account_id}/community/limits`)."
+          },
+          "comments_on": {
+            "type": "boolean",
+            "description": "Members may comment. Default true."
+          },
+          "post_as_user_id": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Who the post appears from. Default (or null): the person who created the API key. Only the workspace owner and admins may name someone else, and only someone `GET /social/accounts/{account_id}/community/authors` lists (the group's owner, admins and moderators); anything else is refused with `422 COMMUNITY_AUTHOR_NOT_ALLOWED`."
+          },
+          "content": {
+            "type": "string",
+            "description": "Text for the community only, instead of the post's `content`."
+          },
+          "media_urls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Media for the community only, instead of the post's `media_urls`."
+          }
+        },
+        "example": {
+          "title": "Live Q&A on Thursday",
+          "notify_all": true,
+          "comments_on": true,
+          "post_as_user_id": null
+        }
       },
       "TikTokPlatformOptions": {
         "type": "object",
@@ -43496,6 +43825,9 @@
             "properties": {
               "tiktok": {
                 "$ref": "#/components/schemas/TikTokPlatformOptions"
+              },
+              "community": {
+                "$ref": "#/components/schemas/CommunityPlatformOptions"
               }
             },
             "additionalProperties": true
@@ -43519,7 +43851,8 @@
                 "bluesky",
                 "tumblr",
                 "telegram",
-                "discord"
+                "discord",
+                "community"
               ]
             },
             "description": "Target platforms. Use `twitter` for X and `gmb` for Google Business. `telegram` posts via the workspace's connected bot (created with @BotFather); `discord` posts via the connected server webhook. Both are connected in the dashboard's Social Accounts page."
